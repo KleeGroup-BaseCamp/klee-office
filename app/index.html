@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+
+<!-- title and meta -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta name="description" content="A Search Bar that Expands on Label Click with CSS Transitions" />
+<title>Expanding Search Bar with CSS Transitions</title>
+    
+<!-- css -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/style.css" />
+    
+<!-- js -->
+<script type="text/javascript" src="d3/d3.js"></script>
+
+</head>
+
+
+
+<body>
+
+<div id="wrapper">
+
+<div id="info-bar">
+    <div class="container clearfix">
+        <span class="back-to-directory"><a href="http://directory.lan.net">back to the directory</a></span>
+    </div>
+</div><!-- /#info-bar -->
+
+<header>
+    <div id="title" class="container">
+        <h1>Map Search Interface v0.0</h1>
+        <h2>Search Bar with name search and floor maps</h2>
+    </div>
+</header><!-- /header -->
+
+
+<div id="main">
+    <div class="container">
+        
+        <div id="navigation-bar" class="clearfix">
+            
+            <form id="search" action="#" method="post">
+                <div id="label"><label for="search-terms" id="search-label">search</label></div>
+                <div id="input"><input type="text" name="search-terms" id="search-terms" placeholder="Enter search terms..."></div>
+            </form>
+
+            <nav>
+                <ul>
+                    <li id="N1"><a href="#">N 1</a></li>
+                    <li id="N2"><a href="#">N 2</a></li>
+                    <li id="N3"><a href="localhost:8888/PROJET/data/N3_v0.7.svg">N 3</a></li>
+                    <li id="N4"><a href="#">N 4</a></li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </div>
+
+    <div class="autocomplete-suggestions" 
+</div><!-- #main -->
+
+<svg width=1080 height=1500 class="map">
+<!--     <image id="background" x="14" y="0" width="1100" height="1500" xlink:href="/PROJET/.version0.1/data/background.png" /> -->
+</svg>
+
+
+
+<footer>
+    <div class="container">
+        <span>
+            &copy; 2016, Zekun ZHANG, Klee Group<br>
+            <a href="http://www.kleegroup.com" target="_blank">kleegroup.com</a>
+        </span>
+    </div>
+</footer><!-- /footer -->
+
+</div><!-- /#wrapper -->
+
+<script src="js/classie.js"></script>
+<script src="js/search.js"></script>
+<script type="text/javascript" src="js/script_plot_table.js"></script>
+</body>
+</html>
