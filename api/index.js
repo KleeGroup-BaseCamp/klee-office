@@ -5,7 +5,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 
 // services
-const personServices = require('./services/person.js');
+const peopleServices = require('./services/people.js');
+const mapServices = require('./services/map.js')
 
 const API_PORT = process.env.PORT || 8080;
 
@@ -16,9 +17,11 @@ app.use(bodyParser.json());
 
 // entries
 
-app.get('/test', personServices.test);
-app.get('/people/:name', personServices.getPeople);
-app.get('/people', personServices.getAllPeople);
+app.get('/test', peopleServices.test);
+app.get('/people/:name', peopleServices.getPeople);
+app.get('/people', peopleServices.getAllPeople);
+
+app.get('/maps/:name', mapServices.getMap);
 
 //app.get('/maps/:number', mapServices.getMapByNumber);
 

@@ -1,8 +1,18 @@
 /* ------------------------------------------------------------ *\
 |* ------------------------------------------------------------ *|
-|* Nav bar, search, and nav
+|* Map, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
+#map-show {
+    position: relative;
+    width: 1500px;
+    height: 1000px;
+}
+.map {
+    position: relative;
+    width: 1500px;
+    height: 1000px;
+}
 #navigation-bar {
     position: relative;
     height: 60px;

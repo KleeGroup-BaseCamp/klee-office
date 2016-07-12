@@ -8,12 +8,11 @@
 /////////////////////////////
 "use strict";
 
-
-d3.xml("http://localhost:8888/PROJET/.version0.1/data/N3_v0.8.svg", 
+var mapN3 = function () {
+	d3.xml("http://localhost:8080/maps/N3.svg", 
 	function(error, documentFragment) {
 		var svgNode,
 			map;
-		if(error) {console.log(error); return;}
 
 		svgNode = documentFragment.getElementsByTagName("svg")[0];
 		map = d3.select(".map");
@@ -23,19 +22,18 @@ d3.xml("http://localhost:8888/PROJET/.version0.1/data/N3_v0.8.svg",
 		// Version 1: for each people, search his table
 		/////////////////////////////
 
-		d3.json("data/people.json", function(error, data) {
+		d3.json("http://localhost:8080/people", function(error, data) {
 
 			/////////////////////////////
 			// add names to each table
 			/////////////////////////////
-
 			var dataset = data,
 				table,
 				xPosition,
 				yPosition;
 			dataset.forEach(function(d, i) {
 				d.tableID = +d.tableID;
-				table = d3.select("#table"+d.tableID);  // table is a group (= rect + text(to be added))
+				table = d3.select("#table"+d.tableID);
 				if(table[0][0] !== null){
 					table.append("text")
 						.attr("x", table.select("rect").attr("x"))
@@ -70,7 +68,9 @@ d3.xml("http://localhost:8888/PROJET/.version0.1/data/N3_v0.8.svg",
 				}
 			});
 		});
-
 });
+};
+
+mapN3();
 
 
