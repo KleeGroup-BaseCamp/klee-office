@@ -123,11 +123,13 @@ function mapN3() {
 				div = d3.select("#main").select(".tooltip")
 						.style("opacity", 0);
 
+			console.log(dataset);
+			
 			dataset.forEach(function(d, i) {
 				d.tableID = +d.tableID;
 				table = d3.select("#table"+d.tableID);
 				if(table[0][0] !== null){
-					table.select("rect").attr("id", d.name);
+					table.select("rect").attr("id", d.firstName);
 
 					// mouse hover on the text will give more info
 					table.on("mouseover", function() {
@@ -152,7 +154,7 @@ function mapN3() {
 							.transition()
 							.duration(200)
 							.attr("fill", oldColor);
-							
+
 						div.transition()
 							.duration(500)
 							.style("opacity", 0);

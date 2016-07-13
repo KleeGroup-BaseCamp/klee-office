@@ -50,8 +50,13 @@ function setDefault() {
 
 	// register clicks outisde search box, and toggle correct classes
 	document.addEventListener("click",function(e){
-		var clickedID = e.target.id;
-		if (clickedID !== "search-terms" && clickedID !== "search-label") {
+		var clickedID = e.target.id,
+			clickedClass = $(e.target).attr('class');
+
+		// if click over search bar or autocomplete list, do nothing
+		if (clickedID !== "search-terms" && clickedID !== "search-label"
+			&& clickedClass !== "autocomplete-suggestion autocomplete-selected"
+			&& clickedClass !== "autocomplete-suggestion") {
 			if (classie.has(searchEl,"focus")) {
 				classie.remove(searchEl,"focus");
 				classie.remove(labelEl,"active");
@@ -60,20 +65,20 @@ function setDefault() {
 	});
 
 	// search input strings
-	d3.select("#input")
-		.on("keyup", function() {
-			var name,
-				table;
+	// d3.select("#input")
+	// 	.on("keyup", function() {
+	// 		var name,
+	// 			table;
 
-			console.log(document.getElementById("search-terms").value);
-			name = (document.getElementById("search-terms").value);
-			table = search(name);
-			if(table[0][0]) {
-				table.attr("fill", "red");
-			}
-			else{
-				setDefault();
-			}
-	});
+	// 		console.log(document.getElementById("search-terms").value);
+	// 		name = (document.getElementById("search-terms").value);
+	// 		table = search(name);
+	// 		if(table[0][0]) {
+	// 			table.attr("fill", "red");
+	// 		}
+	// 		else{
+	// 			setDefault();
+	// 		}
+	// });
 
 }(window));

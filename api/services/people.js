@@ -9,14 +9,8 @@ const getAllPeople = (req, res) => {
 	res.json(peopleDatabase);
 }
 
-const getPeople = (req, res) => {
-	const name = req.params.name;
-	console.log('appel du service getPerson ' + name);
-	res.json('{ name: "Zhang", firstname: "Zekun" }');
-};
 
 module.exports = {
     test,
-    getAllPeople,
-    getPeople
+    getAllPeople
 }

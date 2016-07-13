@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 // entries
 
 app.get('/test', peopleServices.test);
-app.get('/people/:name', peopleServices.getPeople);
 app.get('/people', peopleServices.getAllPeople);
 
 app.get('/maps/:name', mapServices.getMap);
