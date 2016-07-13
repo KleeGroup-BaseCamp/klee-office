@@ -47,10 +47,8 @@ $(function(){
                         .select("#table" + suggestion.data.tableID)
                         .select("rect");
             if(table[0][0]) {
-                table.attr("fill", "red");
-            }
-            else{
                 setDefault();
+                table.attr("fill", "red");
             }
         }
     });
