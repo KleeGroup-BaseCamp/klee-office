@@ -85,11 +85,6 @@ function mapN2() {
 							.attr("x", xPosition)
 							.attr("y", yPosition)
 							.attr("dy", ".75em")
-							.attr("text-anchor", "middle")
-							.attr("font-family", "sans-serif")
-							.attr("font-size", "15px")
-							.attr("font-weight", "bold")
-							.attr("fill", "red")
 							.text("email: " + d.email);
 					});
 
@@ -123,41 +118,44 @@ function mapN3() {
 			/////////////////////////////
 			var dataset = data,
 				table,
-				xPosition,
-				yPosition;
+				oldColor,
+				// Define the div for the tooltip
+				div = d3.select("#main").select(".tooltip")
+						.style("opacity", 0);
+
 			dataset.forEach(function(d, i) {
 				d.tableID = +d.tableID;
 				table = d3.select("#table"+d.tableID);
 				if(table[0][0] !== null){
-					table.append("text")
-						.attr("x", table.select("rect").attr("x"))
-						.attr("y", table.select("rect").attr("y"))
-						.attr("dy", ".75em")
-						.attr("fill", "black")
-						.attr("stroke-width", 0)
-						.text(d.name);
 					table.select("rect").attr("id", d.name);
 
 					// mouse hover on the text will give more info
 					table.on("mouseover", function() {
-						xPosition = 850 ;
-						yPosition = parseFloat(d3.select(this) 
-														.select("rect").attr("y") );
-						table.append("text")
-							.attr("id", "tooltip")
-							.attr("x", xPosition)
-							.attr("y", yPosition)
-							.attr("dy", ".75em")
-							.attr("text-anchor", "middle")
-							.attr("font-family", "sans-serif")
-							.attr("font-size", "15px")
-							.attr("font-weight", "bold")
-							.attr("fill", "red")
-							.text("email: " + d.email);
+						oldColor = d3.select(this).select("rect")
+									.attr("fill");
+						d3.select(this).select("rect")
+							.transition()
+							.duration(200)
+							.attr("fill", "red");
+
+						div.transition()
+							.duration(200)
+							.style("opacity", .9);
+						div .html("name: " + d.name + "<br/>"
+									+ "email: " + d.email)
+							.style("left", (d3.event.pageX + 16) + "px")
+							.style("top", (d3.event.pageY + 16) + "px");
 					});
 
 					table.on("mouseout", function() {
-						d3.select("#tooltip").remove();
+						d3.select(this).select("rect")
+							.transition()
+							.duration(200)
+							.attr("fill", oldColor);
+							
+						div.transition()
+							.duration(500)
+							.style("opacity", 0);
 					});	
 				}
 			});
