@@ -10,26 +10,6 @@ function search(val) {
 
 // set all tables to their default colors
 'use strict';
-function setDefault() {
-	var allemagne,
-		angleterre,
-		france,
-		office;
-
-	allemagne = d3.select("#layer1").select("#allemagne").selectAll("rect");
-	allemagne.attr("fill", "#ccff00");
-
-	angleterre = d3.select("#layer1").select("#angleterre").selectAll("rect");
-	angleterre.attr("fill", "#68dd55");
-
-	france = d3.select("#layer1").select("#france").selectAll("rect");
-	france.attr("fill", "#ffff00");
-
-	office = d3.select("#layer1").select(".office").selectAll("rect");
-	office.attr("fill", "#18b4ff");
-
-	return;
-}
 
 (function(window){
 
@@ -63,22 +43,5 @@ function setDefault() {
 			}
 		}
 	});
-
-	// search input strings
-	// d3.select("#input")
-	// 	.on("keyup", function() {
-	// 		var name,
-	// 			table;
-
-	// 		console.log(document.getElementById("search-terms").value);
-	// 		name = (document.getElementById("search-terms").value);
-	// 		table = search(name);
-	// 		if(table[0][0]) {
-	// 			table.attr("fill", "red");
-	// 		}
-	// 		else{
-	// 			setDefault();
-	// 		}
-	// });
 
 }(window));
