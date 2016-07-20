@@ -17,5 +17,6 @@ local-map uses the following additional node modules:
 
 ## Installation
 
-server-side
+server-side  
+
 ``npm install package.json``
