@@ -10,14 +10,14 @@
 }
 .map {
     position: relative;
-    width: 1500px;
-    height: 1000px;
+    width: 1024px;
+    height: 768px;
 }
 
 .tooltip {
     position: absolute;         
     text-align: center;         
-    width: 260px;                    
+    width: 360px;                    
     height: 40px;                   
     padding: 2px;               
     font: 12px sans-serif;      
