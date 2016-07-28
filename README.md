@@ -25,7 +25,7 @@ server-side
 open **index.html** at **local-map/app**
 
 ## Structure
-#### __API__
+### __API__
 Here are the datas and services for server
 
 __Data__
@@ -36,7 +36,7 @@ __Service__
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
 * *getAllPeople(req, res)* - *res*: **res.json** (return json file)
 
-#### __APP__
+### __APP__
 * **search.js + classie.js** - manage search-bar toggle effect, click search-icon will toggle search bar, and when click outside of search bar or suggestion box, search bar will hide.
 * **script_plot_map.js** - first, click on floor number will show the whole map. 
                             second, hover on each table will show infos
