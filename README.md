@@ -19,3 +19,27 @@ local-map uses the following additional node modules:
 
 server-side  
 ``npm install package.json``
+
+``git bash`` at **local-map/api**, ``node index.js`` to start **express** server
+
+open **index.html** at **local-map/app**
+
+## Structure
+#### __API__
+Here are the datas and services for server
+
+__Data__
+* maps (.svg)
+* peopel (.json) - {"tableID": "", "email": "", "name": "", "firstName": "", "lastName": ""}
+
+__Service__
+* *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
+* *getAllPeople(req, res)* - *res*: **res.json** (return json file)
+#### __APP__
+* **search.js + classie.js** - manage search-bar toggle effect, click search-icon will toggle search bar, and when click outside of search bar or suggestion box, search bar will hide.
+* **script_plot_map.js** - first, click on floor number will show the whole map. 
+                            second, hover on each table will show infos
+* **autocomplete.js (jquery.autocomplete.js needed)** - first, input name in search bar will show corresponding suggestions,
+                                                        second, select one suggestion will mark corresponding one as red.
+
+
