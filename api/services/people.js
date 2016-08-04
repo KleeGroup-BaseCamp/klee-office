@@ -1,4 +1,4 @@
-const peopleDatabase = require('../data/people.json');
+const peopleDatabase = require('../data/KleeConseilIntegration.json');
 
 const test = (req, res) => {
 	console.log('appel du service test');

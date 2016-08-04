@@ -142,13 +142,18 @@ function map(name) {
 	function(error, documentFragment) {
 		var svgNode,
 			map,
-			floorName;
+			floorName,
+			allTables,
+			allAvailables;
 
 		svgNode = documentFragment.getElementsByTagName("svg")[0];
 		map = d3.select(".map");
 		map.node().appendChild(svgNode);
 		floorName = name;
 
+		// mark all tables as available
+		allTables = d3.select("#tables").selectAll("g");
+		allTables.attr("class", "available");
 		/////////////////////////////
 		// for each people, search his table
 		/////////////////////////////
@@ -158,48 +163,57 @@ function map(name) {
 			/////////////////////////////
 			var dataset = data,
 				table,
-				oldColor,
 				// Define the div for the tooltip
 				div = d3.select("#main").select(".tooltip")
 						.style("opacity", 0);
-
-			console.log(dataset);
 			
 			dataset.forEach(function(d, i) {
-				table = d3.select("#"+d.tableID);
-				if(table[0][0] !== null){
-					table.select("rect").attr("id", d.firstName);
-					// mouse hover on the text will give more info
-					table.on("mouseover", function() {
-						oldColor = d3.select(this).select("rect")
-									.attr("fill");
-						d3.select(this).select("rect")
-							.transition()
-							.duration(200)
-							.attr("fill", "red");
+				if(d.tableID !== ""){
+					table = d3.select("#"+d.tableID);
+					if(table[0][0] !== null){
+						// mark as occupied
+						table.attr("class", "occupied");
+						table.select("rect").attr("id", d.cn);
+						// mouse hover on the text will give more info
+						table.on("mouseover", function() {
+							div.transition()
+								.duration(200)
+								.style("opacity", .9);
+							div .html("name: " + d.cn + "<br/>"
+										+ "email: " + d.mail)
+								.style("left", (d3.event.pageX + 16) + "px")
+								.style("top", (d3.event.pageY + 16) + "px");
+						});
 
-						div.transition()
-							.duration(200)
-							.style("opacity", .9);
-						div .html("name: " + d.name + "<br/>"
-									+ "email: " + d.email)
-							.style("left", (d3.event.pageX + 16) + "px")
-							.style("top", (d3.event.pageY + 16) + "px");
-					});
-
-					table.on("mouseout", function() {
-						d3.select(this).select("rect")
-							.transition()
-							.duration(200)
-							.attr("fill", oldColor);
-
-						div.transition()
-							.duration(500)
-							.style("opacity", 0);
-					});	
+						table.on("mouseout", function() {
+							div.transition()
+								.duration(500)
+								.style("opacity", 0);
+						});	
+					}
 				}
 			});
+
+			////////////////////////////////
+			// show all available tables
+			////////////////////////////////
+			allAvailables = d3.select("#tables").selectAll(".available");
+			allAvailables.selectAll("rect").attr("fill", "#737373");
+			allAvailables.on("mouseover", function() {
+				div.transition()
+					.duration(200)
+					.style("opacity", .9);
+				div.html("pas de personne" + "<br/>" + "ce bureau est disponible")
+					.style("left", (d3.event.pageX + 16) + "px")
+					.style("top", (d3.event.pageY + 16) + "px");
+			});
+			allAvailables.on("mouseout", function() {
+				div.transition()
+					.duration(500)
+					.style("opacity", 0);
+			});
 		});
+
 });
 }
 

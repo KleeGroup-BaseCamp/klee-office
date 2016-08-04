@@ -34,7 +34,7 @@ $(function(){
     $.getJSON('http://localhost:8080/people', function(data) {
         //data is the JSON file
         data.forEach(getName);
-        console.log(people);
+        //console.log(people);
 
         // setup autocomplete function pulling from currencies[] array
         $('#search-terms').autocomplete({

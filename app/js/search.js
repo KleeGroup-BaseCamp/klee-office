@@ -3,11 +3,6 @@
 |* Some JS to help with our search
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-'use strict';
-function search(val) {
-	return d3.select("#layer1").select("#" + val);
-}
-
 // set all tables to their default colors
 'use strict';
 
