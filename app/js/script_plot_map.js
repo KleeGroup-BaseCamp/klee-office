@@ -168,12 +168,21 @@ function map(name) {
 						.style("opacity", 0);
 			
 			dataset.forEach(function(d, i) {
-				if(d.tableID !== ""){
-					table = d3.select("#"+d.tableID);
+				// split tableID into two parts.
+				// ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
+				var splitID = d.tableID.split(/\s+:\s+/);
+
+				// do following if we have the second part
+				if(splitID[1]){
+					table = d3.select("#"+splitID[1]);
+					// if found in map, change table color, add hover actions
 					if(table[0][0] !== null){
 						// mark as occupied
 						table.attr("class", "occupied");
-						table.select("rect").attr("id", d.cn);
+						table.select("rect")
+						     .attr("id", d.cn)
+							 .attr("fill", "#ff9900");
+
 						// mouse hover on the text will give more info
 						table.on("mouseover", function() {
 							div.transition()
@@ -184,7 +193,6 @@ function map(name) {
 								.style("left", (d3.event.pageX + 16) + "px")
 								.style("top", (d3.event.pageY + 16) + "px");
 						});
-
 						table.on("mouseout", function() {
 							div.transition()
 								.duration(500)
@@ -198,7 +206,7 @@ function map(name) {
 			// show all available tables
 			////////////////////////////////
 			allAvailables = d3.select("#tables").selectAll(".available");
-			allAvailables.selectAll("rect").attr("fill", "#737373");
+			allAvailables.selectAll("rect").attr("fill", "#00cc00");
 			allAvailables.on("mouseover", function() {
 				div.transition()
 					.duration(200)

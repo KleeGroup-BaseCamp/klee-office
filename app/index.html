@@ -19,8 +19,6 @@
 <script type="text/javascript" src="js/d3.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
-<script type="text/javascript" src="js/autocomplete.js"></script>
-
 </head>
 
 <body>
@@ -33,7 +31,7 @@
 
 <header>
     <div id="title" class="container">
-        <h1>Map Search Interface v0.0</h1>
+        <h1>Map Search Interface v0.1</h1>
         <h2>Search Bar with name search and floor maps</h2>
     </div>
 </header><!-- /header -->
@@ -62,8 +60,10 @@
             </nav>
 
         </div>
-
+        <!-- show person's information -->
         <div class="tooltip" style="opacity: 0"></div>
+        <!-- show supplemental messages & alerts-->
+        <div class="message" style="opacity: 0"></div>
 
         <div id="map-show">
             <svg class="map"></svg>
@@ -89,8 +89,10 @@
 // js for plot map and search 
 ////////////////////////////////////////////// -->
 <script src="js/classie.js"></script>
-<script src="js/search.js"></script>
+<script src="js/toggle.js"></script>
 <script type="text/javascript" src="js/script_plot_map.js"></script>
+<script type="text/javascript" src="js/autocomplete.js"></script>
+
 
 </body>
 </html>

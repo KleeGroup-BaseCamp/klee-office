@@ -6,8 +6,9 @@ const test = (req, res) => {
 };
 
 const getAllPeople = (req, res) => {
+	console.log('call of service to get all people');
 	res.json(peopleDatabase);
-}
+};
 
 
 module.exports = {
