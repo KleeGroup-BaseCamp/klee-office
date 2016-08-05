@@ -48,15 +48,30 @@ $(function(){
             if(splitID[1]){
                 mapName = splitID[1].split(/-/)[0];
                 console.log(mapName);
-                
 
-
-
-                map(mapName, function() {
+                if(!mapControl.existMap) {
+                    mapControl.mapName = mapName;
+                    mapControl.mapPlot(mapName, function() {
+                        table = d3.select("#tables")
+                                    .select("#" + splitID[1]);
+                        table.select("rect").attr("fill", "red"); 
+                    });
+                    mapControl.existMap = true;
+                }
+                else if (mapControl.mapName === mapName) {
                     table = d3.select("#tables")
                                 .select("#" + splitID[1]);
-                    table.select("rect").attr("fill", "red"); 
-                });
+                    table.select("rect").attr("fill", "red");
+                }
+                else if (mapControl.mapName !== mapName) {
+                    d3.select(".map").select("svg").remove();
+                    mapControl.mapName = mapName;
+                    mapControl.mapPlot(mapName, function() {
+                        table = d3.select("#tables")
+                                    .select("#" + splitID[1]);
+                        table.select("rect").attr("fill", "red"); 
+                    });
+                }
             }
             else ;   
         }

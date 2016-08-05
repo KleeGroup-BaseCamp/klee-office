@@ -88,8 +88,9 @@ var mapControl = {
 							.duration(500)
 							.style("opacity", 0);
 					});
+
+					callback();
 				});
 			});
-			callback();
 		}
 };
