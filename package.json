@@ -16,6 +16,12 @@
     "local-map",
     "klee"
   ],
+  "local-map": {
+    "url": "ldap://klee.lan.net",
+        "baseDN": "ou=Utilisateurs,dc=klee,dc=lan,dc=net",
+        "username": "Reader-LocalMap@KLEE.LAN.NET",
+        "password": "Dd2*[r{WPtSc0CZ-?cYL"
+  },
   "author": "zekun.zhang@kleegroup.com",
   "license": "MIT",
   "bugs": {

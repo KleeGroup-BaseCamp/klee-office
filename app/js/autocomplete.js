@@ -48,20 +48,18 @@ $(function(){
             if(splitID[1]){
                 mapName = splitID[1].split(/-/)[0];
                 console.log(mapName);
-                map(mapName);
+                
+
+
+
+                map(mapName, function() {
+                    table = d3.select("#tables")
+                                .select("#" + splitID[1]);
+                    table.select("rect").attr("fill", "red"); 
+                });
             }
-            else{
-                table = d3.select("#tables")
-                            .select("#" + suggestion.data.tableID)
-                            .select("rect");
-                if(table[0][0]) {
-                    setDefault();
-                    table.attr("fill", "red");
-                }
-            }
+            else ;   
         }
+        });
     });
-    });
-
-
 });

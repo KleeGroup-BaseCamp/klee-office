@@ -16,7 +16,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // entries
-
+// people
+// map
+// admin/sync => Active directory => Save in LevelDB
 app.get('/test', peopleServices.test);
 app.get('/people', peopleServices.getAllPeople);
 
