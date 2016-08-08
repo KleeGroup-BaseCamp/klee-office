@@ -41,39 +41,50 @@ $(function(){
         onSelect: function (suggestion) {
             var table,
                 splitID,
-                mapName;
-        // show the map where sits selected person's table
-            //console.log(suggestion.data);
+                mapName,
+                div;
+            // show tableID in <div id="message">
+            div = d3.select("#main").select(".message");
+            div.transition().duration(200).style("opacity", .9);
+            div.html("table ID: " + suggestion.data.tableID);
+
+
             splitID = suggestion.data.tableID.split(/\s+:\s+/);
             if(splitID[1]){
                 mapName = splitID[1].split(/-/)[0];
-                console.log(mapName);
-
+                // if no map showing on, plot the map with name "mapName", add pin to searched person's table
                 if(!mapControl.existMap) {
                     mapControl.mapName = mapName;
                     mapControl.mapPlot(mapName, function() {
                         table = d3.select("#tables")
                                     .select("#" + splitID[1]);
-                        table.select("rect").attr("fill", "red"); 
+                        table.append("image")
+                            .attr("xlink:href", "./img/pin_final.png")
+                            .attr("width", "10")
+                            .attr("height", "20")
+                            .attr("x", table.select("rect").attr("x"))
+                            .attr("y", table.select("rect").attr("y"));
                     });
                     mapControl.existMap = true;
                 }
-                else if (mapControl.mapName === mapName) {
-                    table = d3.select("#tables")
-                                .select("#" + splitID[1]);
-                    table.select("rect").attr("fill", "red");
-                }
-                else if (mapControl.mapName !== mapName) {
+                // if a map exists, erase it and replot one 
+                else {
                     d3.select(".map").select("svg").remove();
+                    mapControl.existMap = false;
                     mapControl.mapName = mapName;
                     mapControl.mapPlot(mapName, function() {
                         table = d3.select("#tables")
                                     .select("#" + splitID[1]);
-                        table.select("rect").attr("fill", "red"); 
+                        table.append("image")
+                            .attr("xlink:href", "./img/pin_final.png")
+                            .attr("width", "10")
+                            .attr("height", "20")
+                            .attr("x", table.select("rect").attr("x"))
+                            .attr("y", table.select("rect").attr("y")); 
                     });
+                    mapControl.existMap = true;
                 }
-            }
-            else ;   
+            }  
         }
         });
     });

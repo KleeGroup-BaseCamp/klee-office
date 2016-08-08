@@ -8,6 +8,11 @@ var mapControl = {
 			// add svg map to html
 			d3.xml("http://localhost:8080/maps/" + name + ".svg", 
 			function(error, documentFragment) {
+				if(error){
+					console.log(error);
+					return;
+				}
+
 				var svgNode,
 					map,
 					floorName,
@@ -74,7 +79,7 @@ var mapControl = {
 					// show all available tables
 					////////////////////////////////
 					allAvailables = d3.select("#tables").selectAll(".available");
-					allAvailables.selectAll("rect").attr("fill", "#00cc00");
+					allAvailables.selectAll("rect").attr("fill", "#99ff99");
 					allAvailables.on("mouseover", function() {
 						div.transition()
 							.duration(200)

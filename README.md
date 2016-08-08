@@ -18,7 +18,7 @@ local-map uses the following additional node modules:
 ## Installation
 
 server-side  
-``npm install package.json``
+``npm install``(make sure ``package.json`` is in your current directory)
 
 ``git bash`` at **local-map/api**, ``node index.js`` to start **express** server
 
