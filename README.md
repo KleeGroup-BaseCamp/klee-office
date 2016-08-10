@@ -21,21 +21,21 @@ local-map uses the following additional node modules:
 
 If you use **Windows7**, make sure you have installed ``git``
 
-Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server
+* Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server
 
-Make sure you have installed ``nodejs``
+* Make sure you have installed ``nodejs``
 
-Create a folder named ``local-map``
+* Create a folder named ``local-map``
 
-Use ``scp -r api dev@local-map.dev.klee.lan.net:local-map`` to transfer ``api`` folder to server  
+* Use ``scp -r api dev@local-map.dev.klee.lan.net:local-map`` to transfer ``api`` folder to server  
 
-Use ``scp -r app dev@local-map.dev.klee.lan.net:local-map`` to transfer ``app`` folder to server 
+* Use ``scp -r app dev@local-map.dev.klee.lan.net:local-map`` to transfer ``app`` folder to server 
 
-Use ``scp package.json dev@local-map.dev.klee.lan.net:local-map`` to transfer ``package.json`` file to server 
+* Use ``scp package.json dev@local-map.dev.klee.lan.net:local-map`` to transfer ``package.json`` file to server 
 
-Run ``npm install``(make sure ``package.json`` is in your current directory) to install necessary modules
+* Run ``npm install``(make sure ``package.json`` is in your current directory) to install necessary modules
 
-Open ``api``, run ``node index.js`` to start server's service
+* Open ``api``, run ``node index.js`` to start server's service
 
 **Note: ** you have to make sure that **port 80** is open for server machine, and bind **port 3000** with **port 80** with command here( run as root ):
 
