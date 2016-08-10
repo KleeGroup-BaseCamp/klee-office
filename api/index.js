@@ -19,9 +19,10 @@ app.use(bodyParser.json());
 // people
 // map
 // admin/sync => Active directory => Save in LevelDB
+
+
 app.get('/test', peopleServices.test);
 app.get('/people', peopleServices.getAllPeople);
-
 app.get('/maps/:name', mapServices.getMap);
 
 //app.get('/maps/:number', mapServices.getMapByNumber);

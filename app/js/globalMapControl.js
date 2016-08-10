@@ -1,12 +1,14 @@
 "use strict";
 // global variables
+var	server= "http://local-map/"
+
 var mapControl = {
 	existMap: false,
 	mapName: null,
 	mapPlot: 
 		function(name, callback) {
 			// add svg map to html
-			d3.xml("http://localhost:8080/maps/" + name + ".svg", 
+			d3.xml( server + "maps/" + name + ".svg", 
 			function(error, documentFragment) {
 				if(error){
 					console.log(error);
@@ -30,7 +32,7 @@ var mapControl = {
 				/////////////////////////////
 				// for each people, search his table
 				/////////////////////////////
-				d3.json("http://localhost:8080/people", function(error, data) {
+				d3.json( server+"people", function(error, data) {
 					/////////////////////////////
 					// add names to each table
 					/////////////////////////////

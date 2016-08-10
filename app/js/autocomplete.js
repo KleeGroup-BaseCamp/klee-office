@@ -30,7 +30,7 @@ $(function(){
         people.push({value: element.cn, data: element});
     }
 
-    $.getJSON('http://localhost:8080/people', function(data) {
+    $.getJSON('http://local-map/people', function(data) {
         //data is the JSON file
         data.forEach(getName);
         //console.log(people);
