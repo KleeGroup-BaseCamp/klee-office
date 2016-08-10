@@ -37,7 +37,7 @@ If you use **Windows7**, make sure you have installed ``git``
 
 * Open ``api``, run ``node index.js`` to start server's service
 
-**Note: ** you have to make sure that **port 80** is open for server machine, and bind **port 3000** with **port 80** with command here( run as root ):
+**Note: you have to make sure that **port 80** is open for server machine, and bind **port 3000** with **port 80** with command here( run as root ):
 
 ``iptables -t nat -A PREROUTING -i ens160 -p tcp --dport 80 -j REDIRECT --to-port 3000``
 
