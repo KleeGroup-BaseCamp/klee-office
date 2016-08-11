@@ -44,10 +44,9 @@ $(function(){
                 mapName,
                 div;
             // show tableID in <div id="message">
-            div = d3.select("#main").select(".message");
-            div.transition().duration(200).style("opacity", .9);
+            div = d3.select("#main").select("#message");
             div.html("table ID: " + suggestion.data.tableID);
-
+            div.attr("class", "focus");
 
             splitID = suggestion.data.tableID.split(/\s+:\s+/);
             if(splitID[1]){

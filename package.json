@@ -16,7 +16,7 @@
     "local-map",
     "klee"
   ],
-  "local-map": {
+  "localmap": {
     "url": "ldap://klee.lan.net",
         "baseDN": "ou=Utilisateurs,dc=klee,dc=lan,dc=net",
         "username": "Reader-LocalMap@KLEE.LAN.NET",
@@ -34,6 +34,8 @@
     "body-parser": "^1.15.0",
     "cors": "^2.7.1",
     "express": "^4.13.4",
-    "lodash": "^4.5.1"
+    "lodash": "^4.5.1",
+    "activedirectory": "^0.7.2",
+    "underscore": "^1.8.3"
   }
 }

@@ -11,6 +11,7 @@
 	// get vars
 	var searchEl = document.querySelector("#input");
 	var labelEl = document.querySelector("#label");
+	var messageEl = document.querySelector('#message');
 
 	// register clicks and toggle classes
 	labelEl.addEventListener("click",function(){
@@ -35,6 +36,7 @@
 			if (classie.has(searchEl,"focus")) {
 				classie.remove(searchEl,"focus");
 				classie.remove(labelEl,"active");
+				classie.remove(messageEl, "focus");
 			}
 		}
 	});
