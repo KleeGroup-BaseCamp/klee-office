@@ -1,51 +1,34 @@
-# read login settings
-import json
-from pprint import pprint
-# set ldap
-import sys
-import ldap
-
+import json # jsonfy search result
+import sys 	# sys.exit()
+import ldap # ldap connection request
+ldap.set_option(ldap.OPT_REFERRALS, 0)
+ldap.set_option(ldap.OPT_TIMEOUT, 10)
 
 with open('../package.json') as data_file:
-  data = json.load(data_file)
+  settings = json.load(data_file)
 
-pprint(data['localmap']['password'])
+Server = settings['localmap']['url']
+BaseDN = settings['localmap']['baseDN']
+User = settings['localmap']['username']
+Password = settings['localmap']['password']
 
+Filter = 'cn=Amelie*'
+Attrs = ('cn', 'physicalDeliveryOfficeName','mail')
+#######################################################
 
-# l = ldap.initialize('ldap://ldap.myserver.com:389')
-# binddn = "cn=myUserName,ou=GenericID,dc=my,dc=company,dc=com"
-# pw = "myPassword"
-# basedn = "ou=UserUnits,dc=my,dc=company,dc=com"
-# searchFilter = "(&(gidNumber=123456)(objectClass=posixAccount))"
-# searchAttribute = ["mail","department"]
-# #this will scope the entire subtree under UserUnits
-# searchScope = ldap.SCOPE_SUBTREE
-# #Bind to the server
-# try:
-#     l.protocol_version = ldap.VERSION3
-#     l.simple_bind_s(binddn, pw) 
-# except ldap.INVALID_CREDENTIALS:
-#   print "Your username or password is incorrect."
-#   sys.exit(0)
-# except ldap.LDAPError, e:
-#   if type(e.message) == dict and e.message.has_key('desc'):
-#       print e.message['desc']
-#   else: 
-#       print e
-#   sys.exit(0)
-# try:    
-#     ldap_result_id = l.search(basedn, searchScope, searchFilter, searchAttribute)
-#     result_set = []
-#     while 1:
-#         result_type, result_data = l.result(ldap_result_id, 0)
-#         if (result_data == []):
-#             break
-#         else:
-#             ## if you are expecting multiple results you can append them
-#             ## otherwise you can just wait until the initial result and break out
-#             if result_type == ldap.RES_SEARCH_ENTRY:
-#                 result_set.append(result_data)
-#     print result_set
-# except ldap.LDAPError, e:
-#     print e
-# l.unbind_s()
+con = ldap.initialize('ldap://klee.lan.net')
+ldap_user = "Reader-LocalMap@KLEE.LAN.NET"
+passwd = "Dd2*[r{WPtSc0CZ-?cYL"
+base_dn = "ou=Utilisateurs,dc=klee,dc=lan,dc=net"
+
+con.simple_bind_s(ldap_user, passwd)
+filter_str = "cn=*Zekun"
+attrs = ('cn', 'physicalDeliveryOfficeName', 'mail')
+
+result = con.search_st(base_dn, ldap.SCOPE_SUBTREE, filterstr=filter_str, attrlist=attrs, timeout=5000)
+print result
+with open('zekun.json', 'w') as json_file:
+	json.dump(result, json_file, ensure_ascii=False)
+
+con.unbind_s()
+sys.exit()
