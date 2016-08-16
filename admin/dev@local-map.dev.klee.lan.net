@@ -2,9 +2,7 @@ import json # jsonfy search result
 import sys 	# sys.exit()
 import ldap # ldap connection request
 ldap.set_option(ldap.OPT_REFERRALS, 0)
-ldap.set_option(ldap.OPT_TIMELIMIT, 10)
 ldap.set_option(ldap.OPT_TIMEOUT, 10)
-ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, 10)
 
 ######################################################
 with open('../package.json') as data_file:
@@ -33,26 +31,16 @@ ldap_user = User
 passwd = Password
 base_dn = BaseDN
 
-
-try:
-	con.simple_bind_s(ldap_user, passwd)
-	print ("sucess connection !")
-except ldap.INVALID_CREDENTIALS:
-	user_error_msg('wrong password or wrong username provided')
-except ldap.TIMEOUT:
-	user_error_msg("time out !")
+con.simple_bind_s(ldap_user, passwd)
+print "sucess connection !"
 
 filter_str = Filter
 attrs = Attrs 
 
-try:
-	result = con.search_st(base_dn, ldap.SCOPE_SUBTREE, filterstr=filter_str, attrlist=attrs, attrsonly=0, timeout=10)
-	with open('../api/data/KleeGroup.json', 'w') as json_file:
-		json.dump(result, json_file, ensure_ascii=False)
-except ldap.FILTER_ERROR:
-	user_error_msg("invalid filter !")
-except ldap.TIMEOUT:
-	user_error_msg("time out !")
+result = con.search_s(base_dn, ldap.SCOPE_SUBTREE, filterstr=filter_str, attrlist=attrs)
+print result
+with open('../api/data/KleeGroup.json', 'w') as json_file:
+	json.dump(result, json_file, ensure_ascii=False)
 
 con.unbind_s()
 sys.exit()

@@ -69,7 +69,7 @@ var mapControl = {
 										div.transition()
 											.duration(200)
 											.style("opacity", .9);
-										div .html("name: " + d.cn[0] + "<br/>"
+										div .html(d.cn[0] + "<br/>"
 													+ "email: " + d.mail[0])
 											.style("left", (d3.event.pageX + 16) + "px")
 											.style("top", (d3.event.pageY + 16) + "px");
