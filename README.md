@@ -1,10 +1,34 @@
+# Cachier de charge
+
+**Qui** va utiliser
+
+* les employées Klee Group (Plessis-Robinson, Issy les Moulineaux, étranger...)
+* Managers (validation de déplacement)
+
+
+**Où** utiliser
+
+* A leur bureau
+
+
+**Quoi** à réaliser
+
+1. Rechercher des personnes individuellement, ou par département 
+1bis. Trouver les salles de réunion
+2. Trouver un espace libre pour un nouvel arrivant
+3. Allocation de place -> proposition + validation
+4. Rechercher des zones en général -> vouloir savoir à quoi cela correspond
+5. Itinéraire -> comment faire pour y aller
+6. Street View -> environment dans une photo
+
+
+
 # Local map searching service
 local-map is a search-find service on all local maps of KleeGroup. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__. Here are the key features
 
 * Autocomplete 
 * Search bar toggle
 * Info shown in box when hover on one table 
-
 
 ## Required Libraries
 
