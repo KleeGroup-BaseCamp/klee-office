@@ -46,6 +46,17 @@ Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (
 
 * When you login with ``dev@local-map.dev.klee.lan.net``, your user directory is ``/home/dev/``. Our project ``local-map`` is here. The file structure is as follows:
 
+├── dir1
+│   ├── file11.ext
+│   └── file12.ext
+├── dir2
+│   ├── file21.ext
+│   ├── file22.ext
+│   └── file23.ext
+├── dir3
+├── file_in_root.ext
+└── README.md
+
 .
 +-- admin
 |	+-- activedirectory.py
