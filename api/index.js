@@ -3,6 +3,15 @@
 const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser');
+var fs = require('fs');
+var util = require('util');
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flag : 'w'});
+var log_stdout = process.stdout;
+// overload console.log to store logs in a file
+console.log = function(d) {
+	log_file.write(util.format(d) + '\n');
+	log_stdout.write(util.format(d) + '\n');
+};
 
 // services
 const peopleServices = require('./services/people.js');
