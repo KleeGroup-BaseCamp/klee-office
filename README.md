@@ -28,7 +28,7 @@
 
 Since now all our services and datas have been moved to the server, I will help you to connect to server and configure it as you want.
 
-##connect to server
+##Connect to server
 
 There are several ways to connect to server, for example, on **linux** you can use ``ssh`` command of your console, or if you are using **windows**, ``putty`` might be your choice. But here I will only indroduce the way with ``git bash``.
 
@@ -37,56 +37,35 @@ If you use **windows**, make sure you have installed [git for windows](https://g
 Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (you can get password by emailing the support).
 
 
-##check ``nodejs``
+##Check ``nodejs``
 
 ``node -v`` check version of ``node``, normarlly you have this already installed on the server. If not, [check this](https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora).
 
 
-##check file structure
+##Check file structure
 
-* When you login with ``dev@local-map.dev.klee.lan.net``, your user directory is ``/home/dev/``. Our project ``local-map`` is here. The file structure is as follows:
+When you login with ``dev@local-map.dev.klee.lan.net``, your user directory is ``/home/dev/``. Our project ``local-map`` is here. 
 
-├── dir1
-│   ├── file11.ext
-│   └── file12.ext
-├── dir2
-│   ├── file21.ext
-│   ├── file22.ext
-│   └── file23.ext
-├── dir3
-├── file_in_root.ext
-└── README.md
-
-.
-+-- admin
-|	+-- activedirectory.py
-+-- api
-|	+-- debug.log
-|	+-- index.js
-|	+-- services
-|		+-- map.js
-|		+-- people.js
-|	+-- data
-|		+-- KleeGroup.json
-|		+-- maps
-|			+-- LaBoursidiere
-|				+-- N0.svg
-|				+-- ...
-+-- app
-|	+-- index.html
-|	+-- js
-|		+-- globalMapControl.js
+``tree foldername`` can help you have a global view of project's struction
 
 
-* Create a folder named ``local-map``
+##Move local file to server
+
+when you have finished your coding dans your local machine, use ``scp`` command to transport local file to server. For example,
 
 * Use ``scp -r api dev@local-map.dev.klee.lan.net:local-map`` to transfer ``api`` folder to server  
 
-* Use ``scp -r app dev@local-map.dev.klee.lan.net:local-map`` to transfer ``app`` folder to server 
-
 * Use ``scp package.json dev@local-map.dev.klee.lan.net:local-map`` to transfer ``package.json`` file to server 
 
+
+##Check if you have installed all necessary packages of `node``
+
+We have listed all necessary packages in ``package.json``. If not,
+
 * Run ``npm install``(make sure ``package.json`` is in your current directory) to install necessary modules
+
+
+##Start 
 
 * Open ``api``, run ``node index.js`` to start server's service
 
@@ -96,9 +75,14 @@ Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (
 
 (``-i ens160`` may change, you need to check your server with ``ls /etc/sysconfig/network-scripts/`` and check whether ``ifcfg-ens160`` exists. If it doesn't exit, see whether you have ``ifcfg-eth`` or ``ifcfg-eth0`` and change correspondingly)
 
-~~``git bash`` at **local-map/api**, ``node index.js`` to start **express** server~~
 
-~~open **index.html** at **local-map/app**~~
+##Set up autorun for python script
+
+Since our programe for updating *KleeGroup.json* is written with python, you have to make sure ``python-ldap`` is installed on your server. 
+
+To set up autorun of python script, ``crontab -e`` will be very helpful. Maybe you need more documentation with this command: ``man crontab``
+
+
 
 # Local map searching service
 local-map is a search-find service on all local maps of KleeGroup. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__. Here are the key features
