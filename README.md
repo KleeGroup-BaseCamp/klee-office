@@ -21,33 +21,25 @@
 5. Itinéraire -> comment faire pour y aller
 6. Street View -> environment dans une photo
 
+-------------------------------------------------------------
 
+# Installation & Configuration
 
-# Local map searching service
-local-map is a search-find service on all local maps of KleeGroup. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__. Here are the key features
+##server-side
 
-* Autocomplete 
-* Search bar toggle
-* Info shown in box when hover on one table 
+Since now all our services and datas have been moved to the server, I will help you to connect to server and configure it as you want.
 
-## Required Libraries
+###connect to server
 
-local-map uses the following additional node modules:
+There are several ways to connect to server, for example, on **linux** you can use ``ssh`` command of your console, or if you are using **windows**, ``putty`` might be your choice. But here I will only indroduce the way with ``git bash``.
 
-* cors 2.7.1 - provide cross-origin file transmit in __express__
-* express 4.13.4 - provide local-server service
-* lodash 4.5.1 - some js functions for array treatment
-* body-parser 1.15.0 - parse incoming requests, JSON body parser
+If you use **windows**, make sure you have installed [git for windows](https://git-scm.com/download/win)
 
-## Installation
+* Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (you can get password by emailing the support)
 
-###server-side
+###check ``nodejs``
 
-If you use **Windows7**, make sure you have installed ``git``
-
-* Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server
-
-* Make sure you have installed ``nodejs``
+* ``node -v`` check version of ``node``
 
 * Create a folder named ``local-map``
 
@@ -70,6 +62,24 @@ If you use **Windows7**, make sure you have installed ``git``
 ~~``git bash`` at **local-map/api**, ``node index.js`` to start **express** server~~
 
 ~~open **index.html** at **local-map/app**~~
+
+# Local map searching service
+local-map is a search-find service on all local maps of KleeGroup. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__. Here are the key features
+
+* Autocomplete 
+* Search bar toggle
+* Info shown in box when hover on one table 
+
+## Required Libraries
+
+local-map uses the following additional node modules:
+
+* cors 2.7.1 - provide cross-origin file transmit in __express__
+* express 4.13.4 - provide local-server service
+* lodash 4.5.1 - some js functions for array treatment
+* body-parser 1.15.0 - parse incoming requests, JSON body parser
+
+
 
 ## Structure
 ### __API__
