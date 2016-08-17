@@ -22,24 +22,50 @@
 6. Street View -> environment dans une photo
 
 -------------------------------------------------------------
+-------------------------------------------------------------
 
 # Installation & Configuration
 
-##server-side
-
 Since now all our services and datas have been moved to the server, I will help you to connect to server and configure it as you want.
 
-###connect to server
+##connect to server
 
 There are several ways to connect to server, for example, on **linux** you can use ``ssh`` command of your console, or if you are using **windows**, ``putty`` might be your choice. But here I will only indroduce the way with ``git bash``.
 
 If you use **windows**, make sure you have installed [git for windows](https://git-scm.com/download/win)
 
 * Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (you can get password by emailing the support)
+-------------------------------------------------------------
 
-###check ``nodejs``
+##check ``nodejs``
 
-* ``node -v`` check version of ``node``
+* ``node -v`` check version of ``node``, normarlly you have this already installed on the server. If not, [check this](https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora).
+--------------------------------------------------------------
+
+##check file structure
+
+* When you login with ``dev@local-map.dev.klee.lan.net``, your user directory is ``/home/dev/``. Our project ``local-map`` is here. The file structure is as follows:
+
+.
++-- admin
+|	+-- activedirectory.py
++-- api
+|	+-- debug.log
+|	+-- index.js
+|	+-- services
+|		+-- map.js
+|		+-- people.js
+|	+-- data
+|		+-- KleeGroup.json
+|		+-- maps
+|			+-- LaBoursidiere
+|				+-- N0.svg
+|				+-- ...
++-- app
+|	+-- index.html
+|	+-- js
+|		+-- globalMapControl.js
+
 
 * Create a folder named ``local-map``
 
