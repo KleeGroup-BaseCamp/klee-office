@@ -46,7 +46,7 @@ Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (
 
 When you login with ``dev@local-map.dev.klee.lan.net``, your user directory is ``/home/dev/``. Our project ``local-map`` is here. 
 
-``tree foldername`` can help you have a global view of project's struction
+``tree foldername`` can help you have a global view of project's structure.
 
 
 ##Move local file to server
@@ -58,16 +58,16 @@ when you have finished your coding dans your local machine, use ``scp`` command 
 * Use ``scp package.json dev@local-map.dev.klee.lan.net:local-map`` to transfer ``package.json`` file to server 
 
 
-##Check if you have installed all necessary packages of `node``
+##Check if you have installed all necessary packages of ``node``
 
 We have listed all necessary packages in ``package.json``. If not,
 
 * Run ``npm install``(make sure ``package.json`` is in your current directory) to install necessary modules
 
 
-##Start 
+##Start api services
 
-* Open ``api``, run ``node index.js`` to start server's service
+* Open ``local-map/api``, run ``node index.js`` to start server's service
 
 **Note**: you have to make sure that **port 80** is open for server machine, and bind **port 3000** with **port 80** with command here( run as root ):
 
@@ -82,7 +82,8 @@ Since our programe for updating *KleeGroup.json* is written with python, you hav
 
 To set up autorun of python script, ``crontab -e`` will be very helpful. Maybe you need more documentation with this command: ``man crontab``
 
-
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
 
 # Local map searching service
 local-map is a search-find service on all local maps of KleeGroup. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__. Here are the key features
