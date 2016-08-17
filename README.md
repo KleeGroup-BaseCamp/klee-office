@@ -34,13 +34,13 @@ There are several ways to connect to server, for example, on **linux** you can u
 
 If you use **windows**, make sure you have installed [git for windows](https://git-scm.com/download/win)
 
-Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (you can get password by emailing the support)
--------------------------------------------------------------
+Open ``git bash``, type ``ssh dev@local-map.dev.klee.lan.net`` to enter server (you can get password by emailing the support).
+
 
 ##check ``nodejs``
 
 ``node -v`` check version of ``node``, normarlly you have this already installed on the server. If not, [check this](https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora).
---------------------------------------------------------------
+
 
 ##check file structure
 
