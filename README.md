@@ -85,6 +85,35 @@ To set up autorun of python script, ``crontab -e`` will be very helpful. Maybe y
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 
+# Maintenace of data base
+
+After having talked about how to install the backend from zero, we need to change our data base from time to time. There are mainly **two** kinds of changes: 
+
+1. modify staff's data: move to another table, or even change his name :)
+2. modify maps: add table, change table's position, etc.
+
+For the first kind, we only need to change his infos of AD (Active Directory), and then the server will automatically update his position in the map (every 30 minutes).
+
+For the second kind of change, things could become a little difficult. Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
+
+Search **tables**, you will find all the infos about tables in one block
+
+````
+<g id="tables"> 
+    <g id="N0-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="532.3736" y="58.504215" /></g>
+    <g id="N0-A-02"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="546.50299" y="58.611759" /></g>
+    ...
+</g>
+````
+All you need to do is find the table you want to change, and give it another number or position or color ! But how ?
+
+Well, open this *svg* file in a browser (chrome or firefox), move the mouse to the table you want to change, *right* click, choose *Inspecter* (or *Inspect* in English), and you will see the information for this element.
+
+There are still other ways to add tables, such as using *inkscape* (but make sure you are working on the right layer !), or using raw *Autocad* file to make complete change of the map (remember you need to transform *.dwg* to *.svg*, and clean unnecessary parts or layers). But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
 # Local map searching service
 local-map is a search-find service on all local maps of KleeGroup. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__. Here are the key features
 
