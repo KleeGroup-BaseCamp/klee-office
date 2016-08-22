@@ -3,6 +3,15 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
+
+#explore-title {
+    cursor: pointer;
+    width: 65px;
+    color: white;
+}
+#explore-title:hover {
+    color: black;
+}
 .tooltip {
     opacity: 0;
     position: absolute;         
@@ -28,11 +37,10 @@
     font: 20px sans-serif;      
     background: lightsteelblue; 
     border: 0px;               
-    pointer-events: none;
-    z-index: 20; 
+    pointer-events: none; 
 }
 #message.focus {
-    z-index: 20
+    z-index: 0
 }
 #message.focus {
     opacity: .9;
@@ -96,18 +104,12 @@
     display: block;
     width: 60px;
     height: 60px;
-    background: url("../img/search.png") 0 0;
+    background: url("../img/search.png") -60px 0;
     font-size: 0;
     color: rgba(0, 0, 0, 0);
     text-indent: -9999px;
-    cursor: pointer;
 }
-#label label:hover {
-    background: url("../img/search.png") -60px 0
-}
-#label.active label {
-    background: url("../img/search.png") -60px 0
-}
+
 #input {
     position: absolute;
     top: 0;
@@ -118,7 +120,7 @@
     overflow: hidden;
 }
 #input input {
-    opacity: 0;
+    opacity: 1;
     display: block;
     position: absolute;
     top: 0;
@@ -143,20 +145,6 @@
     -ms-transition: left 0;
     -o-transition: left 0;
     transition: left 0;
-}
-#input input:focus {
-    outline: none
-}
-#input.focus {
-    z-index: 20
-}
-#input.focus input {
-    opacity: 1;
-    -webkit-transition: opacity 0.3s;
-    -moz-transition: opacity 0.3s;
-    -ms-transition: opacity 0.3s;
-    -o-transition: opacity 0.3s;
-    transition: opacity 0.3s;
 }
 
 

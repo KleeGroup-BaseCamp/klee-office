@@ -113,8 +113,6 @@ var mapControl = {
 		function(name, callback) {
 			var longTooltip = [];
 
-
-
 			d3.xml( server + "maps/" + name + ".svg",
 				function(error, documentFragment) {
 					if(error){
@@ -131,6 +129,7 @@ var mapControl = {
 						.style("width", "0px")
 						.style("height", "0px");
 					console.log('set invisible for ' + name);
+
 					var svgNode,
 						map,
 						allTables,
@@ -281,9 +280,11 @@ var mapControl = {
 	 */
 	eraseMap: function() {
 		console.log("erase map called");
+
+		// erase small maps
 		var everyMap = [];
 		everyMap = document.getElementsByClassName("small-map");
-		// if maps are already there, remove them
+		// if small maps are already there, remove them
 		Array.from(everyMap).forEach(function (element) {
 			if (element.hasChildNodes()) {
 				element.childNodes.forEach(function (node) {

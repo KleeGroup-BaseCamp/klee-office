@@ -1,25 +1,5 @@
 // set all tables to their default colors
 'use strict';
-// function setDefault() {
-//     var allemagne,
-//         angleterre,
-//         france,
-//         office;
-
-//     allemagne = d3.select("#layer1").select("#allemagne").selectAll("rect");
-//     allemagne.attr("fill", "#ccff00");
-
-//     angleterre = d3.select("#layer1").select("#angleterre").selectAll("rect");
-//     angleterre.attr("fill", "#68dd55");
-
-//     france = d3.select("#layer1").select("#france").selectAll("rect");
-//     france.attr("fill", "#ffff00");
-
-//     office = d3.select("#layer1").select(".office").selectAll("rect");
-//     office.attr("fill", "#18b4ff");
-
-//     return;
-// }
 
 $(function(){
     var people = [];
@@ -52,7 +32,7 @@ $(function(){
             if (suggestion.data.physicalDeliveryOfficeName) {
                 // show office name in <div id="message">
                 div = d3.select("#main").select("#message");
-                div.html("Site: " + suggestion.data.physicalDeliveryOfficeName[0]);
+                div.text("Site: " + suggestion.data.physicalDeliveryOfficeName[0]);
                 div.attr("class", "focus");
 
                 splitID = suggestion.data.physicalDeliveryOfficeName[0]
@@ -61,6 +41,9 @@ $(function(){
                     mapName = splitID[1].split(/-/)[0];
                     // if no map showing on, plot the map with name "mapName", add pin to searched person's table
                     if(!mapControl.existMap) {
+                        // erase all maps' overview
+                        mapControl.eraseMap();
+
                         mapControl.mapName = mapName;
                         mapControl.mapPlot(mapName, function() {
                             table = d3.select("#tables")

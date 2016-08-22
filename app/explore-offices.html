@@ -2,19 +2,16 @@
 <html lang="en" class="no-js">
 
 <head>
-
     <!-- title and meta -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta name="description" content="A chart with the different floors of Klee and their main departments" />
     <title>Explore Offices</title>
-
     <!-- css -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/style.css" />
-
     <!-- js -->
     <script type="text/javascript" src="js/libraries/d3.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
@@ -22,36 +19,39 @@
 </head>
 
 <body>
-<div id="wrapper">
-    <div id="info-bar">
-        <div class="container clearfix">
-            <span class="Annuaire"><a href="http://directory.lan.net">Annuaire</a></span>
-        </div>
-    </div><!-- /#info-bar -->
-
-    <header>
-        <div id="title" class="container">
-            <h1>Local Map</h1>
-            <h2>Klee Group</h2>
-        </div>
-    </header><!-- /header -->
-
-    <div id="main">
-        <div class="container">
-
-            <div id="navigation-bar" class="clearfix">
-
-                <form id="search" onsubmit="return false">
-                    <div id="label"><label for="search-terms" id="search-label">search</label></div>
-                    <div id="input"><input type="text" name="search-terms" id="search-terms" placeholder="Rechercher un collège, ou une salle de réunion..."></div>
-                </form>
+    <div id="wrapper">
+        <div id="info-bar">
+            <div class="container clearfix">
+                <span class="Annuaire"><a href="http://directory.lan.net">Annuaire</a></span>
             </div>
-
-            <h2 id="explore-title">
-                Explorer les locaux
-            </h2>
-            <div id="navigation-chart">
-                <br>
+        </div>
+        <!-- /#info-bar -->
+        <header>
+            <div id="title" class="container">
+                <h1>Local Map</h1>
+                <h2>Klee Group</h2>
+            </div>
+            <div id="overview" class="container">
+                <h2 id="explore-title">
+                HOME
+                </h2>    
+            </div>
+        </header>
+        <!-- /header -->
+        <div id="main">
+            <div class="container">
+                <div id="navigation-bar" class="clearfix">
+                    <form id="search" onsubmit="return false">
+                        <div id="label">
+                            <label for="search-terms" id="search-label">search</label>
+                        </div>
+                        <div id="input">
+                            <input type="text" name="search-terms" id="search-terms" placeholder="Rechercher un collège, ou une salle de réunion...">
+                        </div>
+                    </form>
+                </div>
+                <div id="navigation-chart">
+                    <br>
                     <table id="offices-chart">
                         <tr>
                             <td>
@@ -95,7 +95,6 @@
                                 <p id="O2"><a href="#">O 2</a></p>
                             </td>
                             <td>
-
                             </td>
                         </tr>
                         <tr>
@@ -106,10 +105,8 @@
                                 <p id="N1"><a href="#">N 1</a></p>
                             </td>
                             <td>
-
                             </td>
                             <td>
-
                             </td>
                         </tr>
                         <tr>
@@ -120,94 +117,78 @@
                                 <p id="N0"><a href="#">N 0</a></p>
                             </td>
                             <td>
-
                             </td>
                             <td>
-
                             </td>
                         </tr>
-                            <tfoot class="floor">
+                        <tfoot class="floor">
                             <tr>
                                 <th>
                                     Normandie
                                 </th>
                                 <th>
-
                                 </th>
                                 <th>
                                     Orléans
                                 </th>
                             </tr>
-                            </tfoot>
+                        </tfoot>
                     </table>
-
-                <div>
-
-               <!-- <nav>
-                    <ul>
-                        <li id="N0"><a href="#">N 0</a></li>
-                        <li id="N1"><a href="#">N 1</a></li>
-                        <li id="N2"><a href="#">N 2</a></li>
-                        <li id="N3"><a href="#">N 3</a></li>
-                        <li id="N4"><a href="#">N 4</a></li>
-                        <li id="O2"><a href="#">O 2</a></li>
-                        <li id="O3"><a href="#">O 3</a></li>
-                        <li id="O4"><a href="#">O 4</a></li>
-                    </ul>
-                </nav>-->
-
-            </div>
-
-
-            </div>
-            <!-- show main departments or info about people -->
-            <div class="tooltip"></div>
-            <!-- show supplemental messages & alerts-->
-            <div id="message"></div>
-            <div id="map-show">
-                <table>
-                    <tr>
-                        <td>
-                            <svg class="map"></svg>
-                        </td>
-                        <td id="legend">
-                            <h3>
+                </div>
+                <!-- show main departments or info about people -->
+                <div class="tooltip"></div>
+                <!-- show supplemental messages-->
+                <div id="message">
+                    <table id="info-chart">
+                        <tr>
+                            <td id="site"></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- show main maps-->
+                <div id="map-show">
+                    <table>
+                        <tr>
+                            <td>
+                                <svg class="map"></svg>
+                            </td>
+                            <td id="legend">
+                                <h3>
                                 Légende
-                            </h3><br>
-                            <svg width="30" height="15">
-                                <rect width="30" height="15" style="fill:#ff9900" />
-                            </svg>
-                            <p>
-                                Occupé
-                            </p>
-                            <br/>
-                            <svg width="30" height="15">
-                                <rect width="30" height="15" style="fill:#99ff99" />
-                            </svg>
-                            <p>
-                                Libre
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- #main -->
+                            </h3>
+                                <br>
+                                <svg width="30" height="15">
+                                    <rect width="30" height="15" style="fill:#ff9900" />
+                                </svg>
+                                <p>
+                                    Occupé
+                                </p>
+                                <br/>
+                                <svg width="30" height="15">
+                                    <rect width="30" height="15" style="fill:#99ff99" />
+                                </svg>
+                                <p>
+                                    Libre
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- #main -->
                 <footer>
                     <div class="container">
-        <span>
-            &copy; 2016, Zekun ZHANG, Klee Group<br>
-            <a href="http://www.kleegroup.com" target="_blank">kleegroup.com</a>
-        </span>
+                        <span>
+                            &copy; 2016, Zekun ZHANG, Marie-Pierre SALVI, Klee Group<br>
+                            <a href="http://www.kleegroup.com" target="_blank">kleegroup.com</a>
+                        </span>
                     </div>
-                </footer><!-- /footer -->
+                </footer>
+                <!-- /footer -->
+            </div>
         </div>
     </div>
-
-
-</div><!-- /#wrapper -->
-
-<!--
+    <!-- /#wrapper -->
+    <!--
 //////////////////////////////////////////////
 // js for plot map and search
 ////////////////////////////////////////////// -->
@@ -217,8 +198,6 @@
     <script type="text/javascript" src="js/clickAndPlot.js"></script>
     <script type="text/javascript" src="js/autocomplete.js"></script>
     <script type="text/javascript" src="js/justPlotMap.js"></script>
-
-
-
 </body>
+
 </html>
