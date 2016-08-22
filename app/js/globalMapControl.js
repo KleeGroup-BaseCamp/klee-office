@@ -9,11 +9,6 @@ var mapControl = {
 		function(name, callback) {
 			// add svg map to html
 
-			d3.select("#map-show")
-				.style("visibility", "visible")
-				.style("width", "100%")
-				.style("height", "100%");
-
 			d3.xml( server + "maps/" + name + ".svg", 
 			function(error, documentFragment) {
 				if(error){
@@ -118,15 +113,7 @@ var mapControl = {
 		function(name, callback) {
 			var longTooltip = [];
 
-			d3.select("#navigation-chart")
-				.style("visibility", "visible")
-				.style("width", "100%")
-				.style("height", "100%");
 
-			d3.select("#map-show")
-				.style("visibility", "hidden")
-				.style("width", "0px")
-				.style("height", "0px");
 
 			d3.xml( server + "maps/" + name + ".svg",
 				function(error, documentFragment) {
@@ -134,7 +121,16 @@ var mapControl = {
 						console.log(error);
 						return;
 					}
+					d3.select("#navigation-chart")
+						.style("visibility", "visible")
+						.style("width", "100%")
+						.style("height", "100%");
 
+					d3.select("#map-show")
+						.style("visibility", "hidden")
+						.style("width", "0px")
+						.style("height", "0px");
+					console.log('set invisible for ' + name);
 					var svgNode,
 						map,
 						allTables,
@@ -283,14 +279,14 @@ var mapControl = {
 	/**
 	 * Erase all maps from the chart
 	 */
-	eraseMap: function(){
+	eraseMap: function() {
 		console.log("erase map called");
 		var everyMap = [];
-		everyMap  = document.getElementsByClassName("small-map");
+		everyMap = document.getElementsByClassName("small-map");
 		// if maps are already there, remove them
-		Array.from(everyMap).forEach( function(element){
-			if(element.hasChildNodes()){
-				element.childNodes.forEach(function(node){
+		Array.from(everyMap).forEach(function (element) {
+			if (element.hasChildNodes()) {
+				element.childNodes.forEach(function (node) {
 					node.remove();
 				});
 			}
@@ -299,5 +295,21 @@ var mapControl = {
 			.style("visibility", "hidden")
 			.style("width", "0px")
 			.style("height", "0px");
+
+		var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", ""];
+
+		mapNames.forEach(function(name){
+			// erase floor title of the legend
+			if(document.getElementsByClassName(name).length >0
+				&& document.getElementsByClassName(name) !== null
+				&& document.getElementsByClassName(name) !== undefined){
+				document.getElementsByClassName(name)[0].remove();
+			}
+		});
+		d3.select("#map-show")
+			.style("visibility", "visible")
+			.style("width", "100%")
+			.style("height", "100%");
+		console.log('set visible for ' + name);
 	}
 };

@@ -208,28 +208,28 @@ nav a:hover {
     margin-left: 25px;
 }
 
-#N0 a{
+#N0 a, .N0{
     color: rgb(79, 93, 106);
 }
-#N1 a{
+#N1 a, .N1{
     color: rgb(34, 86, 134);
 }
-#N2 a{
+#N2 a, .N2{
     color: rgb(85, 151, 211);
 }
-#N3 a{
+#N3 a, .N3{
     color: rgb(145, 188, 277);
 }
-#N4 a{
+#N4 a, .N4{
     color: rgb(191, 216, 239);
 }
-#O2 a{
+#O2 a, .O2{
     color: rgb(204, 31, 18);
 }
-#O3 a{
+#O3 a, .O3{
     color: rgb(243, 87, 87);
 }
-#O4 a{
+#O4 a, .O4{
     color: rgb(251, 158, 151);
 }
 #legend {
