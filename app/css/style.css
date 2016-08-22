@@ -54,6 +54,20 @@
     height: 768px;
 }
 
+.small-map {
+    display: block;
+    width: 350px;
+    height: 192px;
+    background-color: white;
+    border-radius: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 10px 10px 10px 10px;
+}
+
+.navigation-chart {
+    background-color: white;
+}
+
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }
@@ -174,4 +188,17 @@ nav a {
 }
 nav a:hover {
     color: #3296c8
+}
+
+#offices-chart {
+    left: 12%;
+    position: relative;
+}
+#offices-chart td {
+    width: 350px;
+}
+
+.floor {
+    font-size: 35px;
+    font-weight: bold;
 }
