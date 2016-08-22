@@ -47,52 +47,52 @@
                 </form>
             </div>
 
+            <h2 id="explore-title">
+                Explorer les locaux
+            </h2>
             <div id="navigation-chart">
-                    <br>
-                    <h2 id="explore-title">
-                        Explorer les locaux
-                    </h2>
+                <br>
                     <table id="offices-chart">
                         <tr>
                             <td>
-                                <svg class="small-map" id="N4"></svg>
+                                <svg class="small-map" id="svg-N4"></svg>
                             </td>
                             <td class="floor">
-                                N4
+                                <p id="N4"><a href="#">N 4</a></p>
                             </td>
                             <td>
-                                <svg class="small-map" id="O4"></svg>
+                                <svg class="small-map" id="svg-O4"></svg>
                             </td>
                             <td class="floor">
-                                O4
+                                <p id="O4"><a href="#">O 4</a></p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <svg class="small-map" id="N3"></svg>
+                                <svg class="small-map" id="svg-N3"></svg>
                             </td>
                             <td class="floor">
-                                N3
+                                <p id="N3"><a href="#">N 3</a></p>
                             </td>
                             <td>
-                                <svg class="small-map" id="O3"></svg>
+                                <svg class="small-map" id="svg-O3"></svg>
                             </td>
                             <td class="floor">
-                                O3
+                                <p id="O3"><a href="#">O 3</a></p>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <svg class="small-map" id="N2"></svg>
+                                <svg class="small-map" id="svg-N2"></svg>
                             </td>
                             <td class="floor">
-                                N2
+                                <p id="N2"><a href="#">N 2</a></p>
                             </td>
                             <td>
-                                <svg class="small-map" id="O2"></svg>
+                                <svg class="small-map" id="svg-O2"></svg>
                             </td>
                             <td class="floor">
-                                O2
+                                <p id="O2"><a href="#">O 2</a></p>
                             </td>
                             <td>
 
@@ -100,10 +100,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <svg class="small-map" id="N1"></svg>
+                                <svg class="small-map" id="svg-N1"></svg>
                             </td>
                             <td class="floor">
-                                N1
+                                <p id="N1"><a href="#">N 1</a></p>
                             </td>
                             <td>
 
@@ -114,10 +114,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <svg class="small-map" id="N0"></svg>
+                                <svg class="small-map" id="svg-N0"></svg>
                             </td>
                             <td class="floor">
-                                N0
+                                <p id="N0"><a href="#">N 0</a></p>
                             </td>
                             <td>
 
@@ -157,18 +157,42 @@
                 </nav>-->
 
             </div>
-            <!-- show mai ndepartments -->
+
+
+            </div>
+            <!-- show main departments or info about people -->
             <div class="tooltip"></div>
             <!-- show supplemental messages & alerts-->
             <div id="message"></div>
+            <div id="map-show">
+                <table>
+                    <tr>
+                        <td>
+                            <svg class="map"></svg>
+                        </td>
+                        <td id="legend">
+                            <h3>
+                                Légende
+                            </h3><br>
+                            <svg width="30" height="15">
+                                <rect width="30" height="15" style="fill:#ff9900" />
+                            </svg>
+                            <p>
+                                Occupé
+                            </p>
+                            <br/>
+                            <svg width="30" height="15">
+                                <rect width="30" height="15" style="fill:#99ff99" />
+                            </svg>
+                            <p>
+                                Libre
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-            <!--<div id="map-show">
-                <svg class="map"></svg>
-            </div>-->
-
-        </div>
-
-        <!-- #main -->
+            <!-- #main -->
                 <footer>
                     <div class="container">
         <span>
@@ -190,8 +214,8 @@
     <script src="js/classie.js"></script>
     <script src="js/toggle.js"></script>
     <script src="js/globalMapControl.js"></script>
- <!--   <script type="text/javascript" src="js/clickAndPlot.js"></script>-->
- <!--   <script type="text/javascript" src="js/autocomplete.js"></script>-->
+    <script type="text/javascript" src="js/clickAndPlot.js"></script>
+    <script type="text/javascript" src="js/autocomplete.js"></script>
     <script type="text/javascript" src="js/justPlotMap.js"></script>
 
 

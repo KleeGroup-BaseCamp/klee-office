@@ -8,6 +8,12 @@ var mapControl = {
 	mapPlot: 
 		function(name, callback) {
 			// add svg map to html
+
+			d3.select("#map-show")
+				.style("visibility", "visible")
+				.style("width", "100%")
+				.style("height", "100%");
+
 			d3.xml( server + "maps/" + name + ".svg", 
 			function(error, documentFragment) {
 				if(error){
@@ -72,7 +78,8 @@ var mapControl = {
 										div .html(d.cn[0] + "<br/>"
 													+ "email: " + d.mail[0])
 											.style("left", (d3.event.pageX + 16) + "px")
-											.style("top", (d3.event.pageY + 16) + "px");
+											.style("top", (d3.event.pageY + 16) + "px")
+											.style("height", "40px");
 									});
 									table.on("mouseout", function() {
 										div.transition()
@@ -111,6 +118,16 @@ var mapControl = {
 		function(name, callback) {
 			var longTooltip = [];
 
+			d3.select("#navigation-chart")
+				.style("visibility", "visible")
+				.style("width", "100%")
+				.style("height", "100%");
+
+			d3.select("#map-show")
+				.style("visibility", "hidden")
+				.style("width", "0px")
+				.style("height", "0px");
+
 			d3.xml( server + "maps/" + name + ".svg",
 				function(error, documentFragment) {
 					if(error){
@@ -125,7 +142,7 @@ var mapControl = {
 
 					svgNode = documentFragment.getElementsByTagName("svg")[0];
 
-					map = document.getElementById(name);
+					map = document.getElementById("svg-"+name);
 					map.appendChild(svgNode);
 
 					// mark all tables as available
@@ -242,7 +259,7 @@ var mapControl = {
 						// Define the div for the tooltip
 						var div = d3.select("#main").select(".tooltip")
 							.style("opacity", 0);
-						var map = d3.select("#"+element);
+						var map = d3.select("#svg-"+element);
 						map.on("mouseover", function() {
 							//alert(longTooltip);
 							div.transition()
@@ -262,5 +279,25 @@ var mapControl = {
 					});
 				});
 		});
+	},
+	/**
+	 * Erase all maps from the chart
+	 */
+	eraseMap: function(){
+		console.log("erase map called");
+		var everyMap = [];
+		everyMap  = document.getElementsByClassName("small-map");
+		// if maps are already there, remove them
+		Array.from(everyMap).forEach( function(element){
+			if(element.hasChildNodes()){
+				element.childNodes.forEach(function(node){
+					node.remove();
+				});
+			}
+		});
+		d3.select("#navigation-chart")
+			.style("visibility", "hidden")
+			.style("width", "0px")
+			.style("height", "0px");
 	}
 };

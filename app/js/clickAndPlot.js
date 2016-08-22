@@ -16,6 +16,7 @@
 	// sloved; problem here, one click will block other clicks
 	//-------------------------------
 	buttonN0.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN2
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N0";
@@ -30,6 +31,7 @@
 		}
 	});
 	buttonN1.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN2
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N1";
@@ -44,6 +46,7 @@
 		}
 	});
 	buttonN2.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN2
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N2";
@@ -58,6 +61,7 @@
 		}
 	});
 	buttonN3.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN3
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N3";
@@ -72,6 +76,7 @@
 		}
 	});
 	buttonN4.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN3
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N4";
@@ -86,6 +91,7 @@
 		}
 	});
 	buttonO2.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN3
 		if (!mapControl.existMap) {
 			mapControl.mapName = "O2";
@@ -100,6 +106,7 @@
 		}
 	});
 	buttonO3.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN3
 		if (!mapControl.existMap) {
 			mapControl.mapName = "O3";
@@ -114,6 +121,7 @@
 		}
 	});
 	buttonO4.addEventListener("click", function () {
+		mapControl.eraseMap();
 		// if no map, show mapN3
 		if (!mapControl.existMap) {
 			mapControl.mapName = "O4";
