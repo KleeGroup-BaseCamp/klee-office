@@ -43,5 +43,4 @@
     addEvtListenerOn("load", mapNames, window);
     addEvtListenerOn("click", mapNames, document.querySelector("#explore-title"));
 
-
 }(window));
