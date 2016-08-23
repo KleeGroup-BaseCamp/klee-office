@@ -113,7 +113,6 @@ var mapControl = {
 											];
 
 
-
 										var polygon = table.selectAll("polygon")
 											.data([points])
 											.enter().append("polygon")
