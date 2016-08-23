@@ -24,21 +24,60 @@ $(function(){
         onSelect: function (suggestion) {
             var table,
                 splitID,
+                div,
                 mapName,
-                div;
+                floorNumber,
+                mail;
 
             // suggestion.data example: 
             //      { "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }
             if (suggestion.data.physicalDeliveryOfficeName) {
                 // show office name in <div id="message">
                 div = d3.select("#main").select("#message");
-                div.text("Site: " + suggestion.data.physicalDeliveryOfficeName[0]);
+                // show message with class focus
                 div.attr("class", "focus");
+                div.select("#tableID")
+                    .text(suggestion.data.physicalDeliveryOfficeName[0]);
 
                 splitID = suggestion.data.physicalDeliveryOfficeName[0]
                             .split(/\s+:\s+/);
                 if(splitID[1]){
                     mapName = splitID[1].split(/-/)[0];
+
+                    // add email
+                    mail = suggestion.data.mail[0];
+                    div.select("#mail")
+                        .text(mail);
+
+                    // add site info
+                    div.select("#site")
+                        .text(splitID[0]);
+                    // add building info
+                    if(mapName.charAt(0) === "N"){
+                        div.select("#building")
+                            .text("Normandie");
+                    }
+                    else if (mapName.charAt(0) === "O"){
+                        div.select("#building")
+                            .text("Orleans");
+                    }
+                    // add floor info 
+                    floorNumber = mapName.charAt(1);
+                    switch(floorNumber) {
+                        case 0:
+                            div.select("#floor")
+                                .text("Rdc");
+                            break;
+                        case 1:
+                            div.select("#floor")
+                                .text("1ère");
+                            break;
+                        default:
+                            div.select("#floor")
+                                .text("" + floorNumber + "ème");
+                            break;
+                    }
+
                     // if no map showing on, plot the map with name "mapName", add pin to searched person's table
                     if(!mapControl.existMap) {
                         // erase all maps' overview
