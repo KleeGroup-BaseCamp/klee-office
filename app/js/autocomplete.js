@@ -27,7 +27,8 @@ $(function(){
                 div,
                 mapName,
                 floorNumber,
-                mail;
+                mail,
+                legend;
 
             // suggestion.data example: 
             //      { "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }
@@ -41,6 +42,7 @@ $(function(){
 
                 splitID = suggestion.data.physicalDeliveryOfficeName[0]
                             .split(/\s+:\s+/);
+                // if standard table ID exists
                 if(splitID[1]){
                     mapName = splitID[1].split(/-/)[0];
 
@@ -89,10 +91,10 @@ $(function(){
                                         .select("#" + splitID[1]);
                             table.append("image")
                                 .attr("xlink:href", "./img/pin_final.png")
-                                .attr("width", "10")
-                                .attr("height", "20")
-                                .attr("x", table.select("rect").attr("x"))
-                                .attr("y", table.select("rect").attr("y"));
+                                .attr("width", "30")
+                                .attr("height", "50")
+                                .attr("x", table.select("rect").attr("x") - 10)
+                                .attr("y", table.select("rect").attr("y") - 40);
                         });
                         mapControl.existMap = true;
                     }
@@ -106,13 +108,39 @@ $(function(){
                                         .select("#" + splitID[1]);
                             table.append("image")
                                 .attr("xlink:href", "./img/pin_final.png")
-                                .attr("width", "10")
-                                .attr("height", "20")
-                                .attr("x", table.select("rect").attr("x"))
-                                .attr("y", table.select("rect").attr("y")); 
+                                .attr("width", "30")
+                                .attr("height", "50")
+                                .attr("x", table.select("rect").attr("x") - 10)
+                                .attr("y", table.select("rect").attr("y") - 40); 
                         });
                         mapControl.existMap = true;
                     }
+
+
+                    // remove old legend and add new one
+                    legend = d3.select("#legend").select("h1");
+                    // if no legend
+                    if(legend[0][0] == null) {
+                        d3.select("#legend").insert("h1", ":first-child")
+                            .attr("class", mapName)
+                            .text("" + mapName.charAt(0) + " " + mapName.charAt(1));
+                    }
+                    // if old legend exists
+                    else{
+                        d3.select("#legend").select("h1")
+                            .attr("class", mapName)
+                            .text("" + mapName.charAt(0) + " " + mapName.charAt(1));                       
+                    }
+                }
+                // if no standard table ID
+                else {
+                    // add email
+                    mail = suggestion.data.mail[0];
+                    div.select("#mail")
+                        .text(mail);
+                    // remove site, bat, etage info
+                    d3.select("#message").selectAll(".content")
+                        .text("");
                 }
             }
 

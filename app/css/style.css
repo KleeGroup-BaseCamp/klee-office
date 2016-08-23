@@ -12,6 +12,17 @@
 #home-title:hover {
     color: black;
 }
+
+.small-map {
+    display: block;
+    width: 350px;
+    height: 192px;
+    background-color: white;
+    border-radius: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 10px 10px 10px 10px;
+}
+
 .tooltip {
     opacity: 0;
     position: absolute;         
@@ -37,7 +48,7 @@
     font: 20px sans-serif;      
     background: lightsteelblue; 
     border: 0px;               
-    pointer-events: none; 
+    cursor: text; 
 }
 #message.focus {
     z-index: 50
@@ -62,23 +73,12 @@
 
 #map-show {
     position: relative;
-    width: 1500px;
-    height: 1000px;
+    z-index: 0;
 }
 .map {
     position: relative;
     width: 1024px;
     height: 768px;
-}
-
-.small-map {
-    display: block;
-    width: 350px;
-    height: 192px;
-    background-color: white;
-    border-radius: 5%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 10px 10px 10px 10px;
 }
 
 .navigation-chart {
