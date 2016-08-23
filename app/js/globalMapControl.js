@@ -30,6 +30,8 @@ var mapControl = {
 				// mark all tables as available
 				allTables = d3.select("#tables").selectAll("g");
 				allTables.attr("class", "available");
+
+
 				/////////////////////////////
 				// for each people, search his table
 				/////////////////////////////
@@ -80,7 +82,70 @@ var mapControl = {
 										div.transition()
 											.duration(500)
 											.style("opacity", 0);
-									});	
+									});
+									table.on("click", function(){
+
+										table = d3.select("#tables")
+											.select("#" + splitID[1]);
+
+										/**
+										 * Erase info already ploted on map
+										 */
+
+										var eraseMe = document.getElementsByClassName("info-brief");
+										if (eraseMe.length >0){
+											Array.from(eraseMe).forEach(function(element){
+												element.remove();
+											});
+										}
+
+										var xPos = table.select("rect").attr("x");
+										var yPos = table.select("rect").attr("y");
+
+										var points = [
+											{"x": parseFloat(xPos) - parseFloat(224), "y": parseFloat(50) +  parseFloat(yPos)},
+											{"x": parseFloat(xPos) - parseFloat(224) , "y": parseFloat(150) +  parseFloat(yPos)},
+											{"x": parseFloat(66) + parseFloat(xPos), "y": parseFloat(150) +  parseFloat(yPos)},
+											{"x": parseFloat(66) + parseFloat(xPos), "y": parseFloat(50) +  parseFloat(yPos)},
+											{"x": parseFloat(xPos) - parseFloat(9), "y": parseFloat(50) +  parseFloat(yPos)},
+											{"x": parseFloat(16) + parseFloat(xPos), "y": parseFloat(yPos)},
+											{"x": parseFloat(xPos) - parseFloat(134), "y": parseFloat(50) +  parseFloat(yPos)},
+											];
+
+
+
+										var polygon = table.selectAll("polygon")
+											.data([points])
+											.enter().append("polygon")
+											.attr("points", function(p) {
+												return p.map(function(p) {
+													return [p.x, p.y].join(",");
+												}).join(" ")})
+											.attr("class", "info-brief")
+											.style("stroke", d3.rgb(65, 113, 156))
+											.style("fill", "white");
+
+												//.attr("points", "100,150, 100,250, 400,250, 400,150, 325,150, 350,100, 200,150");
+
+										table = d3.select("#tables")
+											.select("#" + splitID[1]);
+
+										var textL1 = table.append("text")
+											.attr("x", xPos - 210 )
+											.attr("y", parseFloat(yPos) + 70 )
+											.attr("dy", "20px")
+											.attr("class", "info-brief")
+											.text(d.cn[0])
+											.style("fill", d3.rgb(91, 155, 213));
+
+										var textL2 = table.append("text")
+											.attr("x", xPos - 210 )
+											.attr("y", parseFloat(yPos) + 100 )
+											.attr("dy", "20px")
+											.attr("class", "info-brief")
+											.text(d.mail[0])
+											.style("fill", d3.rgb(91, 155, 213));
+									});
 								}
 							}
 						}
@@ -279,7 +344,6 @@ var mapControl = {
 	 * Erase all maps from the chart
 	 */
 	eraseMap: function() {
-		console.log("erase map called");
 
 		// erase small maps
 		var everyMap = [];
