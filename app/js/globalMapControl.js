@@ -39,9 +39,7 @@ var mapControl = {
 					/////////////////////////////
 					var dataset = data,
 						table,
-						// Define the div for the tooltip
-						div = d3.select("#main").select(".tooltip")
-								.style("opacity", 0);
+						tooltip = d3.select(".tooltip");
 					
 					dataset.forEach(function(data, i) {
 						// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET", 
@@ -65,45 +63,33 @@ var mapControl = {
 									     .attr("id", d.cn[0])
 										 .attr("fill", "#ff9900");
 
-									// mouse hover on the text will give more info
-									table.on("mouseover", function() {
-										div.transition()
-											.duration(200)
-											.style("opacity", .9);
-										div .html(d.cn[0] + "<br/>"
+									// mouse click on the table will give more info
+									$("#" + splitID[1]).click( function(event) {
+										tooltip.transition()
+												.duration(200)
+												.style("opacity", .9);
+										tooltip.html(d.cn[0] + "<br/>"
 													+ "email: " + d.mail[0])
-											.style("left", (d3.event.pageX + 16) + "px")
-											.style("top", (d3.event.pageY + 16) + "px")
-											.style("height", "40px");
+												.style("left", (event.clientX) + "px")
+												.style("top", (event.clientY) + "px")
+												.style("height", "40px");
+
+										event.stopPropagation();
 									});
-									table.on("mouseout", function() {
-										div.transition()
-											.duration(500)
-											.style("opacity", 0);
-									});	
+									$("html").click(function () {
+										tooltip.transition()
+												.duration(500)
+												.style("opacity", 0);										
+									})
 								}
 							}
 						}
 					});
-
 					////////////////////////////////
 					// show all available tables
 					////////////////////////////////
 					allAvailables = d3.select("#tables").selectAll(".available");
 					allAvailables.selectAll("rect").attr("fill", "#99ff99");
-					allAvailables.on("mouseover", function() {
-						div.transition()
-							.duration(200)
-							.style("opacity", .9);
-						div.html("pas de personne" + "<br/>" + "ce bureau est disponible")
-							.style("left", (d3.event.pageX + 16) + "px")
-							.style("top", (d3.event.pageY + 16) + "px");
-					});
-					allAvailables.on("mouseout", function() {
-						div.transition()
-							.duration(500)
-							.style("opacity", 0);
-					});
 
 					callback();
 				});
