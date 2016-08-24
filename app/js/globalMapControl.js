@@ -26,10 +26,25 @@ var mapControl = {
 				map = d3.select(".map");
 				map.node().appendChild(svgNode);
 				floorName = name;
-
+				
 				// mark all tables as available
 				allTables = d3.select("#tables").selectAll("g");
 				allTables.attr("class", "available");
+
+				var zoom = d3.behavior.zoom()
+					.scaleExtent([1, 8])
+					.on("zoom", function() {
+						var wholeMap = d3.select("#whole-map")
+							.select("svg");
+						wholeMap.selectAll("g")
+							.attr("transform", /*"translate(" +
+							d3.event.translate + ")*/"scale(" +
+							d3.event.scale + ")");
+						console.log("zoom");
+					});
+				var svg = d3.select("#whole-map")
+					.select("svg").call(zoom);
+
 				/////////////////////////////
 				// for each people, search his table
 				/////////////////////////////
