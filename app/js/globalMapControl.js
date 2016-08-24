@@ -26,24 +26,53 @@ var mapControl = {
 				map = d3.select(".map");
 				map.node().appendChild(svgNode);
 				floorName = name;
-				
+
 				// mark all tables as available
 				allTables = d3.select("#tables").selectAll("g");
 				allTables.attr("class", "available");
 
+				/**
+				 * zoom and translate on the maps
+				 */
 				var zoom = d3.behavior.zoom()
 					.scaleExtent([1, 8])
 					.on("zoom", function() {
 						var wholeMap = d3.select("#whole-map")
 							.select("svg");
-						wholeMap.selectAll("g")
-							.attr("transform", /*"translate(" +
-							d3.event.translate + ")*/"scale(" +
+						wholeMap.select("#tables")
+							.attr("transform", "translate(" +
+							d3.event.translate + ")scale(" +
 							d3.event.scale + ")");
-						console.log("zoom");
+						wholeMap.select("#AutoLayers")
+							.attr("transform", "translate(" +
+							d3.event.translate + ")scale(" +
+							d3.event.scale + ")");
+
+						wholeMap.on("dblclick.zoom", null);
+						//console.log("zoom");
 					});
 				var svg = d3.select("#whole-map")
 					.select("svg").call(zoom);
+
+				/**
+				 * reset zoom
+				 */
+
+				var reset = function () {
+					console.log("reset");
+					var wholeMap = d3.select("#whole-map")
+						.select("svg");
+					wholeMap.select("#tables")
+						.attr("transform", "translate(" +
+						0 + ")scale(" +
+						1 + ")");
+					wholeMap.select("#AutoLayers")
+						.attr("transform", "translate(" +
+						0 + ")scale(" +
+						1 + ")");
+				};
+
+				d3.select("button").on("click", reset);
 
 				/////////////////////////////
 				// for each people, search his table
@@ -55,9 +84,9 @@ var mapControl = {
 					var dataset = data,
 						table,
 						tooltip = d3.select(".tooltip");
-					
+
 					dataset.forEach(function(data, i) {
-						// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET", 
+						// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET",
 						//					{ "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
 						// only need data[1]
 						var d = data[1];
@@ -94,7 +123,7 @@ var mapControl = {
 									$("html").click(function () {
 										tooltip.transition()
 												.duration(500)
-												.style("opacity", 0);										
+												.style("opacity", 0);
 									})
 								}
 							}
