@@ -5,8 +5,7 @@ var	server= "http://local-map/"
 var mapControl = {
 existMap: false,
 mapName: null,
-mapPlot: 
-function(name, callback) {
+mapPlot: function(name, callback) {
 	// add svg map to html
 	d3.xml( server + "maps/" + name + ".svg", 
 	function(error, documentFragment) {
@@ -111,93 +110,92 @@ function(name, callback) {
 		});
 	});
 },
-smallMapPlot:
-	function(name, callback) {
-		var longTooltip = [];
 
-		d3.xml( server + "maps/" + name + ".svg",
-			function(error, documentFragment) {
-				if(error){
-					console.log(error);
-					return;
-				}
-				d3.select("#navigation-chart")
-					.style("visibility", "visible")
-					.style("width", "100%")
-					.style("height", "100%");
+// justPlotMap.js
+smallMapPlot: function(name, callback) {
+	var longTooltip = [];
 
-				d3.select("#map-show")
-					.style("visibility", "hidden")
-					.style("width", "0px")
-					.style("height", "0px");
-				console.log('set invisible for ' + name);
+	d3.xml( server + "maps/" + name + ".svg",
+		function(error, documentFragment) {
+			if(error){
+				console.log(error);
+				return;
+			}
+			d3.select("#navigation-chart")
+				.style("visibility", "visible")
+				.style("width", "100%")
+				.style("height", "100%");
 
-				var svgNode,
-					map,
-					allTables,
-					allAvailables;
+			d3.select("#map-show")
+				.style("visibility", "hidden")
+				.style("width", "0px")
+				.style("height", "0px");
+			console.log('set invisible for ' + name);
 
-				svgNode = documentFragment.getElementsByTagName("svg")[0];
+			var svgNode,
+				map,
+				allTables,
+				allAvailables;
 
-				map = document.getElementById("svg-"+name);
-				map.appendChild(svgNode);
+			svgNode = documentFragment.getElementsByTagName("svg")[0];
 
-				// mark all tables as available
-				allTables = d3.select("#tables").selectAll("g");
-				allTables.attr("class", "available");
+			map = document.getElementById("svg-"+name);
+			map.appendChild(svgNode);
+
+			// mark all tables as available
+			allTables = d3.select("#tables").selectAll("g");
+			allTables.attr("class", "available");
+			/////////////////////////////
+			// for each people, search his table
+			/////////////////////////////
+			d3.json( server+"people", function(error, data) {
 				/////////////////////////////
-				// for each people, search his table
+				// add names to each table
 				/////////////////////////////
-				d3.json( server+"people", function(error, data) {
-					/////////////////////////////
-					// add names to each table
-					/////////////////////////////
-					var dataset = data,
-						table;
+				var dataset = data,
+					table;
 
-					dataset.forEach(function(data, i) {
-						// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET",
-						//					{ "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
-						// only need data[1]
-						var d = data[1];
-						// split tableID into two parts.
-						// ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
+				dataset.forEach(function(data, i) {
+					// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET",
+					//					{ "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
+					// only need data[1]
+					var d = data[1];
+					// split tableID into two parts.
+					// ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
 
-						if (d.physicalDeliveryOfficeName) {
-							var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
+					if (d.physicalDeliveryOfficeName) {
+						var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
 
-							// do following if we have the second part
-							if(splitID[1]){
-								table = d3.select("#"+splitID[1]);
-								// if found in map, change table color, add hover actions
-								if(table[0][0] !== null){
-									// mark as occupied
-									table.attr("class", "occupied");
-									table.select("rect")
-										.attr("id", d.cn[0])
-										.attr("fill", "#ff9900");
-								}
+						// do following if we have the second part
+						if(splitID[1]){
+							table = d3.select("#"+splitID[1]);
+							// if found in map, change table color, add hover actions
+							if(table[0][0] !== null){
+								// mark as occupied
+								table.attr("class", "occupied");
+								table.select("rect")
+									.attr("id", d.cn[0])
+									.attr("fill", "#ff9900");
 							}
 						}
-					});
-
-					////////////////////////////////
-					// show all available tables
-					////////////////////////////////
-					allAvailables = d3.select("#tables").selectAll(".available");
-					allAvailables.selectAll("rect").attr("fill", "#99ff99");
-					callback();
+					}
 				});
+
+				////////////////////////////////
+				// show all available tables
+				////////////////////////////////
+				allAvailables = d3.select("#tables").selectAll(".available");
+				allAvailables.selectAll("rect").attr("fill", "#99ff99");
+				callback();
 			});
-	},
-buildTooltips: function(names){
+		});
+},
 
+// justPlotMap.js
+// show small maps' tooltip: departements of small map
+buildTooltips: function(names) {
 	names.forEach(function(element){
-
-		/*
-		 * get the departments in one map
-		 */
-		console.log(element);
+		// get the departments in one map
 		d3.xml(server + "maps/" + element + ".svg",
 			function(error, documentFragment) {
 				if(error){
@@ -205,7 +203,6 @@ buildTooltips: function(names){
 					return;
 				}
 				d3.json(server + "people/	", function(error, data) {
-
 					var dataset = data;
 					var departmentNames = [];
 					var tooltip = "";
@@ -234,51 +231,63 @@ buildTooltips: function(names){
 							}
 						}
 					});
-					/*
-					 * build the associated tooltip string
-					 * if array not empty
-					 */
+
+					//build the associated tooltip string
+					//if array not empty
 					if(departmentNames !== undefined && departmentNames.length > 0){
 						departmentNames.forEach(function(name){
 							if(name !== null && name !== undefined && name !== ""){
-									tooltip += "<li>" + name + "</li>";
+									tooltip += "&bull; " + name + "<br />"; // "&bull;" is point symbol of html
 							}
 						});
 					}
 					else {
 						tooltip = "No data for this floor.";
 					}
-
-					/*
-					 * create the tooltip object with mouseonver on the map
-					 */
-
+			
+					// create the tooltip object when click on small map
 					// Define the div for the tooltip
-					var div = d3.select("#main").select(".tooltip")
-						.style("opacity", 0);
-					var map = d3.select("#svg-"+element);
-					map.on("mouseover", function() {
-						//alert(longTooltip);
-						div.transition()
-							.duration(200)
-							.style("opacity", .9)
-							.style("left", (d3.event.pageX + 16) + "px")
-							.style("top", (d3.event.pageY + 16) + "px")
-							.style("height", 20*(departmentNames.length +1) + "px");
+					var div = d3.select(".tooltip");
 
-						div.html("<ul>" + tooltip + "</ul>");
-					});
-					map.on("mouseout", function() {
+					// mouse click on the table will give more info
+					$("#"+element).click(function(event) {
+						var xPosition = event.clientX,
+							yPosition = event.clientY,
+							height = 20 * (departmentNames.length !== 0 ? departmentNames.length : 1);
+						console.log("height=" + height + "px");
+						// get scroll pixels to correct tooltip's yPostion
+						yPosition += $(window).scrollTop();
+
+						div.html("<span>" + tooltip + "</span>");
 						div.transition()
 							.duration(500)
-							.style("opacity", 0);
+							.style("left", (xPosition) + "px")
+							.style("top", (yPosition) + "px")
+							.style("height", (height) + "px")
+							.style("opacity", .9)
+							.style("z-index", 20);										
+
+						event.stopPropagation();
 					});
+					// click the tooltip won't let it disappear
+					$(".tooltip").click(function(event) {
+						event.stopPropagation();
+					})
+					// click elsewhere will make tooltip disappear
+					$("html").click(function () {
+						div.transition()
+								.duration(500)
+								.style("opacity", 0)
+								.style("z-index", -1);								
+					})
+
 				});
 			});
 	});
 },
+
 /**
- * Erase all maps from the chart
+ * Erase all maps from the chart, visualize big map with 100% width and height
  */
 eraseMap: function() {
 	console.log("erase map called");
@@ -315,5 +324,4 @@ eraseMap: function() {
 		.style("height", "100%");
 	console.log('set visible for ' + name);
 }
-
 };

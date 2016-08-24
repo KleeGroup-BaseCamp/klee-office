@@ -9,7 +9,6 @@ $(function(){
     //                  { "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
     // only need element[1]
     function getName(element, index, array){
-        console.log(element[1].cn[0]);
         people.push({value: element[1].cn[0], data: element[1]});
     }
 

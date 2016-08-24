@@ -36,20 +36,22 @@
                 HOME
                 </h2>    
             </div>
+
+            <div id="navigation-bar" class="container">
+                <form id="search" onsubmit="return false">
+                    <div id="label">
+                        <label for="search-terms" id="search-label">search</label>
+                    </div>
+                    <div id="input">
+                        <input type="text" name="search-terms" id="search-terms" placeholder="Rechercher un collège...">
+                    </div>
+                </form>
+            </div>
         </header>
         <!-- /header -->
+
         <div id="main">
             <div class="container">
-                <div id="navigation-bar" class="clearfix">
-                    <form id="search" onsubmit="return false">
-                        <div id="label">
-                            <label for="search-terms" id="search-label">search</label>
-                        </div>
-                        <div id="input">
-                            <input type="text" name="search-terms" id="search-terms" placeholder="Rechercher un collège, ou une salle de réunion...">
-                        </div>
-                    </form>
-                </div>
                 <div id="navigation-chart">
                     <br>
                     <table id="offices-chart">
