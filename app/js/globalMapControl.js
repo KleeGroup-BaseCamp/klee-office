@@ -31,6 +31,8 @@ var mapControl = {
 				allTables = d3.select("#tables").selectAll("g");
 				allTables.attr("class", "available");
 
+
+
 				/**
 				 * zoom and translate on the maps
 				 */
@@ -49,7 +51,6 @@ var mapControl = {
 							d3.event.scale + ")");
 
 						wholeMap.on("dblclick.zoom", null);
-						//console.log("zoom");
 					});
 				var svg = d3.select("#whole-map")
 					.select("svg").call(zoom);
@@ -57,19 +58,13 @@ var mapControl = {
 				/**
 				 * reset zoom
 				 */
-
+				var isAfterReset;
 				var reset = function () {
+					svg.call(zoom.event);
+					zoom.scale(1);
+					zoom.translate([0,0]);
 					console.log("reset");
-					var wholeMap = d3.select("#whole-map")
-						.select("svg");
-					wholeMap.select("#tables")
-						.attr("transform", "translate(" +
-						0 + ")scale(" +
-						1 + ")");
-					wholeMap.select("#AutoLayers")
-						.attr("transform", "translate(" +
-						0 + ")scale(" +
-						1 + ")");
+					svg.call(zoom.event);
 				};
 
 				d3.select("button").on("click", reset);
