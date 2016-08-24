@@ -58,7 +58,6 @@ var mapControl = {
 				/**
 				 * reset zoom
 				 */
-				var isAfterReset;
 				var reset = function () {
 					svg.call(zoom.event);
 					zoom.scale(1);
@@ -109,8 +108,8 @@ var mapControl = {
 												.style("opacity", .9);
 										tooltip.html(d.cn[0] + "<br/>"
 													+ "email: " + d.mail[0])
-												.style("left", (event.clientX) + "px")
-												.style("top", (event.clientY) + "px")
+												.style("left", ($(this).position().left) + "px")
+												.style("top", ($(this).position().top) + "px")
 												.style("height", "40px");
 
 										event.stopPropagation();
