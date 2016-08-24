@@ -17,7 +17,7 @@
 			clickedClass = $(e.target).attr('class');
 
 		// if click over search bar or autocomplete list, do nothing
-		if (clickedID == "home-title") {
+		if (clickedID == "home-label") {
 			if (classie.has(messageEl,"focus")) {
 				classie.remove(messageEl, "focus");
 			}
