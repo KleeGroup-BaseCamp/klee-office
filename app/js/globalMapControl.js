@@ -25,6 +25,16 @@ function(name, callback) {
 		map.node().appendChild(svgNode);
 		floorName = name;
 
+		// if plot map N0, add upper padding, because of N0's svg size
+		if(name === "N0"){
+			d3.select("#whole-map")
+				.style("padding-top", "130px");
+		}
+		else{
+			d3.select("#whole-map")
+				.style("padding-top", "0px");			
+		}
+
 		// mark all tables as available
 		allTables = d3.select("#tables").selectAll("g");
 		allTables.attr("class", "available");
