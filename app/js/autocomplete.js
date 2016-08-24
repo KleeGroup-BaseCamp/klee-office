@@ -16,7 +16,6 @@ $(function(){
     $.getJSON('http://local-map/people', function(data) {
         //data is the JSON file
         data.forEach(getName);
-        //console.log(people);
 
         // setup autocomplete function pulling from people[] array
         $('#search-terms').autocomplete({
@@ -66,11 +65,11 @@ $(function(){
                     // add floor info 
                     floorNumber = mapName.charAt(1);
                     switch(floorNumber) {
-                        case 0:
+                        case "0":
                             div.select("#floor")
                                 .text("Rdc");
                             break;
-                        case 1:
+                        case "1":
                             div.select("#floor")
                                 .text("1ère");
                             break;
