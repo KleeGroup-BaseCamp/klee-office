@@ -75,8 +75,7 @@ function(name, callback) {
 								// get scroll pixels to correct tooltip's yPostion
 								yPosition += $(window).scrollTop();
 
-								tooltip.html(d.cn[0] + "<br/>"
-											+ "email: " + d.mail[0])
+								tooltip.html(d.cn[0] + "<br/>"+ d.mail[0])
 										.style("left", (xPosition) + "px")
 										.style("top", (yPosition) + "px")
 										.style("height", "40px");
