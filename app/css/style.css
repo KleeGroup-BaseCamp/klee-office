@@ -3,13 +3,27 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home-title {
-    cursor: pointer;
-    width: 65px;
-    color: white;
+#home {
+    width: 60px;
+    height: 60px;
+    padding-top: 10px;
+    position: relative;
+    z-index: 20;
 }
-#home-title:hover {
-    color: black;
+#home label {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url("../img/home_final.png") 0px 0px;
+    background-size: 40px 40px;
+    font-size: 0;
+    color: rgba(0, 0, 0, 0);
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+#title {
+    padding-bottom: 10px;
 }
 
 #navigation-bar {
@@ -35,7 +49,7 @@
     width: 60px;
     height: 60px;
     background: url("../img/search.png") -60px 0px;
-    background-color: white;
+    background-color: #3296c8;
     font-size: 0;
     color: rgba(0, 0, 0, 0);
     text-indent: -9999px;
@@ -60,8 +74,8 @@
     margin: 0;
     padding: 0 10px;
     border: none;
-    background-color: #23688b;
-    color: #fff;
+    background-color: white;
+    color: black;
     font-size: 18px;
     -webkit-backface-visibility: none;
     -moz-backface-visibility: none;

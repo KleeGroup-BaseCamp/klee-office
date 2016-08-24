@@ -41,7 +41,7 @@
      * on title 'explorer les locaux'
      */
     addEvtListenerOn("load", mapNames, window);
-    addEvtListenerOn("click", mapNames, document.querySelector("#home-title"));
+    addEvtListenerOn("click", mapNames, document.querySelector("#home-label"));
 
 
 }(window));
