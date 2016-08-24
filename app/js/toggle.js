@@ -9,10 +9,7 @@
 (function(window){
 
 	// get vars
-	var searchEl = document.querySelector("#input");
-	var labelEl = document.querySelector("#label");
 	var messageEl = document.querySelector('#message');
-
 
 	// register clicks outisde search box, and toggle correct classes
 	document.addEventListener("click",function(e){
@@ -20,7 +17,7 @@
 			clickedClass = $(e.target).attr('class');
 
 		// if click over search bar or autocomplete list, do nothing
-		if (clickedID == "explore-title") {
+		if (clickedID == "home-title") {
 			if (classie.has(messageEl,"focus")) {
 				classie.remove(messageEl, "focus");
 			}
