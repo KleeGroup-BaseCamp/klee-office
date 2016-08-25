@@ -145,14 +145,12 @@ __Service__
 
 ### __APP__
 1. **globalMapControl.js** - **var**s: server, existMap, mapName
-..* mapPlot: *function(name, callback)*
-..* smallMapPlot: *function(name, callback)*
+..* mapPlot: *function(name, callback)*.
+..* smallMapPlot: *function(name, callback)*.
 
-* **toggle.js + classie.js** - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
+2. **toggle.js + classie.js** - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
 
-* **script_plot_map.js** - first, click on floor number will show the whole map. 
-                            second, hover on each table will show infos
-* **autocomplete.js (jquery.autocomplete.js needed)** - first, input name in search bar will show corresponding suggestions,
+3. **autocomplete.js (jquery.autocomplete.js needed)** - first, input name in search bar will show corresponding suggestions,
                                                         second, select one suggestion will mark corresponding one as red.
 
 
