@@ -144,14 +144,22 @@ __Service__
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
 
 ### __APP__
-1. **globalMapControl.js** - **var**s: server, existMap, mapName
+* **globalMapControl.js** - **var**s: server, existMap, mapName
 
-...mapPlot: *function(name, callback)*.
-...smallMapPlot: *function(name, callback)*.
+```javascript
+// plot single large map (table color, zoom, tooltip)
+mapPlot: function(name, callback){},
+// plot all small maps (table color)
+smallMapPlot: function(name, callback){},
+// add tooltips for all small maps, where departments on each floor are listed
+buildTooltips: function(names){},
+// Erase all small maps
+eraseMap: function(){}
+```
 
-2. **toggle.js + classie.js** - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
+* **toggle.js + classie.js** - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
 
-3. **autocomplete.js (jquery.autocomplete.js needed)** - first, input name in search bar will show corresponding suggestions,
+* **autocomplete.js (jquery.autocomplete.js needed)** - first, input name in search bar will show corresponding suggestions,
                                                         second, select one suggestion will mark corresponding one as red.
 
 
