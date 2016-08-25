@@ -160,9 +160,14 @@ buildTooltips: function(names){},
 eraseMap: function(){}
 ```
 
-#### **toggle.js + classie.js** - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
+#### **toggle.js + classie.js** 
 
-#### **autocomplete.js (jquery.autocomplete.js needed)** - first, input name in search bar will show corresponding suggestions,
-                                                        second, select one suggestion will mark corresponding one as red.
+- Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
+
+#### **autocomplete.js** 
+
+- input name in search bar will show corresponding suggestions
+                                                        
+- select one suggestion will show this person's table with a red pin.
 
 
