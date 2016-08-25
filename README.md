@@ -145,8 +145,8 @@ __Service__
 
 ### __APP__
 1. **globalMapControl.js** - **var**s: server, existMap, mapName
-* mapPlot: *function(name, callback)*.
-* smallMapPlot: *function(name, callback)*.
+... mapPlot: *function(name, callback)*.
+... smallMapPlot: *function(name, callback)*.
 
 2. **toggle.js + classie.js** - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
 
