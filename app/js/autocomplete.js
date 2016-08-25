@@ -48,7 +48,6 @@ $(function(){
                     mail = suggestion.data.mail[0];
                     div.select("#mail")
                         .text(mail);
-
                     // add site info
                     div.select("#site")
                         .text(splitID[0]);

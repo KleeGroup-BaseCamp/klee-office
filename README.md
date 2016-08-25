@@ -146,7 +146,7 @@ __Service__
 ### __APP__
 #### **globalMapControl.js** 
 
-- **global var**: server, existMap, mapName   
+- **global var**: server, existMap, mapName   .
 - **global function**: 
 ```javascript
 // plot single large map (table color, zoom, tooltip)
@@ -161,13 +161,13 @@ eraseMap: function(){}
 
 #### **justPlotMap.js**
 
-- `mapControl.smallMapPlot(name, function(){})`: plot small maps in `<div id="navigation-chart">`
-- `mapControl.buildTooltips(mapNames)`: add tooltips for all small maps
+- `mapControl.smallMapPlot(name, function(){})`: plot small maps in `<div id="navigation-chart">`.
+- `mapControl.buildTooltips(mapNames)`: add tooltips for all small maps.
 
 #### **clickAndPlot.js**
 
-- 'mapControl.mapPlot(mapControl.mapName, function(){})': plot corresponding single large map when click a small map
-- prepend mapName to legend
+- 'mapControl.mapPlot(mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
+- prepend mapName to legend.
 
 #### **toggle.js + classie.js** 
 
@@ -175,7 +175,9 @@ eraseMap: function(){}
 
 #### **autocomplete.js** 
 
-- input name in search bar will show corresponding suggestions
-- select one suggestion will show this person's table with a red pin.
+- `$('#search-terms').autocomplete({lookup: people, onSelect: function (suggestion){} })`: input name in search bar will show corresponding suggestions.
+- show suggestion's message in **message-bar**.
+- `mapControl.eraseMap()`: erase small maps if there are.
+- `mapControl.mapPlot(mapName, function(){})`: add-pin is in callback function (wait for map fully loaded).
 
 
