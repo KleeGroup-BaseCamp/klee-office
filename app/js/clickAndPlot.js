@@ -29,7 +29,7 @@
 			mapControl.mapName = "N0";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="N0">N 0</h1>').prependTo($('#legend'));
+		$('<h1 class="N0">RDC<br/>(N 0)</h1>').prependTo($('#legend'));
 	});
 	N1.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -45,7 +45,7 @@
 			mapControl.mapName = "N1";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="N1">N 1</h1>').prependTo($('#legend'));
+		$('<h1 class="N1">Etage 1<br/>(N 1)</h1>').prependTo($('#legend'));
 	});
 	N2.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -61,7 +61,7 @@
 			mapControl.mapName = "N2";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="N2">N 2</h1>').prependTo($('#legend'));
+		$('<h1 class="N2">Etage 2<br/>(N 2)</h1>').prependTo($('#legend'));
 	});
 	N3.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -77,7 +77,7 @@
 			mapControl.mapName = "N3";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="N3">N 3</h1>').prependTo($('#legend'));
+		$('<h1 class="N3">Etage 3<br/>(N 3)</h1>').prependTo($('#legend'));
 	});
 	N4.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -93,7 +93,7 @@
 			mapControl.mapName = "N4";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="N4">N 4</h1>').prependTo($('#legend'));
+		$('<h1 class="N4">Etage 4<br/>(N 4)</h1>').prependTo($('#legend'));
 	});
 	O2.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -109,7 +109,7 @@
 			mapControl.mapName = "O2";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="O2">O 2</h1>').prependTo($('#legend'));
+		$('<h1 class="O2">Etage 2<br/>(O 2)</h1>').prependTo($('#legend'));
 	});
 	O3.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -125,7 +125,7 @@
 			mapControl.mapName = "O3";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="O3">O 3</h1>').prependTo($('#legend'));
+		$('<h1 class="O3">Etage 3<br/>(O 3)</h1>').prependTo($('#legend'));
 	});
 	O4.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -141,7 +141,7 @@
 			mapControl.mapName = "O4";
 			mapControl.mapPlot(mapControl.mapName, function() {});
 		}
-		$('<h1 class="O4">O 4</h1>').prependTo($('#legend'));
+		$('<h1 class="O4">Etage 4<br/>(O 4)</h1>').prependTo($('#legend'));
 	});
 }(window));
 
