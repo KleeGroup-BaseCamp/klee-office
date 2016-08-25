@@ -144,7 +144,11 @@ __Service__
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
 
 ### __APP__
-* **globalMapControl.js** - **global var**: server, existMap, mapName   **global function**: 
+* **globalMapControl.js** 
+
+- **global var**: server, existMap, mapName   
+
+- **global function**: 
 ```javascript
 // plot single large map (table color, zoom, tooltip)
 mapPlot: function(name, callback){},
