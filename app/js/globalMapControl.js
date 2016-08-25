@@ -306,9 +306,8 @@ buildTooltips: function(names) {
 	});
 },
 
-/**
- * Erase all maps from the chart, visualize big map with 100% width and height
- */
+
+// Erase all maps from the chart, visualize big map with 100% width and height
 eraseMap: function() {
 	console.log("erase map called");
 
