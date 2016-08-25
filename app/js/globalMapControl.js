@@ -87,7 +87,7 @@ mapPlot: function(name, callback) {
 								 .attr("fill", "#ff9900")
 								 .attr("cursor", "pointer");
 
-							// mouse click on the table will give more info
+							// mouse click on the button will give more info
 							$("#" + splitID[1]).click( function(event) {
 								var xPosition = event.clientX,
 									yPosition = event.clientY;

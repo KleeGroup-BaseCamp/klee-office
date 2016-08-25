@@ -7,6 +7,7 @@
     width: 60px;
     height: 60px;
     padding-top: 10px;
+    padding-left: 10px;
     position: relative;
     z-index: 20;
 }
@@ -16,8 +17,6 @@
     height: 40px;
     background: url("../img/home_final.png") 0px 0px;
     background-size: 40px 40px;
-    font-size: 0;
-    color: rgba(0, 0, 0, 0);
     text-indent: -9999px;
     cursor: pointer;
 }
@@ -111,27 +110,35 @@
     margin-left: 25px;
 }
 #N0 a, .N0{
+    padding-bottom: 20px;
     color: rgb(79, 93, 106);
 }
 #N1 a, .N1{
+    padding-bottom: 20px;
     color: rgb(34, 86, 134);
 }
 #N2 a, .N2{
+    padding-bottom: 20px;
     color: rgb(85, 151, 211);
 }
 #N3 a, .N3{
+    padding-bottom: 20px;
     color: rgb(145, 188, 277);
 }
 #N4 a, .N4{
+    padding-bottom: 20px;
     color: rgb(191, 216, 239);
 }
 #O2 a, .O2{
+    padding-bottom: 20px;
     color: rgb(204, 31, 18);
 }
 #O3 a, .O3{
+    padding-bottom: 20px;
     color: rgb(243, 87, 87);
 }
 #O4 a, .O4{
+    padding-bottom: 20px;
     color: rgb(251, 158, 151);
 }
 .small-map {
@@ -199,7 +206,12 @@
     position: relative;
     z-index: 0;
 }
-.map {
+#map-show #whole-map {
+    border-left: 2px solid #297aa3;
+    border-right: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;
+}
+#map-show .map {
     position: relative;
     width: 1024px;
     height: 768px;
@@ -208,13 +220,22 @@
     vertical-align: middle;
     padding-left: 20px;
 }
-#legend svg {
+#map-show #legend h3 {
+    padding-bottom: 10px;
+}
+#map-show #legend svg {
     display: inline;
 }
-#legend p {
+#map-show #legend p {
     position: absolute;
     display: inline-block;
     margin-left: 10px;
+}
+#map-show #legend #zoom {
+    padding-top: 20px;
+    position: absolute;
+    display: inline-block;
+    margin-left: 0px;
 }
 
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
