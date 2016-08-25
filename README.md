@@ -147,7 +147,6 @@ __Service__
 #### **globalMapControl.js** 
 
 - **global var**: server, existMap, mapName   
-
 - **global function**: 
 ```javascript
 // plot single large map (table color, zoom, tooltip)
@@ -160,6 +159,10 @@ buildTooltips: function(names){},
 eraseMap: function(){}
 ```
 
+#### **clickAndPlot.js**
+
+-  
+
 #### **toggle.js + classie.js** 
 
 - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
@@ -167,7 +170,6 @@ eraseMap: function(){}
 #### **autocomplete.js** 
 
 - input name in search bar will show corresponding suggestions
-                                                        
 - select one suggestion will show this person's table with a red pin.
 
 
