@@ -31,8 +31,6 @@ var mapControl = {
 				allTables = d3.select("#tables").selectAll("g");
 				allTables.attr("class", "available");
 
-
-
 				/**
 				 * zoom and translate on the maps
 				 */
@@ -54,19 +52,6 @@ var mapControl = {
 					});
 				var svg = d3.select("#whole-map")
 					.select("svg").call(zoom);
-
-				/**
-				 * reset zoom
-				 */
-				var reset = function () {
-					svg.call(zoom.event);
-					zoom.scale(1);
-					zoom.translate([0,0]);
-					console.log("reset");
-					svg.call(zoom.event);
-				};
-
-				d3.select("button").on("click", reset);
 
 				/////////////////////////////
 				// for each people, search his table
