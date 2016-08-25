@@ -38,6 +38,26 @@ mapPlot: function(name, callback) {
 		allTables = d3.select("#tables").selectAll("g");
 		allTables.attr("class", "available");
 
+		// zoom and translate on the maps
+		var zoom = d3.behavior.zoom()
+			.scaleExtent([1, 8])
+			.on("zoom", function() {
+				var wholeMap = d3.select("#whole-map")
+					.select("svg");
+				wholeMap.select("#tables")
+					.attr("transform", "translate(" +
+					d3.event.translate + ")scale(" +
+					d3.event.scale + ")");
+				wholeMap.select("#AutoLayers")
+					.attr("transform", "translate(" +
+					d3.event.translate + ")scale(" +
+					d3.event.scale + ")");
+
+				wholeMap.on("dblclick.zoom", null);
+			});
+		var svg = d3.select("#whole-map")
+			.select("svg").call(zoom);
+
 		// for each people, search his table
 		d3.json( server+"people", function(error, data) {
 			var dataset = data,
