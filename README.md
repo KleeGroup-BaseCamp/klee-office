@@ -134,19 +134,19 @@ local-map uses the following additional node modules:
 
 ## Structure
 ### __API__
-Here are the datas and services for server
 
 __Data__
-* maps (.svg)
-* peopel (.json)
+* maps (*.svg*)
+* peopel (*.json*)
 
 __Service__
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
-* *getAllPeople(req, res)* - *res*: **res.json** (return json file)
+* *getAllPeople(req, res)* - *res*: **.json** (return json file)
 
 ### __APP__
-1. **globalMapControl.js** 
+1. **globalMapControl.js** - **var**s: server, existMap, mapName
 ..* mapPlot: *function(name, callback)*
+..* smallMapPlot: *function(name, callback)*
 
 * **toggle.js + classie.js** - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
 
