@@ -23,6 +23,73 @@
 
 -------------------------------------------------------------
 -------------------------------------------------------------
+# Local map
+
+local-map is a search-find-people service on local maps of KleeGroup La Boursidière. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__.
+
+
+## Required Libraries
+
+local-map uses the following additional node modules:
+
+* cors 2.7.1 - provide cross-origin file transmit in __express__
+* express 4.13.4 - provide local-server service
+* lodash 4.5.1 - some js functions for array treatment
+* body-parser 1.15.0 - parse incoming requests, JSON body parser
+* fs - write to server's log
+* util - write to server's log
+
+
+## Structure
+### __API__
+
+__Data__
+* maps (*.svg*)
+* peopel (*.json*)
+
+__Service__
+* *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
+* *getAllPeople(req, res)* - *res*: **.json** (return json file)
+
+### __APP__
+#### **_globalMapControl.js_** 
+
+- **global var**: server, existMap, mapName   .
+- **global function**: 
+```javascript
+// plot single large map (table color, zoom, tooltip)
+mapPlot: function(name, callback){},
+// plot all small maps (table color)
+smallMapPlot: function(name, callback){},
+// add tooltips for all small maps, where departments on each floor are listed
+buildTooltips: function(names){},
+// Erase all small maps
+eraseMap: function(){}
+```
+
+#### **_justPlotMap.js_**
+
+- `mapControl.smallMapPlot(name, function(){})`: plot small maps in `<div id="navigation-chart">`.
+- `mapControl.buildTooltips(mapNames)`: add tooltips for all small maps.
+
+#### **_clickAndPlot.js_**
+
+- 'mapControl.mapPlot(mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
+- prepend mapName to legend.
+
+#### **_toggle.js + classie.js_** 
+
+- Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
+
+#### **_autocomplete.js_** 
+
+- `$('#search-terms').autocomplete({lookup: people, onSelect: function (suggestion){} })`: input name in search bar will show corresponding suggestions.
+- show suggestion's message in **message-bar**.
+- `mapControl.eraseMap()`: erase small maps if there are.
+- `mapControl.mapPlot(mapName, function(){})`: add-pin is in callback function (wait for map fully loaded).
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
 
 # Installation & Configuration
 
@@ -115,69 +182,3 @@ But bare one thing in your mind: make sure what you are going to change before y
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
-
-# Local map service
-local-map is a search-find-people service on local maps of KleeGroup La Boursidière. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__.
-
-
-## Required Libraries
-
-local-map uses the following additional node modules:
-
-* cors 2.7.1 - provide cross-origin file transmit in __express__
-* express 4.13.4 - provide local-server service
-* lodash 4.5.1 - some js functions for array treatment
-* body-parser 1.15.0 - parse incoming requests, JSON body parser
-* fs - write to server's log
-* util - write to server's log
-
-
-## Structure
-### __API__
-
-__Data__
-* maps (*.svg*)
-* peopel (*.json*)
-
-__Service__
-* *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
-* *getAllPeople(req, res)* - *res*: **.json** (return json file)
-
-### __APP__
-#### **_globalMapControl.js_** 
-
-- **global var**: server, existMap, mapName   .
-- **global function**: 
-```javascript
-// plot single large map (table color, zoom, tooltip)
-mapPlot: function(name, callback){},
-// plot all small maps (table color)
-smallMapPlot: function(name, callback){},
-// add tooltips for all small maps, where departments on each floor are listed
-buildTooltips: function(names){},
-// Erase all small maps
-eraseMap: function(){}
-```
-
-#### **_justPlotMap.js_**
-
-- `mapControl.smallMapPlot(name, function(){})`: plot small maps in `<div id="navigation-chart">`.
-- `mapControl.buildTooltips(mapNames)`: add tooltips for all small maps.
-
-#### **_clickAndPlot.js_**
-
-- 'mapControl.mapPlot(mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
-- prepend mapName to legend.
-
-#### **_toggle.js + classie.js_** 
-
-- Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
-
-#### **_autocomplete.js_** 
-
-- `$('#search-terms').autocomplete({lookup: people, onSelect: function (suggestion){} })`: input name in search bar will show corresponding suggestions.
-- show suggestion's message in **message-bar**.
-- `mapControl.eraseMap()`: erase small maps if there are.
-- `mapControl.mapPlot(mapName, function(){})`: add-pin is in callback function (wait for map fully loaded).
-
-
