@@ -41,6 +41,7 @@ local-map uses the following additional node modules:
 
 
 ## Structure
+
 ### __API__
 
 __Data__
@@ -50,6 +51,8 @@ __Data__
 __Service__
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
+
+-----------------------------------------------------------------
 
 ### __APP__
 #### **_globalMapControl.js_** 
