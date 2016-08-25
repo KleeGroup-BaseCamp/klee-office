@@ -144,7 +144,7 @@ __Service__
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
 
 ### __APP__
-#### **__globalMapControl.js__** 
+#### **_globalMapControl.js_** 
 
 - **global var**: server, existMap, mapName   .
 - **global function**: 
@@ -159,21 +159,21 @@ buildTooltips: function(names){},
 eraseMap: function(){}
 ```
 
-#### **__justPlotMap.js__**
+#### **_justPlotMap.js_**
 
 - `mapControl.smallMapPlot(name, function(){})`: plot small maps in `<div id="navigation-chart">`.
 - `mapControl.buildTooltips(mapNames)`: add tooltips for all small maps.
 
-#### **__clickAndPlot.js__**
+#### **_clickAndPlot.js_**
 
 - 'mapControl.mapPlot(mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
 - prepend mapName to legend.
 
-#### **__toggle.js + classie.js__** 
+#### **_toggle.js + classie.js_** 
 
 - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
 
-#### **__autocomplete.js__** 
+#### **_autocomplete.js_** 
 
 - `$('#search-terms').autocomplete({lookup: people, onSelect: function (suggestion){} })`: input name in search bar will show corresponding suggestions.
 - show suggestion's message in **message-bar**.
