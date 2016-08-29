@@ -179,7 +179,7 @@ All you need to do is find the table you want to change, and give it another num
 
 Well, open this *svg* file in a browser (chrome or firefox), move the mouse to the table you want to change, *right* click, choose *Inspecter* (or *Inspect* in English), and you will see the information for this element.
 
-There are still other ways to add tables, such as using *inkscape* (but make sure you are working on the right layer !), or using raw *Autocad* file to make complete change of the map (remember you need to transform *.dwg* to *.svg*, and clean unnecessary parts or layers). 
+There are still other ways to add tables, such as using **inkscape** (but make sure you are working on the right layer !), or using raw **Autocad** file to make complete change of the map (remember you need to transform *.dwg* to *.svg*, and clean unnecessary parts or layers, **AutoDWG Converter** is recommended). 
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
 
