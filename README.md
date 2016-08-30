@@ -212,6 +212,7 @@ But bare one thing in your mind: make sure what you are going to change before y
 
     4.    Pour savoir les numéros de tables, ouvrir un ``svg`` file dans *chrome* ou *firefox* ou *safari*, **clic-droit** sur un table, choisir **Inspecter**.
 
-    5.    Il y a d’autre méthode pour ajouter les tables ou changer leur positions, par exemple, **inkscape**. Ou éditer avec **Autocad**, les fichiers autocad sont fournis. (Mais il faut changer fichier ``dwg`` à fichier ``svg``, en utilisant **AutoDWG Converter**).			
+    5.    Il y a d’autre méthode pour ajouter les tables ou changer leur positions, par exemple, *inkscape* . Ou éditer avec *Autocad*, les fichiers autocad sont fournis. (Mais il faut changer fichier ``dwg`` à fichier ``svg``, en utilisant *AutoDWG Converter*).
+    		
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
