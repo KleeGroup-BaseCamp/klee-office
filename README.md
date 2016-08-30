@@ -152,19 +152,25 @@ Since our programe for updating *KleeGroup.json* is written with python, you hav
 
 To set up autorun of python script, ``crontab -e`` will be very helpful. Maybe you need more documentation with this command: ``man crontab``
 
+My ``crontab`` command is as follows:
+````
+*/30 * * * * cd /home/dev/local-map/admin && /home/dev/anaconda2/bin/python /home/dev/local-map/admin/activedirectory.py
+````
+This means that: every 30 minutes, system will open folder ``/home/dev/local-map/admin``, then use ``/home/dev/anaconda2/bin/python`` as python interpreter to run following python file ``/home/dev/local-map/admin/activedirectory.py``.
+
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 
-# Maintenace of data base
+# Maintenace of data base (*English Version*)
 
 After having talked about how to install the backend from zero, we need to change our data base from time to time. There are mainly **two** kinds of changes: 
 
-1. modify staff's data: move to another table, or even change his name :)
-2. modify maps: add table, change table's position, etc.
+1. modify **_staff's data_**: move to another table, or even change his name :)
+2. modify **_maps_** : add table, change table's position, etc.
 
-For the first kind, we only need to change his infos of AD (Active Directory), and then the server will automatically update his position in the map (every 30 minutes).
+_For the first kind_, we only need to change his infos of AD (Active Directory), and then the server will automatically update his position in the map (every 30 minutes).
 
-For the second kind of change, things could become a little difficult. Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
+_For the second kind_, things could become a little difficult. Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
 
 Search **tables**, you will find all the infos about tables in one block
 
@@ -183,5 +189,30 @@ There are still other ways to add tables, such as using **inkscape** (but make s
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
 
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+# La maintenance de donnée (employé et plan) (*Version Français*)
+
+*    Changer les **datas d’employé** (déplacer vers un autre bureau) : il faut changer son data sur l’AD, après le serveur va mettre à jour les changement.
+
+*    Changer les **plans** :
+
+     1.		tous les plans sont de forme ``.svg``. Donc il faut éditer ``svg`` file directement, avec un éditeur de texte (*sublime text* ou *atom*).
+
+     2.		``Ctrl+F`` puis chercher ``tables``, il y a tous les infos dans un bloque::
+
+     		* exemple de code::
+
+					 <g id="tables"> 
+					    <g id="N0-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="532.3736" y="58.504215" /></g>
+					    <g id="N0-A-02"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="546.50299" y="58.611759" /></g>
+					    ...
+					</g>
+
+	3.		Trouver la table que tu veux changer, et changer son id ou sa place. 
+
+	4.		Pour savoir les numéros de tables, ouvrir un ``svg`` file dans *chrome* ou *firefox* ou *safari*, **clic-droit** sur un table, choisir **Inspecter**.
+
+	5.		Il y a d’autre méthode pour ajouter les tables ou changer leur positions, par exemple, **inkscape**. Ou éditer avec **Autocad**, les fichiers autocad sont fournis. (Mais il faut changer fichier ``dwg`` à fichier ``svg``, en utilisant **AutoDWG Converter**).			
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
