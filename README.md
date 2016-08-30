@@ -197,21 +197,21 @@ But bare one thing in your mind: make sure what you are going to change before y
 
 *    Changer les **plans** :
 
-     1.    Tous les plans sont de forme ``.svg``. Donc il faut éditer ``svg`` file directement, avec un éditeur de texte (*sublime text* ou *atom*).
+    1.    Tous les plans sont de forme ``.svg``. Donc il faut éditer ``svg`` file directement, avec un éditeur de texte (*sublime text* ou *atom*).
 
-     2.    Utiliser ``Ctrl+F`` puis chercher ``tables``, il y a tous les infos dans un bloque::
+    2.    Utiliser ``Ctrl+F`` puis chercher ``tables``, il y a tous les infos dans un bloque::
 
      			* exemple::
-					 <g id="tables"> 
+					<g id="tables"> 
 					    <g id="N0-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="532.3736" y="58.504215" /></g>
 					    <g id="N0-A-02"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="546.50299" y="58.611759" /></g>
 					    ...
 					</g>
 
-	3.    Trouver la table que tu veux changer, et changer son id ou sa place. 
+    3.    Trouver la table que tu veux changer, et changer son id ou sa place. 
 
-	4.    Pour savoir les numéros de tables, ouvrir un ``svg`` file dans *chrome* ou *firefox* ou *safari*, **clic-droit** sur un table, choisir **Inspecter**.
+    4.    Pour savoir les numéros de tables, ouvrir un ``svg`` file dans *chrome* ou *firefox* ou *safari*, **clic-droit** sur un table, choisir **Inspecter**.
 
-	5.    Il y a d’autre méthode pour ajouter les tables ou changer leur positions, par exemple, **inkscape**. Ou éditer avec **Autocad**, les fichiers autocad sont fournis. (Mais il faut changer fichier ``dwg`` à fichier ``svg``, en utilisant **AutoDWG Converter**).			
+    5.    Il y a d’autre méthode pour ajouter les tables ou changer leur positions, par exemple, **inkscape**. Ou éditer avec **Autocad**, les fichiers autocad sont fournis. (Mais il faut changer fichier ``dwg`` à fichier ``svg``, en utilisant **AutoDWG Converter**).			
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
