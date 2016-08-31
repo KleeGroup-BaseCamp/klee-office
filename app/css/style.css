@@ -95,7 +95,7 @@
     background-color: white;
 }
 #offices-chart {
-    left: 12%;
+    left: 4%;
     position: relative;
 }
 #offices-chart td {
@@ -217,7 +217,7 @@
     height: 768px;
 }
 #legend {
-    width: 136px;
+    width: 132px;
     vertical-align: middle;
     padding-left: 20px;
     border-right: 2px solid #297aa3;

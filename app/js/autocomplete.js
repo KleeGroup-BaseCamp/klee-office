@@ -28,6 +28,15 @@ $(function(){
                 mail,
                 legend;
 
+            // hide all : navigation chart & map-show
+            d3.select("#map-show")
+                .style("visibility", "hidden");
+
+            d3.select("#navigation-chart")
+                .style("visibility", "hidden")
+                .style("width", "0px")
+                .style("height", "0px");
+
             // suggestion.data example: 
             //      { "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }
             if (suggestion.data.physicalDeliveryOfficeName) {
@@ -42,6 +51,11 @@ $(function(){
                             .split(/\s+:\s+/);
                 // if standard table ID exists
                 if(splitID[1]){
+                    // set map-show as visible
+                    d3.select("#map-show")
+                        .style("visibility", "visible")
+                        .style("width", "100%")
+                        .style("height", "100%");
                     mapName = splitID[1].split(/-/)[0];
 
                     // add email
@@ -131,17 +145,21 @@ $(function(){
                 }
                 // if no standard table ID
                 else {
+                    // remove site, bat, etage info
+                    d3.select("#message").selectAll(".content")
+                        .text("");
                     // add email
                     mail = suggestion.data.mail[0];
                     div.select("#mail")
                         .text(mail);
-                    // remove site, bat, etage info
-                    d3.select("#message").selectAll(".content")
-                        .text("");
                 }
             }
-
+            // physicalDeliveryOfficeName doesn't exist
             else {
+                // add email
+                mail = suggestion.data.mail[0];
+                div.select("#mail")
+                    .text(mail);
                 // show "no office" in <div id="message">
                 div = d3.select("#main").select("#message");
                 div.html("No office for this poor man !");
