@@ -16,7 +16,7 @@ User = settings['localmap']['username']
 Password = settings['localmap']['password']
 
 Filter = 'cn=*'
-Attrs = ('cn', 'physicalDeliveryOfficeName','mail')
+Attrs = ('cn', 'physicalDeliveryOfficeName','mail', 'department')
 #######################################################
 
 # con = ldap.initialize('ldap://klee.lan.net')
@@ -26,7 +26,7 @@ Attrs = ('cn', 'physicalDeliveryOfficeName','mail')
 
 # con.simple_bind_s(ldap_user, passwd)
 # filter_str = "cn=*Zekun*"
-# attrs = ('cn', 'physicalDeliveryOfficeName', 'mail')
+# attrs = ('cn', 'physicalDeliveryOfficeName', 'mail', 'department')
 
 con = ldap.initialize(Server)
 ldap_user = User
