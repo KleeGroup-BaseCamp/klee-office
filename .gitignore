@@ -4,3 +4,4 @@ desktop.ini
 /node_modules
 /api/data
 /app/js/test.js
+/api/db.development.sqlite

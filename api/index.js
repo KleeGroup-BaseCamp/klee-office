@@ -39,7 +39,22 @@ app.get('/maps/:name', mapServices.getMap);
 
 console.log('Initializing the API...');
 
-app.listen(API_PORT, () => {
-    console.log(`API listening on port ${API_PORT}`);
+var models = require("../models");
+
+models.sequelize.sync().then(function () {
+	app.listen(API_PORT, () => {
+		console.log(`API listening on port ${API_PORT}`);
+
 });
+	app.on('error', onError);
+	app.on('listening', onListening);
+});
+
+function onError(error) { /* ... */
+	console.log("error : " + error)
+}
+function onListening() { /* ... */
+	console.log("success !")
+}
+
 
