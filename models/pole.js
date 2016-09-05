@@ -6,7 +6,7 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Pole = sequelize.define("Pole", {
-        pol_id: {type: DataTypes.UUIDV1, primaryKey: true},
+        pol_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         name: DataTypes.STRING
         }, {
         classMethods: {

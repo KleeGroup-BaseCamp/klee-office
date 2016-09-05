@@ -6,7 +6,7 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Manager = sequelize.define("Manager", {
-        man_id: { type: DataTypes.UUIDV1, primaryKey: true},
+        man_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         firstname: DataTypes.STRING,
         lastname: DataTypes.STRING,
         mail: DataTypes.STRING

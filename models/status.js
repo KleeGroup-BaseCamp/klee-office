@@ -6,7 +6,7 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Status = sequelize.define("Status", {
-        stu_id: { type: DataTypes.UUIDV1, primaryKey: true},
+        stu_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         isValidatorLvlOne: DataTypes.BOOLEAN,
         isValidatorLvlTwo: DataTypes.BOOLEAN
 

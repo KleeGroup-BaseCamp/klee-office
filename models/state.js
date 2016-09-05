@@ -6,7 +6,7 @@
 
 module.exports = function(sequelize, DataTypes) {
     var State = sequelize.define("State", {
-        sta_id: { type: DataTypes.UUIDV1, primaryKey: true},
+        sta_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         name: DataTypes.STRING
     });
     return State;

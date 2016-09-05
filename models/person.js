@@ -6,7 +6,7 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Person = sequelize.define("Person", {
-        per_id: { type: DataTypes.UUIDV1, primaryKey: true},
+        per_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         firstname: DataTypes.STRING,
         lastname: DataTypes.STRING,
         mail: DataTypes.STRING

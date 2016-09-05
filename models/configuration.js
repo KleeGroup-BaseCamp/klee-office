@@ -6,7 +6,7 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Configuration = sequelize.define("Configuration", {
-        con_id: { type: DataTypes.UUIDV1, primaryKey: true},
+        con_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         name: DataTypes.STRING,
         creator: DataTypes.STRING,
         date: DataTypes.DATE
