@@ -15,7 +15,9 @@ console.log = function(d) {
 
 // services
 const peopleServices = require('./services/people.js');
-const mapServices = require('./services/map.js')
+const mapServices = require('./services/map.js');
+const dataServices = require('./services/data.js');
+const dataAssociationServices = require('./services/dataAssociations.js');
 
 const API_PORT = process.env.PORT || 3000;
 
@@ -34,6 +36,8 @@ app.use(express.static('../app'));
 app.get('/test', peopleServices.test);
 app.get('/people', peopleServices.getAllPeople);
 app.get('/maps/:name', mapServices.getMap);
+app.get('/populateDB', dataServices.populate);
+app.get('/associateData', dataAssociationServices.associate);
 
 //app.get('/maps/:number', mapServices.getMapByNumber);
 
