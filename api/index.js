@@ -18,6 +18,7 @@ const peopleServices = require('./services/people.js');
 const mapServices = require('./services/map.js');
 const dataServices = require('./services/data.js');
 const dataAssociationServices = require('./services/dataAssociations.js');
+const localizationServices = require('./services/localization.js');
 
 const API_PORT = process.env.PORT || 3000;
 
@@ -25,6 +26,9 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+// CHECK IF OK....
+app.use(bodyParser.urlencoded({extended: true}))
+
 // serve static page files
 app.use(express.static('../app'));
 
@@ -38,6 +42,7 @@ app.get('/people', peopleServices.getAllPeople);
 app.get('/maps/:name', mapServices.getMap);
 app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
+app.post('/myLocalization', localizationServices.saveMyLocalization);
 
 //app.get('/maps/:number', mapServices.getMapByNumber);
 
