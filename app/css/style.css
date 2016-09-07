@@ -3,7 +3,7 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home {
+#home, #location {
     width: 60px;
     height: 60px;
     padding-top: 10px;
@@ -19,6 +19,22 @@
     background-size: 40px 40px;
     text-indent: -9999px;
     cursor: pointer;
+}
+#location label {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url("../img/loc01.png") 0px 0px;
+    background-size: 30px 40px;
+    text-indent: -9999px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+}
+#home {
+    float: left;
+}
+#location {
+    display: inline-block;
 }
 
 #title {
@@ -293,7 +309,6 @@ input[readonly] {
     width: 160px;
     text-align: center;
     margin: 2px 2px 2px 2px;
-
 }
 
 .left-side .small-map {
@@ -323,7 +338,10 @@ input[readonly] {
     height: 500px;
 }
 .right-side #map-show #whole-map {
-    border: 2px solid #297aa3
+    border: 2px solid #297aa3;
+}
+.right-side #map-show {
+    visibility: hidden;
 }
 .right-side #legend {
     border-right: 2px solid #297aa3;
@@ -333,6 +351,17 @@ input[readonly] {
 
 .container #action-title{
     padding-top: 22px;
+}
+
+.flash-err {
+    background-color: antiquewhite;
+    font-style: italic;
+    text-align: center;
+}
+.flash-success {
+    background-color: palegreen;
+    font-style: italic;
+    text-align: center;
 }
 
 

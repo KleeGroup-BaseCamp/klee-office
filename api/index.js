@@ -3,6 +3,11 @@
 const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser');
+var flash = require('connect-flash');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+var ejs = require('ejs');
+
 var fs = require('fs');
 var util = require('util');
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flag : 'w'});
@@ -24,6 +29,10 @@ const API_PORT = process.env.PORT || 3000;
 
 const app = express();
 
+// views engine for renders
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 app.use(cors());
 app.use(bodyParser.json());
 // CHECK IF OK....
@@ -31,6 +40,19 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 // serve static page files
 app.use(express.static('../app'));
+
+// send flash messages to the user
+app.use(cookieParser('secret'));
+app.use(session({cookie: { maxAge: 60000 }}));
+app.use(flash());
+
+// views
+app.get('/localization', function(req, res){
+	res.render('tell-localization', { message: req.flash('error') });
+});
+app.get('/', function(req, res){
+	res.render('index', { message: req.flash('success') });
+});
 
 // people
 // map

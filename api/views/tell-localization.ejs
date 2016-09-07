@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <!-- title and meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="description" content="Tell my localization" />
+    <title>Explore Offices</title>
+    <!-- css -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- js -->
+    <script type="text/javascript" src="js/libraries/d3.min.js"></script>
+    <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/libraries/jquery.autocomplete.min.js"></script>
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="info-bar">
+        <div id="back-to-home">
+            <div id="home">
+                <a href="/"><label id="home-label">search</label></a>
+            </div>
+            <div id="location">
+                <a href="/localization"><label id="location-label">location</label></a>
+            </div>
+        </div>
+    </div>
+    <!-- /#info-bar -->
+    <header>
+        <div id="title" class="container">
+            <h1>Local Map</h1>
+            <h2>Klee Group</h2>
+        </div>
+    </header>
+
+    <!-- /header -->
+
+    <div id="main">
+        <div>
+            <% if (message) { %>
+            <p class="flash-err"><%= message %></p>
+            <% } %>
+        </div>
+        <div id="navigation-bar" class="container">
+            <h2 id="action-title" class="center">Renseigner ma localisation</h2>
+        </div>
+        <div class="two-columns">
+
+            <div class="left-side">
+                <h2 id="step-one">1/2: Choisir un étage</h2>
+                <br>
+                <table id="offices-chart">
+                    <thead class="floor">
+                    <tr>
+                        <th>
+                            Normandie
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                            Orléans
+                        </th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N4"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N4"><a>Etage 4 <br />(N 4)</a></p>
+                        </td>
+                        <td>
+                            <svg class="small-map" id="svg-O4"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="O4"><a>Etage 4 <br />(O 4)</a></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N3"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N3"><a>Etage 3 <br />(N 3)</a></p>
+                        </td>
+                        <td>
+                            <svg class="small-map" id="svg-O3"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="O3"><a>Etage 3 <br />(O 3)</a></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N2"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N2"><a>Etage 2 <br />(N 2)</a></p>
+                        </td>
+                        <td>
+                            <svg class="small-map" id="svg-O2"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="O2"><a>Etage 2 <br />(O 2)</a></p>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N1"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N1"><a>Etage 1 <br />(N 1)</a></p>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N0"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N0"><a>RDC<br/>(N 0)</a></p>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="office-map" class="right-side">
+                <h2 id="step-two">2/2: Cliquer sur un bureau</h2>
+                <div id="map-show">
+                    <table>
+                        <tr>
+                            <td>
+                                <div id="whole-map"><svg class="map"></svg></div>
+                            </td>
+                            <td id="legend">
+                                <h3>
+                                    Légende
+                                </h3>
+                                <svg width="30" height="15">
+                                    <rect width="30" height="15" style="fill:#ff9900" />
+                                </svg>
+                                <p>
+                                    Occupé
+                                </p>
+                                <br/>
+                                <svg width="30" height="15">
+                                    <rect width="30" height="15" style="fill:#99ff99" />
+                                </svg>
+                                <p>
+                                    Libre
+                                </p>
+                                <br/>
+                                <p id="zoom">Zoomer avec <br/>la molette</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="center invisible" id="loc-form">
+            <br />
+            <form action="/myLocalization" method="post">
+                <input class="disabled-field" type="text" id="office-name" name="office-name" value="" readonly /><br />
+                <input class="disabled-field" type="text" id="firstname" name="firstname" value="Marie-Pierre" readonly /><br />
+                <input class="disabled-field" type="text" id="lastname" name="lastname" value="SALVI" readonly /><br />
+                <input class="submit" id="#save-my-localisation" type="submit" value="Choisir"/>
+            </form>
+        </div>
+    </div>
+</div>
+<!--
+//////////////////////////////////////////////
+// js for plot map and select new office
+////////////////////////////////////////////// -->
+<script src="js/classie.js"></script>
+<script src="js/toggle.js"></script>
+<script src="js/globalMapControl.js"></script>
+<script type="text/javascript" src="js/autocomplete.js"></script>
+<script type="text/javascript" src="js/chooseFloor.js"></script>
+
+</body>
+</html>

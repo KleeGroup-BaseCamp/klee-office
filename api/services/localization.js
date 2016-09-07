@@ -14,6 +14,11 @@ const saveMyLocalization = (req, res) => {
     console.log('call of service to save my localization in DB');
     // debug
     console.log(req.body);
+    if(req.body['office-name'] === undefined || req.body['office-name'] === null
+    || req.body['office-name'] === "" ){
+        req.flash('error', 'Veuillez cliquer sur un bureau avant de valider.');
+        res.redirect('/localization');
+    }
     State.find({where: {
         name: "A valider"
     }}).then(
@@ -57,7 +62,8 @@ const saveMyLocalization = (req, res) => {
                     });
                 });
         });
-   // needs improvement with error or success message before redirecting
+   // Flash message + redirect
+    req.flash('success', 'Votre changement de localisation a bien &eacutet&eacute transmis. Il doit maintenant etre valid&eacute par un manager');
     res.redirect('/');
 };
 

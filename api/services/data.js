@@ -38,12 +38,21 @@ const populate = (req, res) => {
 
         peopleFile.forEach(function(data, index){
                 var d = data[1];
-                var company = d.company.toString();
-                var dpt = d.department.toString();
+                var company;
+                if(d.company !== undefined && d.company !== null && d.company !== ""){
+                    company = d.company.toString();
+                }
+                var dpt;
+                if(d.department !== null && d.department !== undefined && d.department !== ""){
+                    dpt = d.department.toString();
+                }
                 var peopleName = d.cn.toString();
                 var nameParts = peopleName.split(" ");
-                var mail = d.mail.toString();
-
+                if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
+                    mail = d.mail.toString();
+                } else {
+                    mail = "";
+                }
                 // ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
                 if (d.physicalDeliveryOfficeName) {
                     var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
@@ -60,21 +69,25 @@ const populate = (req, res) => {
                 if(offices.indexOf(office) < 0 && office !== null && office !== undefined && office !== ""){
                     offices.push(office);
                 }
-                var pers = Person.build({firstname: nameParts[0], lastname: nameParts[1], mail: mail});
-                pers.save()
-                    .error(function (err) {
-                        console.log(err + " ---------" + elem);
-                    }).then(function(newPerson){
-                        console.log(nameParts[0] + nameParts[1]);
-                        var perId = newPerson.dataValues.per_id;
-                        var mov = Movings.build({PersonPerId: perId});
-                        mov.save()
-                            .error(function (err) {
-                                console.log(err + " ---------" + elem);
-                            })
-                    });
-            }
-        );
+                if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
+                && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
+                    var pers = Person.build({firstname: nameParts[0], lastname: nameParts[1], mail: mail});
+                    pers.save()
+                        .error(function (err) {
+                            console.log(err + " ---------" + elem);
+                        }).then(function(newPerson){
+                            console.log(nameParts[0] + nameParts[1]);
+                            var perId = newPerson.dataValues.per_id;
+                            var mov = Movings.build({PersonPerId: perId});
+                            mov.save()
+                                .error(function (err) {
+                                    console.log(err + " ---------" + elem);
+                                }).then(function(){
+
+                                });
+                        });
+                }
+        });
 
         companies.forEach(function(elem, index){
             var comp = Company.build({name : elem});
@@ -124,7 +137,7 @@ const populate = (req, res) => {
                     }
                 });
         });
-});
+    });
 
 
 

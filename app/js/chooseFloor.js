@@ -1,11 +1,11 @@
 /**
- * Created by msalvi on 19/08/2016.
+ * Created by msalvi
  */
+
 /**
  * plot map on the selector
  */
 (function(window){
-
   var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
     var addEvtListenerOn = function(type, mapNames, where){
 

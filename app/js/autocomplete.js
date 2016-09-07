@@ -97,7 +97,7 @@ $(function(){
                         mapControl.eraseMap();
 
                         mapControl.mapName = mapName;
-                        mapControl.mapPlot(mapName, function() {
+                        mapControl.mapPlot(mapName, false, function() {
                             table = d3.select("#tables")
                                         .select("#" + splitID[1]);
                             table.append("image")
@@ -114,7 +114,7 @@ $(function(){
                         d3.select(".map").select("svg").remove();
                         mapControl.existMap = false;
                         mapControl.mapName = mapName;
-                        mapControl.mapPlot(mapName, function() {
+                        mapControl.mapPlot(mapName, false, function() {
                             table = d3.select("#tables")
                                         .select("#" + splitID[1]);
                             table.append("image")
