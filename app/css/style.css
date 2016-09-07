@@ -3,7 +3,7 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home {
+#home, #location {
     width: 60px;
     height: 60px;
     padding-top: 10px;
@@ -19,6 +19,22 @@
     background-size: 40px 40px;
     text-indent: -9999px;
     cursor: pointer;
+}
+#location label {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url("../img/loc01.png") 0px 0px;
+    background-size: 30px 40px;
+    text-indent: -9999px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+}
+#home {
+    float: left;
+}
+#location {
+    display: inline-block;
 }
 
 #title {
@@ -240,6 +256,114 @@
     display: inline-block;
     margin-left: 0px;
 }
+
+
+
+.left-side {
+    float: left;
+    background-color: white;
+    width: 50%;
+    min-width: 800px;
+    height: 900px;
+}
+
+.right-side {
+    float: right;
+    background-color: white;
+    width: 50%;
+    height: 900px;
+}
+#step-one {
+    color: #246b8f;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+#step-two{
+    color: #6d6e71;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
+input[readonly] {
+    background-color: darkgrey;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+#loc-form {
+    padding: 15px 15px 15px 15px;
+}
+.disabled-field {
+    border-radius: 4px;
+    border: none;
+    height: 25px;
+    width: 160px;
+    text-align: center;
+    margin: 2px 2px 2px 2px;
+}
+
+.left-side .small-map {
+    width: 268px;
+    height: 161px;
+    cursor: default;
+}
+
+.left-side .floor p {
+    font-size: 18px;
+    margin-left: 0px;
+    text-align: center;
+    cursor: pointer;
+}
+.left-side .floor p :hover {
+    text-decoration: underline;
+}
+.left-side .floor {
+    font-size: 18px;
+}
+
+.right-side table {
+    width: 100%;
+}
+.right-side #map-show .map {
+    width: 100%;
+    height: 500px;
+}
+.right-side #map-show #whole-map {
+    border: 2px solid #297aa3;
+}
+.right-side #map-show {
+    visibility: hidden;
+}
+.right-side #legend {
+    border-right: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;
+    border-top: 2px solid #297aa3;
+}
+
+.container #action-title{
+    padding-top: 22px;
+}
+
+.flash-err {
+    background-color: antiquewhite;
+    font-style: italic;
+    text-align: center;
+}
+.flash-success {
+    background-color: palegreen;
+    font-style: italic;
+    text-align: center;
+}
+
 
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }

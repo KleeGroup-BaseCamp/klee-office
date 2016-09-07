@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <!-- title and meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="description" content="A chart with the different floors of Klee and their main departments" />
+    <title>Explore Offices</title>
+    <!-- css -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- js -->
+    <script type="text/javascript" src="js/libraries/d3.min.js"></script>
+    <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/libraries/jquery.autocomplete.min.js"></script>
+</head>
+
+<body>
+<div id="wrapper">
+    <div id="info-bar">
+        <div id="back-to-home">
+            <div id="home">
+                <a href="/"><label id="home-label">search</label></a>
+            </div>
+            <div id="location">
+                <a href="/localization"><label id="location-label">location</label></a>
+            </div>
+        </div>
+    </div>
+    <!-- /#info-bar -->
+    <header>
+        <div id="title" class="container">
+            <h1>Local Map</h1>
+            <h2>Klee Group</h2>
+        </div>
+
+        <div id="navigation-bar" class="container">
+            <form id="search" onsubmit="return false">
+                <div id="label">
+                    <label for="search-terms" id="search-label">search</label>
+                </div>
+                <div id="input">
+                    <input type="text" name="search-terms" id="search-terms" placeholder="Rechercher un collègue...">
+                </div>
+            </form>
+        </div>
+    </header>
+    <!-- /header -->
+
+    <div id="main">
+        <div>
+            <% if (message) { %>
+            <p class="flash-success"><%- message %></p>
+            <% } %>
+        </div>
+        <div class="container">
+            <div id="navigation-chart">
+                <br>
+                <table id="offices-chart">
+                    <thead class="floor">
+                    <tr>
+                        <th>
+                            Normandie
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                            Orléans
+                        </th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N4"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N4"><a href="#!">Etage 4 (N 4)</a></p>
+                        </td>
+                        <td>
+                            <svg class="small-map" id="svg-O4"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="O4"><a href="#!">Etage 4 (O 4)</a></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N3"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N3"><a href="#!">Etage 3 (N 3)</a></p>
+                        </td>
+                        <td>
+                            <svg class="small-map" id="svg-O3"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="O3"><a href="#!">Etage 3 (O 3)</a></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N2"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N2"><a href="#!">Etage 2 (N 2)</a></p>
+                        </td>
+                        <td>
+                            <svg class="small-map" id="svg-O2"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="O2"><a href="#!">Etage 2 (O 2)</a></p>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N1"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N1"><a href="#!">Etage 1 (N 1)</a></p>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <svg class="small-map" id="svg-N0"></svg>
+                        </td>
+                        <td class="floor">
+                            <p id="N0"><a href="#!">RDC<br/>(N 0)</a></p>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- show main departments or info about people -->
+            <div class="tooltip"></div>
+            <!-- show supplemental messages-->
+            <div id="message">
+                <table id="info-chart">
+                    <tr>
+                        <td class="chartTitle">Mail:</td><td class="content" id="mail"></td>
+                        <td id="tableID"></td>
+                    </tr>
+                    <tr><td class="chartTitle">Site:</td><td class="content" id="site"></td></tr>
+                    <tr><td class="chartTitle">Bat:</td><td class="content" id="building"></td></tr>
+                    <tr><td class="chartTitle">Etage:</td><td class="content" id="floor"></td></tr>
+                </table>
+            </div>
+            <!-- show main maps-->
+            <div id="map-show">
+                <table>
+                    <tr>
+                        <td>
+                            <div id="whole-map"><svg class="map"></svg></div>
+                        </td>
+                        <td id="legend">
+                            <h3>
+                                Légende
+                            </h3>
+                            <svg width="30" height="15">
+                                <rect width="30" height="15" style="fill:#ff9900" />
+                            </svg>
+                            <p>
+                                Occupé
+                            </p>
+                            <br/>
+                            <svg width="30" height="15">
+                                <rect width="30" height="15" style="fill:#99ff99" />
+                            </svg>
+                            <p>
+                                Libre
+                            </p>
+                            <br/>
+                            <p id="zoom">Zoomer avec <br/>la molette</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- #main -->
+            <footer>
+                <div class="container">
+                        <span>
+                            &copy; 2016, Zekun ZHANG, Marie-Pierre SALVI, Klee Group<br>
+                            <a href="http://www.kleegroup.com" target="_blank">kleegroup.com</a>
+                        </span>
+                </div>
+            </footer>
+            <!-- /footer -->
+        </div>
+    </div>
+</div>
+<!-- /#wrapper -->
+<!--
+//////////////////////////////////////////////
+// js for plot map and search
+////////////////////////////////////////////// -->
+<script src="js/classie.js"></script>
+<script src="js/toggle.js"></script>
+<script src="js/globalMapControl.js"></script>
+<script type="text/javascript" src="js/clickAndPlot.js"></script>
+<script type="text/javascript" src="js/autocomplete.js"></script>
+<script type="text/javascript" src="js/justPlotMap.js"></script>
+</body>
+
+</html>

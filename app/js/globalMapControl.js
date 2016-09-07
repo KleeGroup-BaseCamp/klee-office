@@ -5,7 +5,7 @@ var	server= "http://local-map/"
 var mapControl = {
 existMap: false,
 mapName: null,
-mapPlot: function(name, callback) {
+mapPlot: function(name, isChoosingFloor, callback) {
 	// add svg map to html
 	d3.xml( server + "maps/" + name + ".svg", 
 	function(error, documentFragment) {
@@ -125,6 +125,22 @@ mapPlot: function(name, callback) {
 			////////////////////////////////
 			allAvailables = d3.select("#tables").selectAll(".available");
 			allAvailables.selectAll("rect").attr("fill", "#99ff99");
+
+			/**
+			 * add event listener on click on table
+			 * to choose it as its new office
+			 */
+			if(isChoosingFloor === true){
+				var allTables = d3.select("#tables")
+					.selectAll("g")
+					.style("cursor", "pointer")
+					.on("click", function(){
+						console.log(d3.event.target.parentNode.id);
+						var officeName = d3.event.target.parentNode.id;
+						d3.select("#office-name")
+							.attr("value", officeName);
+					});
+			}
 
 			callback();
 		});
