@@ -42,6 +42,7 @@
 
            mapControl.eraseMap();
            d3.select("#offices-chart").style("visibility", "hidden");
+           d3.select("#loc-form").style("visibility", "visible");
            d3.select("#step-one").style("color", "#6d6e71");
            d3.select("#step-two").style("color", "#246b8f");
 
@@ -50,12 +51,16 @@
                 mapControl.mapName = name;
                 mapControl.mapPlot(mapControl.mapName, true, function() {});
                 mapControl.existMap = true;
+                d3.select(".left-side").style("height", "550px");
+                d3.select(".right-side").style("height", "550px");
             }
             // if other map, delete and show mapN0
             else if (mapControl.mapName !== name) {
                 d3.select(".map").select("svg").remove();
                 mapControl.mapName = name;
                 mapControl.mapPlot(mapControl.mapName, true, function() {});
+                d3.select(".left-side").style("height", "550px");
+                d3.select(".right-side").style("height", "550px");
             }
             if (name === "N0"){
                 $('<h1 class="N0">RDC<br/>(N 0)</h1>').prependTo($('#legend'));
@@ -70,13 +75,14 @@
      * back to step one
      */
     document.querySelector('#step-one').addEventListener("click", function(){
-        d3.select("#map-show")
-            .style("visibility", "hidden");
+        d3.select("#map-show").style("visibility", "hidden");
+        d3.select("#loc-form").style("visibility", "hidden");
         d3.select("#offices-chart").style("visibility", "visible");
         d3.select("#step-one").style("color", "#246b8f");
         d3.select("#step-two").style("color", "#6d6e71");
+        d3.select(".left-side").style("height", "900px");
+        d3.select(".right-side").style("height", "900px");
     });
 
-    //                var allTables = d3.select("#tables").selectAll('g');
 
 }(window));

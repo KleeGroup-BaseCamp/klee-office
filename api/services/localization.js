@@ -19,7 +19,7 @@ const saveMyLocalization = (req, res) => {
     }}).then(
         function(state){
             var conf = Configuration.build({
-                name: req.body.firstname + " " + req.body.lastname,
+                name: "Nouvelle localisation pour " + req.body.firstname + " " + req.body.lastname,
                 creator: req.body.firstname + " " + req.body.lastname,
                 StateStaId: state.dataValues.sta_id,
                 date: Date.now()
