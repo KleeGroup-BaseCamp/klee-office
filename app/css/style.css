@@ -3,7 +3,7 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home, #location {
+#home, #location, #admin {
     width: 60px;
     height: 60px;
     padding-top: 10px;
@@ -30,10 +30,20 @@
     cursor: pointer;
     background-repeat: no-repeat;
 }
+#admin label {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url("../img/lock-open.png") 0px 0px;
+    background-size: 30px 40px;
+    text-indent: -9999px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+}
 #home {
     float: left;
 }
-#location {
+#location, #admin {
     display: inline-block;
 }
 
@@ -364,7 +374,36 @@ input[readonly] {
     text-align: center;
 }
 
+.left-side .rects, .left-side #search, .right-side .rects, .right-side #search {
+    padding-left: 100px;
+}
 
+.left-side #search {
+    visibility: hidden;
+}
+
+#input #validator-search {
+    margin-left: 72px;
+    width: 300px;
+}
+.left-side #input, .right-side #input {
+    height: 32px;
+}
+.left-side #label label, .right-side #label label {
+    width: 30px;
+    height: 30px;
+    background: url("../img/search01.png") 0px 0px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.left-group, .right-group {
+    padding-left: 200px;
+}
+
+#level {
+    margin-left: 9px;
+}
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }

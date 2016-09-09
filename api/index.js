@@ -24,6 +24,7 @@ const mapServices = require('./services/map.js');
 const dataServices = require('./services/data.js');
 const dataAssociationServices = require('./services/dataAssociations.js');
 const localizationServices = require('./services/localization.js');
+const adminServices = require('./services/admin.js');
 
 const API_PORT = process.env.PORT || 3000;
 
@@ -47,12 +48,19 @@ app.use(session({cookie: { maxAge: 60000 }}));
 app.use(flash());
 
 // views
-app.get('/localization', function(req, res){
-	res.render('tell-localization', { message: req.flash('error') });
-});
+//home
 app.get('/', function(req, res){
 	res.render('index', { message: req.flash('success') });
 });
+// employee localization
+app.get('/localization', function(req, res){
+	res.render('tell-localization', { message: req.flash('error') });
+});
+// admin screen
+app.get('/admin', function(req, res){
+	res.render('admin', { message: req.flash('success') });
+});
+
 
 // people
 // map
@@ -65,6 +73,11 @@ app.get('/maps/:name', mapServices.getMap);
 app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
 app.post('/myLocalization', localizationServices.saveMyLocalization);
+app.get('/getAllCompanies', adminServices.getAllCompanies);
+app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
+app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
+app.get('/getPeopleByCompany/:id', adminServices.getPeopleByCompany);
+app.post('/saveValidateur', adminServices.saveValidateur);
 
 //app.get('/maps/:number', mapServices.getMapByNumber);
 
