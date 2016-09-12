@@ -10,6 +10,26 @@ var Configuration = models.Configuration;
 var Moving = models.Moving;
 var State = models.State;
 
+/**
+ * get the current office of a person
+ * based on the current configuration
+ */
+const getCurrentOfficeName = (req,res) =>{
+   // console.log(req.params);
+    console.log(req.params);
+   models.sequelize.query('SELECT offices.name from offices ' +
+        'join movings as mov on mov.newOfficeOffId = offices.off_id '+
+        'join configurations as conf on conf.con_id = mov.ConfigurationConId '+
+        'join people as peo on peo.per_id = mov.PersonPerId ' +
+        'where conf.name = \'Configuration premiere\' ' +
+        'and peo.firstname = :first and peo.lastname = :last',
+        { replacements: {first: req.params.first, last: req.params.last}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(name){
+            console.log(name)
+           res.json(name);
+        });
+}
+
 const saveMyLocalization = (req, res) => {
     console.log('call of service to save my localization in DB');
     // debug
@@ -69,5 +89,6 @@ const saveMyLocalization = (req, res) => {
 
 
 module.exports = {
-    saveMyLocalization
+    saveMyLocalization,
+    getCurrentOfficeName
 }

@@ -77,6 +77,7 @@ app.get('/maps/:name', mapServices.getMap);
 app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
 app.post('/myLocalization', localizationServices.saveMyLocalization);
+app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentOfficeName);
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);

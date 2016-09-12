@@ -63,76 +63,44 @@
                             Normandie
                         </th>
                         <th>
-                        </th>
-                        <th>
                             Orléans
                         </th>
                     </tr>
                     </thead>
                     <tr>
-                        <td>
-                            <svg class="small-map" id="svg-N4"></svg>
+                        <td class="floor">
+                            <p id="N4"><a>Etage 4 : (N 4)</a></p>
                         </td>
                         <td class="floor">
-                            <p id="N4"><a>Etage 4 <br />(N 4)</a></p>
-                        </td>
-                        <td>
-                            <svg class="small-map" id="svg-O4"></svg>
-                        </td>
-                        <td class="floor">
-                            <p id="O4"><a>Etage 4 <br />(O 4)</a></p>
+                            <p id="O4"><a>Etage 4 : (O 4)</a></p>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <svg class="small-map" id="svg-N3"></svg>
+                        <td class="floor">
+                            <p id="N3"><a>Etage 3 : (N 3)</a></p>
                         </td>
                         <td class="floor">
-                            <p id="N3"><a>Etage 3 <br />(N 3)</a></p>
-                        </td>
-                        <td>
-                            <svg class="small-map" id="svg-O3"></svg>
-                        </td>
-                        <td class="floor">
-                            <p id="O3"><a>Etage 3 <br />(O 3)</a></p>
+                            <p id="O3"><a>Etage 3 : (O 3)</a></p>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <svg class="small-map" id="svg-N2"></svg>
+                        <td class="floor">
+                            <p id="N2"><a>Etage 2 : (N 2)</a></p>
                         </td>
                         <td class="floor">
-                            <p id="N2"><a>Etage 2 <br />(N 2)</a></p>
+                            <p id="O2"><a>Etage 2 : (O 2)</a></p>
                         </td>
-                        <td>
-                            <svg class="small-map" id="svg-O2"></svg>
-                        </td>
+                    </tr>
+                    <tr>
                         <td class="floor">
-                            <p id="O2"><a>Etage 2 <br />(O 2)</a></p>
+                            <p id="N1"><a>Etage 1 : (N 1)</a></p>
                         </td>
                         <td>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <svg class="small-map" id="svg-N1"></svg>
-                        </td>
                         <td class="floor">
-                            <p id="N1"><a>Etage 1 <br />(N 1)</a></p>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <svg class="small-map" id="svg-N0"></svg>
-                        </td>
-                        <td class="floor">
-                            <p id="N0"><a>RDC<br/>(N 0)</a></p>
-                        </td>
-                        <td>
+                            <p id="N0"><a>RDC : (N 0)</a></p>
                         </td>
                         <td>
                         </td>
@@ -177,10 +145,13 @@
         <div class="center invisible" id="loc-form">
             <br />
             <form action="/myLocalization" method="post">
+                <label for="office-name">Bureau actuel</label>
+                <input class="disabled-field" type="text" id="former-office" name="former-office" value="" readonly /><br />
+                <label for="office-name">Nouveau bureau</label>
                 <input class="disabled-field" type="text" id="office-name" name="office-name" value="" readonly /><br />
-                <input class="disabled-field" type="text" id="firstname" name="firstname" value="Marie-Pierre" readonly /><br />
-                <input class="disabled-field" type="text" id="lastname" name="lastname" value="SALVI" readonly /><br />
-                <input class="submit" id="#save-my-localisation" type="submit" value="Choisir"/>
+                <input class="disabled-field hidden" type="text" id="firstname" name="firstname" value="Marie-Pierre" readonly />
+                <input class="disabled-field hidden" type="text" id="lastname" name="lastname" value="SALVI" readonly />
+                <input class="submit" id="#save-my-localisation" type="submit" value="Valider"/>
             </form>
         </div>
     </div>
