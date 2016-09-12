@@ -128,7 +128,7 @@ const populate = (req, res) => {
                         var today = Date.now();
                         var validee = "Validee";
                         // insert current configuration
-                        models.sequelize.query('INSERT into Configurations(\'name\', \'creator\', \'date\', \'StateStaId\', \'createdAt\', \'updatedAt\') ' +
+                        models.sequelize.query('INSERT into Configurations(\'name\', \'creator\', \'dateCreation\', \'StateStaId\', \'createdAt\', \'updatedAt\') ' +
                             'Values (\'Configuration premiere\', \'System\', \':date\', :id, :date, :date)',
                             { replacements: { date: today, validee: validee, id: id}, type: models.sequelize.QueryTypes.INSERT }
                         ).then(function(states) {

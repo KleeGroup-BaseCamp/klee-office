@@ -25,6 +25,7 @@ const dataServices = require('./services/data.js');
 const dataAssociationServices = require('./services/dataAssociations.js');
 const localizationServices = require('./services/localization.js');
 const adminServices = require('./services/admin.js');
+const confServices = require('./services/configurations.js');
 
 const API_PORT = process.env.PORT || 3000;
 
@@ -60,7 +61,10 @@ app.get('/localization', function(req, res){
 app.get('/admin', function(req, res){
 	res.render('admin', { message: req.flash('success') });
 });
-
+// admin screen
+app.get('/configurations', function(req, res){
+	res.render('conf-list', { message: req.flash('success') });
+});
 
 // people
 // map
@@ -78,6 +82,13 @@ app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
 app.get('/getPeopleByCompany/:id', adminServices.getPeopleByCompany);
 app.post('/saveValidateur', adminServices.saveValidateur);
+app.get('/getAllMovingsByConfIdCount/:id', confServices.getAllMovingsByConfIdCount);
+app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMovingsByConId);
+app.delete('/deleteConfiguration/:id', confServices.deleteConfiguration);
+app.get('/getMovingsListByConfId/:id', confServices.getMovingsListByConfId);
+app.put('/addNewConfiguration', confServices.addNewConfiguration);
+
+
 
 //app.get('/maps/:number', mapServices.getMapByNumber);
 

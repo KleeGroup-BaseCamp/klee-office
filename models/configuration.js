@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
         con_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         name: DataTypes.STRING,
         creator: DataTypes.STRING,
-        date: DataTypes.DATE
+        dateCreation: DataTypes.DATE
     }, {
         classMethods: {
             associate: function (models) {
