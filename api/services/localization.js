@@ -17,16 +17,16 @@ var State = models.State;
 const getCurrentOfficeName = (req,res) =>{
    // console.log(req.params);
     console.log(req.params);
-   models.sequelize.query('SELECT offices.name from offices ' +
+   models.sequelize.query('SELECT offices.name, offices.off_id from offices ' +
         'join movings as mov on mov.newOfficeOffId = offices.off_id '+
         'join configurations as conf on conf.con_id = mov.ConfigurationConId '+
         'join people as peo on peo.per_id = mov.PersonPerId ' +
         'where conf.name = \'Configuration premiere\' ' +
         'and peo.firstname = :first and peo.lastname = :last',
         { replacements: {first: req.params.first, last: req.params.last}, type: models.sequelize.QueryTypes.SELECT}
-    ).then(function(name){
-            console.log(name)
-           res.json(name);
+    ).then(function(office){
+            console.log(office)
+           res.json(office);
         });
 }
 
@@ -71,11 +71,9 @@ const saveMyLocalization = (req, res) => {
                             ' \'newOfficeOffId\', \'OfficeOffId\') ' +
                             'Values(:today, :today, :conId ,' +
                             '(select per_id from people where firstname= :firstname and lastname = :lastname), ' +
-                            '(select newOfficeOffId from movings where PersonPerId = ' +
-                            '(select per_id from people where firstname= :firstname and lastname = :lastname) ' +
-                            'and formerOfficeOffId is null)' +
+                            ':formerOffId' +
                             ', :offId, :offId) ',
-                            { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, offId: offid }, type: models.sequelize.QueryTypes.INSERT}
+                            { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, formerOffId: req.body['former-office-id'], offId: offid }, type: models.sequelize.QueryTypes.INSERT}
                         ).then(function(moving){
                                 console.log(moving)
                             });

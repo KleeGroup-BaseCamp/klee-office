@@ -14,14 +14,14 @@
             var everyMap = [];
             everyMap  = document.getElementsByClassName("small-map");
             // if maps are already there, remove them
-            Array.from(everyMap).forEach( function(element){
+            $.each(Array.from(everyMap), function(index, element){
                 if(element.hasChildNodes()){
-                    element.childNodes.forEach(function(node){
+                    $.each(element.childNodes, function(index, node){
                         node.remove();
                     });
                 }
             });
-            mapNames.forEach( function(element){
+            $.each(mapNames, function(index, element){
                 mapControl.mapName = element;
                 mapControl.smallMapPlot(element, function() {});
             });
@@ -38,7 +38,7 @@
     /**
      * on floor name : click to choose a floor and plot it
      */
-    mapNames.forEach(function(name){
+    $.each(mapNames, function(index, name){
         document.querySelector('#'+name).addEventListener("click", function(){
            mapControl.eraseMap();
            d3.select("#offices-chart").style("visibility", "hidden");
@@ -71,6 +71,7 @@
             }
             d3.json( server+"currentOfficeName/Thomas/GALLON", function(error, data) {
                 d3.select("#former-office").attr("value", data[0].name);
+                d3.select("#former-office-id").attr("value", data[0].off_id);
             });
         });
     });

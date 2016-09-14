@@ -105,7 +105,7 @@ const saveValidateur = (req, res) => {
             }).then(function(poles){
                 if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
                     && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== "" && one === false) {
-                    poles.forEach(function (pole) {
+                    $.each(poles, function(i, pole){
                         Manager.upsert({
                                 firstname: req.body['firstname'],
                                 lastname: req.body['lastname'],
@@ -230,7 +230,8 @@ const updateValidateur = (req, res) =>
         'from poles '+
         'left join managers on poles.pol_id = managers.PolePolId ' +
         'left join companies on companies.com_id = poles.CompanyComId ' +
-        'left join statuses as stu on stu.stu_id = managers.StatusStuId '
+        'left join statuses as stu on stu.stu_id = managers.StatusStuId ' +
+        'order by companies.name desc, poles.name desc '
         , { replacements: { },
             type: models.sequelize.QueryTypes.SELECT
         })

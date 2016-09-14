@@ -127,7 +127,7 @@ const addNewConfiguration = (req, res) =>
                             creator: req.body.creator,
                             dateCreation: Date.now()
                         }).then(function (conf) {
-                            movings.forEach(function (elem) {
+                            $.each(movings, function(i, elem){
                                 Moving.create({
                                     newOfficeOffId: elem.newOfficeOffId,
                                     OfficeOffId: elem.OfficeOffId,

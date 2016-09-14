@@ -63,8 +63,11 @@ mapPlot: function(name, isChoosingFloor, callback) {
 			var dataset = data,
 				table,
 				tooltip = d3.select(".tooltip");
-			
-			dataset.forEach(function(data, i) {
+
+
+
+
+			$.each(dataset, function(i, data){
 				// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET", 
 				//					{ "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
 				// only need data[1]
@@ -191,7 +194,7 @@ smallMapPlot: function(name, callback) {
 				var dataset = data,
 					table;
 
-				dataset.forEach(function(data, i) {
+				$.each(dataset, function(i, data){
 					// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET",
 					//					{ "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
 					// only need data[1]
@@ -230,7 +233,7 @@ smallMapPlot: function(name, callback) {
 // justPlotMap.js
 // show small maps' tooltip: departements of small map
 buildTooltips: function(names) {
-	names.forEach(function(element){
+	$.each(names, function(i, element){
 		// get the departments in one map
 		d3.xml(server + "maps/" + element + ".svg",
 			function(error, documentFragment) {
@@ -245,7 +248,7 @@ buildTooltips: function(names) {
 
 					// for each mapName, we will produce the tooltip
 					// containing the main departments situated in this floor
-					dataset.forEach(function(data, i) {
+					$.each(dataset, function(i, data){
 						// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET",
 						//					{ "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
 
@@ -271,7 +274,7 @@ buildTooltips: function(names) {
 					//build the associated tooltip string
 					//if array not empty
 					if(departmentNames !== undefined && departmentNames.length > 0){
-						departmentNames.forEach(function(name){
+						$.each(departmentNames, function( i, name){
 							if(name !== null && name !== undefined && name !== ""){
 									tooltip += "&bull; " + name + "<br />"; // "&bull;" is point symbol of html
 							}
@@ -331,9 +334,11 @@ eraseMap: function() {
 	var everyMap = [];
 	everyMap = document.getElementsByClassName("small-map");
 	// if small maps are already there, remove them
-	Array.from(everyMap).forEach(function (element) {
+
+
+	$.each(Array.from(everyMap), function(i, element){
 		if (element.hasChildNodes()) {
-			element.childNodes.forEach(function (node) {
+			$.each(element.childNodes, function(i, node){
 				node.remove();
 			});
 		}
@@ -345,7 +350,8 @@ eraseMap: function() {
 
 	var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", ""];
 
-	mapNames.forEach(function(name){
+
+	$.each(mapNames, function(i, name){
 		// erase floor title of the legend
 		if(document.getElementsByClassName(name).length >0
 			&& document.getElementsByClassName(name) !== null
