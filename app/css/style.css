@@ -404,6 +404,82 @@ input[readonly] {
 #level {
     margin-left: 9px;
 }
+
+.admin-list td {
+    text-align: center;
+    width: 225px;
+    height: 40px;
+    vertical-align: middle;
+}
+.empty {
+    font-style: italic;
+}
+
+.admin-list label, .admin-list label  {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url("../img/plus.png") 0px 0px;
+    background-size: 20px 20px;
+    text-indent: -9999px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.list table tr:nth-child(odd) {
+    background-color: #d7d7d7;
+}
+
+.list {
+    margin-left: auto;
+    margin-right: auto;
+    width: 950px;
+ }
+
+.admin #search {
+    position: absolute;
+    float: left;
+    width: 60px;
+    height: 60px;
+    margin-top: -16px;
+    margin-left: -20px;
+}
+
+.admin #input #validator-search {
+    margin-left: 0px;
+    width: 175px;
+}
+.admin #input {
+    height: 32px;
+}
+.admin #input input {
+    font-size: 12px;
+}
+.admin #label label {
+    width: 30px;
+    height: 30px;
+    background: url("../img/search01.png") 0px 0px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 30px;
+
+}
+.admin-list .disabled-field {
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+    margin: 0;
+}
+.none {
+    display: none;
+}
+
+.none form{
+    margin-top: 6px;
+}
+
+
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }

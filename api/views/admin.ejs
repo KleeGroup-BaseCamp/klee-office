@@ -53,57 +53,41 @@
         <div id="navigation-bar" class="container">
             <h2 id="action-title" class="center">Administration</h2>
         </div>
-        <div class="two-columns">
+        <div class="list">
+            <table>
+                <thead>
+                <tr class="table-content">
+                    <th>
+                        Société
+                    </th>
+                    <th>
+                        Service / Pôle
+                    </th>
+                    <th>
+                        Validateur 1
+                    </th>
+                    <th>
+                        Validateur 2
+                    </th>
+                    <th class="none">
 
-            <div class="left-side">
-                <h2 id="step-one">Renseigner un validateur de niveau 1</h2>
-                <br>
-                <div class="left-group">
-                    <div id="left" class="rects"></div>
-                    <br />
-                    <form id="search" onsubmit="return false">
-                        <div id="label">
-                            <label for="search-terms" id="search-label">search</label>
-                        </div>
-                        <div id="input">
-                            <input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-            <div class="right-side">
-                <h2 id="step-two">Renseigner un validateur de niveau 2</h2>
-                <br>
-                <div class="right-group">
-                    <div id="right" class="rects"></div>
-                    <br />
-                </div>
-            </div>
-            <div class="center invisible" id="val-form">
-                <br />
-                <form action="/saveValidateur" method="post">
-                    <input class="disabled-field" type="text" id="level" name="level" value="" readonly />
-                    <input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly /><br />
-                    <input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly /><br />
-                    <input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly /><br />
-                    <input class="disabled-field" type="text" id="mail" name="mail" value="" readonly /><br />
-                    <input class="submit" id="#save-my-localisation" type="submit" value="Choisir"/>
-                </form>
-            </div>
+                    </th>
+                </tr>
+                </thead>
+            </table>
         </div>
     </div>
 </div>
 
 
-    <!-- //////////////////////////////////////////////
-    // js for plot map and search
-    ////////////////////////////////////////////// -->
-    <script src="js/classie.js"></script>
-    <script src="js/toggle.js"></script>
-    <script src="js/admin.js"></script>
-    <script src="js/autocomplete.js"></script>
-    <script type="text/javascript" src="js/buildAdminScreen.js"></script>
+<!-- //////////////////////////////////////////////
+// js for plot map and search
+////////////////////////////////////////////// -->
+<script src="js/classie.js"></script>
+<script src="js/toggle.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/autocomplete.js"></script>
+<script type="text/javascript" src="js/buildAdminScreen.js"></script>
 
 
 </body>

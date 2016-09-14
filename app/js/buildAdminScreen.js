@@ -22,13 +22,10 @@
             .attr("value, ");
     }
     window.addEventListener("load", function(){
-        preparePlot()
-        // level
-        d3.select("#level")
-            .attr("value", "Niveau 1");
-        adminControl.plotList(true);
+        adminControl.plotValidatorsList();
     });
-    var stepOne = document.getElementById("step-one");
+
+    /*var stepOne = document.getElementById("step-one");
     stepOne.addEventListener("click", function(){
         // title colors
         d3.select("#step-one").style("color", "#246b8f");
@@ -53,5 +50,5 @@
         d3.select("#level")
             .attr("value", "Niveau 2");
         adminControl.plotList(false);
-    });
+    });*/
 }(window));
