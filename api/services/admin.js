@@ -105,7 +105,7 @@ const saveValidateur = (req, res) => {
             }).then(function(poles){
                 if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
                     && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== "" && one === false) {
-                    $.each(poles, function(i, pole){
+                    poles.forEach(function(pole){
                         Manager.upsert({
                                 firstname: req.body['firstname'],
                                 lastname: req.body['lastname'],
