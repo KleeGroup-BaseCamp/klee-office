@@ -36,7 +36,7 @@ const populate = (req, res) => {
 
     var doInserts = new Promise(function(callback){
 
-        $.each(peopleFile, function(index, data){
+        peopleFile.forEach(function(data, index){
                 var d = data[1];
                 var company;
                 if(d.company !== undefined && d.company !== null && d.company !== ""){
@@ -89,21 +89,21 @@ const populate = (req, res) => {
                 }
         });
 
-        $.each(companies, function(index, elem){
+        companies.forEach(function(elem, index){
             var comp = Company.build({name : elem});
             comp.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
                 });
         });
-        $.each(departments, function(index, elem){
+        departments.forEach(function(elem, index){
             var dpt = Pole.build({name : elem});
             dpt.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
                 });
         });
-        $.each(offices, function(index, elem){
+        offices.forEach(function(elem, index){
             var off = Office.build({name : elem});
             off.save()
                 .error(function (err) {
