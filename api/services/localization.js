@@ -43,11 +43,12 @@ const saveMyLocalization = (req, res) => {
         name: "A valider"
     }}).then(
         function(state){
+            var date = new Date();
             var conf = Configuration.build({
-                name: "Nouvelle localisation pour " + req.body.firstname + " " + req.body.lastname,
+                name: "Nouvelle localisation pour " + req.body.firstname + " " + req.body.lastname + " " + date.toDateString(),
                 creator: req.body.firstname + " " + req.body.lastname,
                 StateStaId: state.dataValues.sta_id,
-                date: Date.now()
+                dateCreation: date.toDateString()
             });
             conf.save()
                 .error(function (err) {

@@ -90,6 +90,7 @@ app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMovingsByConId);
 app.delete('/deleteConfiguration/:id', confServices.deleteConfiguration);
 app.get('/getMovingsListByConfId/:id', confServices.getMovingsListByConfId);
 app.put('/addNewConfiguration', confServices.addNewConfiguration);
+app.get('/getAllConf', confServices.getAllConf);
 
 
 

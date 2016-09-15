@@ -14,17 +14,39 @@ var Configuration = models.Configuration;
 var State = models.State;
 
 /**
+ * List all configurations
+ */
+const getAllConf = (req, res) => {
+    models.sequelize.query(
+        'SELECT con.name as name, con.creator, con.dateCreation, sta.name as state, con.con_id ' +
+        'from configurations as con ' +
+        'join states sta on con.StateStaId = sta.sta_id', { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
+            res.json(conf);
+        });
+}
+
+
+/**
  * get number of movings for a configuration
  */
 const getAllMovingsByConfIdCount = (req, res) => {
-    Moving.findAndCountAll({
+    /*Moving.findAndCountAll({
         where: {
             ConfigurationConId: req.params.id,
             $and: [{formerOfficeOffId: {$ne: null}}]
         }
     }).then(function(movings){
         res.json(movings)
-    });
+    })*/
+    models.sequelize.query(
+        'SELECT count(*) as count ' +
+        'from movings ' +
+        'where movings.ConfigurationConId= :id ' +
+        'and movings.formerOfficeOffId is not null ', { replacements : {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT }
+    ).then(function(conf){
+            res.json(conf);
+        }
+    );
 }
 
 /**
@@ -148,5 +170,6 @@ module.exports = {
     getPeopleMovingsByConId,
     deleteConfiguration,
     getMovingsListByConfId,
-    addNewConfiguration
+    addNewConfiguration,
+    getAllConf
 }

@@ -3,7 +3,7 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home, #location, #admin, #configurations {
+#home, #location, #admin, #configurations, #modify, #print, #delete, #validate {
     width: 60px;
     height: 60px;
     padding-top: 10px;
@@ -11,7 +11,7 @@
     position: relative;
     z-index: 20;
 }
-#home p, #location p, #admin p, #configurations p {
+#home p, #location p, #admin p, #configurations p, #modify p, #print p, #delete p, #validate p {
     display: block;
     width: 40px;
     height: 40px;
@@ -37,6 +37,27 @@
     background-size: 30px 40px;
     background-repeat: no-repeat;
 }
+#modify p {
+    background: url("../img/eye.png") 0px 0px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+}
+#print p {
+    background: url("../img/print.png") 0px 0px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+}
+#validate p {
+    background: url("../img/ckeck.png") 0px 0px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+}
+#delete p {
+    background: url("../img/delete.png") 0px 0px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+}
+
 #home {
     float: left;
 }
@@ -426,7 +447,7 @@ input[readonly] {
     vertical-align: middle;
     margin-left: 10px;
 }
-.list table tr:nth-child(odd) {
+.list table tr:nth-child(odd), .conf table tr:nth-child(even){
     background-color: #d7d7d7;
 }
 
@@ -491,7 +512,18 @@ input[readonly] {
     font-size: inherit;
     float: right;
 }
-
+#conf-list td {
+    vertical-align: middle;
+}
+.conf .left-side {
+    height: 100%;
+}
+.size100 {
+    min-width: 100px;
+}
+.action {
+  font-size: smaller;
+}
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }

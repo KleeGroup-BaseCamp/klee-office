@@ -14,6 +14,8 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <!-- compiled CSS for boostrap grid and responsive system (some changes in it)-->
+    <link rel="stylesheet" href="css/bootstrap.css">
     <!-- js -->
     <script type="text/javascript" src="js/libraries/d3.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
@@ -59,47 +61,50 @@
         <div id="navigation-bar" class="container">
             <h2 id="action-title" class="center">Configurations existantes</h2>
         </div>
-        <div class="two-columns">
-            <div class="left-side">
+        <div class="two-columns conf row">
+            <div class="left-side col-md-6">
                 <h2 id="step-one">Liste de configurations</h2>
                 <br>
-                <table id="conf-list">
-                    <thead>
-                    <tr>
-                    <th class="action-one">
-
+                <table id="conf-list" class="">
+                    <thead class="table-content">
+                    <tr class="">
+                    <th class="action-one action">
+                        Modifier
                     </th>
-                    <th class="action-two">
-
+                    <th class="action-two action">
+                        Imprimer
                     </th>
-                    <th class="action-three">
-
+                    <th class="action-three action">
+                        Valider
                     </th>
-                    <th class="action-four">
-
+                    <th class="action-four action">
+                        Supprimer
                     </th>
-                    <th>
+                    <th class="">
                         Nom
                     </th>
-                    <th>
+                    <th class="">
                         Auteur
                     </th>
-                    <th>
+                    <th class="">
                         Date de création
                     </th>
-                    <th>
+                    <th class="">
                         Nombre de bureaux concernés
                     </th>
-                    <th>
+                    <th class="">
                         Statut
                     </th>
                     </tr>
                     </thead>
                 </table>
+                <div>
+                    Ajouter une configuration
+                </div>
 
             </div>
 
-            <div class="right-side">
+            <div class="right-side col-md-6">
                 <h2 id="step-two">Aperçu des étages</h2>
                 <br>
             </div>
@@ -110,13 +115,14 @@
 </div>
 
 <!-- //////////////////////////////////////////////
-  // js for plot map and search
+  // js
   ////////////////////////////////////////////// -->
 <script src="js/classie.js"></script>
 <script src="js/toggle.js"></script>
 <script src="js/autocomplete.js"></script>
 <script src="js/polyfill.js"></script>
-<script type="text/javascript" src=""></script>
+<script src="js/configurations.js"></script>
+<script type="text/javascript" src="js/buildConfScreen.js"></script>
 
 
 </body>
