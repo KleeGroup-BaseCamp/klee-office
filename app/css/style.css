@@ -406,8 +406,8 @@ input[readonly] {
 
 .admin-list td {
     text-align: center;
-    width: 225px;
-    height: 40px;
+    width: 290px;
+    height: 30px;
     vertical-align: middle;
 }
 .empty {
@@ -441,7 +441,7 @@ input[readonly] {
     float: left;
     width: 60px;
     height: 60px;
-    margin-top: -16px;
+    margin-top: 6px;
     margin-left: -20px;
 }
 
@@ -481,6 +481,15 @@ input[readonly] {
 
 #offices-chart tr {
     height: 35px;
+}
+.none .submit {
+    font-style: normal;
+    padding: 6px;
+    width: 66px;
+    height: 30px;
+    display: inline-block;
+    font-size: inherit;
+    float: right;
 }
 
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }

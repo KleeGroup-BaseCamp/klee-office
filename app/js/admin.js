@@ -271,7 +271,7 @@ var adminControl = {
                         d3.selectAll(".add-one").selectAll("label").style("display", "");
                         d3.selectAll(".add-two").selectAll("label").style("display", "");
 
-                        ($('#one-'+ one)).append($('<div class="admin"><form id="search" onsubmit="return false">' +
+                        ($('#one-'+ one)).append($('<div class="admin row"><form id="search" onsubmit="return false">' +
                             '<div id="label">'+
                             '<label for="search-terms" id="search-label">search</label>'+
                             '</div>'+
@@ -284,18 +284,18 @@ var adminControl = {
                         d3.select("#one-"+ one).select("p").style("display", "none");
                         d3.select("#one-"+ one).select("label").style("display", "none");
 
-                        $('<td class="none" id="form-' + form +'"> <form action="/updateValidateur" method="post">' +
+                        ($('#one-'+ one)).append($('<td class="none row" id="form-' + form +'"> <form action="/updateValidateur" method="post">' +
                             '<input class="disabled-field" type="text" id="level" name="level" value="" readonly />'+
                             '<input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly />'+
                             '<input class="disabled-field" type="text" id="man_id" name="man_id" value="" readonly />'+
                             '<input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly />'+
                             '<input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly />'+
                             '<input class="disabled-field" type="text" id="mail" name="mail" value="" readonly />'+
-                            '<input class="submit" id="#save-my-localisation" type="submit" value="Valider"/>'+
-                            '</form></td>').insertAfter($('#two-'+ two));
+                            '<input class="submit admin-cell" id="#save-my-localisation" type="submit" value="Valider"/>'+
+                            '</form></td>'));
 
                         d3.select('#form-'+form).style("display", 'block')
-                            .style("width", "130px");
+                            .style("width", "290px");
 
                         var url = "getPeopleByDepartment/";
                         var param = data['pol_id'];
@@ -384,19 +384,19 @@ var adminControl = {
                             d3.select("#two-"+ two).select("label").style("display", "none");
 
 
-                            $('<td class="none" id="form-' + form +'"> <form action="/updateValidateur" method="post">' +
-                                '<input class="disabled-field" type="text" id="level" name="level" value="" readonly />'+
-                                '<input class="disabled-field" type="text" id="man_id" name="man_id" value="" readonly />'+
-                                '<input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly />'+
-                                '<input class="disabled-field" type="text" id="com_id" name="com_id" value="" readonly />'+
-                                '<input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly />'+
-                                '<input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly />'+
-                                '<input class="disabled-field" type="text" id="mail" name="mail" value="" readonly />'+
-                                '<input class="submit" id="#save-my-valone" type="submit" value="Valider"/>'+
-                                '</form></td>').insertAfter($('#two-'+ two));
+                        ($('#two-'+ two)).append($('<td class="none" id="form-' + form +'"> <form action="/updateValidateur" method="post">' +
+                            '<input class="disabled-field" type="text" id="level" name="level" value="" readonly />'+
+                            '<input class="disabled-field" type="text" id="man_id" name="man_id" value="" readonly />'+
+                            '<input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly />'+
+                            '<input class="disabled-field" type="text" id="com_id" name="com_id" value="" readonly />'+
+                            '<input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly />'+
+                            '<input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly />'+
+                            '<input class="disabled-field" type="text" id="mail" name="mail" value="" readonly />'+
+                            '<input class="submit" id="#save-my-valone" type="submit" value="Valider"/>'+
+                            '</form></td>'));
 
                             d3.select('#form-'+form).style("display", 'block')
-                                .style("width", "130px");
+                                .style("width", "290px");
                             d3.json(server + "getPeopleByCompany/" + data['com_id'], function (error, data) {
                                 data.forEach(getName);
                                 $('#validator-search').autocomplete({
