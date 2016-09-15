@@ -13,12 +13,14 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <!-- compiled CSS for boostrap grid and responsive system (some changes in it)-->
+    <link rel="stylesheet" href="css/bootstrap.css">
     <!-- js -->
     <script type="text/javascript" src="js/libraries/d3.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery.autocomplete.min.js"></script>
 </head>
-<body>
+<body class="local-map">
 
 <div id="wrapper">
     <div id="info-bar">
@@ -54,9 +56,9 @@
         <div id="navigation-bar" class="container">
             <h2 id="action-title" class="center">Renseigner ma localisation</h2>
         </div>
-        <div class="two-columns">
+        <div class="two-columns row">
 
-            <div class="left-side">
+            <div class="left-side col-md-6">
                 <h2 id="step-one">1/2: Choisir un étage</h2>
                 <br>
                 <table id="offices-chart">
@@ -111,7 +113,7 @@
                 </table>
             </div>
 
-            <div id="office-map" class="right-side">
+            <div id="office-map" class="right-side col-md-6">
                 <h2 id="step-two">2/2: Cliquer sur un bureau</h2>
                 <div id="map-show">
                     <table>

@@ -270,7 +270,7 @@
     float: left;
     background-color: white;
     width: 50%;
-    min-width: 800px;
+   /* min-width: 800px;*/
     height: 900px;
 }
 
@@ -285,6 +285,7 @@
     font-weight: bold;
     cursor: pointer;
     text-align: center;
+    margin: 20px;
 }
 
 #step-two{
@@ -292,6 +293,7 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
+    margin: 20px;
 }
 
 .center {
@@ -477,6 +479,9 @@ input[readonly] {
     margin-top: 6px;
 }
 
+#offices-chart tr {
+    height: 35px;
+}
 
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
