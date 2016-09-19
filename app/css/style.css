@@ -3,7 +3,7 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home, #location, #admin, #configurations, #modify, #print, #delete, #validate {
+#home, #location, #admin, #configurations, .modify, .print, .delete, .validate {
     width: 60px;
     height: 60px;
     padding-top: 10px;
@@ -11,7 +11,7 @@
     position: relative;
     z-index: 20;
 }
-#home p, #location p, #admin p, #configurations p, #modify p, #print p, #delete p, #validate p {
+#home p, #location p, #admin p, #configurations p, .modify p, .print p, .delete p, .validate p, #add p {
     display: block;
     width: 40px;
     height: 40px;
@@ -37,34 +37,43 @@
     background-size: 30px 40px;
     background-repeat: no-repeat;
 }
-#modify p {
+.modify p {
     background: url("../img/eye.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
 }
-#print p {
+.print p {
     background: url("../img/print.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
 }
-#validate p {
+.validate p {
     background: url("../img/ckeck.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
 }
-#delete p {
+.delete p {
     background: url("../img/delete.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
 }
-
+#add p {
+    background: url("../img/plus.png") 0px 0px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+}
 #home {
     float: left;
 }
-#location, #admin, #configurations {
+#location, #admin, #configurations, #add, .inline{
     display: inline-block;
 }
-
+#add-title {
+    float: right;
+    font-weight: bold;
+    color: #246b8f;
+    vertical-align: middle;
+}
 #title {
     padding-bottom: 10px;
 }
@@ -524,6 +533,37 @@ input[readonly] {
 .action {
   font-size: smaller;
 }
+#popin-add {
+    background-color: rgba(41,122,163,0.9);
+    z-index: 50;
+    position: absolute;
+    left: 50%;
+    top: 65%;
+    transform: translate(-50%, -50%);
+    width: 36%;
+    height: 40%;
+    border-radius: 80px;
+    text-align: center;
+    padding-top: 50px;
+    color: white;
+}
+#popin-add input {
+    margin: 8px;
+    z-index: 60;
+}
+.field, .disabled-field {
+    color: #505050;
+}
+.left-labels {
+    vertical-align: top;
+    margin-top: 11px;
+}
+#popin-add .submit{
+    margin: auto;
+    display: block;
+}
+
+
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }

@@ -13,6 +13,9 @@ var Moving = models.Moving;
 var Configuration = models.Configuration;
 var State = models.State;
 
+// libs
+var fs = require("fs");
+
 /**
  * List all configurations
  */
@@ -31,13 +34,13 @@ const getAllConf = (req, res) => {
  */
 const getAllMovingsByConfIdCount = (req, res) => {
     /*Moving.findAndCountAll({
-        where: {
-            ConfigurationConId: req.params.id,
-            $and: [{formerOfficeOffId: {$ne: null}}]
-        }
-    }).then(function(movings){
-        res.json(movings)
-    })*/
+     where: {
+     ConfigurationConId: req.params.id,
+     $and: [{formerOfficeOffId: {$ne: null}}]
+     }
+     }).then(function(movings){
+     res.json(movings)
+     })*/
     models.sequelize.query(
         'SELECT count(*) as count ' +
         'from movings ' +
@@ -84,8 +87,8 @@ const deleteConfiguration = (req, res) => {
         });
     }).then(function () {
         console.log("OK !");
-        req.flash('success', 'La configuration a été supprimée.');
-        // res.redirect('/configurations');
+        req.flash('success', 'La configuration a &eacutet&eacute supprim&eacutee.');
+        res.json("success");
     });
 }
 
@@ -100,6 +103,7 @@ const validateConfiguration = (req, res) => {
  * get informations about all the movings of a configuration
  * start and arrival of the moving
  * people data
+ * res : download .txt file
  */
 const getMovingsListByConfId = (req, res) => {
     models.sequelize.query(
@@ -113,7 +117,45 @@ const getMovingsListByConfId = (req, res) => {
             type: models.sequelize.QueryTypes.SELECT
         })
         .then(function (people) {
-            res.json(people);
+            function createFile() {
+                // write header in text file
+                var header = "\ufeffPersonne \u00E0 d\u00E9placer" + " : \t\t" +
+                    "Bureau de d\u00E9part" + " -> " + "Bureau d'arriv\u00E9e" + "\r\n";
+                fs.appendFileSync('configuration-' + req.params.id + '.txt', header, 'utf8'
+                );
+                // write data lines
+                people.forEach(function (elem) {
+                    // console.log(elem);
+                    var text = elem.firstname + " " + elem.lastname + " : \t\t" +
+                        elem.depart + " -> " + elem.arrivee + "\r\n";
+                    fs.appendFileSync('configuration-' + req.params.id + '.txt',
+                        text, 'utf8'
+                    );
+                });
+            }
+            // if a former file exists, delete it
+           try {
+               fs.accessSync('configuration-' + req.params.id + '.txt', fs.F_OK);
+               fs.unlinkSync('configuration-' + req.params.id + '.txt', function(err) {
+                   if (err) {
+                       return console.error(err);
+                   }
+                   console.log("File deleted successfully!");
+               });
+               createFile();
+           } catch(e) {
+               console.log("No former configuration file.");
+               createFile();
+           }
+            res.download('configuration-' + req.params.id + '.txt', 'configuration-' + req.params.id + '.txt',function (err) {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status).end();
+                }
+                else {
+                    console.log('Sent : '+ 'configuration-' + req.params.id + '.txt');
+                }
+            });
         });
 }
 
@@ -149,7 +191,7 @@ const addNewConfiguration = (req, res) =>
                             creator: req.body.creator,
                             dateCreation: Date.now()
                         }).then(function (conf) {
-                            $.each(movings, function(i, elem){
+                            movings.forEach(function(elem){
                                 Moving.create({
                                     newOfficeOffId: elem.newOfficeOffId,
                                     OfficeOffId: elem.OfficeOffId,
@@ -157,6 +199,8 @@ const addNewConfiguration = (req, res) =>
                                     ConfigurationConId: conf.dataValues.con_id
                                 }).then(function (newMovings) {
                                     console.log("ok" + newMovings);
+                                    res.flash();
+                                    res.redirect();
                                 });
                             });
                         });

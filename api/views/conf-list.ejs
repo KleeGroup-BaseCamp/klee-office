@@ -68,38 +68,38 @@
                 <table id="conf-list" class="">
                     <thead class="table-content">
                     <tr class="">
-                    <th class="action-one action">
-                        Modifier
-                    </th>
-                    <th class="action-two action">
-                        Imprimer
-                    </th>
-                    <th class="action-three action">
-                        Valider
-                    </th>
-                    <th class="action-four action">
-                        Supprimer
-                    </th>
-                    <th class="">
-                        Nom
-                    </th>
-                    <th class="">
-                        Auteur
-                    </th>
-                    <th class="">
-                        Date de création
-                    </th>
-                    <th class="">
-                        Nombre de bureaux concernés
-                    </th>
-                    <th class="">
-                        Statut
-                    </th>
+                        <th class="action-one action">
+                            Modifier
+                        </th>
+                        <th class="action-two action">
+                            Imprimer
+                        </th>
+                        <th class="action-three action">
+                            Valider
+                        </th>
+                        <th class="action-four action">
+                            Supprimer
+                        </th>
+                        <th class="">
+                            Nom
+                        </th>
+                        <th class="">
+                            Auteur
+                        </th>
+                        <th class="">
+                            Date de création
+                        </th>
+                        <th class="">
+                            Nombre de bureaux concernés
+                        </th>
+                        <th class="">
+                            Statut
+                        </th>
                     </tr>
                     </thead>
                 </table>
-                <div>
-                    Ajouter une configuration
+                <div id="add-title">
+                    <div id="add"><p>Ajouter une configuration</p></div><p class="inline">Ajouter une configuration</p>
                 </div>
 
             </div>
@@ -109,6 +109,23 @@
                 <br>
             </div>
         </div>
+        <!--<div id="popin-add">
+            <h3>Créer une nouvelle configuration
+            </h3><br><br><br>
+            <form action="/addNewConfiguration" method="post">
+                <div class="inline left-labels">
+                    <label for="name">Nom (*) : </label><br /><br />
+                    <label for="creator">Auteur : </label><br /><br />
+                    <label for="dateCreation">Date : </label><br /><br />
+                </div>
+                <div class="inline">
+                    <input class="field" type="text" id="name" name="name" /><br />
+                    <input class="disabled-field" type="text" id="creator" name="creator"  value="Marie-Pierre SALVI" readonly /><br />
+                    <input class="disabled-field" type="text" id="dateCreation" name="dateCreation" value="" readonly /><br />
+                </div>
+                <input class="submit" id="#add-conf" type="submit" value="Valider"/>
+            </form>
+        </div>-->
     </div>
 
 
@@ -121,8 +138,8 @@
 <script src="js/toggle.js"></script>
 <script src="js/autocomplete.js"></script>
 <script src="js/polyfill.js"></script>
-<script src="js/configurations.js"></script>
-<script type="text/javascript" src="js/buildConfScreen.js"></script>
+<script src="js/configurations.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/buildConfScreen.js" charset="UTF-8"></script>
 
 
 </body>
