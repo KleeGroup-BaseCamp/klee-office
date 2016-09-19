@@ -3,7 +3,7 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home, #location, #admin, #configurations, .modify, .print, .delete, .validate {
+#home, #location, #admin, #configurations, .modify, .print, .delete, .validate, {
     width: 60px;
     height: 60px;
     padding-top: 10px;
@@ -11,7 +11,7 @@
     position: relative;
     z-index: 20;
 }
-#home p, #location p, #admin p, #configurations p, .modify p, .print p, .delete p, .validate p, #add p {
+#home p, #location p, #admin p, #configurations p, .modify p, .print p, .delete p, .validate p, #add p, .remove p {
     display: block;
     width: 40px;
     height: 40px;
@@ -55,6 +55,11 @@
 .delete p {
     background: url("../img/delete.png") 0px 0px;
     background-size: 30px;
+    background-repeat: no-repeat;
+}
+.remove p {
+    background: url("../img/remove.png") 0px 0px;
+    background-size: 10px;
     background-repeat: no-repeat;
 }
 #add p {
@@ -427,7 +432,7 @@ input[readonly] {
 }
 
 .left-group, .right-group {
-    padding-left: 200px;
+    padding-left: 10px;
 }
 
 #level {
@@ -563,6 +568,17 @@ input[readonly] {
     display: block;
 }
 
+.people-rect {
+    display: inline-block;
+    margin-right: 4px;
+}
+.remove {
+    display: inline-block;
+    margin-right: 20px;
+    width: 10px;
+    height: 10px;
+    vertical-align: middle;
+}
 
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }

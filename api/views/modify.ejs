@@ -56,30 +56,45 @@
             <% } %>
         </div>
         <div id="navigation-bar" class="container">
-            <h2 id="action-title" class="center">Administration</h2>
         </div>
-        <div class="list">
-            <table>
-                <thead>
-                <tr class="table-content">
-                    <th>
-                        Société
-                    </th>
-                    <th>
-                        Service / Pôle
-                    </th>
-                    <th>
-                        Validateur 1
-                    </th>
-                    <th>
-                        Validateur 2
-                    </th>
-                    <th class="none">
+        <div class="two-columns row">
 
-                    </th>
-                </tr>
-                </thead>
-            </table>
+            <div class="left-side">
+                <h2 id="step-one">1/2 : Sélectionner des personnes</h2>
+                <br>
+                <div class="left-group">
+                    <div id="left col-md-6" class="rects"></div>
+                    <br />
+                    <form id="search" onsubmit="return false">
+                        <div id="label">
+                            <label for="search-terms" id="search-label">search</label>
+                        </div>
+                        <div id="input">
+                            <input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="right-side col-md-6">
+                <h2 id="step-two">2/2 : Sélectionner un étage</h2>
+                <br>
+                <div class="right-group">
+                    <div id="right" class="rects"></div>
+                    <br />
+                </div>
+            </div>
+            <div class="center invisible" id="val-form">
+                <br />
+                <form action="/saveValidateur" method="post">
+                    <input class="disabled-field" type="text" id="level" name="level" value="" readonly />
+                    <input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly /><br />
+                    <input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly /><br />
+                    <input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly /><br />
+                    <input class="disabled-field" type="text" id="mail" name="mail" value="" readonly /><br />
+                    <input class="submit" id="#save-my-localisation" type="submit" value="Choisir"/>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -91,9 +106,8 @@
 <script src="js/classie.js"></script>
 <script src="js/toggle.js"></script>
 <script src="js/admin.js"></script>
-<script src="js/polyfill.js"></script>
 <script src="js/autocomplete.js"></script>
-<script type="text/javascript" src="js/buildAdminScreen.js"></script>
+<script type="text/javascript" src="js/buildModifyScreen.js"></script>
 
 
 </body>

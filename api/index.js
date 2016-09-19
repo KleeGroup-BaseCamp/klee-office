@@ -61,9 +61,13 @@ app.get('/localization', function(req, res){
 app.get('/admin', function(req, res){
 	res.render('admin', { message: req.flash('success') });
 });
-// admin screen
+// configurations screen
 app.get('/configurations', function(req, res){
 	res.render('conf-list', { message: req.flash('success') });
+});
+// work on a configuration
+app.get('/modify:id', function(req, res){
+	res.render('modify', { message: req.flash('success') });
 });
 
 // people

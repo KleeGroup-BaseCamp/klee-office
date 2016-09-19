@@ -92,7 +92,7 @@ var adminControl = {
                         // if no dpt in this company
                         if(data.length < 1){
                             var parent =  d3.select(side).select(".rects");
-                            $('<p id="info-pole">Pas de pole pour cette societe, veuillez choisir un validateur de niveau 2.</p>').insertAfter(parent);
+                            $('<p class="center" id="info-pole">Pas de pole pour cette societe, veuillez choisir un autre pole.</p>').insertAfter(parent);
                         }
                         // plot dpts rects
                         var dptRects  =  plotRects(side, data, "pol_id", "dpt");
@@ -101,14 +101,45 @@ var adminControl = {
                             var departments = document.getElementsByClassName("dpt-rect");
                             // if rect are already there, remove them
                             Array.from(departments).forEach(function(element){
-                                if(element.id !== data['pol_id'].toString() ){
                                     element.remove();
-                                }
                             });
+                            d3.select(".left-side")
+                                .style("height", "100%");
+                            d3.select(".right-side")
+                                .style("height", "100%");
 
-                            d3.select(".left-side").select("#search")
-                                .style("visibility", "visible");
-                            prepareForm()
+                            d3.json(server + "getPeopleByDepartment/" + data['pol_id'], function (error, data) {
+
+                                d3.select(side).select(".rects")
+                                    .selectAll("div")
+                                    .data(data)
+                                    .enter().append("div")
+                                    .style("width", "210px")
+                                    .style("height", "28px")
+                                    .style("background-color", "#9EC3D6")
+                                    .style("margin-bottom", "10px")
+                                    .style("text-align", "center")
+                                    .style("border-radius", "3px")
+                                    .style("cursor", "pointer")
+                                    .attr("class", "people-rect ")
+                                    .attr("id", function (d) {
+                                        return "rect-" + d['per_id'];
+                                    })
+                                    .text(function (d) {
+                                        return d.firstname + " " + d.lastname;
+                                    });
+
+                                data.forEach(function(elem){
+                                    $('<div id ="remove-'+elem.per_id +'" class="remove"><p>&nbsp;</p></div>').insertAfter($('#rect-'+elem.per_id));
+                                    console.log("plip");
+                                    $('#remove-' + elem.per_id).click(function (event) {
+                                        d3.select('#remove-' + elem.per_id).remove();
+                                        d3.select('#rect-' + elem.per_id).remove();
+                                    });
+                                });
+
+                            });
+                           // prepareForm()
 
                             d3.select("#pol_id")
                                 .attr("value", data['pol_id']);
@@ -135,6 +166,7 @@ var adminControl = {
                     });
                     d3.select(".right-side").select("#search")
                         .style("visibility", "visible");
+
                     prepareForm();
                     d3.json(server + "getPeopleByCompany/" + data['com_id'], function (error, data) {
 
@@ -169,9 +201,13 @@ var adminControl = {
      */
     eraseAll: function(){
         var dpt = document.getElementsByClassName("dpt-rect");
-        var comp = document.getElementsByClassName("company-rect");;
+        var comp = document.getElementsByClassName("company-rect");
+        var people = document.getElementsByClassName("people-rect");
+        var people = document.getElementsByClassName("remove");
         this.erase(dpt);
         this.erase(comp);
+        this.erase(people);
+        this.erase(remove);
     },
     plotValidatorsList: function(){
 

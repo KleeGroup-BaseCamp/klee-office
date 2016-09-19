@@ -32,7 +32,7 @@
         d3.select("#step-two").style("color", "#6d6e71");
         // erase lists
         adminControl.eraseAll();
-        preparePlot()
+        preparePlot()buildAdminScreen.js
         // level
         d3.select("#level")
             .attr("value", "Niveau 1");
