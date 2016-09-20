@@ -3,7 +3,7 @@
 |* Map, Autocomplete, Nav bar, search, and nav
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
-#home, #location, #admin, #configurations, .modify, .print, .delete, .validate, {
+#home, #location, #admin, #configurations, .modify, .print, .delete, .validate {
     width: 60px;
     height: 60px;
     padding-top: 10px;
