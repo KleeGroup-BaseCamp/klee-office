@@ -1,7 +1,9 @@
 .DS_Store
 desktop.ini
-/app/data
+.idea/
 /node_modules
-/api/data
+/app/data
 /app/js/test.js
-/api/db.development.sqlite
+/api/data
+api/db*
+api/services/*.txt

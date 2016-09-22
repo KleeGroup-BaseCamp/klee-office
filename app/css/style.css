@@ -78,6 +78,7 @@
     font-weight: bold;
     color: #246b8f;
     vertical-align: middle;
+    font-size: 20px;
 }
 #title {
     padding-bottom: 10px;
@@ -306,14 +307,14 @@
     background-color: white;
     width: 50%;
    /* min-width: 800px;*/
-    height: 900px;
+    height: 100%;
 }
 
 .right-side {
     float: right;
     background-color: white;
     width: 50%;
-    height: 900px;
+    height: 100%;
 }
 #step-one {
     color: #246b8f;
@@ -539,11 +540,11 @@ input[readonly] {
   font-size: smaller;
 }
 #popin-add {
-    background-color: rgba(41,122,163,0.9);
+    background-color: rgba(50,150,200,0.9);
     z-index: 50;
     position: absolute;
     left: 50%;
-    top: 65%;
+    top: 50%;
     transform: translate(-50%, -50%);
     width: 36%;
     height: 40%;
@@ -574,12 +575,81 @@ input[readonly] {
 }
 .remove {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 11px;
     width: 10px;
     height: 10px;
     vertical-align: middle;
 }
 
+.left-side #left #search {
+    visibility: visible;
+    float: none;
+    padding-left: 0px;
+    margin-left: 0px;
+}
+#left #input #validator-search {
+    margin-left: 0px;
+}
+#left #input {
+    left: 30px;
+}
+.block-title {
+    border: 1px solid #297aa3;
+    padding: 5px;
+    width: 210px;
+    text-align: center;
+    font-weight: bold;
+    color: #297aa3;
+    margin-bottom: 25px;
+    vertical-align: middle;
+}
+.block-search {
+    vertical-align: middle;
+    padding-top: 5px;
+}
+.modif #left {
+    padding-left: 75px;
+}
+.modif .left-side {
+    height: 100%;
+}
+.left-side #left .rects{
+    padding-left: 0px;
+}
+.title {
+    padding: 5px;
+    font-weight: bold;
+    color: #297aa3;
+    margin-bottom: 25px;
+    vertical-align: middle;
+}
+
+#modify-conf .floor{
+    font-size: 20px;
+}
+#modify-conf {
+}
+.block-search #input {
+    width: 300px;
+}
+.people-mov {
+    width: 230px;
+    height: 28px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 3px;
+}
+.validate-button {
+    display: inline-block;
+}
+.cancel-button {
+    display: inline-block;
+}
+.conf {
+    margin-left: auto;
+    margin-right: auto;
+    width: 950px;
+}
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }

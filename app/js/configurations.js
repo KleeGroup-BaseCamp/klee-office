@@ -4,7 +4,8 @@
 
 "use strict";
 // global variables
-var	server= "http://localhost:3000/";
+//var	server= "http://localhost:3000/";
+var	server= "http://local-map/";
 
 var configurationsControl = {
     isPopin: false,
@@ -18,7 +19,7 @@ var configurationsControl = {
                     dateCrea = data.dateCreation;
                 }
                 $('<tr>' +
-                    '<td class="action-one "><div class="modify"><p></p></div>' +
+                    '<td class="action-one "><div class="modify"><a href="/modify' +  data.con_id + '" ><p id="modif-' + data.con_id + '"></p></a></div>' +
                     '</td>' +
                     '<td class="action-two "><div class="print"><p id="print-' + data.con_id + '"></p></div>' +
                     '</td>' +
@@ -45,7 +46,6 @@ var configurationsControl = {
                 // print button
                 $("#print-"+data.con_id).click(function(event) {
                     window.open('getMovingsListByConfId/' + data.con_id);
-
                 });
 
                 // delete button
@@ -56,7 +56,8 @@ var configurationsControl = {
                         url: 'deleteConfiguration/'+data.con_id,
                         type: 'DELETE',
                         success: function(result) {
-                            window.location.href = "http://localhost:3000/configurations";
+                           // window.location.href = "http://localhost:3000/configurations";
+                            window.location.href = "http://local-map/configurations";
                         }
                     });
                 });

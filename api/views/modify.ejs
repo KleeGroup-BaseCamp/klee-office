@@ -57,22 +57,33 @@
         </div>
         <div id="navigation-bar" class="container">
         </div>
-        <div class="two-columns row">
+        <div class="two-columns row modif">
 
-            <div class="left-side">
+            <div class="left-side  col-md-6">
                 <h2 id="step-one">1/2 : Sélectionner des personnes</h2>
                 <br>
                 <div class="left-group">
-                    <div id="left col-md-6" class="rects"></div>
-                    <br />
-                    <form id="search" onsubmit="return false">
-                        <div id="label">
-                            <label for="search-terms" id="search-label">search</label>
+                    <div id="left" >
+                        <h3 class="block-title inline">Par nom</h3>
+                        <div class="inline block-search">
+                            <form id="search" onsubmit="return false">
+                                <div id="label">
+                                    <label for="search-terms" id="search-label">search</label>
+                                </div>
+                                <div id="input">
+                                    <input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">
+                                </div>
+                            </form>
                         </div>
-                        <div id="input">
-                            <input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">
+
+                        <br>
+                        <h3 class="block-title">Par pôle</h3>
+                        <div class="rects">
                         </div>
-                    </form>
+                        <h3 class="title">Personnes sélectionnées</h3>
+                        <div class="people">
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -80,20 +91,73 @@
                 <h2 id="step-two">2/2 : Sélectionner un étage</h2>
                 <br>
                 <div class="right-group">
-                    <div id="right" class="rects"></div>
-                    <br />
+                    <table id="modify-conf">
+                        <tr>
+                            <td class="floor">
+                                <p id="N0"><a>N 0</a></p>
+                            </td>
+                            <td class="floor">
+                                <p id="N1"><a>N 1</a></p>
+                            </td>
+                            <td class="floor">
+                                <p id="N2"><a>N 2</a></p>
+                            </td>
+                            <td class="floor">
+                                <p id="N3"><a>N 3</a></p>
+                            </td>
+                            <td class="floor">
+                                <p id="N4"><a>N 4</a></p>
+                            </td>
+                            <td class="floor">
+                                <p id="O2"><a>O 2</a></p>
+                            </td>
+                            <td class="floor">
+                                <p id="O3"><a>O 3</a></p>
+                            </td>
+                            <td class="floor">
+                                <p id="O4"><a>O 4</a></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="map-show">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div id="whole-map"><svg class="map"></svg></div>
+                                </td>
+                                <td id="legend">
+                                    <h3>
+                                        Légende
+                                    </h3>
+                                    <svg width="30" height="15">
+                                        <rect width="30" height="15" style="fill:#ff9900" />
+                                    </svg>
+                                    <p>
+                                        Occupé
+                                    </p>
+                                    <br/>
+                                    <svg width="30" height="15">
+                                        <rect width="30" height="15" style="fill:#99ff99" />
+                                    </svg>
+                                    <p>
+                                        Libre
+                                    </p>
+                                    <br/>
+                                    <p id="zoom">Zoomer avec <br/>la molette</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-4 col-md-offset-4">
+                    <button class="submit" id="save-movings">Valider</button>
+                    <button class="cancel-button" id="cancel-movings">Annuler</button>
                 </div>
             </div>
+
             <div class="center invisible" id="val-form">
                 <br />
-                <form action="/saveValidateur" method="post">
-                    <input class="disabled-field" type="text" id="level" name="level" value="" readonly />
-                    <input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly /><br />
-                    <input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly /><br />
-                    <input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly /><br />
-                    <input class="disabled-field" type="text" id="mail" name="mail" value="" readonly /><br />
-                    <input class="submit" id="#save-my-localisation" type="submit" value="Choisir"/>
-                </form>
+                <p id="person"></p>
             </div>
         </div>
     </div>
@@ -106,8 +170,11 @@
 <script src="js/classie.js"></script>
 <script src="js/toggle.js"></script>
 <script src="js/admin.js"></script>
+<script src="js/globalMapControl.js"></script>
+
 <script src="js/autocomplete.js"></script>
 <script type="text/javascript" src="js/buildModifyScreen.js"></script>
+<script type="text/javascript" src="js/modifyFloor.js"></script>
 
 
 </body>

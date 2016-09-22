@@ -43,6 +43,5 @@
             $('#popin-add').remove();
             configurationsControl.isPopin = false;
         }
-        console.log("plip");
     });
 }(window));

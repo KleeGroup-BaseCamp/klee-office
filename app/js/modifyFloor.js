@@ -9,37 +9,14 @@
     //var server= "http://localhost:3000/"
     var server= "http://local-map/"
     var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
-    var addEvtListenerOn = function(type, mapNames, where){
-
-        where.addEventListener(type, function(){
-            var everyMap = [];
-            everyMap  = document.getElementsByClassName("small-map");
-            // if maps are already there, remove them
-            $.each(Array.from(everyMap), function(index, element){
-                if(element.hasChildNodes()){
-                    $.each(element.childNodes, function(index, node){
-                        node.remove();
-                    });
-                }
-            });
-            $.each(mapNames, function(index, element){
-                mapControl.mapName = element;
-                mapControl.smallMapPlot(element, function() {});
-            });
-        });
-    };
-
-    /**
-     * on page load, plot offices maps
-     * on click on step one title
-     */
-    // addEvtListenerOn("load", mapNames, window);
-    //addEvtListenerOn("click", mapNames, document.querySelector('#step-one'));
 
     /**
      * on floor name : click to choose a floor and plot it
      */
     $.each(mapNames, function(index, name){
+        var href = window.location.href;
+        var split = href.split("modify");
+        var conId = split[1];
         document.querySelector('#'+name).addEventListener("click", function(){
             mapControl.eraseMap();
             d3.select("#offices-chart").style("visibility", "hidden");
@@ -52,14 +29,14 @@
             // if no map, show map
             if (!mapControl.existMap) {
                 mapControl.mapName = name;
-                mapControl.mapPlot(mapControl.mapName, true, function() {});
+                mapControl.confmapPlot(mapControl.mapName, conId, function() {});
                 mapControl.existMap = true;
             }
             // if other map, delete and show mapN0
             else if (mapControl.mapName !== name) {
                 d3.select(".map").select("svg").remove();
                 mapControl.mapName = name;
-                mapControl.mapPlot(mapControl.mapName, true, function() {});
+                mapControl.confmapPlot(mapControl.mapName, conId, function() {});
             }
             if (name === "N0"){
                 $('<h1 class="N0">RDC<br/>(N 0)</h1>').prependTo($('#legend'));
@@ -70,6 +47,7 @@
                 d3.select("#former-office").attr("value", data[0].name);
                 d3.select("#former-office-id").attr("value", data[0].off_id);
             });
+            event.stopPropagation();
         });
     });
 

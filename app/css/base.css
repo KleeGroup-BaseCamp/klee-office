@@ -278,3 +278,19 @@ footer span a {
     cursor: pointer;
 }
 
+/*
+* Cancel buttons
+*/
+.cancel-button {
+    background-color: #DEEBF7;
+    width: 100px;
+    height: 38px;
+    border-radius: 6px;
+    border:  1px solid #297aa3;
+    color: #246b8f;
+    font-weight: bold;
+    font-size: initial;
+    text-align: center;
+    cursor: pointer;
+}
+
