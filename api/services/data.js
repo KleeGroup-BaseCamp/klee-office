@@ -147,8 +147,6 @@ const populate = (req, res) => {
         });
     });
 
-
-
     // do insert THEN updates
     doInserts.then(function(results){
         console.log("after all the inserts, do the updates.");

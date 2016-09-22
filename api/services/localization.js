@@ -83,20 +83,6 @@ const saveMyLocalization = (req, res) => {
                         var firstname = req.body.firstname;
                         var lastname = req.body.lastname;
 
-                        models.sequelize.query(' INSERT into Movings(\'createdAt\', \'updatedAt\',' +
-                            ' \'ConfigurationConId\', \'PersonPerId\', \'formerOfficeOffId\',' +
-                            ' \'newOfficeOffId\', \'OfficeOffId\') ' +
-                            'Values(:today, :today, :conId ,' +
-                            '(select per_id from people where firstname= :firstname and lastname = :lastname), ' +
-                            '(select newOfficeOffId from movings where PersonPerId = ' +
-                            '(select per_id from people where firstname= :firstname and lastname = :lastname) ' +
-                            'and formerOfficeOffId is null)' +
-                            ', :offId, :offId) ',
-                            { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, offId: offid }, type: models.sequelize.QueryTypes.INSERT}
-                        ).then(function(moving){
-                                console.log(moving)
-                            });
-
                         // add all movings from current configuration
                         models.sequelize.query(
                             'SELECT * from configurations ' +
@@ -117,16 +103,14 @@ const saveMyLocalization = (req, res) => {
                                         movings.forEach(function(elem){
                                             // copy all the movings from current configuration
                                             // except the one which is modified here
-                                            if (elem.newOfficeOffId !== req.body['office-name']){
+                                            if (elem.newOfficeOffId.toString() !== offid.toString()){
                                                 Moving.create({
                                                     newOfficeOffId: elem.newOfficeOffId,
                                                     OfficeOffId: elem.OfficeOffId,
                                                     PersonPerId: elem.PersonPerId,
                                                     ConfigurationConId: conId
                                                 }).then(function (newMovings) {
-                                                    console.log("ok" + newMovings);
-                                                    //req.flash();
-                                                   // res.redirect("modify"+conId);
+//                                                    console.log(elem.newOfficeOffId.toString() + "-------"+ offid.toString());
                                                 });
                                             }
                                         });

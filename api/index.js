@@ -69,6 +69,10 @@ app.get('/configurations', function(req, res){
 app.get('/modify:id', function(req, res){
 	res.render('modify', { message: req.flash('success') });
 });
+// check consistency
+app.get('/consistency:id', function(req, res){
+	res.render('consistency-list', { message: req.flash('success') });
+});
 
 // people
 // map
@@ -98,7 +102,8 @@ app.get('/getMovingsListByConfId/:id', confServices.getMovingsListByConfId);
 app.post('/addNewConfiguration', confServices.addNewConfiguration);
 app.post('/saveMovings', confServices.saveMovings);
 app.get('/getAllConf', confServices.getAllConf);
-
+app.get('/reportConsistency/:id', confServices.reportConsistency);
+app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPeopleByOffId);
 
 
 //app.get('/maps/:number', mapServices.getMapByNumber);

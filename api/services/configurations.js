@@ -265,7 +265,7 @@ const saveMovings = (req, res) =>
                             OfficeOffId: newoff[0].dataValues.off_id,
                             formerOfficeOffId: formeroff[0].dataValues.off_id
                         }).then(function (mov) {
-                          //  console.log(mov);
+                            //  console.log(mov);
                             req.flash('succes', 'La configuration a bien été enregistrée.');
                             res.json("success");
                         });
@@ -276,6 +276,58 @@ const saveMovings = (req, res) =>
     });
 }
 
+/**
+ * return people, office name, office id
+ * for the new people in the office with more than one assigned person
+ */
+const reportConsistency = (req,res) => {
+    models.sequelize.query(
+        'select people.firstname, people.lastname, offices.name, offices.off_id from movings '+
+        'join people on people.per_id = movings.personperid '+
+        'join offices on offices.off_id = movings.newOfficeOffId '+
+        'where newOfficeOffId in ( '+
+        'select newOfficeOffId '+
+        'from movings '+
+        'where ConfigurationConId = :conId '+
+        'group by newOfficeOffId '+
+        'having count(*) > 1 ) ' +
+        'and configurationConId = :conId ' +
+        'and (movings.formerOfficeOffId is not null or movings.formerOfficeOffId in (select off_id from offices where name = "aucun")) '
+        , {
+            replacements: {conId: req.params.id},
+            type: models.sequelize.QueryTypes.SELECT
+        })
+        .then(function (info) {
+            console.log(info);
+            res.json(info);
+        });
+}
+
+
+const formerPeopleByOffId = (req,res) => {
+    models.sequelize.query(
+
+        'select people.firstname, people.lastname, movings.formerOfficeOffId ' +
+        'from people ' +
+        'join movings on movings.PersonPerId = people.per_id ' +
+        'where movings.formerOfficeOffId = :offid ' +
+        'and movings.ConfigurationConId = :conid ' +
+        'union all ' +
+        'select people.firstname, people.lastname, movings.newOfficeOffId ' +
+        'from people ' +
+        'join movings on movings.PersonPerId = people.per_id ' +
+        'where movings.newOfficeOffId = :offid and movings.formerOfficeOffId is null ' +
+        'and movings.ConfigurationConId = :conid '
+        , {
+            replacements: {offid: req.params.id, conid: req.params.conid},
+            type: models.sequelize.QueryTypes.SELECT
+        })
+        .then(function (info) {
+            console.log(info);
+            res.json(info);
+        });
+}
+
 module.exports = {
     getAllMovingsByConfIdCount,
     getPeopleMovingsByConId,
@@ -283,5 +335,7 @@ module.exports = {
     getMovingsListByConfId,
     addNewConfiguration,
     getAllConf,
-    saveMovings
+    saveMovings,
+    reportConsistency,
+    formerPeopleByOffId
 }
