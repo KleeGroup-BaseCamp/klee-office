@@ -231,32 +231,34 @@ const saveMovings = (req, res) =>
             }).then(function (formeroff) {
                 console.log("FORMER");
                 console.log(formeroff[0]);
-                var former;
-                if(element.former === "" || element.former === " " ){
-                    former = "";
-                } else {
-                    former = formeroff[0].dataValues.off_id;
-                }
                 Moving.findOne({
                     where: {
                         PersonPerId: element.perId,
-                       // newOfficeOffId: former,
                         ConfigurationConId: element.conId
                     }
                 }).then(function (moving) {
                     console.log("MOVING");
                     console.log(moving);
+                    console.log(element.former);
+
                     if(element.former === "" || element.former === " " ) {
-                        Moving.create({
-                            PersonPerId: element.perId,
-                            newOfficeOffId: newoff[0].dataValues.off_id,
-                            OfficeOffId: newoff[0].dataValues.off_id,
-                            ConfigurationConId: element.conId
-                        }).then(function (mov) {
-                            console.log(mov);
-                            req.flash('succes', 'La configuration a bien été enregistrée.');
-                            res.json("success");
-                        });
+                        Office.findOne({
+                            where: {
+                                name: "aucun"
+                            }
+                        }).then(function(off){
+                            Moving.create({
+                                PersonPerId: element.perId,
+                                newOfficeOffId: newoff[0].dataValues.off_id,
+                                OfficeOffId: newoff[0].dataValues.off_id,
+                                ConfigurationConId: element.conId,
+                                formerOfficeOffId: off.dataValues.off_id
+                            }).then(function (mov) {
+                                console.log(mov);
+                                req.flash('succes', 'La configuration a bien été enregistrée.');
+                                res.json("success");
+                            });
+                        })
                     } else {
                         moving.update({
                             newOfficeOffId: newoff[0].dataValues.off_id,

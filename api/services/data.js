@@ -111,6 +111,13 @@ const populate = (req, res) => {
                 });
         });
 
+        // for non assigned former offices
+        var offAucun = Office.build({name : "aucun"});
+        offAucun.save()
+            .error(function (err) {
+                console.log(err + " ---------" + elem);
+            });
+
         var states = ["A valider", "Validee", "Brouillon"];
 
         // insert states and a new configuration "Validee"

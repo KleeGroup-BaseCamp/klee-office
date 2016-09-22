@@ -125,8 +125,8 @@ const saveMyLocalization = (req, res) => {
                                                     ConfigurationConId: conId
                                                 }).then(function (newMovings) {
                                                     console.log("ok" + newMovings);
-                                                    req.flash();
-                                                    res.redirect("modify"+conId);
+                                                    //req.flash();
+                                                   // res.redirect("modify"+conId);
                                                 });
                                             }
                                         });
@@ -136,9 +136,9 @@ const saveMyLocalization = (req, res) => {
                                             ' \'newOfficeOffId\', \'OfficeOffId\') ' +
                                             'Values(:today, :today, :conId ,' +
                                             '(select per_id from people where firstname= :firstname and lastname = :lastname), ' +
-                                            '(select newOfficeOffId from movings where PersonPerId = ' +
+                                            'coalesce((select newOfficeOffId from movings where PersonPerId = ' +
                                             '(select per_id from people where firstname= :firstname and lastname = :lastname) ' +
-                                            'and formerOfficeOffId is null)' +
+                                            'and formerOfficeOffId is null), (select offices.off_id from offices where offices.name ="aucun") ) ' +
                                             ', :offId, :offId) ',
                                             { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, offId: offid }, type: models.sequelize.QueryTypes.INSERT}
                                         ).then(function(moving){
