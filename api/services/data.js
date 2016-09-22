@@ -125,12 +125,13 @@ const populate = (req, res) => {
                     if(elem == "Validee"){
                         var id = savedState.dataValues.sta_id;
                         //console.log(savedState.dataValues)
-                        var today = Date.now();
+                        var today = new Date();
+                        var technicaldate = Date.now();
                         var validee = "Validee";
                         // insert current configuration
                         models.sequelize.query('INSERT into Configurations(\'name\', \'creator\', \'dateCreation\', \'StateStaId\', \'createdAt\', \'updatedAt\') ' +
-                            'Values (\'Configuration premiere\', \'System\', \':date\', :id, :date, :date)',
-                            { replacements: { date: today, validee: validee, id: id}, type: models.sequelize.QueryTypes.INSERT }
+                            'Values (\'Configuration premiere\', \'System\', \:dateToday\, :id, :date, :date)',
+                            { replacements: { dateToday: today, date: technicaldate, validee: validee, id: id}, type: models.sequelize.QueryTypes.INSERT }
                         ).then(function(states) {
                                 console.log(states)
                             });

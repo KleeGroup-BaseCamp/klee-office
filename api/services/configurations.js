@@ -10,6 +10,7 @@ var People = models.Person;
 var Status = models.Status;
 var Manager = models.Manager;
 var Moving = models.Moving;
+var Office = models.Office;
 var Configuration = models.Configuration;
 var State = models.State;
 
@@ -62,7 +63,8 @@ const getPeopleMovingsByConId = (req, res) => {
         'from movings ' +
         'join people on people.per_id = movings.PersonPerId ' +
         'join offices on offices.off_id = movings.newOfficeOffId ' +
-        'where movings.ConfigurationConId = :conid and movings.formerOfficeOffId is not null '
+        'where movings.ConfigurationConId = :conid '
+        //and movings.formerOfficeOffId is not null
         , { replacements: { conid: req.params.id },
             type: models.sequelize.QueryTypes.SELECT
         })
@@ -134,19 +136,19 @@ const getMovingsListByConfId = (req, res) => {
                 });
             }
             // if a former file exists, delete it
-           try {
-               fs.accessSync('configuration-' + req.params.id + '.txt', fs.F_OK);
-               fs.unlinkSync('configuration-' + req.params.id + '.txt', function(err) {
-                   if (err) {
-                       return console.error(err);
-                   }
-                   console.log("File deleted successfully!");
-               });
-               createFile();
-           } catch(e) {
-               console.log("No former configuration file.");
-               createFile();
-           }
+            try {
+                fs.accessSync('configuration-' + req.params.id + '.txt', fs.F_OK);
+                fs.unlinkSync('configuration-' + req.params.id + '.txt', function(err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    console.log("File deleted successfully!");
+                });
+                createFile();
+            } catch(e) {
+                console.log("No former configuration file.");
+                createFile();
+            }
             res.download('configuration-' + req.params.id + '.txt', 'configuration-' + req.params.id + '.txt',function (err) {
                 if (err) {
                     console.log(err);
@@ -167,7 +169,8 @@ const addNewConfiguration = (req, res) =>
 {
     models.sequelize.query(
         'SELECT * from configurations ' +
-        'where name = "Configuration premiere"'
+        'join States on configurations.StateStaId = States.sta_id ' +
+        'where States.name = "Validee"'
         , {
             replacements: {},
             type: models.sequelize.QueryTypes.SELECT
@@ -199,8 +202,8 @@ const addNewConfiguration = (req, res) =>
                                     ConfigurationConId: conf.dataValues.con_id
                                 }).then(function (newMovings) {
                                     console.log("ok" + newMovings);
-                                    res.flash();
-                                    res.redirect();
+                                    req.flash();
+                                    res.redirect("modify"+conf.dataValues.con_id);
                                 });
                             });
                         });
@@ -209,11 +212,74 @@ const addNewConfiguration = (req, res) =>
         });
 }
 
+const saveMovings = (req, res) =>
+{
+    var array = req.body;
+    console.log(array);
+    array.forEach(function (element) {
+        Office.findOrCreate({
+            where: {
+                name: element.new
+            }
+        }).then(function (newoff) {
+            console.log("NEW");
+            console.log(newoff[0]);
+            Office.findOrCreate({
+                where: {
+                    name: element.former
+                }
+            }).then(function (formeroff) {
+                console.log("FORMER");
+                console.log(formeroff[0]);
+                var former;
+                if(element.former === "" || element.former === " " ){
+                    former = "";
+                } else {
+                    former = formeroff[0].dataValues.off_id;
+                }
+                Moving.findOne({
+                    where: {
+                        PersonPerId: element.perId,
+                       // newOfficeOffId: former,
+                        ConfigurationConId: element.conId
+                    }
+                }).then(function (moving) {
+                    console.log("MOVING");
+                    console.log(moving);
+                    if(element.former === "" || element.former === " " ) {
+                        Moving.create({
+                            PersonPerId: element.perId,
+                            newOfficeOffId: newoff[0].dataValues.off_id,
+                            OfficeOffId: newoff[0].dataValues.off_id,
+                            ConfigurationConId: element.conId
+                        }).then(function (mov) {
+                            console.log(mov);
+                            req.flash('succes', 'La configuration a bien été enregistrée.');
+                            res.json("success");
+                        });
+                    } else {
+                        moving.update({
+                            newOfficeOffId: newoff[0].dataValues.off_id,
+                            OfficeOffId: newoff[0].dataValues.off_id,
+                            formerOfficeOffId: formeroff[0].dataValues.off_id
+                        }).then(function (mov) {
+                          //  console.log(mov);
+                            req.flash('succes', 'La configuration a bien été enregistrée.');
+                            res.json("success");
+                        });
+                    }
+                });
+            });
+        });
+    });
+}
+
 module.exports = {
     getAllMovingsByConfIdCount,
     getPeopleMovingsByConId,
     deleteConfiguration,
     getMovingsListByConfId,
     addNewConfiguration,
-    getAllConf
+    getAllConf,
+    saveMovings
 }

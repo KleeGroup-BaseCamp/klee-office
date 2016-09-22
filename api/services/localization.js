@@ -15,18 +15,34 @@ var State = models.State;
  * based on the current configuration
  */
 const getCurrentOfficeName = (req,res) =>{
-   // console.log(req.params);
-    console.log(req.params);
-   models.sequelize.query('SELECT offices.name, offices.off_id from offices ' +
+    models.sequelize.query('SELECT offices.name, offices.off_id from offices ' +
         'join movings as mov on mov.newOfficeOffId = offices.off_id '+
         'join configurations as conf on conf.con_id = mov.ConfigurationConId '+
         'join people as peo on peo.per_id = mov.PersonPerId ' +
-        'where conf.name = \'Configuration premiere\' ' +
+        'join States on conf.StateStaId = States.sta_id ' +
+         'where States.name = "Validee" ' +
+       // 'where conf.name = \'Configuration premiere\' ' +
         'and peo.firstname = :first and peo.lastname = :last',
         { replacements: {first: req.params.first, last: req.params.last}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(office){
             console.log(office)
            res.json(office);
+        });
+}
+
+const getCurrentOfficeNamebyId = (req,res) => {
+    models.sequelize.query('SELECT offices.name, offices.off_id from offices ' +
+        'join movings as mov on mov.newOfficeOffId = offices.off_id '+
+        'join configurations as conf on conf.con_id = mov.ConfigurationConId '+
+        'join people as peo on peo.per_id = mov.PersonPerId ' +
+        'join States on conf.StateStaId = States.sta_id ' +
+        'where States.name = "Validee" ' +
+            // 'where conf.name = \'Configuration premiere\' ' +
+        'and peo.per_id = :id',
+        { replacements: {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(office){
+            console.log(office)
+            res.json(office);
         });
 }
 
@@ -72,11 +88,63 @@ const saveMyLocalization = (req, res) => {
                             ' \'newOfficeOffId\', \'OfficeOffId\') ' +
                             'Values(:today, :today, :conId ,' +
                             '(select per_id from people where firstname= :firstname and lastname = :lastname), ' +
-                            ':formerOffId' +
+                            '(select newOfficeOffId from movings where PersonPerId = ' +
+                            '(select per_id from people where firstname= :firstname and lastname = :lastname) ' +
+                            'and formerOfficeOffId is null)' +
                             ', :offId, :offId) ',
-                            { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, formerOffId: req.body['former-office-id'], offId: offid }, type: models.sequelize.QueryTypes.INSERT}
+                            { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, offId: offid }, type: models.sequelize.QueryTypes.INSERT}
                         ).then(function(moving){
                                 console.log(moving)
+                            });
+
+                        // add all movings from current configuration
+                        models.sequelize.query(
+                            'SELECT * from configurations ' +
+                            'join States on configurations.StateStaId = States.sta_id ' +
+                            'where States.name = "Validee"'
+                            , {
+                                replacements: {},
+                                type: models.sequelize.QueryTypes.SELECT
+                            })
+                            .then(function (configuration) {
+                                console.log(configuration);
+                                Moving.findAll({
+                                    where: {
+                                        ConfigurationConId: configuration[0].con_id
+                                    }
+                                })
+                                    .then(function (movings) {
+                                        movings.forEach(function(elem){
+                                            // copy all the movings from current configuration
+                                            // except the one which is modified here
+                                            if (elem.newOfficeOffId !== req.body['office-name']){
+                                                Moving.create({
+                                                    newOfficeOffId: elem.newOfficeOffId,
+                                                    OfficeOffId: elem.OfficeOffId,
+                                                    PersonPerId: elem.PersonPerId,
+                                                    ConfigurationConId: conId
+                                                }).then(function (newMovings) {
+                                                    console.log("ok" + newMovings);
+                                                    req.flash();
+                                                    res.redirect("modify"+conId);
+                                                });
+                                            }
+                                        });
+                                        // insert new moving
+                                        models.sequelize.query(' INSERT into Movings(\'createdAt\', \'updatedAt\',' +
+                                            ' \'ConfigurationConId\', \'PersonPerId\', \'formerOfficeOffId\',' +
+                                            ' \'newOfficeOffId\', \'OfficeOffId\') ' +
+                                            'Values(:today, :today, :conId ,' +
+                                            '(select per_id from people where firstname= :firstname and lastname = :lastname), ' +
+                                            '(select newOfficeOffId from movings where PersonPerId = ' +
+                                            '(select per_id from people where firstname= :firstname and lastname = :lastname) ' +
+                                            'and formerOfficeOffId is null)' +
+                                            ', :offId, :offId) ',
+                                            { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, offId: offid }, type: models.sequelize.QueryTypes.INSERT}
+                                        ).then(function(moving){
+                                                console.log(moving)
+                                            });
+                                    });
                             });
                     });
                 });
@@ -89,5 +157,6 @@ const saveMyLocalization = (req, res) => {
 
 module.exports = {
     saveMyLocalization,
-    getCurrentOfficeName
+    getCurrentOfficeName,
+    getCurrentOfficeNamebyId
 }
