@@ -19,6 +19,7 @@
                 '</div>'+
                 '<div class="inline">'+
                 '<input class="field" type="text" id="name" name="name" required/><br />'+
+                    '<!-- here a name is already set to be able to test the service but it has to be replaced with the name a the connected person -->' +
                 '<input class="disabled-field" type="text" id="creator" name="creator"  value="Marie-Pierre SALVI" readonly /><br />'+
                 '<input class="disabled-field" type="text" id="dateCreation" name="dateCreation" value="" readonly /><br />'+
                 '</div>'+

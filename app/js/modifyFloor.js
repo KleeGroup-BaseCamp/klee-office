@@ -43,6 +43,7 @@
             } else {
                 $('<h1 class='+name+'>('+name+')</h1>').prependTo($('#legend'));
             }
+            // here a name is already set to be able to test the service but it has to be replaced with the name of the connected person
             d3.json( server+"currentOfficeName/Thomas/GALLON", function(error, data) {
                 d3.select("#former-office").attr("value", data[0].name);
                 d3.select("#former-office-id").attr("value", data[0].off_id);

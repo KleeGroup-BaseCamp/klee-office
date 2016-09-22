@@ -5,7 +5,7 @@
 var mapControl = {
 	existMap: false,
 	mapName: null,
-	mapPlot: function(name, isChoosingFloor, isDB, callback) {
+	mapPlot: function(name, isChoosingFloor, callback) {
 		var	server= "http://local-map/";
 		// add svg map to html
 		d3.xml( server + "maps/" + name + ".svg",
@@ -441,7 +441,7 @@ var mapControl = {
 							}
 							event.stopPropagation();
 						});
-					//callback();
+					callback();
 				});
 			});
 	},
