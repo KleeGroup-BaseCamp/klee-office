@@ -80,10 +80,24 @@ Admin :
 
 * getAllValidators (req, res)* - *req*:, *res*:**managers(json)**
 
+Configurations 
+* *getAllConf (req, res)* - *req*:, *res*:**configurations(json)**
+
+* *getAllMovingsByConfIdCount (req, res)* - *req*:**configurationId**, *res*:**count(json)**
+*  *getPeopleMovingsByConId (req, res)* - *req*:**configurationId**, *res*:**movings(json)**
+*  *deleteConfiguration  (req, res)* - *req*:**configurationId**, *res*:
+*  *validateConfiguration  (req, res)* - *req*:**configurationId**, *res*:
+*  *getMovingsListByConfId (req, res)* - *req*:**configurationId**, *res*:**return txt file**
+*  *addNewConfiguration (req, res)* - *req*:**creator**, *res*:
+*  *saveMovings (req, res)* - *req*:**array of movings**, *res*:
+*  *reportConsistency (req, res)* - *req*:**configurationId**, *res*:**info(json)**
+*  *formerPeopleByOffId (req, res)* - *req*:**configurationId**,**officeId**, *res*:**formerPeople(json)**
+*  getRecapOfMovings (req, res)* - *req*:**configurationId**, *res*:**movingsList(json)**
+
 
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
-* 
+ 
 
 -----------------------------------------------------------------
 
