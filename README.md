@@ -129,6 +129,58 @@ buildTooltips: function(names){},
 eraseMap: function(){}
 ```
 
+#### **_admin.js_** 
+
+plotList : plot companies/departments/people list 
+erase : remove a list
+eraseAll : remove all lists
+plotValidatorsList : plot list of validators
+
+
+
+#### **_buildAdminScreen.js_** 
+
+plot everything for admin screen. 
+
+
+#### **_buildConfScreen.js_** 
+
+plot everything for configurations screen. 
+
+
+#### **_buildConsistencyScreen.js_** 
+
+plot everything for consistency screen. 
+
+
+#### **_buildModifyScreen.js_** 
+
+plot everything for configuration managment screen. 
+
+
+#### **_chooseFloor.js_** 
+
+plot list of floors with pictures. 
+
+
+#### **_configurations.js_** 
+
+plotConfList : plot list of configurations with four action buttons. 
+
+
+#### **_consistency.js_** 
+
+plot conflicts list and movings list for a configuration. 
+
+#### **_modifyFloor.js_**  
+
+same as chooseFloor but without pictures and adapted to modify configuration screen.
+
+
+#### **_polyfill.js_** 
+
+polyfill for Internet Explorer compatibility.
+
 #### **_justPlotMap.js_**
 
 - `mapControl.smallMapPlot(name, function(){})`: plot small maps in `<div id="navigation-chart">`.
