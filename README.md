@@ -1,4 +1,4 @@
-# Cahier de charge
+# Cahier des charges
 
 **Qui** va utiliser
 
@@ -59,11 +59,31 @@ local-map uses the following additional node modules:
 
 __Data__
 * maps (*.svg*)
-* peopel (*.json*)
+* people (*.json*)
 
 __Service__
+
+Admin : 
+
+ 
+* *getAllCompanies(req, res)* - *req*: , *res*: **companies(json)** 
+
+* *getDepartmentsByCompany (req, res)* - *req*:**companyId** , *res*: **departments(json)**
+
+* *getPeopleByDepartment(req, res)* - *req*:**departmentId** , *res*: **people(json)**
+
+* *getPeopleByCompany (req, res)* - *req*:**companyId** , *res*: **people(json)**
+
+* *saveValidateur (req, res)* - *req*:**firstname**, **lastname**, **mail**, **statusId**, **poleId** , **level**, *res*: 
+
+* *updateValidateur (req, res)* - *req*:**managerId**, *res*:
+
+* getAllValidators (req, res)* - *req*:, *res*:**managers(json)**
+
+
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
+* 
 
 -----------------------------------------------------------------
 
