@@ -300,6 +300,25 @@ There are still other ways to add tables, such as using **inkscape** (but make s
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
 
+# For our sqlite3 database : 
+
+
+If you want to recreate a clean database. 
+
+Stop node server so as the database is not in use anymore.
+
+Connect on the server with ssh and delete this file : api/db.development (it is the sqlite3 database of the project).
+
+Start node again : it will recreate the tables, without data. 
+
+Go on http://local-map/populateDB and wait for 5 minutes to be sure not to lock the database or make uncoherent data. 
+
+The insert process is done. Then go on http://local-map/associateData and wait as well as for the first step. 
+
+The update process with foreign keys is done. 
+
+
+
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 # La maintenance de donnée (employé et plan) (*Version Français*)
