@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <!-- title and meta -->
+    <!-- Forbid compatibility mode -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="description" content="A chart with the different floors of Klee and their main departments" />
+    <title>Explore Offices</title>
+    <!-- css -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- compiled CSS for boostrap grid and responsive system (some changes in it)-->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <!-- js -->
+    <script type="text/javascript" src="js/libraries/d3.min.js"></script>
+    <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/libraries/jquery.autocomplete.min.js"></script>
+</head>
+
+<body>
+<div id="wrapper">
+    <div id="info-bar">
+        <div id="back-to-home">
+            <div id="home">
+                <a href="/"><p id="home-label">search</p></a>
+            </div>
+            <div id="location">
+                <a href="/localization"><p id="location-label">location</p></a>
+            </div>
+            <div id="configurations">
+                <a href="/configurations"><p id="configurations-label">configurations</p></a>
+            </div>
+            <div id="admin">
+                <a href="/admin"><p id="admin-label">administration</p></a>
+            </div>
+        </div>
+    </div>
+    <!-- /#info-bar -->
+    <header>
+        <div id="title" class="container">
+            <h1>Local Map</h1>
+            <h2>Klee Group</h2>
+        </div>
+
+
+    </header>
+    <!-- /header -->
+
+    <div id="main" class="">
+        <div>
+            <% if (message) { %>
+            <p class="flash-err"><%- message %></p>
+            <% } %>
+        </div>
+        <div id="navigation-bar" class="container">
+        </div>
+        <div class="two-columns conf container">
+            <div class="">
+               <h2 class="title">Problèmes à résoudre</h2>
+                <br>
+                <table class="consistency">
+                    <thead class="table-content">
+                    <tr class="">
+                        <th class="">
+                            Bureau
+                        </th>
+                        <th class="">
+                            Précédent occupant
+                        </th>
+                        <th class="">
+                            Nouvel occupant
+                        </th>
+                    </tr>
+                    </thead>
+                </table><br><br><br>
+                <h2 class="title">Récapitulatif des déplacements</h2>
+                <table class="consistency" >
+                    <thead class="table-movings">
+                    <tr class="">
+                        <th class="">Personne à déplacer
+                        </th>
+                        <th class="">Bureau de départ
+                        </th>
+                        <th class="">
+                        </th>
+                        <th class="">Bureau d'arrivée
+                        </th>
+                    </tr>
+                    </thead>
+                </table><br><br><br>
+                <button class="submit" id="validateConfiguration">Valider</button>
+                <button class="cancel-button" id="cancel">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- //////////////////////////////////////////////
+  // js
+  ////////////////////////////////////////////// -->
+<script src="js/classie.js"></script>
+<script src="js/toggle.js"></script>
+<script src="js/autocomplete.js"></script>
+<script src="js/polyfill.js"></script>
+<script src="js/consistency.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/buildConsistencyScreen.js" charset="UTF-8"></script>
+
+
+</body>
+</html>
