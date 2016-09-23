@@ -94,6 +94,17 @@ Configurations
 *  *formerPeopleByOffId (req, res)* - *req*:**configurationId**,**officeId**, *res*:**formerPeople(json)**
 *  getRecapOfMovings (req, res)* - *req*:**configurationId**, *res*:**movingsList(json)**
 
+Data 
+* *populate (req, res)* - *req*:, *res*:
+require KLeeGroup.json
+DataAssociation 
+* *associate(req, res)* - *req*:, *res*:
+require KLeeGroup.json
+
+Localization
+* *getCurrentOfficeName (req, res)* - *req*:**firsname**, **lastname**, *res*:**office(json)**
+* *getCurrentOfficeNamebyId (req, res)* - *req*:**PeopleId**, *res*:**office(json)**
+* *saveMyLocalization  (req, res)* - *req*:**officeName**,**firstname**,**lastname**, *res*
 
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
