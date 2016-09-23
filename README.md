@@ -97,6 +97,7 @@ Configurations
 Data 
 * *populate (req, res)* - *req*:, *res*:
 require KLeeGroup.json
+
 DataAssociation 
 * *associate(req, res)* - *req*:, *res*:
 require KLeeGroup.json
