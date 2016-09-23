@@ -79,7 +79,7 @@ var consistencyControl = {
                 contentType: "application/json",
                 dataType: 'json',
                // url: 'http://localhost:3000/validateConfiguration',
-               url: 'http://local-map/saveMovings',
+               url: 'http://local-map/validateConfiguration',
                 data: JSON.stringify({ "id": conId }),
                 success: success
             });
