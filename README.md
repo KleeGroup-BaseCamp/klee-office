@@ -97,6 +97,7 @@ Configurations
 Data 
 * *populate (req, res)* - *req*:, *res*:
 require KLeeGroup.json
+
 DataAssociation 
 * *associate(req, res)* - *req*:, *res*:
 require KLeeGroup.json
@@ -127,6 +128,58 @@ buildTooltips: function(names){},
 // Erase all small maps
 eraseMap: function(){}
 ```
+
+#### **_admin.js_** 
+
+plotList : plot companies/departments/people list 
+erase : remove a list
+eraseAll : remove all lists
+plotValidatorsList : plot list of validators
+
+
+
+#### **_buildAdminScreen.js_** 
+
+plot everything for admin screen. 
+
+
+#### **_buildConfScreen.js_** 
+
+plot everything for configurations screen. 
+
+
+#### **_buildConsistencyScreen.js_** 
+
+plot everything for consistency screen. 
+
+
+#### **_buildModifyScreen.js_** 
+
+plot everything for configuration managment screen. 
+
+
+#### **_chooseFloor.js_** 
+
+plot list of floors with pictures. 
+
+
+#### **_configurations.js_** 
+
+plotConfList : plot list of configurations with four action buttons. 
+
+
+#### **_consistency.js_** 
+
+plot conflicts list and movings list for a configuration. 
+
+#### **_modifyFloor.js_**  
+
+same as chooseFloor but without pictures and adapted to modify configuration screen.
+
+
+#### **_polyfill.js_** 
+
+polyfill for Internet Explorer compatibility.
 
 #### **_justPlotMap.js_**
 
@@ -246,6 +299,25 @@ Well, open this *svg* file in a browser (chrome or firefox), move the mouse to t
 There are still other ways to add tables, such as using **inkscape** (but make sure you are working on the right layer !), or using raw **Autocad** file to make complete change of the map (remember you need to transform *.dwg* to *.svg*, and clean unnecessary parts or layers, **AutoDWG Converter** is recommended). 
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
+
+# For our sqlite3 database : 
+
+
+If you want to recreate a clean database. 
+
+Stop node server so as the database is not in use anymore.
+
+Connect on the server with ssh and delete this file : api/db.development (it is the sqlite3 database of the project).
+
+Start node again : it will recreate the tables, without data. 
+
+Go on http://local-map/populateDB and wait for 5 minutes to be sure not to lock the database or make uncoherent data. 
+
+The insert process is done. Then go on http://local-map/associateData and wait as well as for the first step. 
+
+The update process with foreign keys is done. 
+
+
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
