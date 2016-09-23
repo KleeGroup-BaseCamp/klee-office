@@ -1,4 +1,4 @@
-# Cachier de charge
+# Cahier de charge
 
 **Qui** va utiliser
 
@@ -15,17 +15,22 @@
 
 1. Rechercher des personnes individuellement, ou par département 
 1bis. Trouver les salles de réunion
-2. Trouver un espace libre pour un nouvel arrivant
-3. Allocation de place -> proposition + validation
-4. Rechercher des zones en général -> vouloir savoir à quoi cela correspond
-5. Itinéraire -> comment faire pour y aller
-6. Street View -> environment dans une photo
+2. Renseigner sa localisation
+3. Réaliser des simulations de déplacements
+4. Valider les simulations pour les mettre en place dans les locaux
+5. Informer par mail les personnes concernées de changements dans l'application (nécessité de valider, configuration à mettre en place dans les locaux par exemple)
+6. Utiliser le SSO pour authentifier les utilisateurs et leur conférer des droits
+7. Rechercher des zones en général -> vouloir savoir à quoi cela correspond
+8. Itinéraire -> comment faire pour y aller
+9. Street View -> environment dans une photo
 
 -------------------------------------------------------------
 -------------------------------------------------------------
 # Local map
 
-local-map is a search-find-people service on local maps of KleeGroup La Boursidière. The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__.
+local-map is a search-find-people service on local maps of KleeGroup La Boursidière. 
+It also allows the managers to make simulations of offices allocations and then validate it, so they can be realized in the offices. 
+The client-side is based on __jQuery.js__ and __d3.js__, and server-side is based on __express.js__.
 
 
 ## Required Libraries
@@ -33,10 +38,18 @@ local-map is a search-find-people service on local maps of KleeGroup La Boursidi
 local-map uses the following additional node modules:
 
 * cors 2.7.1 - provide cross-origin file transmit in __express__
-* express 4.13.4 - provide local-server service
-* lodash 4.5.1 - some js functions for array treatment
 * body-parser 1.15.0 - parse incoming requests, JSON body parser
+* bluebird 3.3.1 - provide promises
+* connect-flash 0.1.1 - provide flash messages in the views
+* cookie-parser 1.0.1 - dependency for connect-flash
+* ejs 2.5.1 - templating engine to generate html with javascript
+* express 4.13.4 - provide local-server service
+* express-session 1.0.2 - dependency for connect-flash
 * fs - write to server's log
+* lodash 4.5.1 - some js functions for array treatment
+* sequelize 3.23.6 - ORM and database support
+* sequelize-cli 2.4.0 - ORM and database support
+* sqlite3 3.0.8 - support for sqlite3 database
 * util - write to server's log
 
 
