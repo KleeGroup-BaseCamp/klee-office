@@ -95,9 +95,42 @@ const deleteConfiguration = (req, res) => {
 }
 
 /**
- * if consistent (checked before)
+ * if consistent (checked before service call)
  */
 const validateConfiguration = (req, res) => {
+    console.log(req.body);
+
+    // change status from current validated conf to draft
+    models.sequelize.query(
+        'UPDATE configurations ' +
+        'SET StateStaId = (select sta_id from states where name = "Brouillon" ) ' +
+        'WHERE StateStaId = (select sta_id from states where name = "Validee" ) '
+        , { replacements: { },
+            type: models.sequelize.QueryTypes.SELECT
+        })
+        .then(function (configuration) {
+            Moving.update(
+                {
+                    formerOfficeOffId: null
+                }, {
+                    where: {
+                        ConfigurationConId: req.body.id
+                    }
+                }
+            ).then(function(movings){
+                    console.log(movings);
+                    models.sequelize.query(
+                        'UPDATE configurations ' +
+                        'SET StateStaId = (select sta_id from states where name = "Validee" ) ' +
+                        'WHERE con_id = :id '
+                        , { replacements: {id: req.body.id},
+                            type: models.sequelize.QueryTypes.SELECT
+                        }).then(function(conf){
+                            console.log(conf);
+                            res.json("success");
+                        });
+                });
+        });
 
 }
 
@@ -255,7 +288,8 @@ const saveMovings = (req, res) =>
                                 formerOfficeOffId: off.dataValues.off_id
                             }).then(function (mov) {
                                 console.log(mov);
-                                req.flash('succes', 'La configuration a bien été enregistrée.');
+                                req.flash('success', 'La configuration a bien &eacutet&eacute enregistr&eacutee.' +
+                                    ' Avant de pouvoir valider la configuration, sa coh&eacuterence sera v&eacuterif&eacutee.');
                                 res.json("success");
                             });
                         })
@@ -265,9 +299,8 @@ const saveMovings = (req, res) =>
                             OfficeOffId: newoff[0].dataValues.off_id,
                             formerOfficeOffId: formeroff[0].dataValues.off_id
                         }).then(function (mov) {
-                            //  console.log(mov);
-                            req.flash('succes', 'La configuration a bien été enregistrée.');
-                            res.json("success");
+                            req.flash('success', 'La configuration a bien &eacutet&eacute enregistr&eacutee.' +
+                                ' Avant de pouvoir valider la configuration, sa coh&eacuterence sera v&eacuterif&eacutee.');                            res.json("success");
                         });
                     }
                 });
@@ -292,7 +325,8 @@ const reportConsistency = (req,res) => {
         'group by newOfficeOffId '+
         'having count(*) > 1 ) ' +
         'and configurationConId = :conId ' +
-        'and (movings.formerOfficeOffId is not null or movings.formerOfficeOffId in (select off_id from offices where name = "aucun")) '
+        'and (movings.formerOfficeOffId is not null or movings.formerOfficeOffId in (select off_id from offices where name = "aucun")) ' +
+        'order by offices.name'
         , {
             replacements: {conId: req.params.id},
             type: models.sequelize.QueryTypes.SELECT
@@ -328,6 +362,31 @@ const formerPeopleByOffId = (req,res) => {
         });
 }
 
+/**
+ * get informations about all the movings of a configuration
+ * start and arrival of the moving
+ * people data
+ * res : json containing all the data
+ */
+const getRecapOfMovings = (req, res) => {
+    models.sequelize.query(
+        'SELECT depart.name as depart, arrivee.name as arrivee, people.firstname || " " || people.lastname as name, people.mail ' +
+        'from movings ' +
+        'join people on people.per_id = movings.PersonPerId ' +
+        'join offices as depart on depart.off_id = movings.formerOfficeOffId ' +
+        'join offices as arrivee on arrivee.off_id = movings.newOfficeOffId ' +
+        'where movings.ConfigurationConId = :conid and movings.formerOfficeOffId is not null '
+        , { replacements: { conid: req.params.id },
+            type: models.sequelize.QueryTypes.SELECT
+        })
+        .then(function (people) {
+            res.json(people);
+        });
+}
+
+
+
+
 module.exports = {
     getAllMovingsByConfIdCount,
     getPeopleMovingsByConId,
@@ -337,5 +396,7 @@ module.exports = {
     getAllConf,
     saveMovings,
     reportConsistency,
-    formerPeopleByOffId
+    formerPeopleByOffId,
+    getRecapOfMovings,
+    validateConfiguration
 }

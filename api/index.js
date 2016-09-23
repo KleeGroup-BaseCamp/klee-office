@@ -101,12 +101,13 @@ app.delete('/deleteConfiguration/:id', confServices.deleteConfiguration);
 app.get('/getMovingsListByConfId/:id', confServices.getMovingsListByConfId);
 app.post('/addNewConfiguration', confServices.addNewConfiguration);
 app.post('/saveMovings', confServices.saveMovings);
+app.post('/validateConfiguration', confServices.validateConfiguration);
 app.get('/getAllConf', confServices.getAllConf);
 app.get('/reportConsistency/:id', confServices.reportConsistency);
 app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPeopleByOffId);
+app.get('/getRecapOfMovings/:id', confServices.getRecapOfMovings);
 
 
-//app.get('/maps/:number', mapServices.getMapByNumber);
 
 console.log('Initializing the API...');
 
