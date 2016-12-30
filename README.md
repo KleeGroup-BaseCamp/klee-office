@@ -269,6 +269,12 @@ My ``crontab`` command is as follows:
 ````
 This means that: every 30 minutes, system will open folder ``/home/dev/local-map/admin``, then use ``/home/dev/anaconda2/bin/python`` as python interpreter to run following python file ``/home/dev/local-map/admin/activedirectory.py``.
 
+The same thing has to be done to run the script updateDataBase.py, which will delete former Klee employees and add the new ones into the SQLite database. 
+Here is the command, it will run the script every day : 
+````
+@daily cd /home/dev/local-map/admin && /home/dev/anaconda2/bin/python /home/dev/local-map/admin/updateDataBase.py
+````
+
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 
