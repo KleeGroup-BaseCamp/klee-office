@@ -25,13 +25,13 @@ for i in jsonData:
 	aSupprimer.append( i[1]['cn'][0].encode('utf-8'))
 
 # delete movings related to former Klee employees
-sql="DELETE FROM movings WHERE PersonPerId IN (SELECT per_id FROM people peo join movings mvg on peo.per_id = mvg.PersonPerId  where peo.firstname || \' \' ||  peo.lastname in ({seq}) limit 1)".format(seq=','.join(['?']*len(aSupprimer)))
+sql="DELETE FROM movings WHERE PersonPerId IN (SELECT per_id FROM people peo join movings mvg on peo.per_id = mvg.PersonPerId  where peo.firstname || \' \' ||  peo.lastname in ({seq}))".format(seq=','.join(['?']*len(aSupprimer)))
 print "DELETE movings"
 cursor.execute(sql, aSupprimer)
 conn.commit()
 
 # delete people who are former Klee employees 
-sql="DELETE FROM people WHERE per_id IN (SELECT per_id FROM people peo where peo.firstname || \' \' ||  peo.lastname in ({seq}) limit 1)".format(seq=','.join(['?']*len(aSupprimer)))
+sql="DELETE FROM people WHERE per_id IN (SELECT per_id FROM people peo where peo.firstname || \' \' ||  peo.lastname in ({seq}))".format(seq=','.join(['?']*len(aSupprimer)))
 print "DELETE people"
 cursor.execute(sql, aSupprimer)
 conn.commit()
