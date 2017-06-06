@@ -1,5 +1,5 @@
 var ActiveDirectory = require('activedirectory');
-var config = require('../package.json').localmap
+var config = require('../config/config-ldap.json')
 
 var ad = new ActiveDirectory(config);
 var username = config.username;

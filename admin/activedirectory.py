@@ -7,28 +7,19 @@ ldap.set_option(ldap.OPT_TIMEOUT, 10)
 ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, 10)
 
 ######################################################
-with open('../package.json') as data_file:
+with open('../config/config-ldap.json') as data_file:
   settings = json.load(data_file)
 
-Server = settings['localmap']['url']
-BaseDN = settings['localmap']['baseDN']
-BaseDNDesactives = settings['localmap']['BaseDNDesactives']
-User = settings['localmap']['username']
-Password = settings['localmap']['password']
+Server = settings['url']
+BaseDN = settings['baseDN']
+BaseDNDesactives = settings['BaseDNDesactives']
+User = settings['username']
+Password = settings['password']
 
 Filter = 'cn=*'
 Attrs = ('cn', 'physicalDeliveryOfficeName','mail', 'department')
 AttrsDesact = ('cn')
 #######################################################
-
-# con = ldap.initialize('ldap://klee.lan.net')
-# ldap_user = "Reader-LocalMap@KLEE.LAN.NET"
-# passwd = "Dd2*[r{WPtSc0CZ-?cYL"
-# base_dn = "ou=Utilisateurs,dc=klee,dc=lan,dc=net"
-
-# con.simple_bind_s(ldap_user, passwd)
-# filter_str = "cn=*Zekun*"
-# attrs = ('cn', 'physicalDeliveryOfficeName', 'mail', 'department')
 
 con = ldap.initialize(Server)
 ldap_user = User

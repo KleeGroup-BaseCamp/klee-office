@@ -1,0 +1,7 @@
+{
+    "url": "ldap://myldap",
+    "baseDN": "ou=ou,dc=dc,dc=dc,dc=dc",
+    "BaseDNDesactives": "ou=ou,dc=dc,dc=dc,dc=dc",
+    "username": "username",
+    "password": "password"
+}

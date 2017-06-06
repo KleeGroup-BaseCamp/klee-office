@@ -98,10 +98,10 @@ var mapControl = {
 										// get scroll pixels to correct tooltip's yPostion
 										yPosition += $(window).scrollTop();
 
-										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0])
+										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0] + "<br/>" + d.physicalDeliveryOfficeName[0])
 											.style("left", (xPosition) + "px")
 											.style("top", (yPosition) + "px")
-											.style("height", "40px");
+											.style("height", "57px");
 										tooltip.transition()
 											.duration(200)
 											.style("opacity", .9)
@@ -145,6 +145,30 @@ var mapControl = {
 									.attr("value", officeName);
 							});
 					}
+
+						// Plot number of available offices --- add by Alex 30/05/2017
+						var allTablees = d3.select("#tables")
+							.selectAll(".available")
+							.style("cursor", "pointer")
+							.on("click", function(){
+								console.log("Bureau : " + d3.event.target.parentNode.id);
+								var xPosition = event.clientX,
+									yPosition = event.clientY;
+										// get scroll pixels to correct tooltip's yPostion
+									yPosition += $(window).scrollTop();
+
+									tooltip.html("Bureau " + d3.event.target.parentNode.id)
+											.style("left", (xPosition) + "px")
+											.style("top", (yPosition) + "px")
+											.style("height", "20px");
+									tooltip.transition()
+											.duration(200)
+											.style("opacity", .9)
+											.style("z-index", 20);
+
+									event.stopPropagation();
+					
+							});
 
 					callback();
 				});

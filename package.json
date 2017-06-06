@@ -4,7 +4,7 @@
   "description": "Local plan KLEE",
   "main": "index.js",
   "scripts": {
-    "start": "node src"
+    "start": "cd api && node ."
   },
   "repository": {
     "type": "git",
@@ -16,13 +16,6 @@
     "local-map",
     "klee"
   ],
-  "localmap": {
-    "url": "ldap://klee.lan.net",
-        "baseDN": "ou=Utilisateurs,dc=klee,dc=lan,dc=net",
-        "BaseDNDesactives": "ou=Utilisateurs désactivés,dc=klee,dc=lan,dc=net",
-        "username": "Reader-LocalMap@KLEE.LAN.NET",
-        "password": "Dd2*[r{WPtSc0CZ-?cYL"
-  },
   "author": "zekun.zhang@kleegroup.com",
   "license": "MIT",
   "bugs": {

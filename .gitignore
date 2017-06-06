@@ -7,3 +7,5 @@ desktop.ini
 /api/data
 api/db*
 api/services/*.txt
+/config/config-ldap.json
+
