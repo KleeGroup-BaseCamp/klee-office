@@ -1,3 +1,6 @@
+// -------- edit by almorin -------
+
+
 //------------ script permettant de gérer la recherche de plusieurs personnes --------
 
 'use strict';
@@ -59,12 +62,8 @@ $(function(){
             select: function( event, ui ) {
 
               var terms = split( this.value );
-              console.log("Terms : " + terms);
               var nbSearch = terms.length;
-              var afficheMap=0;
-              //var numOffice = terms[nbSearch-1];
-             // bureau.push()
-            //console.log(this.data);
+              
               // remove the current input
               terms.pop();
               // add the selected item
@@ -72,18 +71,19 @@ $(function(){
               // add placeholder to get the semicolon-and-space at the end
               terms.push( "" );
               this.value = terms.join( "; " );
-              //console.log("Recherche de : " + terms);
-              console.log("Nb de recherches : " + nbSearch);
-              console.log("Personne ajoutée : " + terms[nbSearch-1]);
+              
               //récupère l'indice de l'objet dans people de la personne recherchée
               var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]);
-              console.log("Indice : " + indice);
+              
               var bureau = people[indice].data.physicalDeliveryOfficeName[0];
               listeBureaux.push(bureau);
-              console.log("Bureau : " + bureau);
-              console.log("Liste des bureaux : " + listeBureaux);
+             
               var splitID = bureau.split(/\s+:\s+/);
-              listeSplitID.push(splitID[1]);
+              if ((splitID[0] === undefined) || (splitID[1] === undefined)){  
+                listeSplitID.push("noplace");}
+              else {
+                listeSplitID.push(splitID[1]);} 
+              console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
               //remplit le tableau listePlateau par les plateau occupé par chaque personnes recherchées
               if(splitID[1]){
@@ -109,18 +109,10 @@ $(function(){
                 listePlateau.push("noplace");
                 personneParPlateau.externe++
               }
-              console.log("Plateaux : " + listePlateau);
-              console.log("Personnes par plateau : " + personneParPlateau.n0 + " ; " + personneParPlateau.n1 + " ; " + personneParPlateau.n2 + " ; " + personneParPlateau.n3 + " ; " + personneParPlateau.n4 + " ; " + personneParPlateau.o2 + " ; " + personneParPlateau.o3 + " ; " + personneParPlateau.o4);
               
-              afficheMap = plotNumberOfPeople(personneParPlateau);
-              console.log("AfficheMap : " + afficheMap);
-              if(afficheMap === 1){
-                console.log("Longueur listeSplitID : " + listeSplitID.length);
-                //var i=0;
-               // var carte = document.getElementById("svg-" + listeSplitID[nbSearch-1].split(/-/)[0]);
-               console.log("svg - " + listeSplitID[nbSearch-1].split(/-/)[0]);
-               /* carte.onclick = */plotResult(listeSplitID, (nbSearch-1), listePlateau);
-              }
+              plotNumberOfPeople(personneParPlateau, listeSplitID);
+             
+              console.log("Longueur listeSplitID : " + listeSplitID.length);
               
               return false;
             }
@@ -133,99 +125,165 @@ $(function(){
 
  // ------------  Fonction qui affiche à l'écran le nb de personne recherchées par map ----------- 
 
-function plotNumberOfPeople(personneParPlateau){
+function plotNumberOfPeople(personneParPlateau, listeSplitID){
   var aaa = document.getElementById("search-button");
-        console.log("fonction bouton!!")
+       
        aaa.onclick = function(){
                 if (personneParPlateau.n4 > 0){
-                d3.select("#nbPn4")
+                d3.select("#N4-personnes")
                   .text("- " + personneParPlateau.n4 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.o4 > 0){
-                d3.select("#nbPo4")
+                d3.select("#O4-personnes")
                   .text("- " + personneParPlateau.o4 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.n3 > 0){
-                d3.select("#nbPn3")
+                d3.select("#N3-personnes")
                   .text("- " + personneParPlateau.n3 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.o3 > 0){
-                d3.select("#nbPo3")
+                d3.select("#O3-personnes")
                   .text("- " + personneParPlateau.o3 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.n2 > 0){
-                d3.select("#nbPn2")
+                d3.select("#N2-personnes")
                   .text("- " + personneParPlateau.n2 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.o2 > 0){
-                d3.select("#nbPo2")
+                d3.select("#O2-personnes")
                   .text("- " + personneParPlateau.o2 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.n1 > 0){
-                d3.select("#nbPn1")
+                d3.select("#N1-personnes")
                   .text("- " + personneParPlateau.n1 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.n0 > 0){
-                d3.select("#nbPn0")
+                d3.select("#N0-personnes")
                   .text("- " + personneParPlateau.n0 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.externe > 0){
                 d3.select("#nbOutside")
                   .text("- " + personneParPlateau.externe + " -")
                   .style("color", "	rgb(20,200,20)");}
-       };
-       return 1;
+                console.log("plot nb personnes");
+                plotResult(listeSplitID);
+       };  
 };
 
 // ----------------- Fonction qui affiche les localisations de personnes recherchées sur les map cliqués ------------------
-   // pour l'instant, n'affiche que la localisation  de la dernière personne recherchée et superpose toutes les maps concernés par les personnes recherchées ------------- 
+   // on ne peut pas revenir à l'écran de résultats des recherches ------------- 
 
-function plotResult(listeSplitID, cpt, listePlateau){
+function plotResult(listeSplitID){
   var i=0;
-  
-  var carte = document.getElementById("svg-" + listeSplitID[cpt].split(/-/)[0]);
+  var cpt=0;
   var table;
+  var mapSearch = [];
+
+  //remplit le tableau mapSearch contenant les maps concernés par la recherche
+  for (i=0;i<listeSplitID.length;i++){
+    if (listeSplitID[i] === "noplace" ){ //fait buggé la recherche même des gens de la boursidière
+      console.log("Externe : " + listeSplitID[i]);
+      if (mapSearch.indexOf(listeSplitID[i]) ===(-1)){
+                   mapSearch.push(listeSplitID[i]);}
+    }
+    else{ 
+      console.log("Personne : " + listeSplitID[i]);
+      if (mapSearch.indexOf((listeSplitID[i]).split(/-/)[0]) ===(-1)){
+                   mapSearch.push(listeSplitID[i].split(/-/)[0]);}
+    }
+  }
+  console.log(mapSearch);
        
-       console.log("ExisteMap 2 ! : " + mapControl.existMap + " !! listeSplitID = " + listeSplitID[cpt]);
-       carte.onclick = function(){
-         if(mapControl.existMap) {
+       $('.result').click(function(){
+         var clicked_id = this.id;
+         var buro = clicked_id.split(/-/);
+         var j = mapSearch.indexOf(buro[0]);
+         if(!mapControl.existMap) {
                         // erase all maps' overview
-                        //mapControl.eraseMap();
-                        
-                        //if (listePlateau[i] !== "noplace"){
-                          console.log("ExisteMap 2.1 ! : " + mapControl.existMap  + " !! listeSplitID = " + listeSplitID[cpt]);
-                          d3.select("#map-show")
+                        mapControl.eraseMap();
+          
+                           d3.select("#map-show")
                           .style("visibility", "visible")
                           .style("width", "100%")
                           .style("height", "100%");
                           
-                          mapControl.mapName = listeSplitID[cpt].split(/-/)[0];
+                          mapControl.mapName = buro[0];
                           console.log("MapName ! : " + mapControl.mapName);
                           
-                          mapControl.mapPlot(listeSplitID[cpt].split(/-/)[0], false, function() {
-                             // for (i=0;i<listeSplitID.length;i++){
-                                if (listeSplitID[cpt].split(/-/)[0] === listePlateau[cpt]){
-                                    console.log("Valeur de i : " + cpt);
-                                    console.log("Pb contenu listeSplitID : " + listeSplitID[cpt]);
+                          
+                          
+                          mapControl.mapPlot(buro[0], false, function() {
+                              for (i=0;i<listeSplitID.length;i++){ 
+                               if (listeSplitID[i] !== "noplace"){ 
+                                if (listeSplitID[i].split(/-/)[0] === buro[0]){
+                                    console.log("Personne de la MAP cliquée : " + listeSplitID[i]);
                                   table = d3.select("#tables")
-                                              .select("#" + listeSplitID[cpt]);
+                                              .select("#" + listeSplitID[i]);
                                   table.append("image")
                                       .attr("xlink:href", "./img/pin_final.png")
                                       .attr("width", "30")
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
-                                    console.log("ExisteMap 2.5 ! : " + mapControl.existMap);
                                 }
-                            //  }
+                               }
+                               else{
+                                  
+                                 cpt++;
+                                 d3.select("#extern-result")
+                                 .text(cpt + " Personne(s) externe(s)");}
+                              
+                              }
                           });
                           mapControl.existMap = true;
-                          console.log("ExisteMap 3 ! : " + mapControl.existMap);
+                          
+                       // action du bouton suivant pour afficher les autres résultats
+                          
+                          $('#search-back').click(function(){
+
+
+                              j= ( (j+1) % (mapSearch.length) );
+                                      console.log("j = " + j);
+
+                              console.log("MapSearch[j] : " + mapSearch[j]);
+                              //console.log("listeSplitID : " + listeSplitID[i]);
+                                    
+                                    if(mapSearch[j] !== "noplace"){
+                                      d3.select(".map").select("svg").remove();
+                                      mapControl.existMap = false;
+                                      mapControl.mapName = mapSearch[j] ;
+                                      mapControl.mapPlot(mapSearch[j], false, function() {
+                                        for (i=0;i<listeSplitID.length;i++){ 
+                                          if(listeSplitID[i] !== "noplace"){
+                                          if (listeSplitID[i].split(/-/)[0] === mapSearch[j]){
+                                            console.log("Map suivante : " + mapSearch[j] + " || Personne de la map : " + listeSplitID[i]);
+                                          table = d3.select("#tables")
+                                                      .select("#" + listeSplitID[i]);
+                                          table.append("image")
+                                              .attr("xlink:href", "./img/pin_final.png")
+                                              .attr("width", "30")
+                                              .attr("height", "50")
+                                              .attr("x", table.select("rect").attr("x") - 10)
+                                              .attr("y", table.select("rect").attr("y") - 40);}
+                                            }
+                                            else{
+                                              d3.select("#extern-result")
+                                              .text(cpt + " Personne(s) externe(s)");}
+                                          }
+                                      });
+                                      mapControl.existMap = true;
+                                    }
+                                    
+                                   
+                          });
+                            
                      }
                     
-       //  }
-                    console.log("ExisteMap 4 ! : " + mapControl.existMap);
-         
-       };
-   
+                    
+                    
+                     
+                    
+         });
+          
 };
+

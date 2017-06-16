@@ -200,6 +200,21 @@
     padding-bottom: 20px;
     color: rgb(251, 158, 151);
 }
+/*#N4-personnes, #O4-personnes, #N3-personnes, #O3-personnes, #N2-personnes, #O2-personnes, #N1-personnes, #N0-personnes*/.result, #nbOutside{
+    /*padding-bottom: 20px;*/
+    color: rgb(220, 220, 220);
+    cursor: pointer; 
+    margin-left: 30px;
+}
+
+#extern-result{
+    width: 100px;
+    height: 100px;
+    position: relative;
+    bottom: 140px;
+    z-index: 200;
+}
+
 .small-map {
     display: block;
     width: 350px;
@@ -315,6 +330,10 @@
     background-color: white;
     width: 50%;
     height: 100%;
+}
+#search-back {
+    position: relative;
+    top: 70px;
 }
 #step-one {
     color: #246b8f;
@@ -438,6 +457,14 @@ input[readonly] {
 
 #level {
     margin-left: 9px;
+}
+
+#cross-delete{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 20;
+    cursor:  pointer;
 }
 
 .admin-list td {
@@ -658,7 +685,22 @@ input[readonly] {
 .consistency .small {
     width: 15px;
 }
+/* style du bouton de recherche */
+#search-button {
+   position: absolute;
+   top: 15px;
+   right: -100px;
+   width: 100px;
+}
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }
 .autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
+/* style for autocomplete results */
+.ui-autocomplete { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; max-height: 100px; overflow-y: auto; overflow-x: hidden; }
+.ui-autocomplete-input { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
+
+/* for IE 6 which doesn't support max height*/
+/* * html .ui-autocomplete {
+    height: 100px;
+  }*/

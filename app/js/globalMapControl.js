@@ -7,6 +7,7 @@ var mapControl = {
 	mapName: null,
 	mapPlot: function(name, isChoosingFloor, callback) {
 		var	server= "http://local-map/";
+		//var	server= "http://localhost:3000";
 		// add svg map to html
 		d3.xml( server + "maps/" + name + ".svg",
 			function(error, documentFragment) {

@@ -12,6 +12,7 @@
     <!-- css -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,400,600,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/style.css" />
     <!-- compiled CSS for boostrap grid and responsive system (some changes in it)-->
@@ -20,6 +21,7 @@
     <script type="text/javascript" src="js/libraries/d3.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery.autocomplete.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
 </head>
 
 <body>
@@ -53,9 +55,14 @@
                     <label for="search-terms" id="search-label">search</label>
                 </div>
                 <div id="input">
-                    <input type="text" name="search-terms" id="search-terms" placeholder="Rechercher un collègue...">
+                    <input type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue...">
                 </div>
             </form>
+            <!-- Bouton "Rechercher" -->
+            <button id="search-button">Search</button>
+            <div id="cross-delete">
+                <a href="/"><img src="../img/crossDelete.png" width="40" height="40"></a>
+            </div>
         </div>
     </header>
     <!-- /header -->
@@ -88,12 +95,14 @@
                         </td>
                         <td class="floor">
                             <p id="N4"><a href="#!">Etage 4 (N 4)</a></p>
+                            <button id="N4-personnes" class="result">- 0 -</button>
                         </td>
                         <td>
                             <svg class="small-map" id="svg-O4"></svg>
                         </td>
                         <td class="floor">
                             <p id="O4"><a href="#!">Etage 4 (O 4)</a></p>
+                            <button id="O4-personnes" class="result">- 0 -</button>
                         </td>
                     </tr>
                     <tr>
@@ -102,12 +111,14 @@
                         </td>
                         <td class="floor">
                             <p id="N3"><a href="#!">Etage 3 (N 3)</a></p>
+                            <button id="N3-personnes" class="result">- 0 -</button>
                         </td>
                         <td>
                             <svg class="small-map" id="svg-O3"></svg>
                         </td>
                         <td class="floor">
                             <p id="O3"><a href="#!">Etage 3 (O 3)</a></p>
+                            <button id="O3-personnes" class="result">- 0 -</button>
                         </td>
                     </tr>
                     <tr>
@@ -116,12 +127,14 @@
                         </td>
                         <td class="floor">
                             <p id="N2"><a href="#!">Etage 2 (N 2)</a></p>
+                            <button id="N2-personnes" class="result">- 0 -</button>
                         </td>
                         <td>
                             <svg class="small-map" id="svg-O2"></svg>
                         </td>
                         <td class="floor">
                             <p id="O2"><a href="#!">Etage 2 (O 2)</a></p>
+                            <button id="O2-personnes" class="result">- 0 -</button>
                         </td>
                         <td>
                         </td>
@@ -132,6 +145,7 @@
                         </td>
                         <td class="floor">
                             <p id="N1"><a href="#!">Etage 1 (N 1)</a></p>
+                            <button id="N1-personnes" class="result">- 0 -</button>
                         </td>
                         <td>
                         </td>
@@ -144,10 +158,13 @@
                         </td>
                         <td class="floor">
                             <p id="N0"><a href="#!">RDC<br/>(N 0)</a></p>
+                            <button id="N0-personnes" class="result">- 0 -</button>
                         </td>
                         <td>
                         </td>
-                        <td>
+                        <td class="floor">
+                            <p id="outside">Externe</p>
+                            <p id="nbOutside">- 0 -</p
                         </td>
                     </tr>
                 </table>
@@ -192,6 +209,10 @@
                             </p>
                             <br/>
                             <p id="zoom">Zoomer avec <br/>la molette</p>
+                            <br/>
+                            <button id="search-back">Suivant</button>
+                            <br/>
+                            <p id="extern-result"></p>
                         </td>
                     </tr>
                 </table>
@@ -219,7 +240,8 @@
 <script src="js/globalMapControl.js"></script>
 <script src="js/polyfill.js"></script>
 <script type="text/javascript" src="js/clickAndPlot.js"></script>
-<script type="text/javascript" src="js/autocomplete.js"></script>
+<!-- <script type="text/javascript" src="js/autocomplete.js"></script> -->
+<script type="text/javascript" src="js/searchMany.js"></script>
 <script type="text/javascript" src="js/justPlotMap.js"></script>
 </body>
 
