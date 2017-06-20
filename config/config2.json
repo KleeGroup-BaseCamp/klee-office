@@ -1,0 +1,11 @@
+{
+  "development": {
+    "username": "localmap-dev",
+    "password": "localmap-dev",
+    "database": "localmap-dev",
+    "host": "laura.dev.klee.lan.net",
+    "port": "5432",
+    "dialect": "postgres" 
+  }
+}
+

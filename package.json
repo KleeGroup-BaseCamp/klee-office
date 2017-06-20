@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/KleeGroup/local-map#readme",
   "dependencies": {
+    "activedirectory": "^0.7.2",
     "babel-eslint": "^5.0.0",
     "bluebird": "^3.3.1",
     "body-parser": "^1.15.0",
@@ -33,10 +34,10 @@
     "express": "^4.13.4",
     "express-session": "^1.0.2",
     "lodash": "^4.5.1",
-    "activedirectory": "^0.7.2",
-    "underscore": "^1.8.3",
-    "sequelize": "^3.23.6",
+    "pg": "^6.3.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.12.2",
     "sequelize-cli": "^2.4.0",
-    "sqlite3": "^3.0.8"
+    "underscore": "^1.8.3"
   }
 }
