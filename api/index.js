@@ -32,12 +32,14 @@ const API_PORT = process.env.PORT || 3000;
 
 const app = express();
 
+ /*Partie Authentification SSO - need IDP from support
+
 //authentication with saml2
 // create service provider
 var sp_options = {
 	entity_id: "https://local-map/metadata.xml",
-	private_key: fs.readFileSync("key.pem").toString(),
-	certificate: fs.readFileSync("certificate_sp.crt").toString(),
+	private_key: fs.readFileSync("localmap_privatekey.pem").toString(),
+	certificate: fs.readFileSync("cert.pem").toString(),
 	assert_endpoint : "https://local-map/assert"
 };
 var sp= new saml2.ServiceProvider(sp_options);
@@ -63,7 +65,7 @@ app.get("/login", function(req, res) {
   });
 });
 // Assert endpoint for when login completes 
-app.post("/assert", function(req, res) {
+app.post("/saml2/acs", function(req, res) { // assert
   var options = {request_body: req.body};
   sp.post_assert(idp, options, function(err, saml_response) {
     if (err != null)
@@ -75,7 +77,7 @@ app.post("/assert", function(req, res) {
   });
 });
 // Starting point for logout 
-app.get("/logout", function(req, res) {
+app.get("/saml2/sls", function(req, res) { //logout
   var options = {
     name_id: name_id,
     session_index: session_index
@@ -88,7 +90,7 @@ app.get("/logout", function(req, res) {
   });
 });
  
-app.listen(3000);
+app.listen(3000);*/
 
 
 // views engine for renders
