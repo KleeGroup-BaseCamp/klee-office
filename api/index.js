@@ -7,11 +7,12 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var ejs = require('ejs');
-
+var saml2 = require('saml2-js');
 var fs = require('fs');
 var util = require('util');
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flag : 'w'});
 var log_stdout = process.stdout;
+
 // overload console.log to store logs in a file
 console.log = function(d) {
 	log_file.write(util.format(d) + '\n');
@@ -30,6 +31,65 @@ const confServices = require('./services/configurations.js');
 const API_PORT = process.env.PORT || 3000;
 
 const app = express();
+
+//authentication with saml2
+// create service provider
+var sp_options = {
+	entity_id: "https://local-map/metadata.xml",
+	private_key: fs.readFileSync("key.pem").toString(),
+	certificate: fs.readFileSync("certificate_sp.crt").toString(),
+	assert_endpoint : "https://local-map/assert"
+};
+var sp= new saml2.ServiceProvider(sp_options);
+
+//create identity provider (to complete)
+var idp_options = {
+  sso_login_url: "https://......./login",
+  sso_logout_url: "https://......../logout",
+  certificates: [fs.readFileSync("certificate_idp1.crt").toString(), fs.readFileSync("certificate_idp2.crt").toString()]
+};
+var idp = new saml2.IdentityProvider(idp_options);
+// Endpoint to retrieve metadata 
+app.get("/metadata.xml", function(req, res) {
+  res.type('application/xml');
+  res.send(sp.create_metadata());
+});
+// Starting point for login 
+app.get("/login", function(req, res) {
+  sp.create_login_request_url(idp, {}, function(err, login_url, request_id) {
+    if (err != null)
+      return res.send(500);
+    res.redirect(login_url);
+  });
+});
+// Assert endpoint for when login completes 
+app.post("/assert", function(req, res) {
+  var options = {request_body: req.body};
+  sp.post_assert(idp, options, function(err, saml_response) {
+    if (err != null)
+      return res.send(500);
+    // Save name_id and session_index for logout 
+    name_id = saml_response.user.name_id;
+    session_index = saml_response.user.session_index;
+    res.send("Hello #{saml_response.user.name_id}!");
+  });
+});
+// Starting point for logout 
+app.get("/logout", function(req, res) {
+  var options = {
+    name_id: name_id,
+    session_index: session_index
+  };
+ 
+  sp.create_logout_request_url(idp, options, function(err, logout_url) {
+    if (err != null)
+      return res.send(500);
+    res.redirect(logout_url);
+  });
+});
+ 
+app.listen(3000);
+
 
 // views engine for renders
 app.set('views', __dirname + '/views');
