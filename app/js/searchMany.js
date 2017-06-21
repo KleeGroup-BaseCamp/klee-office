@@ -181,7 +181,7 @@ function plotResult(listeSplitID){
 
   //remplit le tableau mapSearch contenant les maps concernés par la recherche
   for (i=0;i<listeSplitID.length;i++){
-    if (listeSplitID[i] === "noplace" ){ //fait buggé la recherche même des gens de la boursidière
+    if (listeSplitID[i] === "noplace" ){ 
       console.log("Externe : " + listeSplitID[i]);
       if (mapSearch.indexOf(listeSplitID[i]) ===(-1)){
                    mapSearch.push(listeSplitID[i]);}
@@ -264,26 +264,17 @@ function plotResult(listeSplitID){
                                               .attr("width", "30")
                                               .attr("height", "50")
                                               .attr("x", table.select("rect").attr("x") - 10)
-                                              .attr("y", table.select("rect").attr("y") - 40);}
-                                            }
-                                            else{
-                                              d3.select("#extern-result")
+                                              .attr("y", table.select("rect").attr("y") - 40);
+                                          d3.select("#extern-result")
                                               .text(cpt + " Personne(s) externe(s)");}
+                                            }
+                                              
                                           }
                                       });
                                       mapControl.existMap = true;
-                                    }
-                                    
-                                   
-                          });
-                            
-                     }
-                    
-                    
-                    
-                     
-                    
-         });
-          
+                                    }                         
+                          });                          
+                     } 
+         });        
 };
 

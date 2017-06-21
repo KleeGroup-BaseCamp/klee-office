@@ -34,7 +34,7 @@ ad.findUsers(opts, function(err, users) {
 
 	if((! users) || (users.length == 0)) console.log('No users found.');
 	else {
-		console.log('findUsers: '+JSON.stringify(users);
+		console.log('findUsers: '+JSON.stringify(users));
 	}
 });
 
