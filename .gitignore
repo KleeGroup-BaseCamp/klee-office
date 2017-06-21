@@ -8,4 +8,5 @@ desktop.ini
 api/db*
 api/services/*.txt
 /config/config-ldap.json
-
+localmap_privatekey.pem
+cert.pem
