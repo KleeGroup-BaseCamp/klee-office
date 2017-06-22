@@ -183,11 +183,15 @@ function plotResult(listeSplitID){
          if(!mapControl.existMap) {
                         // erase all maps' overview
                         mapControl.eraseMap();
-                        var map =d3.select("#map-show")
+                        d3.select("#map-show")
                                    .style("visibility", "visible")
                                    .style("width", "100%")
-                                   .style("height", "100%")
+                                   .style("height", "100%");
                         mapControl.mapName = buro[0];
+                        d3.select("#etage")
+                          .append("text")
+                          .text("Etage "+mapControl.mapName);
+                        
                         console.log("MapName ! : " + mapControl.mapName);
                         mapControl.mapPlot(buro[0], false, function() {
                           for (i=0;i<listeSplitID.length;i++){ 
