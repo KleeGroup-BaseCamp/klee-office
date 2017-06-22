@@ -183,11 +183,15 @@ function plotResult(listeSplitID){
          if(!mapControl.existMap) {
                         // erase all maps' overview
                         mapControl.eraseMap();
-                        var map =d3.select("#map-show")
+                        d3.select("#map-show")
                                    .style("visibility", "visible")
                                    .style("width", "100%")
-                                   .style("height", "100%")
+                                   .style("height", "100%");
                         mapControl.mapName = buro[0];
+                        d3.select("#etage")
+                          .append("text")
+                          .text("Etage "+mapControl.mapName);
+                        
                         console.log("MapName ! : " + mapControl.mapName);
                         mapControl.mapPlot(buro[0], false, function() {
                           for (i=0;i<listeSplitID.length;i++){ 
@@ -202,11 +206,7 @@ function plotResult(listeSplitID){
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
-                                /*table.append("text")
-                                      .style("fill","black")
-                                      .attr("x", table.select("rect").attr("x") +200)
-                                      .attr("y", table.select("rect").attr("y") +40)
-                                      .text("Etage "+mapControl.mapName);*/
+
                                 }
                                }
                                else{
@@ -219,6 +219,7 @@ function plotResult(listeSplitID){
                           
                        // call search-back : display the next map with results ("suivant" button)
                           $('#search-back').click(function(){
+
                               j= ( (j+1) % (mapSearch.length) );
                                       console.log("j = " + j);
                               console.log("MapSearch[j] : " + mapSearch[j]);
@@ -227,6 +228,8 @@ function plotResult(listeSplitID){
                                       d3.select(".map").select("svg").remove();
                                       mapControl.existMap = false;
                                       mapControl.mapName = mapSearch[j] ;
+                                      d3.select("#etage").data(["Etage "+mapControl.mapName]).text(function(d) { return d; });
+
                                       mapControl.mapPlot(mapSearch[j], false, function() {
                                         for (i=0;i<listeSplitID.length;i++){ 
                                           if(listeSplitID[i] !== "noplace"){
