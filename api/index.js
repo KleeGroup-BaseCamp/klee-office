@@ -34,7 +34,7 @@ const app = express();
 
  /*Partie Authentification SSO - need IDP from support
 
-//authentication with saml2
+//authentication with saml2nm
 // create service provider
 var sp_options = {
 	entity_id: "https://local-map/metadata.xml",
@@ -51,11 +51,6 @@ var idp_options = {
   certificates: [fs.readFileSync("certificate_idp1.crt").toString(), fs.readFileSync("certificate_idp2.crt").toString()]
 };
 var idp = new saml2.IdentityProvider(idp_options);
-// Endpoint to retrieve metadata 
-app.get("/metadata.xml", function(req, res) {
-  res.type('application/xml');
-  res.send(sp.create_metadata());
-});
 // Starting point for login 
 app.get("/login", function(req, res) {
   sp.create_login_request_url(idp, {}, function(err, login_url, request_id) {

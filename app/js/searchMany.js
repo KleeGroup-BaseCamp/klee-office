@@ -1,29 +1,27 @@
 // -------- edit by almorin -------
 
 
-//------------ script permettant de gérer la recherche de plusieurs personnes --------
+//------------ script to manage the search of many persons --------
 
 'use strict';
-
+// call * : launched for each call of searchMany.js
 $(function(){
-    var people = [];
-    var listePlateau =[];
-    var listeBureaux = [];
-    var listeSplitID = [];
-    var personneParPlateau = {
+    var people = [];            //contains data about every person
+    var listePlateau =[];       // contains the office areas of searched people
+    var listeBureaux = [];      // contains the office location and desk number of searched people
+    var listeSplitID = [];      // contains the desk number of searched people
+    var personneParPlateau = {  // list to count the number of searched people by office area
       n0: 0, n1: 0, n2: 0, n3: 0, n4: 0, o2: 0, o3: 0, o4: 0, externe: 0
     }
 
-    //console.log("Coucou searchMany!");
-    
+    // --- function getName : 
     function getName(element, index, array){
         people.push({value: element[1].cn[0], data: element[1]});
     }
 
+    // --- call getJSON : launched to create people
     $.getJSON('/people', function(data) {
-
         data.forEach(getName);
-       
         console.log(people);
       function split( val ) {
           return val.split( /;\s*/ );
@@ -40,8 +38,9 @@ $(function(){
           return -1;
       }
 
+      // call search-terms : launched when user click on search button
        $('#search-terms')
-       // don't navigate away from the field on tab when selecting an item
+           // .on : don't navigate away from the field on tab when selecting an item
            .on( "keydown", function( event ) {
             if ( event.keyCode === $.ui.keyCode.TAB && $( this ).autocomplete( "instance" ).menu.active ) {
               event.preventDefault();
@@ -50,43 +49,35 @@ $(function(){
           .autocomplete({
             minLength: 0,
             source: function( request, response ) {
-                // delegate back to autocomplete, but extract the last term
-              response( $.ui.autocomplete.filter(
+              response( $.ui.autocomplete.filter( // delegate back to autocomplete, but extract the last term
                 people, extractLast( request.term ) ) );
                 //console.log("jsuis dans source");
             },
-            focus: function() {
-                // prevent value inserted on focus
+            focus: function() { // prevent value inserted on focus
               return false;
             },
             select: function( event, ui ) {
-
               var terms = split( this.value );
               var nbSearch = terms.length;
-              
-              // remove the current input
-              terms.pop();
-              // add the selected item
-              terms.push( ui.item.value );
-              // add placeholder to get the semicolon-and-space at the end
-              terms.push( "" );
+              terms.pop();                     // remove the current input
+              terms.push( ui.item.value );     // add the selected item
+              terms.push( "" );                // add placeholder to get the semicolon-and-space at the end
               this.value = terms.join( "; " );
-              
-              //récupère l'indice de l'objet dans people de la personne recherchée
-              var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]);
-              
+              var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]); // get the index in the array people of the searched person 
               var bureau = people[indice].data.physicalDeliveryOfficeName[0];
-              listeBureaux.push(bureau);
+              listeBureaux.push(bureau);        //[location office, desk number] --> example listeBureaux=["La Boursidière:O2-D-03", "La Boursidière:N3-A-10","La Boursidère: N3-B-02"]
              
-              var splitID = bureau.split(/\s+:\s+/);
-              if ((splitID[0] === undefined) || (splitID[1] === undefined)){  
+             // -- update the array listeSplitID --
+              var splitID = bureau.split(/\s+:\s+/); 
+              if ((splitID[0] === undefined) || (splitID[1] === undefined)){  //check if the format of the desk is valid. If invalid, the desk number is defined as "noplace"
                 listeSplitID.push("noplace");}
               else {
-                listeSplitID.push(splitID[1]);} 
+                listeSplitID.push(splitID[1]);} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
               console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
-              //remplit le tableau listePlateau par les plateau occupé par chaque personnes recherchées
-              if(splitID[1]){
+
+              // -- update the list listePlateau with the data of each searched person --
+              if(splitID[1]){  
                 listePlateau.push(splitID[1].split(/-/)[0]);
                 switch(listePlateau[nbSearch-1]){
                   case "N0": personneParPlateau.n0++;
@@ -109,25 +100,17 @@ $(function(){
                 listePlateau.push("noplace");
                 personneParPlateau.externe++
               }
-              
               plotNumberOfPeople(personneParPlateau, listeSplitID);
-             
-              console.log("Longueur listeSplitID : " + listeSplitID.length);
-              
+              console.log("Number of searched people having a location in the office : " + listeSplitID.length);
               return false;
             }
           });
-          
        });
-       
-  
 });
 
- // ------------  Fonction qui affiche à l'écran le nb de personne recherchées par map ----------- 
-
+ // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example personneParPlateau={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
 function plotNumberOfPeople(personneParPlateau, listeSplitID){
   var aaa = document.getElementById("search-button");
-       
        aaa.onclick = function(){
                 if (personneParPlateau.n4 > 0){
                 d3.select("#N4-personnes")
@@ -170,16 +153,15 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID){
        };  
 };
 
-// ----------------- Fonction qui affiche les localisations de personnes recherchées sur les map cliqués ------------------
-   // on ne peut pas revenir à l'écran de résultats des recherches ------------- 
-
+// ------Function plotResult : display the location of searched people on the maps -----
+// TO DO : Not possible to go back to the main page of results 
 function plotResult(listeSplitID){
   var i=0;
   var cpt=0;
   var table;
-  var mapSearch = [];
+  var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3]
 
-  //remplit le tableau mapSearch contenant les maps concernés par la recherche
+  // fills mapSearch. No duplicate possible
   for (i=0;i<listeSplitID.length;i++){
     if (listeSplitID[i] === "noplace" ){ 
       console.log("Externe : " + listeSplitID[i]);
@@ -193,7 +175,7 @@ function plotResult(listeSplitID){
     }
   }
   console.log(mapSearch);
-       
+       //call result : display a map (user must have clicked on it) with the results of the search
        $('.result').click(function(){
          var clicked_id = this.id;
          var buro = clicked_id.split(/-/);
@@ -201,53 +183,46 @@ function plotResult(listeSplitID){
          if(!mapControl.existMap) {
                         // erase all maps' overview
                         mapControl.eraseMap();
-          
-                           d3.select("#map-show")
-                          .style("visibility", "visible")
-                          .style("width", "100%")
-                          .style("height", "100%");
-                          
-                          mapControl.mapName = buro[0];
-                          console.log("MapName ! : " + mapControl.mapName);
-                          
-                          
-                          
-                          mapControl.mapPlot(buro[0], false, function() {
-                              for (i=0;i<listeSplitID.length;i++){ 
-                               if (listeSplitID[i] !== "noplace"){ 
-                                if (listeSplitID[i].split(/-/)[0] === buro[0]){
-                                    console.log("Personne de la MAP cliquée : " + listeSplitID[i]);
-                                  table = d3.select("#tables")
-                                              .select("#" + listeSplitID[i]);
-                                  table.append("image")
+                        var map =d3.select("#map-show")
+                                   .style("visibility", "visible")
+                                   .style("width", "100%")
+                                   .style("height", "100%")
+                        mapControl.mapName = buro[0];
+                        console.log("MapName ! : " + mapControl.mapName);
+                        mapControl.mapPlot(buro[0], false, function() {
+                          for (i=0;i<listeSplitID.length;i++){ 
+                            if (listeSplitID[i] !== "noplace"){
+                              if (listeSplitID[i].split(/-/)[0] === buro[0]){
+                                console.log("Personne de la MAP cliquée : " + listeSplitID[i]);
+                                table = d3.select("#tables")
+                                          .select("#" + listeSplitID[i]);
+                                table.append("image")
                                       .attr("xlink:href", "./img/pin_final.png")
                                       .attr("width", "30")
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
+                                /*table.append("text")
+                                      .style("fill","black")
+                                      .attr("x", table.select("rect").attr("x") +200)
+                                      .attr("y", table.select("rect").attr("y") +40)
+                                      .text("Etage "+mapControl.mapName);*/
                                 }
                                }
                                else{
-                                  
                                  cpt++;
                                  d3.select("#extern-result")
-                                 .text(cpt + " Personne(s) externe(s)");}
-                              
+                                 .text(cpt + " Personne(s) externe(s)");}                             
                               }
                           });
                           mapControl.existMap = true;
                           
-                       // action du bouton suivant pour afficher les autres résultats
-                          
+                       // call search-back : display the next map with results ("suivant" button)
                           $('#search-back').click(function(){
-
-
                               j= ( (j+1) % (mapSearch.length) );
                                       console.log("j = " + j);
-
                               console.log("MapSearch[j] : " + mapSearch[j]);
-                              //console.log("listeSplitID : " + listeSplitID[i]);
-                                    
+                              //console.log("listeSplitID : " + listeSplitID[i]);                                    
                                     if(mapSearch[j] !== "noplace"){
                                       d3.select(".map").select("svg").remove();
                                       mapControl.existMap = false;
