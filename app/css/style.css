@@ -211,7 +211,7 @@
     width: 100px;
     height: 100px;
     position: relative;
-    bottom: 140px;
+    bottom: 130px;
     z-index: 200;
 }
 
@@ -293,7 +293,7 @@
 #legend {
     width: 132px;
     vertical-align: middle;
-    padding-left: 20px;
+    padding-left: 12px;
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;
 }
@@ -317,7 +317,7 @@
 
 #map-show #legend #etage {
     color : rgb(85, 151, 211);
-    font-size : 40px;
+    font-size : 20px;
 } 
 
 .left-side {
