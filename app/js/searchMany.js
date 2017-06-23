@@ -166,12 +166,12 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms){
 
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
-function plotResult(listeSplitID,indices,people){
+function plotResult(listeSplitID,nbExterne){
   var i=0;
   var cpt=0;
   var table_tot=d3.selectAll("#tables");
   var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3] 
-  
+  //console.log(people);
   // fills mapSearch. No duplicate possible
   for (i=0;i<listeSplitID.length;i++){
     if (listeSplitID[i] === "noplace" ){ 
@@ -226,10 +226,33 @@ function plotResult(listeSplitID,indices,people){
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
-                                d3.select("#extern-result")
-                                 .text(nbExterne + " Personne(s) externe(s)");}
-                                }
-                               }
+                                
+                                //console.log(people);
+                                //console.log(people[1]);
+                                //console.log(indices[0]);
+                                /*data_person=people[indices[i]];
+                                var xPosition = table.select("rect").attr("x");
+											          var yPosition = table.select("rect").attr("x");
+                                var cn =data_person;
+										            // get scroll pixels to correct tooltip's yPostion
+										            yPosition += $(window).scrollTop();
+										            tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
+											                  .style("left", (xPosition) + "px")
+											                  .style("top", (yPosition) + "px")
+										        	          .style("height", "57px");
+										            tooltip.transition()
+											                  .duration(200)
+											                  .style("opacity", .9)
+											                  .style("z-index", 20);
+
+										            event.stopPropagation();*/
+                              }
+
+                            }
+                            else{
+                              d3.select("#extern-result")
+                                  .text(nbExterne + " Personne(s) externe(s)");}
+                            }
                           });
                           mapControl.existMap = true;
   
