@@ -7,7 +7,7 @@
 // call * : launched for each call of searchMany.js
 $(function(){
     var people = [];            //contains data about every person
-    var listePlateau =[];       // contains the office areas of searched people
+   // var listePlateau =[];       // contains the office areas of searched people
     var listeBureaux = [];      // contains the office location and desk number of searched people
     var listeSplitID = [];      // contains the desk number of searched people
     var personneParPlateau = {  // list to count the number of searched people by office area
@@ -52,7 +52,6 @@ $(function(){
             source: function( request, response ) {
               response( $.ui.autocomplete.filter( // delegate back to autocomplete, but extract the last term
                 people, extractLast( request.term ) ) );
-                //console.log("jsuis dans source");
             },
             focus: function() { // prevent value inserted on focus
               return false;
@@ -73,36 +72,12 @@ $(function(){
               if ((splitID[0] === undefined) || (splitID[1] === undefined)){  //check if the format of the desk is valid. If invalid, the desk number is defined as "noplace"
                 listeSplitID.push("noplace");}
               else {
-                listeSplitID.push(splitID[1]);} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
-                indices.push(indice);
+                if (listeSplitID.indexOf(splitID[1]) === -1){
+                listeSplitID.push(splitID[1]);}} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
               console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
-
-              // -- update the list listePlateau with the data of each searched person --
-              if(splitID[1]){  
-                listePlateau.push(splitID[1].split(/-/)[0]);
-                switch(listePlateau[nbSearch-1]){
-                  case "N0": personneParPlateau.n0++;
-                      break;
-                  case "N1": personneParPlateau.n1++;
-                      break;
-                  case "N2": personneParPlateau.n2++;
-                      break;
-                  case "N3": personneParPlateau.n3++;
-                      break;
-                  case "N4": personneParPlateau.n4++;
-                      break;
-                  case "O2": personneParPlateau.o2++;
-                      break;
-                  case "O3": personneParPlateau.o3++;
-                      break;
-                  case "O4": personneParPlateau.o4++;
-                }
-              }else{
-                listePlateau.push("noplace");
-                personneParPlateau.externe++
-              }
-              plotNumberOfPeople(personneParPlateau, listeSplitID);
+              console.log("Nom des personnes : " + terms);
+              plotNumberOfPeople(personneParPlateau, listeSplitID, terms);
               console.log("Number of searched people having a location in the office : " + listeSplitID.length);
               return false;
             }
@@ -111,9 +86,43 @@ $(function(){
 });
 
  // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example personneParPlateau={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
-function plotNumberOfPeople(personneParPlateau, listeSplitID){
+function plotNumberOfPeople(personneParPlateau, listeSplitID, terms){
   var aaa = document.getElementById("search-button");
+  var k=0; 
+  var listePlateau =[];
+  
+       // -- event on button "search" clicked --
        aaa.onclick = function(){
+                // -- update the list listePlateau with the data of each searched person -- 
+
+                for(k=0;k<listeSplitID.length;k++){ 
+                 if (terms.indexOf(terms[k]) === k){
+                    listePlateau.push(listeSplitID[k].split(/-/)[0]);}
+                }
+                console.log("Liste Plateau : " + listePlateau);
+
+                for(k=0;k<listePlateau.length;k++){
+                  switch(listePlateau[k]){
+                                case "N0": personneParPlateau.n0++;
+                                    break;
+                                case "N1": personneParPlateau.n1++;
+                                    break;
+                                case "N2": personneParPlateau.n2++;
+                                    break;
+                                case "N3": personneParPlateau.n3++;
+                                    break;
+                                case "N4": personneParPlateau.n4++;
+                                    break;
+                                case "O2": personneParPlateau.o2++;
+                                    break;
+                                case "O3": personneParPlateau.o3++;
+                                    break;
+                                case "O4": personneParPlateau.o4++;
+                                    break;
+                                case "noplace" : personneParPlateau.externe++;
+                                    break;
+                  }
+                } 
                 if (personneParPlateau.n4 > 0){
                 d3.select("#N4-personnes")
                   .text("- " + personneParPlateau.n4 + " -")
@@ -151,7 +160,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID){
                   .text("- " + personneParPlateau.externe + " -")
                   .style("color", "	rgb(20,200,20)");}
                 console.log("plot nb personnes");
-                plotResult(listeSplitID);
+                plotResult(listeSplitID, personneParPlateau.externe);
        };  
 };
 
@@ -217,13 +226,10 @@ function plotResult(listeSplitID,indices,people){
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
+                                d3.select("#extern-result")
+                                 .text(nbExterne + " Personne(s) externe(s)");}
                                 }
                                }
-                               else{
-                                 cpt++;
-                                 d3.select("#extern-result")
-                                 .text(cpt + " Personne(s) externe(s)");}                             
-                              }
                           });
                           mapControl.existMap = true;
   
@@ -254,7 +260,7 @@ function plotResult(listeSplitID,indices,people){
                                               .attr("x", table.select("rect").attr("x") - 10)
                                               .attr("y", table.select("rect").attr("y") - 40);
                                           d3.select("#extern-result")
-                                              .text(cpt + " Personne(s) externe(s)");}
+                                              .text(nbExterne + " Personne(s) externe(s)");}
                                             }
                                               
                                           }

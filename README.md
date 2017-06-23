@@ -202,6 +202,12 @@ polyfill for Internet Explorer compatibility.
 - `mapControl.eraseMap()`: erase small maps if there are.
 - `mapControl.mapPlot(mapName, function(){})`: add-pin is in callback function (wait for map fully loaded).
 
+#### **_searchMany.js_**
+
+ - `$('#search-terms').on("keydown", function(event){}).autocomplete({minLength:0, source:function(request, response){}, focus:function(){}, select:function( event, ui){} })`: input names in search bar will show corresponding suggestions.
+ - `plotNumberOfPeople(personneParPlateau, listeSplitID)` : plot number of people searched for each floor.
+ - `plotResult(listeSplitID)` : show maps with pins for each people searched.
+
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
