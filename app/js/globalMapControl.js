@@ -110,6 +110,23 @@ var mapControl = {
 
 										event.stopPropagation();
 									});
+									$(".result").click(function(event){
+										var xPosition = event.clientX,
+											yPosition = event.clientY;
+										// get scroll pixels to correct tooltip's yPostion
+										yPosition += $(window).scrollTop();
+
+										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0] + "<br/>" + d.physicalDeliveryOfficeName[0])
+											.style("left", (xPosition) + "px")
+											.style("top", (yPosition) + "px")
+											.style("height", "57px");
+										tooltip.transition()
+											.duration(200)
+											.style("opacity", .9)
+											.style("z-index", 20);
+
+										event.stopPropagation();
+									});
 									// click the tooltip won't let it disappear
 									$(".tooltip").click(function(event) {
 										event.stopPropagation();

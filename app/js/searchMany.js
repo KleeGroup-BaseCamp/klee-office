@@ -13,6 +13,7 @@ $(function(){
     var personneParPlateau = {  // list to count the number of searched people by office area
       n0: 0, n1: 0, n2: 0, n3: 0, n4: 0, o2: 0, o3: 0, o4: 0, externe: 0
     }
+    var indices=[];
 
     // --- function getName : 
     function getName(element, index, array){
@@ -63,7 +64,7 @@ $(function(){
               terms.push( ui.item.value );     // add the selected item
               terms.push( "" );                // add placeholder to get the semicolon-and-space at the end
               this.value = terms.join( "; " );
-              var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]); // get the index in the array people of the searched person 
+              var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]); // get the index in the array people of the searched person
               var bureau = people[indice].data.physicalDeliveryOfficeName[0];
               listeBureaux.push(bureau);        //[location office, desk number] --> example listeBureaux=["La Boursidière:O2-D-03", "La Boursidière:N3-A-10","La Boursidère: N3-B-02"]
              
@@ -73,6 +74,7 @@ $(function(){
                 listeSplitID.push("noplace");}
               else {
                 listeSplitID.push(splitID[1]);} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
+                indices.push(indice);
               console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
 
@@ -155,12 +157,12 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID){
 
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
-function plotResult(listeSplitID){
+function plotResult(listeSplitID,indices,people){
   var i=0;
   var cpt=0;
-  var table;
-  var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3]
-
+  var table_tot=d3.selectAll("#tables");
+  var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3] 
+  
   // fills mapSearch. No duplicate possible
   for (i=0;i<listeSplitID.length;i++){
     if (listeSplitID[i] === "noplace" ){ 
@@ -171,7 +173,16 @@ function plotResult(listeSplitID){
     else{ 
       console.log("Personne : " + listeSplitID[i]);
       if (mapSearch.indexOf((listeSplitID[i]).split(/-/)[0]) ===(-1)){
-                   mapSearch.push(listeSplitID[i].split(/-/)[0]);}
+                   mapSearch.push(listeSplitID[i].split(/-/)[0]);
+        var position = listeSplitID[i]; 
+        var table=table_tot.select("#" + position);   //example :<g  id="N2-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="25.52841" height="12.577848" x="27.785971" y="249.75424" /></g>
+        table.append("image")
+            .attr("xlink:href", "./img/pin_final.png")
+            .attr("width", "30")
+            .attr("height", "50")
+            .attr("x",table.select("rect").attr("x") -10)
+            .attr("y",table.select("rect").attr("y") -40);
+      }
     }
   }
   console.log(mapSearch);
@@ -206,7 +217,6 @@ function plotResult(listeSplitID){
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
-
                                 }
                                }
                                else{
@@ -216,7 +226,7 @@ function plotResult(listeSplitID){
                               }
                           });
                           mapControl.existMap = true;
-                          
+  
                        // call search-back : display the next map with results ("suivant" button)
                           $('#search-back').click(function(){
 
