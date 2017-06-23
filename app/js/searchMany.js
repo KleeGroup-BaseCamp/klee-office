@@ -13,6 +13,7 @@ $(function(){
     var personneParPlateau = {  // list to count the number of searched people by office area
       n0: 0, n1: 0, n2: 0, n3: 0, n4: 0, o2: 0, o3: 0, o4: 0, externe: 0
     }
+    var indices=[];
 
     // --- function getName : 
     function getName(element, index, array){
@@ -62,7 +63,7 @@ $(function(){
               terms.push( ui.item.value );     // add the selected item
               terms.push( "" );                // add placeholder to get the semicolon-and-space at the end
               this.value = terms.join( "; " );
-              var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]); // get the index in the array people of the searched person 
+              var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]); // get the index in the array people of the searched person
               var bureau = people[indice].data.physicalDeliveryOfficeName[0];
               listeBureaux.push(bureau);        //[location office, desk number] --> example listeBureaux=["La Boursidière:O2-D-03", "La Boursidière:N3-A-10","La Boursidère: N3-B-02"]
              
@@ -166,10 +167,12 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms){
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
 function plotResult(listeSplitID, nbExterne, terms){
-  var i=0;
-  var table;
-  var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3]
 
+  var i=0;
+  var cpt=0;
+  var table_tot=d3.selectAll("#tables");
+  var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3] 
+  //console.log(people);
   // fills mapSearch. No duplicate possible
   for (i=0;i<listeSplitID.length;i++){
     if (listeSplitID[i] === "noplace" ){ 
@@ -180,7 +183,16 @@ function plotResult(listeSplitID, nbExterne, terms){
     else{ 
       console.log("Personne : " + listeSplitID[i]);
       if (mapSearch.indexOf((listeSplitID[i]).split(/-/)[0]) ===(-1)){
-                   mapSearch.push(listeSplitID[i].split(/-/)[0]);}
+                   mapSearch.push(listeSplitID[i].split(/-/)[0]);
+        var position = listeSplitID[i]; 
+        var table=table_tot.select("#" + position);   //example :<g  id="N2-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="25.52841" height="12.577848" x="27.785971" y="249.75424" /></g>
+        table.append("image")
+            .attr("xlink:href", "./img/pin_final.png")
+            .attr("width", "30")
+            .attr("height", "50")
+            .attr("x",table.select("rect").attr("x") -10)
+            .attr("y",table.select("rect").attr("y") -40);
+      }
     }
   }
   console.log(mapSearch);
@@ -216,7 +228,7 @@ function plotResult(listeSplitID, nbExterne, terms){
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
-                                d3.select("#extern-result")
+                               d3.select("#extern-result")
                                  .text(nbExterne + " Personne(s) externe(s)");}
                                 }    
                                }
@@ -239,6 +251,28 @@ function plotResult(listeSplitID, nbExterne, terms){
                           mapControl.existMap = true;
                       }
                           
+                                
+                                //console.log(people);
+                                //console.log(people[1]);
+                                //console.log(indices[0]);
+                                /*data_person=people[indices[i]];
+                                var xPosition = table.select("rect").attr("x");
+											          var yPosition = table.select("rect").attr("x");
+                                var cn =data_person;
+										            // get scroll pixels to correct tooltip's yPostion
+										            yPosition += $(window).scrollTop();
+										            tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
+											                  .style("left", (xPosition) + "px")
+											                  .style("top", (yPosition) + "px")
+										        	          .style("height", "57px");
+										            tooltip.transition()
+											                  .duration(200)
+											                  .style("opacity", .9)
+											                  .style("z-index", 20);
+
+										            event.stopPropagation();*/
+                           
+  
                        // call search-back : display the next map with results ("suivant" button)
                           $('#search-back').click(function(){
 

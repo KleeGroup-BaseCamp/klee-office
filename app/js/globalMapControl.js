@@ -110,6 +110,7 @@ var mapControl = {
 
 										event.stopPropagation();
 									});
+									
 									// click the tooltip won't let it disappear
 									$(".tooltip").click(function(event) {
 										event.stopPropagation();
