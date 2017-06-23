@@ -6,8 +6,8 @@ var mapControl = {
 	existMap: false,
 	mapName: null,
 	mapPlot: function(name, isChoosingFloor, callback) {
-		var	server= "http://local-map/";
-		//var	server= "http://localhost:3000";
+		//var	server= "http://local-map/";
+		var	server= "http://localhost:3000/";
 		// add svg map to html
 		d3.xml( server + "maps/" + name + ".svg",
 			function(error, documentFragment) {
@@ -261,6 +261,7 @@ var mapControl = {
 // justPlotMap.js
 // show small maps' tooltip: departements of small map
 	buildTooltips: function(names) {
+		console.log("HELLOOOOOOOOOO");
 		$.each(names, function(i, element){
 			// get the departments in one map
 			d3.xml(server + "maps/" + element + ".svg",
