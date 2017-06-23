@@ -75,8 +75,8 @@ $(function(){
                 listeSplitID.push(splitID[1]);}} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
               console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
-
-              plotNumberOfPeople(personneParPlateau, listeSplitID);
+              console.log("Nom des personnes : " + terms);
+              plotNumberOfPeople(personneParPlateau, listeSplitID, terms);
               console.log("Number of searched people having a location in the office : " + listeSplitID.length);
               return false;
             }
@@ -85,18 +85,18 @@ $(function(){
 });
 
  // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example personneParPlateau={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
-function plotNumberOfPeople(personneParPlateau, listeSplitID){
+function plotNumberOfPeople(personneParPlateau, listeSplitID, terms){
   var aaa = document.getElementById("search-button");
   var k=0; 
   var listePlateau =[];
   
        // -- event on button "search" clicked --
        aaa.onclick = function(){
-                // -- update the list listePlateau with the data of each searched person -- don't handle muliple times the same extern person
+                // -- update the list listePlateau with the data of each searched person -- 
 
                 for(k=0;k<listeSplitID.length;k++){ 
-                // if (listeSplitID.indexOf(listeSplitID[k]) === (-1)){
-                    listePlateau.push(listeSplitID[k].split(/-/)[0]);//}
+                 if (terms.indexOf(terms[k]) === k){
+                    listePlateau.push(listeSplitID[k].split(/-/)[0]);}
                 }
                 console.log("Liste Plateau : " + listePlateau);
 
@@ -159,15 +159,14 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID){
                   .text("- " + personneParPlateau.externe + " -")
                   .style("color", "	rgb(20,200,20)");}
                 console.log("plot nb personnes");
-                plotResult(listeSplitID);
+                plotResult(listeSplitID, personneParPlateau.externe);
        };  
 };
 
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
-function plotResult(listeSplitID){
+function plotResult(listeSplitID, nbExterne){
   var i=0;
-  var cpt=0;
   var table;
   var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3]
 
@@ -216,13 +215,10 @@ function plotResult(listeSplitID){
                                       .attr("height", "50")
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
+                                d3.select("#extern-result")
+                                 .text(nbExterne + " Personne(s) externe(s)");}
                                 }
                                }
-                               else{
-                                 cpt++;
-                                 d3.select("#extern-result")
-                                 .text(cpt + " Personne(s) externe(s)");}                             
-                              }
                           });
                           mapControl.existMap = true;
                           
@@ -253,7 +249,7 @@ function plotResult(listeSplitID){
                                               .attr("x", table.select("rect").attr("x") - 10)
                                               .attr("y", table.select("rect").attr("y") - 40);
                                           d3.select("#extern-result")
-                                              .text(cpt + " Personne(s) externe(s)");}
+                                              .text(nbExterne + " Personne(s) externe(s)");}
                                             }
                                               
                                           }
