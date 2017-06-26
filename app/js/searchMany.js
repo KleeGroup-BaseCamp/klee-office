@@ -11,7 +11,7 @@ $(function(){
     var listeBureaux = [];      // contains the office location and desk number of searched people
     var listeSplitID = [];      // contains the desk number of searched people
     var personneParPlateau = {  // list to count the number of searched people by office area
-      n0: 0, n1: 0, n2: 0, n3: 0, n4: 0, o2: 0, o3: 0, o4: 0, externe: 0
+      N0: 0, N1: 0, N2: 0, N3: 0, N4: 0, O2: 0, O3: 0, O4: 0, externe: 0
     }
     var listeIdentifiants=[];
 
@@ -104,63 +104,52 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
 
                 for(k=0;k<listePlateau.length;k++){
                   switch(listePlateau[k]){
-                                case "N0": personneParPlateau.n0++;
+                                case "N0": personneParPlateau.N0++;
                                     break;
-                                case "N1": personneParPlateau.n1++;
+                                case "N1": personneParPlateau.N1++;
                                     break;
-                                case "N2": personneParPlateau.n2++;
+                                case "N2": personneParPlateau.N2++;
                                     break;
-                                case "N3": personneParPlateau.n3++;
+                                case "N3": personneParPlateau.N3++;
                                     break;
-                                case "N4": personneParPlateau.n4++;
+                                case "N4": personneParPlateau.N4++;
                                     break;
-                                case "O2": personneParPlateau.o2++;
+                                case "O2": personneParPlateau.O2++;
                                     break;
-                                case "O3": personneParPlateau.o3++;
+                                case "O3": personneParPlateau.O3++;
                                     break;
-                                case "O4": personneParPlateau.o4++;
+                                case "O4": personneParPlateau.O4++;
                                     break;
                                 case "noplace" : personneParPlateau.externe++;
                                     break;
                   }
-                } 
-                if (personneParPlateau.n4 > 0){
-                d3.select("#N4-personnes")
-                  .text("- " + personneParPlateau.n4 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.o4 > 0){
-                d3.select("#O4-personnes")
-                  .text("- " + personneParPlateau.o4 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.n3 > 0){
-                d3.select("#N3-personnes")
-                  .text("- " + personneParPlateau.n3 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.o3 > 0){
-                d3.select("#O3-personnes")
-                  .text("- " + personneParPlateau.o3 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.n2 > 0){
-                d3.select("#N2-personnes")
-                  .text("- " + personneParPlateau.n2 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.o2 > 0){
-                d3.select("#O2-personnes")
-                  .text("- " + personneParPlateau.o2 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.n1 > 0){
-                d3.select("#N1-personnes")
-                  .text("- " + personneParPlateau.n1 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.n0 > 0){
-                d3.select("#N0-personnes")
-                  .text("- " + personneParPlateau.n0 + " -")
-                  .style("color", "	rgb(20,200,20)");}
-                if (personneParPlateau.externe > 0){
-                d3.select("#noplace-personnes")
-                  .text("- " + personneParPlateau.externe + " -")
-                  .style("color", "	rgb(20,200,20)");}
+                }
+                const list_area=["N0","N1","N2","N3","N4","O2","O3","O4","externe"];
+                for (var k=0;k<list_area.length;k++){
+                  var x=list_area[k];
+                  if (personneParPlateau[x]>0){
+                    if (x=="externe"){
+                      d3.select("#noplace-personnes")
+                        .text("- " + personneParPlateau.externe + " -")
+                        .style("color", "	rgb(20,200,20)");
+                    }
+                    else{
+                    d3.select("#"+x+"-personnes")
+                        .text("- " + personneParPlateau[x] + " -")
+                        .style("color", "	rgb(20,200,20)");}
+                    }
+                  }
                 console.log("plot nb personnes");
+                /*tooltip = d3.select(".tooltip");
+								tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
+											                  .style("left", (xPosition) + "px")
+											                  .style("top", (yPosition+150) + "px")
+										        	          .style("height", "57px");
+								tooltip.transition()
+											                  .duration(200)
+											                  .style("opacity", .9)
+											                  .style("z-index", 20);
+								event.stopPropagation(); */
 
                 plotResult(listeSplitID, personneParPlateau.externe,people,listeIdentifiants,terms);
        };  
@@ -268,23 +257,17 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                                       .attr("x", xPosition)
                                       .attr("y", yPosition);
                             yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
-                                //console.log(xPosition,yPosition);
                             //To load tooltip with data on persons
                             tooltip = d3.select(".tooltip");
 										        tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
 											                  .style("left", (xPosition) + "px")
 											                  .style("top", (yPosition+150) + "px")
-										        	          .style("height", "50px");
+										        	          .style("height", "57px");
 										        tooltip.transition()
 											                  .duration(200)
 											                  .style("opacity", .9)
 											                  .style("z-index", 20);
-										        event.stopPropagation();
-                                /*$("#search-back").click(function () {
-										              tooltip.transition()
-											                                .duration(500)
-											                               .style("opacity", 0)
-											                               .style("z-index", -1);})   */  
+										        event.stopPropagation(); 
                               }
                               //to load result on extern people
                               d3.select("#extern-result")
@@ -360,9 +343,9 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                                     var tooltip = d3.select(".tooltip");
                                     //console.log(id_person.cn);
 										                tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
-											                          .style("left", (xPosition) + "px")
+											                          .style("left", xPosition + "px")
 											                          .style("top", (yPosition+150) + "px")
-										        	                  .style("height", "50px");
+										        	                  .style("height", "57px");
 										                tooltip.transition()
 											                            .duration(200)
 											                            .style("opacity", .9)
