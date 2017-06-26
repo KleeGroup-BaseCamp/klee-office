@@ -200,10 +200,15 @@
     padding-bottom: 20px;
     color: rgb(251, 158, 151);
 }
-/*#N4-personnes, #O4-personnes, #N3-personnes, #O3-personnes, #N2-personnes, #O2-personnes, #N1-personnes, #N0-personnes*/.result, #nbOutside{
+/*#N4-personnes, #O4-personnes, #N3-personnes, #O3-personnes, #N2-personnes, #O2-personnes, #N1-personnes, #N0-personnes*/.result{
     /*padding-bottom: 20px;*/
     color: rgb(220, 220, 220);
     cursor: pointer; 
+    margin-left: 30px;
+}
+
+#noplace-personnes{
+    color: rgb(220, 220, 220);
     margin-left: 30px;
 }
 

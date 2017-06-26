@@ -78,6 +78,7 @@ $(function(){
               console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
               console.log("Nom des personnes : " + terms);
+              //detectEmptySearch();
               plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,listeIdentifiants);
               console.log("Number of searched people having a location in the office : " + listeSplitID.length);
               return false;
@@ -166,6 +167,17 @@ function getPersonsByArea(listPersons,area){
  }
  return res; 
 }
+
+/*function detectEmptySearch(){
+  var searchValue = document.getElementById('search-terms').value; 
+  if(!searchValue.match(/\S/)) {
+        console.log('Empty value is not allowed');
+        return false;
+    } else {
+        console.log("correct input");
+        return true;
+    }
+}*/
 
 
 // ------Function plotResult : display the location of searched people on the maps -----
