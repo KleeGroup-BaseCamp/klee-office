@@ -309,10 +309,9 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                               console.log("j = " + j);
                               console.log("MapSearch[j] : " + mapSearch[j]);
                               //console.log("listeSplitID : " + listeSplitID[i]);                                    
-                              /*if (mapSearch[j+1] === "noplace"){
-                                  j = (j+1) % mapSearch.length;
-                              }*/
+                            
                               if(mapSearch[j] !== "noplace"){
+                                
                                 
                                 d3.select(".map").select("svg").remove();
                                 mapControl.existMap = false;
@@ -365,6 +364,9 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
 											                               .style("z-index", -1);})*/
 
                                     mapControl.existMap = true;
+                                        }
+                                        if (mapSearch[j+1] === "noplace"){
+                                          j = (j+1) % mapSearch.length;
                                         }
                                       });                          
                                     } 
