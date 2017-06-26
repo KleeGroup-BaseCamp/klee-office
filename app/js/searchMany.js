@@ -238,7 +238,11 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                           .append("text")
                           .text("Etage "+mapControl.mapName);
                       if (mapControl.mapName !=="noplace"){
+                        if (mapSearch[j+1] === "noplace"){
+                          j = (j+1) % mapSearch.length;
+                        }
                         console.log("MapName loaded : " + mapControl.mapName);
+                        console.log("J = " + j);
                         // To load the map with all the data
                         mapControl.mapPlot(mapControl.mapName, false, function() {
                           var tooltip; 
@@ -297,10 +301,10 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                                         // get scroll pixels to correct tooltip's yPostion
                                       yPos += $(window).scrollTop();
 
-                                      infobulle.html(terms)
+                                      infobulle.html(externPeople)
                                           .style("left", (xPos) + "px")
-                                          .style("top", (yPos) + "px")
-                                          .style("height", "20px");
+                                          .style("top", (yPos) + "px");
+                                          //.style("height", "20px");
                                       infobulle.transition()
                                           .duration(200)
                                           .style("opacity", .9)
@@ -320,8 +324,11 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                               console.log("j = " + j);
                               console.log("MapSearch[j] : " + mapSearch[j]);
                               //console.log("listeSplitID : " + listeSplitID[i]);                                    
-
+                              /*if (mapSearch[j+1] === "noplace"){
+                                  j = (j+1) % mapSearch.length;
+                              }*/
                               if(mapSearch[j] !== "noplace"){
+                                
                                 d3.select(".map").select("svg").remove();
                                 mapControl.existMap = false;
                                 mapControl.mapName = mapSearch[j] ;

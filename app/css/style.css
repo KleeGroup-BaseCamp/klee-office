@@ -231,8 +231,8 @@
     opacity: 0;
     position: absolute;         
     text-align: center;         
-    width: 400px;
-    height: 40px;
+    width: auto;
+    height: auto;
     padding: 2px;               
     font: 15px sans-serif;      
     background: lightsteelblue; 
