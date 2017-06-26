@@ -157,12 +157,16 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                   .text("- " + personneParPlateau.n0 + " -")
                   .style("color", "	rgb(20,200,20)");}
                 if (personneParPlateau.externe > 0){
-                d3.select("#nbOutside")
+                d3.select("#noplace-personnes")
                   .text("- " + personneParPlateau.externe + " -")
                   .style("color", "	rgb(20,200,20)");}
                 console.log("plot nb personnes");
+<<<<<<< HEAD
 
                 plotResult(listeSplitID, personneParPlateau.externe,people,listeIdentifiants);
+=======
+                plotResult(listeSplitID, personneParPlateau.externe, terms);
+>>>>>>> 6f6f3ac2645b7f945fa07a90a563926e316c8957
        };  
 };
 
@@ -181,7 +185,12 @@ function getPersonsByArea(listPersons,area){
 
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
+<<<<<<< HEAD
 function plotResult(listeSplitID,nbExterne,people,listeIdentifiants){
+=======
+function plotResult(listeSplitID, nbExterne, terms){
+
+>>>>>>> 6f6f3ac2645b7f945fa07a90a563926e316c8957
   var i=0;
   var cpt=0;
   var table_tot=d3.selectAll("#tables");
@@ -214,19 +223,18 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants){
          var clicked_id = this.id;
          var buro = clicked_id.split(/-/);
          var j = mapSearch.indexOf(buro[0]);
-
          if(!mapControl.existMap) {
                         // erase all maps' overview
-                        mapControl.eraseMap();
-                        d3.select("#map-show")
+                      mapControl.eraseMap();
+                      d3.select("#map-show")
                                    .style("visibility", "visible")
                                    .style("width", "100%")
                                    .style("height", "100%");
-                        mapControl.mapName = buro[0]; //Area targetted exemple "N3"
-                        d3.select("#etage")
+                      mapControl.mapName = buro[0]; //Area targetted exemple "N3"
+                      d3.select("#etage")
                           .append("text")
                           .text("Etage "+mapControl.mapName);
-                        
+                      if (mapControl.mapName !=="noplace"){
                         console.log("MapName loaded : " + mapControl.mapName);
                         // To load the map with all the data
                         mapControl.mapPlot(mapControl.mapName, false, function() {
@@ -278,6 +286,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants){
                                   .text(nbExterne + " Personne(s) externe(s)");
                           });
                           mapControl.existMap = true;
+                        }
   
                        // call search-back : display the next map with results ("suivant" button)
                           $('#search-back').click(function(){
@@ -341,6 +350,12 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants){
                                         }
                                       });                          
                                     } 
+                                /* else{
+                                          d3.select("#whole-map")
+                                            .attr("width", "1024")
+                                            .attr("height", "768")
+                                            .text("YOLO");
+                                  } */  
                           });
          }
       });        
