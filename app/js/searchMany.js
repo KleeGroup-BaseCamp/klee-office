@@ -172,7 +172,14 @@ function plotResult(listeSplitID, nbExterne, terms){
   var cpt=0;
   var table_tot=d3.selectAll("#tables");
   var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3] 
+  var externPeople = []; //list of names of extern people
   //console.log(people);
+  // fills externPeople with noplace people names
+  for (i=0;i<terms.length;i++){
+    if (listeSplitID[i] === "noplace"){
+      externPeople.push(terms[i]);
+    }
+  }
   // fills mapSearch. No duplicate possible
   for (i=0;i<listeSplitID.length;i++){
     if (listeSplitID[i] === "noplace" ){ 
@@ -229,27 +236,56 @@ function plotResult(listeSplitID, nbExterne, terms){
                                       .attr("x", table.select("rect").attr("x") - 10)
                                       .attr("y", table.select("rect").attr("y") - 40);
                                d3.select("#extern-result")
-                                 .text(nbExterne + " Personne(s) externe(s)");}
+                                 .text(nbExterne + " Personne(s) externe(s)")
+                                 //rajout début
+                                  .style("cursor", "pointer")
+                                  .on("click", function(){
+                                   // console.log("Bureau : " + d3.event.target.parentNode.id);
+                                    var xPosition = event.clientX,
+                                      yPosition = event.clientY;
+                                      var tooltip = d3.select(".tooltip");
+                                        // get scroll pixels to correct tooltip's yPostion
+                                      yPosition += $(window).scrollTop();
+
+                                      tooltip.html(terms)
+                                          .style("left", (xPosition) + "px")
+                                          .style("top", (yPosition) + "px")
+                                          .style("height", "20px");
+                                      tooltip.transition()
+                                          .duration(200)
+                                          .style("opacity", .9)
+                                          .style("z-index", 20);
+
+                                      event.stopPropagation();
+                              
+                                  });
+                                }    
+                                  //rajout fin         
                                 }    
                                }
                           });
                           mapControl.existMap = true;
-                      }else{
+                      }/*else{
                         mapControl.mapPlot(buro[0], false, function() {
-                         /* for (i=0;i<listeSplitID.length;i++){ 
+                         for (i=0;i<listeSplitID.length;i++){ 
                             if (listeSplitID[i] === "noplace"){
-                            */  
+                              
                                 console.log("Cas noplace");
-                               /* table = d3.select("#tables")
-                                          .select("#noplace")
-                                          .text(terms[i]);*/
+                                table = d3.select("#tables")
+                                          .select("#bidule");
+                                     table.append("text")
+                                          .attr("x", 50)
+                                          .attr("y", 50)
+                                          .text("LALALALALA");
+                                 d3.select("#testo")
+                                    .text("TEEEEEEEST");         
                                 d3.select("#extern-result")
-                                 .text(nbExterne + " Personne(s) externe(s)");//}
+                                 .text(nbExterne + " Personne(s) externe(s)");}
                                    
-                               //}
+                               }
                           });
                           mapControl.existMap = true;
-                      }
+                      }*/
                           
                                 
                                 //console.log(people);
@@ -280,12 +316,14 @@ function plotResult(listeSplitID, nbExterne, terms){
                                       console.log("j = " + j);
                               console.log("MapSearch[j] : " + mapSearch[j]);
                               //console.log("listeSplitID : " + listeSplitID[i]);                                    
-                                   // if(mapSearch[j] !== "noplace"){
+                                    if(mapSearch[j] !== "noplace"){
+  
                                       d3.select(".map").select("svg").remove();
                                       mapControl.existMap = false;
                                       mapControl.mapName = mapSearch[j] ;
                                       d3.select("#etage").data(["Etage "+mapControl.mapName]).text(function(d) { return d; });
 
+                                      
                                       mapControl.mapPlot(mapSearch[j], false, function() {
                                         for (i=0;i<listeSplitID.length;i++){ 
                                           if(listeSplitID[i] !== "noplace"){
@@ -305,7 +343,7 @@ function plotResult(listeSplitID, nbExterne, terms){
                                           }
                                       });
                                       mapControl.existMap = true;
-                                  //  }    
+                                    }    
                                    /* else{
                                           d3.select("#whole-map")
                                             .attr("width", "1024")
