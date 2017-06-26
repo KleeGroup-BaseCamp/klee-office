@@ -161,12 +161,8 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                   .text("- " + personneParPlateau.externe + " -")
                   .style("color", "	rgb(20,200,20)");}
                 console.log("plot nb personnes");
-<<<<<<< HEAD
 
-                plotResult(listeSplitID, personneParPlateau.externe,people,listeIdentifiants);
-=======
-                plotResult(listeSplitID, personneParPlateau.externe, terms);
->>>>>>> 6f6f3ac2645b7f945fa07a90a563926e316c8957
+                plotResult(listeSplitID, personneParPlateau.externe,people,listeIdentifiants,terms);
        };  
 };
 
@@ -185,12 +181,9 @@ function getPersonsByArea(listPersons,area){
 
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
-<<<<<<< HEAD
-function plotResult(listeSplitID,nbExterne,people,listeIdentifiants){
-=======
-function plotResult(listeSplitID, nbExterne, terms){
+function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
 
->>>>>>> 6f6f3ac2645b7f945fa07a90a563926e316c8957
+
   var i=0;
   var cpt=0;
   var table_tot=d3.selectAll("#tables");
