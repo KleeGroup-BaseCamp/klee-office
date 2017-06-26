@@ -182,8 +182,6 @@ function getPersonsByArea(listPersons,area){
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
 function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
-
-
   var i=0;
   var cpt=0;
   var table_tot=d3.selectAll("#tables");
@@ -201,15 +199,19 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
   // fills mapSearch. No duplicate possible
   for (i=0;i<listeSplitID.length;i++){
     if (listeSplitID[i] === "noplace" ){ 
-      console.log("Externe : " + listeSplitID[i]);
+      console.log("Personne : externe");
       if (mapSearch.indexOf(listeSplitID[i]) ===(-1)){
                    mapSearch.push(listeSplitID[i]);}
     }
     else{ 
-      console.log("Personne : " + listeSplitID[i]);
-      if (mapSearch.indexOf((listeSplitID[i]).split(/-/)[0]) ===(-1)){
-                   mapSearch.push(listeSplitID[i].split(/-/)[0]);
-        var position = listeSplitID[i]; 
+      var area= listeSplitID[i].split(/-/)[0];
+      console.log("Personne : " + area);
+      var id_people_same_area=getPersonsByArea(listeIdentifiants,area);
+      if (mapSearch.indexOf(area) ===(-1)){
+                   mapSearch.push(area);
+      
+      for (var k=0;k<id_people_same_area.length;k++){
+        var position = id_people_same_area[k][0]; 
         var table=table_tot.select("#" + position);   //example :<g  id="N2-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="25.52841" height="12.577848" x="27.785971" y="249.75424" /></g>
         table.append("image")
             .attr("xlink:href", "./img/pin_final.png")
@@ -217,7 +219,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
             .attr("height", "50")
             .attr("x",table.select("rect").attr("x") -10)
             .attr("y",table.select("rect").attr("y") -40);
-      }
+      }}
     }
   }
   console.log(mapSearch);
@@ -271,7 +273,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                             tooltip = d3.select(".tooltip");
 										        tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
 											                  .style("left", (xPosition) + "px")
-											                  .style("top", (yPosition) + "px")
+											                  .style("top", (yPosition+150) + "px")
 										        	          .style("height", "50px");
 										        tooltip.transition()
 											                  .duration(200)
@@ -359,7 +361,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                                     //console.log(id_person.cn);
 										                tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
 											                          .style("left", (xPosition) + "px")
-											                          .style("top", (yPosition) + "px")
+											                          .style("top", (yPosition+150) + "px")
 										        	                  .style("height", "50px");
 										                tooltip.transition()
 											                            .duration(200)
