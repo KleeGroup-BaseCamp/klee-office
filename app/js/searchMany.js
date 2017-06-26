@@ -78,6 +78,7 @@ $(function(){
               console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
               console.log("Nom des personnes : " + terms);
+              //detectEmptySearch();
               plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,listeIdentifiants);
               console.log("Number of searched people having a location in the office : " + listeSplitID.length);
               return false;
@@ -353,6 +354,17 @@ function getPersonsByArea(listPersons,area){
  return res; 
 }
 
+/*function detectEmptySearch(){
+  var searchValue = document.getElementById('search-terms').value; 
+  if(!searchValue.match(/\S/)) {
+        console.log('Empty value is not allowed');
+        return false;
+    } else {
+        console.log("correct input");
+        return true;
+    }
+}*/
+
 
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
@@ -406,7 +418,11 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                           .append("text")
                           .text("Etage "+mapControl.mapName);
                       if (mapControl.mapName !=="noplace"){
+                        if (mapSearch[j+1] === "noplace"){
+                          j = (j+1) % mapSearch.length;
+                        }
                         console.log("MapName loaded : " + mapControl.mapName);
+                        console.log("J = " + j);
                         // To load the map with all the data
                         mapControl.mapPlot(mapControl.mapName, false, function() {
                           var tooltip; 
@@ -459,10 +475,10 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                         // get scroll pixels to correct tooltip's yPostion
                                       yPos += $(window).scrollTop();
 
-                                      infobulle.html(terms)
+                                      infobulle.html(externPeople)
                                           .style("left", (xPos) + "px")
-                                          .style("top", (yPos) + "px")
-                                          .style("height", "20px");
+                                          .style("top", (yPos) + "px");
+                                          //.style("height", "20px");
                                       infobulle.transition()
                                           .duration(200)
                                           .style("opacity", .9)
@@ -482,8 +498,10 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                               console.log("j = " + j);
                               console.log("MapSearch[j] : " + mapSearch[j]);
                               //console.log("listeSplitID : " + listeSplitID[i]);                                    
-
+                            
                               if(mapSearch[j] !== "noplace"){
+                                
+                                
                                 d3.select(".map").select("svg").remove();
                                 mapControl.existMap = false;
                                 mapControl.mapName = mapSearch[j] ;
@@ -535,6 +553,9 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
 											                               .style("z-index", -1);})*/
 
                                     mapControl.existMap = true;
+                                        }
+                                        if (mapSearch[j+1] === "noplace"){
+                                          j = (j+1) % mapSearch.length;
                                         }
                                       });                          
                                     } 
