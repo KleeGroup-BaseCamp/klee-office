@@ -10,6 +10,6 @@
         </KeyDescriptor>
         <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
         <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://local-map/saml2/acs" index="0" isDefault="true"/>
-        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://local-map/saml2/sls" ResponseLocation="http://local-map/saml2/slsResponse"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://local-map/saml2/sls"/>
     </SPSSODescriptor>
 </EntityDescriptor>  
