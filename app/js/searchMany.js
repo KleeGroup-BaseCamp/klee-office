@@ -89,9 +89,18 @@ $(function(){
 
  // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example personneParPlateau={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
 function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,listeIdentifiants){
+  console.log("plot nb personnes");
   var aaa = document.getElementById("search-button");
   var k=0; 
   var listePlateau =[];
+  var externPeople = []; //list of names of extern people
+  //console.log(people);
+  // fills externPeople with noplace people names
+  for (var n=0;n<terms.length;n++){
+    if (listeSplitID[n] === "noplace"){
+      externPeople.push(terms[n]);
+    }
+  }
   
        // -- event on button "search" clicked --
        aaa.onclick = function(){
@@ -125,34 +134,211 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                     break;
                   }
                 }
-                const list_area=["N0","N1","N2","N3","N4","O2","O3","O4","externe"];
+                var list_area=["N0","N1","N2","N3","N4","O2","O3","O4","externe"];
+                var people_same_area=""; // var to store searched people located in a specified area
                 for (var k=0;k<list_area.length;k++){
                   var x=list_area[k];
                   if (personneParPlateau[x]>0){
-                    if (x=="externe"){
-                      d3.select("#noplace-personnes")
-                        .text("- " + personneParPlateau.externe + " -")
-                        .style("color", "	rgb(20,200,20)");
-                    }
-                    else{
-                    d3.select("#"+x+"-personnes")
-                        .text("- " + personneParPlateau[x] + " -")
-                        .style("color", "	rgb(20,200,20)");}
-                    }
+                      console.log(x);
+                      switch (x){
+                        case "externe":
+                          var div_e = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          d3.select("#noplace-personnes")
+                            .text("- " + personneParPlateau.externe + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                            div_e.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                            div_e.html(externPeople)
+                                .style("left", d3.event.pageX + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","250px");})
+                          .on("mouseout", function(d) {		
+                              div_e.transition().duration(500).style("opacity", 0);})	
+                        break;
+                        case "N0":
+                          var div_N0 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_N0="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_N0+=people[people_same_area[l][1]].data.cn[0];
+                            text_N0+="\n";
+                          } 
+                          d3.select("#"+x+"-personnes")
+                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                              div_N0.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                              div_N0.html(text_N0)
+                                .style("left", d3.event.pageX-10 + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_N0.transition().duration(500).style("opacity", 0);})
+                        break;                        
+                        case "N1":
+                          var div_N1 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_N1="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_N1+=people[people_same_area[l][1]].data.cn[0];
+                            text_N1+="\n";
+                          } 
+                          d3.select("#"+x+"-personnes")
+                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                              div_N1.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                              div_N1.html(text_N1)
+                                .style("left", d3.event.pageX-10 + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_N1.transition().duration(500).style("opacity", 0);})
+                        break;
+                        case "N2":
+                          var div_N2 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_N2="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_N2+=people[people_same_area[l][1]].data.cn[0]
+                            text_N2+="\n";
+                          }
+                          d3.select("#"+x+"-personnes")
+                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                                div_N2.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                                div_N2.html(text_N2)
+                                .style("left", d3.event.pageX-10 + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_N2.transition().duration(500).style("opacity", 0);})
+                        break;
+                        case "N3":
+                          var div_N3 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_N3="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_N3+=people[people_same_area[l][1]].data.cn[0];
+                            text_N3+="\n";
+                          } 
+                          d3.select("#"+x+"-personnes")
+                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                              div_N3.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                              div_N3.html(text_N3)
+                                .style("left", d3.event.pageX-10 + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_N3.transition().duration(500).style("opacity", 0);})
+                        break;
+                        case "N4":
+                          var div_N4 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_N4="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_N4+=people[people_same_area[l][1]].data.cn[0]
+                            text_N4+="\n";
+                          }
+                          d3.select("#"+x+"-personnes")
+                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                                div_N4.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                                div_N4.html(text_N4)
+                                .style("left", d3.event.pageX + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_N4.transition().duration(500).style("opacity", 0);})
+                        break;                        
+                        case "O2":
+                          var div_O2 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_O2="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_O2+=people[people_same_area[l][1]].data.cn[0];
+                            text_O2+="\n";
+                          } 
+                          d3.select("#"+x+"-personnes")
+                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                              div_O2.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                              div_O2.html(text_O2)
+                                .style("left", d3.event.pageX-10 + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_O2.transition().duration(500).style("opacity", 0);})
+                        break;
+                        case "O3":
+                          var div_O3 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_O3="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_O3+=people[people_same_area[l][1]].data.cn[0]
+                            text_O3+="\n";
+                          }
+                          console.log("I'm here"); 
+                          d3.select("#"+x+"-personnes")
+                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                                div_O3.transition()		
+                                .duration(150)		
+                                .style("opacity", .9);		
+                                div_O3.html(text_O3)
+                                .style("left", d3.event.pageX-10 + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_O3.transition().duration(500).style("opacity", 0);})
+                        break;
+                        case "O4":
+                          var div_O4 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_O4="";
+                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_O4+=people[people_same_area[l][1]].data.cn[0]
+                            text_O4+="\n";
+                          }
+                          d3.select("#"+x+"-personnes")
+                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                                div_O4.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                                div_O4.html(text_O4)
+                                .style("left", d3.event.pageX + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_O4.transition().duration(500).style("opacity", 0);})
+                        break;                        
+                      }	
                   }
-                console.log("plot nb personnes");
-                /*tooltip = d3.select(".tooltip");
-								tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
-											                  .style("left", (xPosition) + "px")
-											                  .style("top", (yPosition+150) + "px")
-										        	          .style("height", "57px");
-								tooltip.transition()
-											                  .duration(200)
-											                  .style("opacity", .9)
-											                  .style("z-index", 20);
-								event.stopPropagation(); */
-
-                plotResult(listeSplitID, personneParPlateau.externe,people,listeIdentifiants,terms);
+                }
+                
+                plotResult(listeSplitID, personneParPlateau.externe,people,listeIdentifiants,externPeople);
        };  
 };
 
@@ -182,20 +368,11 @@ function getPersonsByArea(listPersons,area){
 
 // ------Function plotResult : display the location of searched people on the maps -----
 // TO DO : Not possible to go back to the main page of results 
-function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
+function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeople){
   var i=0;
   var cpt=0;
   var table_tot=d3.selectAll("#tables");
   var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3] 
-
-  var externPeople = []; //list of names of extern people
-  //console.log(people);
-  // fills externPeople with noplace people names
-  for (i=0;i<terms.length;i++){
-    if (listeSplitID[i] === "noplace"){
-      externPeople.push(terms[i]);
-    }
-  }
 
   // fills mapSearch. No duplicate possible
   for (i=0;i<listeSplitID.length;i++){
