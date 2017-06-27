@@ -250,16 +250,22 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                         mapControl.mapPlot(mapControl.mapName, false, function() {
                           var tooltip; 
                           var id_persons_by_area=[];
-                          console.log(listeIdentifiants);
+                          console.log("Liste identifiants : " + listeIdentifiants);
                           id_persons_by_area=getPersonsByArea(listeIdentifiants,mapControl.mapName); //ex: [["N3-A-05",65],["N3-C-04",110]]
-                          console.log(id_persons_by_area);
+                          console.log("Id_person_by_area : " + id_persons_by_area);
                           var id_person=[];
+                         // var index_person=[];
                           var data_person,xPosition,yPosition;
                           for (var k=0;k<id_persons_by_area.length;k++){
                             id_person=id_persons_by_area[k];
-                            console.log(id_person);
+                            console.log("id_person : " + id_person);
                             data_person=people[id_person[1]].data;
                             console.log("Personne de la MAP cliquée : " + id_person[0]);
+                            console.log("DataPerson : " + data_person);
+                           // index_person.push(id_person[1]);}
+
+                            
+                         //  index_person.forEach(function(){
                             table = d3.select("#tables")
                                           .select("#" + id_person[0]);
                             var xPosition = table.select("rect").attr("x")-10;
@@ -284,7 +290,9 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
 											                  .style("opacity", .9)
 											                  .style("z-index", 20);
 										        event.stopPropagation(); 
-                              }
+                                
+                        
+                              
                               //to load result on extern people
                               d3.select("#extern-result")
                                   .text(nbExterne + " Personne(s) externe(s)")
@@ -308,8 +316,9 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,terms){
                                           .style("z-index", 20);
 
                                       event.stopPropagation();
-                              
                                   });
+                           //       });
+                          }
                           });
                           mapControl.existMap = true;
                         }
