@@ -163,7 +163,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_N0+=people[people_same_area[l][1]].data.cn[0];
-                            text_N0+="\n";
+                            text_N0+="<br/>";
                           } 
                           d3.select("#"+x+"-personnes")
                             .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
@@ -185,7 +185,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_N1+=people[people_same_area[l][1]].data.cn[0];
-                            text_N1+="\n";
+                            text_N1+="<br/>";
                           } 
                           d3.select("#"+x+"-personnes")
                             .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
@@ -207,7 +207,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_N2+=people[people_same_area[l][1]].data.cn[0]
-                            text_N2+="\n";
+                            text_N2+="<br/>";
                           }
                           d3.select("#"+x+"-personnes")
                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
@@ -229,7 +229,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_N3+=people[people_same_area[l][1]].data.cn[0];
-                            text_N3+="\n";
+                            text_N3+="<br/>";
                           } 
                           d3.select("#"+x+"-personnes")
                             .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
@@ -251,7 +251,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_N4+=people[people_same_area[l][1]].data.cn[0]
-                            text_N4+="\n";
+                            text_N4+="<br/>";
                           }
                           d3.select("#"+x+"-personnes")
                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
@@ -273,7 +273,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_O2+=people[people_same_area[l][1]].data.cn[0];
-                            text_O2+="\n";
+                            text_O2+="<br/>";
                           } 
                           d3.select("#"+x+"-personnes")
                             .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
@@ -295,7 +295,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_O3+=people[people_same_area[l][1]].data.cn[0]
-                            text_O3+="\n";
+                            text_O3+="<br/>";
                           }
                           console.log("I'm here"); 
                           d3.select("#"+x+"-personnes")
@@ -318,7 +318,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                           people_same_area=getPersonsByArea(listeIdentifiants,x);
                           for (var l=0;l<people_same_area.length;l++){
                             text_O4+=people[people_same_area[l][1]].data.cn[0]
-                            text_O4+="\n";
+                            text_O4+="<br/>";
                           }
                           d3.select("#"+x+"-personnes")
                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
@@ -427,6 +427,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                         mapControl.mapPlot(mapControl.mapName, false, function() {
                           var tooltip; 
                           var id_persons_by_area=[];
+                          var data_area="";
                           console.log(listeIdentifiants);
                           id_persons_by_area=getPersonsByArea(listeIdentifiants,mapControl.mapName); //ex: [["N3-A-05",65],["N3-C-04",110]]
                           console.log(id_persons_by_area);
@@ -441,7 +442,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                           .select("#" + id_person[0]);
                             var xPosition = table.select("rect").attr("x")-10;
 											      var yPosition = table.select("rect").attr("y")-40;
-
+                            data_area+=("<b>"+data_person.cn[0] + "</b> : "+ data_person.mail[0] + " - " + data_person.physicalDeliveryOfficeName[0]+"<br/>");
                             //to load pin on people position
                             table.append("image")
                                       .attr("xlink:href", "./img/pin_final.png")
@@ -451,18 +452,27 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                       .attr("y", yPosition);
                             yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
                             //To load tooltip with data on persons
+                              }
                             tooltip = d3.select(".tooltip");
-										        tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
-											                  .style("left", (xPosition) + "px")
-											                  .style("top", (yPosition+150) + "px")
-										        	          .style("height", "57px");
+										        tooltip.html(data_area)
+											                  .style("left", 300 + "px")
+											                  .style("top", 300 + "px")
+										        	          .style("height", "auto")
+                                        .style("width","auto");
 										        tooltip.transition()
 											                  .duration(200)
 											                  .style("opacity", .9)
 											                  .style("z-index", 20);
-										        event.stopPropagation(); 
-                              }
-                              //to load result on extern people
+                            event.stopPropagation();
+                            $("html").click(function (event) {
+                                  event.stopPropagation();})
+                            $(".tooltip").click(function () {
+							                div.transition()
+								                  .duration(500)
+								                  .style("opacity", 0)
+								                  .style("z-index", -1);})
+
+                              //to load tooltip result about extern people
                               d3.select("#extern-result")
                                   .text(nbExterne + " Personne(s) externe(s)")
                                   //rajout début
@@ -510,6 +520,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
 
                                 mapControl.mapPlot(mapSearch[j], false, function() {
                                   var id_persons_by_area=[];
+                                  var data_area="";
                                   id_persons_by_area=getPersonsByArea(listeIdentifiants,mapSearch [j]); //ex: [["N3-A-05",65],["N3-C-04",110]]
                                   console.log(id_persons_by_area);
                                   var id_person=[];
@@ -523,43 +534,43 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                                       .select("#" + id_person[0]);
                                     var xPosition = table.select("rect").attr("x")-10;
 											              var yPosition = table.select("rect").attr("y")-40;
+                                    yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
                                     table.append("image")
                                                 .attr("xlink:href", "./img/pin_final.png")
                                                 .attr("width", "30")
                                                 .attr("height", "50")
                                                 .attr("x", xPosition)
                                                 .attr("y", yPosition);
-
+                                    data_area+=("<b>"+data_person.cn[0] + "</b> : "+ data_person.mail[0] + " - " + data_person.physicalDeliveryOfficeName[0]+"<br/>");
                                     d3.select("#extern-result")
-                                                .text(nbExterne + " Personne(s) externe(s)");
-
-										                yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
-                                    //console.log(xPosition,yPosition);
-                                    var tooltip = d3.select(".tooltip");
-                                    //console.log(id_person.cn);
-										                tooltip.html(data_person.cn[0] + "<br/>"+ data_person.mail[0] + "<br/>" + data_person.physicalDeliveryOfficeName[0])
-											                          .style("left", xPosition + "px")
-											                          .style("top", (yPosition+150) + "px")
-										        	                  .style("height", "57px");
-										                tooltip.transition()
-											                            .duration(200)
-											                            .style("opacity", .9)
-											                            .style("z-index", 20);
-										                event.stopPropagation();
-                                    /*$("#search-back").click(function () {
-										                  tooltip.transition()
-											                               .duration(500)
-											                               .style("opacity", 0)
-											                               .style("z-index", -1);})*/
-
+                                       .text(nbExterne + " Personne(s) externe(s)");
                                     mapControl.existMap = true;
-                                        }
-                                        if (mapSearch[j+1] === "noplace"){
+                                  }
+                                  var tooltip = d3.select(".tooltip");
+										              tooltip.html(data_area)
+											                  .style("left", 300 + "px")
+											                  .style("top", 300 + "px")
+										        	          .style("height", "auto")
+                                        .style("width","auto");
+										              tooltip.transition()
+											                  .duration(200)
+											                  .style("opacity", .9)
+											                  .style("z-index", 20);
+                                  event.stopPropagation();
+                                  $("html").click(function (event) {
+                                    event.stopPropagation();})
+                                  $(".tooltip").click(function () {
+							                      div.transition()
+								                        .duration(500)
+								                        .style("opacity", 0)
+								                        .style("z-index", -1);}) 
+
+                                  if (mapSearch[j+1] === "noplace"){
                                           j = (j+1) % mapSearch.length;
-                                        }
-                                      });                          
-                                    } 
-                                 
+                                  }
+                                  
+                                });                          
+                              }       
                           });
          }
       });        

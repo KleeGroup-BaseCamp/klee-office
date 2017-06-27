@@ -262,7 +262,7 @@ var mapControl = {
 // justPlotMap.js
 // show small maps' tooltip: departements of small map
 	buildTooltips: function(names) {
-		console.log("HELLOOOOOOOOOO");
+		//console.log("HELLOOOOOOOOOO");
 		$.each(names, function(i, element){
 			// get the departments in one map
 			d3.xml(server + "maps/" + element + ".svg",
