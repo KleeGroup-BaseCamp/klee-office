@@ -477,6 +477,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                   .style("cursor", "pointer")
                                   .on("click", function(){
                                    // console.log("Bureau : " + d3.event.target.parentNode.id);
+                                   if (externPeople.length > 0){
                                     var xPos = event.clientX,
                                       yPos = event.clientY;
                                       var infobulle = d3.select(".tooltip");
@@ -492,7 +493,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                           .style("opacity", .9)
                                           .style("z-index", 20);
 
-                                      event.stopPropagation();
+                                      event.stopPropagation();}
                                   });
                            //       });
                           }
