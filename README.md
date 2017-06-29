@@ -312,8 +312,8 @@ There are still other ways to add tables, such as using **inkscape** (but make s
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
 
-# For our sqlite3 database : 
-
+# For our postgreSQL database -- TO UPDATE -- : 
+ See : diagram_DB
 
 If you want to recreate a clean database. 
 
