@@ -4,8 +4,8 @@
 
 "use strict";
 // global variables
-//var	server= "http://localhost:3000/";
-var	server= "http://local-map/";
+var	server= "http://localhost:3000/";
+//var	server= "http://local-map/";
 
 var configurationsControl = {
     isPopin: false,
@@ -50,8 +50,8 @@ var configurationsControl = {
 
                 // validate button
                 $("#validate-"+data.con_id).click(function(event) {
-                    //window.location.href = "http://localhost:3000/consistency" + data.con_id;
-                    window.location.href = "http://local-map/consistency" + data.con_id;
+                    window.location.href = "http://localhost:3000/consistency" + data.con_id;
+                    //window.location.href = "http://local-map/consistency" + data.con_id;
                 });
 
                 // delete button
@@ -62,8 +62,8 @@ var configurationsControl = {
                         url: 'deleteConfiguration/'+data.con_id,
                         type: 'DELETE',
                         success: function(result) {
-                          // window.location.href = "http://localhost:3000/configurations";
-                            window.location.href = "http://local-map/configurations";
+                          window.location.href = "http://localhost:3000/configurations";
+                          //  window.location.href = "http://local-map/configurations";
                         }
                     });
                 });

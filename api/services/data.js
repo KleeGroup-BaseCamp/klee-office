@@ -8,11 +8,14 @@ const peopleFile = require('../data/KleeGroup.json');
 // models
 var models = require("../../models");
 var Company = models.Company;
-var Pole = models.Pole;
-var Office = models.Office;
+var BusinessUnit = models.BusinessUnit;
+var Desk = models.Desk;
 var Person = models.Person;
-var State = models.State;
-var Movings = models.Moving;
+var Profil = models.Profil;
+var MoveLine = models.MoveLine;
+var Site=models.Site;
+var MoveSet=models.MoveSet;
+var MoveStatus=models.MoveStatus;
 
 // libs
 var _ = require('underscore');
@@ -32,15 +35,17 @@ const populate = (req, res) => {
 
     var companies = [];
     var departments = [];
-    var offices = [];
+    var desks = [];
+    var sites = [];
 
     var doInserts = new Promise(function(callback){
 
         peopleFile.forEach(function(data, index){
                 var d = data[1];
                 var company;
-                if(d.company !== undefined && d.company !== null && d.company !== ""){
-                    company = d.company.toString();
+                var ou=data[0].split(',')[1].split('=')[1];
+                if(ou !== undefined && ou !== null && ou !== ""){
+                    company = ou.toString();
                 }
                 var dpt;
                 if(d.department !== null && d.department !== undefined && d.department !== ""){
@@ -48,16 +53,22 @@ const populate = (req, res) => {
                 }
                 var peopleName = d.cn.toString();
                 var nameParts = peopleName.split(" ");
+                var mail="";
                 if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
                     mail = d.mail.toString();
-                } else {
-                    mail = "";
-                }
+                } 
                 // ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
                 if (d.physicalDeliveryOfficeName) {
                     var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
                     if (splitID[1]) {
-                        var office = splitID[1];
+                        var desk = splitID[1];
+                        var building;
+                        var floor=desk[1];
+                        if (desk[0]=='N'){
+                            building="Normandie";
+                        }else if (desk[0]='O'){
+                            building='Orléans';
+                        }
                     }
                 }
                 if(companies.indexOf(company) < 0 && company !== null && company !== undefined && company !== ""){
@@ -66,19 +77,22 @@ const populate = (req, res) => {
                 if(departments.indexOf(dpt) < 0 && dpt !== null && dpt !== undefined && dpt !== ""){
                     departments.push(dpt);
                 }
-                if(offices.indexOf(office) < 0 && office !== null && office !== undefined && office !== ""){
-                    offices.push(office);
+                if(sites.indexOf(site) < 0 && site !== null && site !== undefined && site !== ""){
+                    sites.push(site);
+                }
+                if(desks.indexOf(desk) < 0 && desk !== null && desk !== undefined && desk !== ""){
+                    desks.push([desk,building,floor]);
                 }
                 if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
                 && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                    var pers = Person.build({firstname: nameParts[0], lastname: nameParts[1], mail: mail});
+                    var pers = Person.build({firstname: nameParts[0], lastname: nameParts[1], mail: mail,dateUpdate : Date.now()});
                     pers.save()
                         .error(function (err) {
                             console.log(err + " ---------" + elem);
                         }).then(function(newPerson){
-                            console.log(nameParts[0] + nameParts[1]);
+                            //console.log(nameParts[0] + nameParts[1]);
                             var perId = newPerson.dataValues.per_id;
-                            var mov = Movings.build({PersonPerId: perId});
+                            var mov = MoveLine.build({PersonPerId: perId});
                             mov.save()
                                 .error(function (err) {
                                     console.log(err + " ---------" + elem);
@@ -91,20 +105,29 @@ const populate = (req, res) => {
 
         companies.forEach(function(elem, index){
             var comp = Company.build({name : elem});
+            console.log(comp);
             comp.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
                 });
         });
         departments.forEach(function(elem, index){
-            var dpt = Pole.build({name : elem});
+            var dpt = BusinessUnit.build({name : elem});
             dpt.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
                 });
         });
-        offices.forEach(function(elem, index){
-            var off = Office.build({name : elem});
+
+        var site = Site.build({name : "La Boursidière"});
+            site.save()
+                .error(function (err) {
+                    console.log(err + " ---------" + elem);
+                });
+
+
+        desks.forEach(function(elem, index){
+            var off = Desk.build({name : elem[0], building : elem[1], floor : elem[2]});
             off.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
@@ -112,17 +135,16 @@ const populate = (req, res) => {
         });
 
         // for non assigned former offices
-        var offAucun = Office.build({name : "aucun"});
+        var offAucun = Desk.build({name : "aucun"});
         offAucun.save()
             .error(function (err) {
                 console.log(err + " ---------" + elem);
             });
 
         var states = ["A valider", "Validee", "Brouillon"];
-
         // insert states and a new configuration "Validee"
         Promise.each(states, function(elem, index, length){
-            var state = State.build({name: elem});
+            var state = MoveStatus.build({name: elem});
             state.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
@@ -133,17 +155,17 @@ const populate = (req, res) => {
                         var id = savedState.dataValues.sta_id;
                         //console.log(savedState.dataValues)
                         var today = new Date();
-                        var technicaldate = Date.now();
-                        var validee = "Validee";
+                        var technicaldate = new Date();
                         // insert current configuration
-                        models.sequelize.query('INSERT into Configurations(\'name\', \'creator\', \'dateCreation\', \'StateStaId\', \'createdAt\', \'updatedAt\') ' +
-                            'Values (\'Configuration premiere\', \'System\', \:dateToday\, :id, :date, :date)',
-                            { replacements: { dateToday: today, date: technicaldate, validee: validee, id: id}, type: models.sequelize.QueryTypes.INSERT }
-                        ).then(function(states) {
-                                console.log(states)
-                            });
+                        models.sequelize.query('INSERT into \"MoveSet\"(name, creator, \"dateCreation\", \"dateUpdate\",status_id) ' +
+                            'VALUES (\'Configuration premiere\', \'System\', \:dateToday\, :date, :id)',
+                            { replacements: { dateToday: today, date: technicaldate, id: id}, type: models.sequelize.QueryTypes.INSERT })
                     }
-                });
+                }).then(function(set) {
+                                console.log(set)
+                               /* models.sequelize.query('UPDATE MoveLine SET move_set_id = :setid;',
+                                //'WHERE move_set_id IS NULL',
+                                {replacements :{setid : set}, type : models.sequelize.QueryTypes.UPDATE})*/});
         });
     });
 

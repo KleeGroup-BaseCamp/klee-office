@@ -1,7 +1,7 @@
 "use strict";
 // global variables
 
-
+var	server= "http://localhost:3000/";
 var mapControl = {
 	existMap: false,
 	mapName: null,
@@ -100,6 +100,7 @@ var mapControl = {
 										yPosition += $(window).scrollTop();
 
 										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0] + "<br/>" + d.physicalDeliveryOfficeName[0])
+											.style("position","relative")
 											.style("left", (xPosition) + "px")
 											.style("top", (yPosition) + "px")
 											.style("height", "57px");
@@ -160,6 +161,7 @@ var mapControl = {
 									yPosition += $(window).scrollTop();
 
 									tooltip.html("Bureau " + d3.event.target.parentNode.id)
+											.style("position","relative")
 											.style("left", (xPosition) + "px")
 											.style("top", (yPosition) + "px")
 											.style("height", "20px");
@@ -330,6 +332,7 @@ var mapControl = {
 							div.html("<span>" + tooltip + "</span>");
 							div.transition()
 								.duration(500)
+								.style("position","relative")
 								.style("left", (xPosition) + "px")
 								.style("top", (yPosition) + "px")
 								.style("height", (height) + "px")

@@ -5,44 +5,48 @@
 // models
 var models = require('../../models');
 var Person = models.Person;
-var Office = models.Office;
-var Configuration = models.Configuration;
-var Moving = models.Moving;
-var State = models.State;
+var Desk = models.Desk;
+var MoveSet = models.MoveSet;
+var MoveLine = models.MoveLine;
+var MoveStatus = models.MoveStatus;
 
 /**
  * get the current office of a person
- * based on the current configuration
+ * based on the current MoveSet
  */
-const getCurrentOfficeName = (req,res) =>{
-    models.sequelize.query('SELECT offices.name, offices.off_id from offices ' +
-        'join movings as mov on mov.newOfficeOffId = offices.off_id '+
-        'join configurations as conf on conf.con_id = mov.ConfigurationConId '+
-        'join people as peo on peo.per_id = mov.PersonPerId ' +
-        'join States on conf.StateStaId = States.sta_id ' +
-         'where States.name = "Validee" ' +
+const getCurrentDeskName = (req,res) =>{
+    models.sequelize.query('SELECT desk.name, desk.des_id FROM Desk ' +
+        'JOIN \"Person\" ON desk.person_id=person.per_id '+
+        'WHERE person.firstname = :first AND person.lastname = :last',
+    /*    'JOIN \"MoveLine\" as mov ON mov.toDesk = desk.des_id '+
+        'JOIN \"MoveSet\" as set ON set.set_id = mov.move_set_id '+
+        'JOIN \"Person\" as per ON per.per_id = mov.person_id ' +
+        'JOIN \"MoveStatus\" ON set.status_id = movestatus.sta_id ' +
+        'WHERE movestatus.name = \"Validee\" ' +
        // 'where conf.name = \'Configuration premiere\' ' +
-        'and peo.firstname = :first and peo.lastname = :last',
+        'AND per.firstname = :first AND per.lastname = :last',*/
         { replacements: {first: req.params.first, last: req.params.last}, type: models.sequelize.QueryTypes.SELECT}
-    ).then(function(office){
-            console.log(office)
-           res.json(office);
+    ).then(function(desk){
+            console.log(desk)
+           res.json(desk);
         });
 }
 
-const getCurrentOfficeNamebyId = (req,res) => {
-    models.sequelize.query('SELECT offices.name, offices.off_id from offices ' +
-        'join movings as mov on mov.newOfficeOffId = offices.off_id '+
-        'join configurations as conf on conf.con_id = mov.ConfigurationConId '+
-        'join people as peo on peo.per_id = mov.PersonPerId ' +
-        'join States on conf.StateStaId = States.sta_id ' +
-        'where States.name = "Validee" ' +
+const getCurrentDeskNamebyId = (req,res) => {
+    models.sequelize.query('SELECT desk.name, desk.des_id FROM desk ' +
+        'JOIN \"Person\" ON desk.person_id=person.per_id '+
+        'WHERE person.per_id = :id',
+       /* 'JOIN moveline as mov ON mov.toDesk = desk.des_id '+
+        'JOIN moveset as set on set.set_id = mov.move_set_id '+
+        'JOIN person as per on per.per_id = mov.person_id ' +
+        'JOIN movestatus on set.status_id = movestatus.sta_id ' +
+        'where movestatus.name = "Validee" ' +
             // 'where conf.name = \'Configuration premiere\' ' +
-        'and peo.per_id = :id',
+        'and per.per_id = :id',*/
         { replacements: {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT}
-    ).then(function(office){
-            console.log(office)
-            res.json(office);
+    ).then(function(desk){
+            console.log(desk)
+            res.json(desk);
         });
 }
 
@@ -50,83 +54,83 @@ const saveMyLocalization = (req, res) => {
     console.log('call of service to save my localization in DB');
     // debug
     console.log(req.body);
-    if(req.body['office-name'] === undefined || req.body['office-name'] === null
-    || req.body['office-name'] === "" ){
+    if(req.body['desk-name'] === undefined || req.body['desk-name'] === null
+    || req.body['desk-name'] === "" ){
         req.flash('error', 'Veuillez cliquer sur un bureau avant de valider.');
         res.redirect('/localization');
     }
     State.find({where: {
         name: "A valider"
     }}).then(
-        function(state){
+        function(status){
             var date = new Date();
-            var conf = Configuration.build({
+            var set = MoveSet.build({
                 name: "Nouvelle localisation pour " + req.body.firstname + " " + req.body.lastname + " " + date.toDateString(),
                 creator: req.body.firstname + " " + req.body.lastname,
-                StateStaId: state.dataValues.sta_id,
+                status_id: movestatus.dataValues.sta_id,
                 dateCreation: date.toDateString()
             });
-            conf.save()
+            set.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
                 })
-                .then(function(configuration){
-                    Office.findOrCreate({
+                .then(function(moveset){
+                    Desk.findOrCreate({
                         where: {
-                            name: req.body['office-name']
-                        }}).spread(function(office){
+                            name: req.body['desk-name']
+                        }}).spread(function(desk){
                         var today= Date.now();
-                        var offid = office.dataValues.off_id;
+                        var desid = desk.dataValues.des_id;
 
 
-                        var conId = configuration.dataValues.con_id;
+                        var setId = moveset.dataValues.set_id;
                         var firstname = req.body.firstname;
                         var lastname = req.body.lastname;
 
-                        // add all movings from current configuration
+                        // add all moveline from current configuration
                         models.sequelize.query(
-                            'SELECT * from configurations ' +
-                            'join States on configurations.StateStaId = States.sta_id ' +
-                            'where States.name = "Validee"'
+                            'SELECT * FROM \"MoveSet\" ' +
+                            'JOIN \"MoveStatus\" moveset.status_id = status_id ' +
+                            'WHERE status.name = "Validee"'
                             , {
                                 replacements: {},
                                 type: models.sequelize.QueryTypes.SELECT
                             })
-                            .then(function (configuration) {
-                                console.log(configuration);
-                                Moving.findAll({
+                            .then(function (moveset) {
+                                console.log(MoveSet);
+                                MoveLine.findAll({
                                     where: {
-                                        ConfigurationConId: configuration[0].con_id
+                                        move_set_id: moveset[0].set_id
                                     }
                                 })
-                                    .then(function (movings) {
-                                        movings.forEach(function(elem){
-                                            // copy all the movings from current configuration
+                                    .then(function (moveline) {
+                                        moveline.forEach(function(elem){
+                                            // copy all the moveline from current configuration
                                             // except the one which is modified here
-                                            if (elem.newOfficeOffId.toString() !== offid.toString()){
+                                            if (elem.toDesk.toString() !== offid.toString()){
                                                 Moving.create({
-                                                    newOfficeOffId: elem.newOfficeOffId,
+                                                    toDesk: elem.toDesk,
                                                     OfficeOffId: elem.OfficeOffId,
                                                     PersonPerId: elem.PersonPerId,
                                                     ConfigurationConId: conId
-                                                }).then(function (newMovings) {
-//                                                    console.log(elem.newOfficeOffId.toString() + "-------"+ offid.toString());
+                                                }).then(function (newMoveLine) {
+//                                                    console.log(elem.toDesk.toString() + "-------"+ offid.toString());
                                                 });
                                             }
                                         });
                                         // insert new moving
-                                        models.sequelize.query(' INSERT into Movings(\'createdAt\', \'updatedAt\',' +
-                                            ' \'ConfigurationConId\', \'PersonPerId\', \'formerOfficeOffId\',' +
-                                            ' \'newOfficeOffId\', \'OfficeOffId\') ' +
-                                            'Values(:today, :today, :conId ,' +
-                                            '(select per_id from people where firstname= :firstname and lastname = :lastname), ' +
-                                            'coalesce((select newOfficeOffId from movings where PersonPerId = ' +
-                                            '(select per_id from people where firstname= :firstname and lastname = :lastname) ' +
-                                            'and formerOfficeOffId is null), (select offices.off_id from offices where offices.name ="aucun") ) ' +
-                                            ', :offId, :offId) ',
-                                            { replacements: { today: today, conId: conId, firstname: firstname, lastname: lastname, offId: offid }, type: models.sequelize.QueryTypes.INSERT}
-                                        ).then(function(moving){
-                                                console.log(moving)
+                                        models.sequelize.query(' INSERT INTO \"MoveLine\"(\'createdAt\', \'updatedAt\',' +
+                                            ' \'move_set_id\', \'person_id\', \'fromDesk\',' +
+                                            ' \'toDesk\') ' +
+                                            'VALUES(:today, :today, :setId ,' +
+                                            '(SELECT per_id FROM \"Person\" WHERE firstname= :firstname and lastname = :lastname), ' +
+                                            'coalesce((SELECT toDesk from moveline where person_id = ' +
+                                            '(select per_id from person where firstname= :firstname and lastname = :lastname) ' +
+                                            'and fromDesk is null), (select desk.des_id from desk where desk.name ="aucun") ) ' +
+                                            ', :desId, :desId) ',
+                                            { replacements: { today: today, setId: setId, firstname: firstname, lastname: lastname, desId: desid }, type: models.sequelize.QueryTypes.INSERT}
+                                        ).then(function(moveline){
+                                                console.log(moveline)
                                             });
                                     });
                             });
@@ -141,6 +145,6 @@ const saveMyLocalization = (req, res) => {
 
 module.exports = {
     saveMyLocalization,
-    getCurrentOfficeName,
-    getCurrentOfficeNamebyId
+    getCurrentDeskName,
+    getCurrentDeskNamebyId
 }

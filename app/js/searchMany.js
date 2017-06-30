@@ -142,6 +142,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                       console.log(x);
                       switch (x){
                         case "externe":
+                          var text_e=externPeople;//.replace(",","<br/>");
                           var div_e = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           d3.select("#noplace-personnes")
                             .text("- " + personneParPlateau.externe + " -").style("color", "	rgb(20,200,20)")
@@ -149,7 +150,8 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                             div_e.transition()		
                                 .duration(200)		
                                 .style("opacity", .9);		
-                            div_e.html(externPeople)
+                            div_e.html(text_e)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -172,6 +174,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(200)		
                                 .style("opacity", .9);		
                               div_N0.html(text_N0)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX-10 + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -194,6 +197,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(200)		
                                 .style("opacity", .9);		
                               div_N1.html(text_N1)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX-10 + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -216,6 +220,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(200)		
                                 .style("opacity", .9);		
                                 div_N2.html(text_N2)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX-10 + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -238,6 +243,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(200)		
                                 .style("opacity", .9);		
                               div_N3.html(text_N3)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX-10 + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -260,6 +266,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(200)		
                                 .style("opacity", .9);		
                                 div_N4.html(text_N4)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -282,6 +289,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(200)		
                                 .style("opacity", .9);		
                               div_O2.html(text_O2)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX-10 + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -305,6 +313,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(150)		
                                 .style("opacity", .9);		
                                 div_O3.html(text_O3)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX-10 + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -327,6 +336,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .duration(200)		
                                 .style("opacity", .9);		
                                 div_O4.html(text_O4)
+                                .style("position","absolute")
                                 .style("left", d3.event.pageX + "px")
 											          .style("top", d3.event.pageY + "px")
                                 .style("height","auto")
@@ -455,12 +465,11 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                             yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
                             //To load tooltip with data on persons
                               }
-                            tooltip = d3.select(".tooltip");
+                            tooltip = d3.select(".tooltip_map");
 										        tooltip.html(data_area)
-											                  .style("left", 300 + "px")
-											                  .style("top", 300 + "px")
-										        	          .style("height", "auto")
-                                        .style("width","auto");
+											                  .style("position", "relative")
+                                        .style("top","0%")
+                                        .style("left","0%")
 										        tooltip.transition()
 											                  .duration(200)
 											                  .style("opacity", .9)
@@ -469,10 +478,10 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                             $("html").click(function (event) {
                                   event.stopPropagation();})
                             $(".tooltip").click(function () {
-							                div.transition()
-								                  .duration(500)
-								                  .style("opacity", 0)
-								                  .style("z-index", -1);})
+							                      div.transition()
+								                        .duration(500)
+								                        .style("opacity", 0)
+								                        .style("z-index", -1);})     
 
                               //to load tooltip result about extern people
                             d3.select("#extern-result")
@@ -484,13 +493,16 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                    if (externPeople.length > 0){
                                     var xPos = event.clientX,
                                       yPos = event.clientY;
-                                      var infobulle = d3.select(".tooltip");
+                                      var infobulle = d3.select(".tooltip_ext");
                                         // get scroll pixels to correct tooltip's yPostion
                                       yPos += $(window).scrollTop();
 
                                       infobulle.html(externPeople)
-                                          .style("left", (xPos) + "px")
-                                          .style("top", (yPos) + "px");
+                                          .style("position","relative")
+                                          .style("left", "50%")
+                                          .style("top", "100%")
+                                          .style("width","auto")
+                                          .style("height","auto");
                                           //.style("height", "20px");
                                       infobulle.transition()
                                           .duration(200)
@@ -550,12 +562,11 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                        .text(nbExterne + " Personne(s) externe(s)");
                                     mapControl.existMap = true;
                                   }
-                                  var tooltip = d3.select(".tooltip");
+                                  var tooltip = d3.select(".tooltip_map");
 										              tooltip.html(data_area)
-											                  .style("left", 300 + "px")
-											                  .style("top", 300 + "px")
-										        	          .style("height", "auto")
-                                        .style("width","auto");
+											                  .style("position", "relative")
+                                        .style("top","0%")
+                                        .style("left","0%")
 										              tooltip.transition()
 											                  .duration(200)
 											                  .style("opacity", .9)

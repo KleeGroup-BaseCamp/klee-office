@@ -143,8 +143,8 @@ app.get('/maps/:name', mapServices.getMap);
 app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
 app.post('/myLocalization', localizationServices.saveMyLocalization);
-app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentOfficeName);
-app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentOfficeNamebyId);
+app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
+app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
@@ -152,19 +152,20 @@ app.get('/getPeopleByCompany/:id', adminServices.getPeopleByCompany);
 app.post('/saveValidateur', adminServices.saveValidateur);
 app.post('/updateValidateur', adminServices.updateValidateur);
 app.get('/getAllValidators', adminServices.getAllValidators);
-app.get('/getAllMovingsByConfIdCount/:id', confServices.getAllMovingsByConfIdCount);
-app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMovingsByConId);
-app.delete('/deleteConfiguration/:id', confServices.deleteConfiguration);
-app.get('/getMovingsListByConfId/:id', confServices.getMovingsListByConfId);
-app.post('/addNewConfiguration', confServices.addNewConfiguration);
-app.post('/saveMovings', confServices.saveMovings);
-app.post('/validateConfiguration', confServices.validateConfiguration);
-app.get('/getAllConf', confServices.getAllConf);
+app.get('/getAllMovingsByConfIdCount/:id', confServices.countAllMoveLineByMoveSetId);
+app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetId);
+app.delete('/deleteConfiguration/:id', confServices.deleteMoveSet);
+app.get('/getMovingsListByConfId/:id', confServices.getMoveLineListByMoveSetId);
+app.post('/addNewConfiguration', confServices.addNewMoveSet);
+app.post('/saveMovings', confServices.saveMoveLine);
+app.post('/validateConfiguration', confServices.validateMoveSet);
+app.get('/getAllConf', confServices.getAllMoveSet);
 app.get('/reportConsistency/:id', confServices.reportConsistency);
-app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPeopleByOffId);
-app.get('/getRecapOfMovings/:id', confServices.getRecapOfMovings);
+app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
+app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
 
-
+        
+   
 
 console.log('Initializing the API...');
 

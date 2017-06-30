@@ -172,8 +172,9 @@
             </div>
             <!-- show main departments or info about people -->
             <div class="tooltip"></div>
+
             <!-- show supplemental messages-->
-            <div id="message">
+            <!--<div id="message">
                 <table id="info-chart">
                     <tr>
                         <td class="chartTitle">Mail:</td><td class="content" id="mail"></td>
@@ -183,13 +184,14 @@
                     <tr><td class="chartTitle">Bat:</td><td class="content" id="building"></td></tr>
                     <tr><td class="chartTitle">Etage:</td><td class="content" id="floor"></td></tr>
                 </table>
-            </div>
+            </div>-->
             <!-- show main maps-->
             <div id="map-show">
                 <table>
                     <tr>
                         <td>
                             <div id="whole-map">
+                                <div class ="tooltip_map"></div>
                                 <svg class="map"></svg>
                             </div>
                         </td>
@@ -217,7 +219,7 @@
                             <br/>
                             <button id="search-back">Suivant</button>
                             <br/>
-                            <p id="extern-result"></p>
+                            <p id="extern-result"><div class ="tooltip_ext"></div></p>
                         </td>
                     </tr>
                 </table>

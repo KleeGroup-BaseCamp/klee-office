@@ -4,8 +4,8 @@
 
 "use strict";
 // global variables
-//var	server= "http://localhost:3000/";
-var	server= "http://local-map/";
+var	server= "http://localhost:3000/";
+//var	server= "http://local-map/";
 
 var consistencyControl = {
     isPopin: false,
@@ -71,22 +71,22 @@ var consistencyControl = {
         });
         $('#validateConfiguration').click(function(event){
             var success = function(){
-                   // window.location.href = "http://localhost:3000/configurations";
-                 window.location.href = "http://local-map/configurations";
+                    window.location.href = "http://localhost:3000/configurations";
+                 //window.location.href = "http://local-map/configurations";
             };
             $.ajax({
                 type: 'POST',
                 contentType: "application/json",
                 dataType: 'json',
-               // url: 'http://localhost:3000/validateConfiguration',
-               url: 'http://local-map/validateConfiguration',
+                url: 'http://localhost:3000/validateConfiguration',
+               //url: 'http://local-map/validateConfiguration',
                 data: JSON.stringify({ "id": conId }),
                 success: success
             });
         });
         $('#cancel').click(function(event){
-           // window.location.href = "http://localhost:3000/configurations";
-            window.location.href = "http://local-map/configurations";
+           window.location.href = "http://localhost:3000/configurations";
+            //window.location.href = "http://local-map/configurations";
 
         });
 

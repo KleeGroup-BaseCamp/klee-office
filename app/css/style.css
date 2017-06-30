@@ -216,6 +216,7 @@
     width: 100px;
     height: 100px;
     position: relative;
+    margin-left :12px;
     bottom: 130px;
     z-index: 200;
 }
@@ -233,9 +234,9 @@
 /*end navigation chart*/
 
 .tooltip {
-    opacity: 0;
-    position: absolute;         
-    text-align: center;         
+    opacity: 0;        
+    text-align: center;   
+  /*  position :absolute;      */
     width: auto;
     height: auto;
     padding: 2px;               
@@ -245,6 +246,32 @@
     border-radius: 8px;         
     cursor: text;
     z-index: 20; 
+}
+.tooltip_ext {
+    opacity: 0;        
+    text-align: center;   
+    width: auto;
+    height: auto;
+    padding: 2px;               
+    font: 15px sans-serif;      
+    background: lightsteelblue; 
+    border: 0px;        
+    border-radius: 8px;         
+    cursor: text;
+    z-index: 20;    
+}
+.tooltip_map {
+    opacity: 0;        
+    text-align: center;   
+    width: auto;
+    height: auto;
+    padding: 2px;               
+    font: 15px sans-serif;      
+    background: lightsteelblue; 
+    border: 0px;        
+    border-radius: 8px;         
+    cursor: text;
+    z-index: 20;    
 }
 
 #message {

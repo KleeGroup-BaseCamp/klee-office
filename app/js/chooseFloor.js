@@ -6,8 +6,8 @@
  * plot map on the selector
  */
 (function(window){
-   // var server= "http://localhost:3000/"
-    var server= "http://local-map/"
+    var server= "http://localhost:3000/"
+   // var server= "http://local-map/"
     var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
     var addEvtListenerOn = function(type, mapNames, where){
 

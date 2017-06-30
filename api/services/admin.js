@@ -6,39 +6,38 @@
 // models
 var models = require('../../models');
 var Company = models.Company;
-var Pole = models.Pole;
-var People = models.Person;
-var Status = models.Status;
-var Manager = models.Manager;
+var BusinessUnit = models.BusinessUnit;
+var Person = models.Person;
+var Profil = models.Status;
 
 /**
  * get all companies of Klee
  */
 const getAllCompanies = (req, res) => {
-    Company.findAll().then(function(companies){
-        res.json(companies);
+    Company.findAll().then(function(company){
+        res.json(company);
     });
 };
 
 /**
- * get poles corresponding witha company id
+ * get business unit (poles) corresponding with a company id
  */
 const getDepartmentsByCompany = (req, res) => {
-    Pole.findAll({where: {
-        CompanyComId: req.params.id
-    }}).then(function(poles){
-        res.json(poles);
+    BusinessUnit.findAll({where: {
+        company_id: req.params.id
+    }}).then(function(businessunit){
+        res.json(businessunit);
     });
 };
 
 /**
- * get people working in a pole
+ * get people working in a business unit (pole)
  */
 const getPeopleByDepartment = (req, res) => {
-    People.findAll({where: {
-        PolePolId: req.params.id
-    }}).then(function(poles){
-        res.json(poles);
+    Person.findAll({where: {
+        businessUnit_id: req.params.id
+    }}).then(function(person){
+        res.json(person);
     });
 };
 
@@ -47,10 +46,10 @@ const getPeopleByDepartment = (req, res) => {
  */
 const getPeopleByCompany = (req, res) => {
     models.sequelize.query(
-        'SELECT * from people ' +
-        'join poles on poles.pol_id = people.PolePolId ' +
-        'join companies on companies.com_id = poles.CompanyComId ' +
-        'where companies.com_id = :comid '
+        'SELECT * from person ' +
+        'JOIN businessunit ON businessunit.bus_id = person.businessunit_id ' +
+        'JOIN company ON company.com_id = businessunit.company_id ' +
+        'WHERE company.com_id = :comid '
         , { replacements: { comid: req.params.id },
             type: models.sequelize.QueryTypes.SELECT
         })
@@ -60,7 +59,7 @@ const getPeopleByCompany = (req, res) => {
 };
 
 /**
- * save a validateur for a pole or a company
+ * save a validator for a businessUnit or a company (update his profil with the correct level)
  * if no one was set before
  */
 const saveValidateur = (req, res) => {
@@ -72,46 +71,63 @@ const saveValidateur = (req, res) => {
     else if (req.body.level === "Niveau 2"){
         two = true;
     }
-    Status.findOrCreate({
-        where: {
-            isValidatorLvlOne: one,
-            isValidatorLvlTwo: two
+    /*Profil.findOrCreate({
+        where: {                                   
+            isValidatorLvlOne: one,  //validator for a business unit
+            isValidatorLvlTwo: two   //validator for a company (able to modify anything from any pole)
         }
-    }).then(function(status){
-        if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
-            && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== "" && one === true){
-            Manager.upsert({
+    }).then(function(profil){*/
+    if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
+        && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== ""){ 
+            Person.findOne({           //first step : update former validator ()
+                    where: {
+                    per_id: req.body['per_id']
+                    }
+            }).then(function(new_manager){
+                    new_manager.update({dateUpdate : new Date()})
+            }).then(function(new_manager){
+                    Profil.findOne({where: {
+                        pro_id: new_manager.profil_id
+            }}).then(function(profil){
+                    profil.update({isValidatorLvlOne :one,isValidatorLvlTwo:two})
+                }).then(function(profil){                                
+                    // Flash message + redirect
+                    req.flash('success', 'Vous avez choisi un validateur de ' + req.body.level)})
+            });
+    }
+           /* Person.upsert({
                     firstname: req.body['firstname'],
                     lastname: req.body['lastname'],
                     mail: req.body['mail'],
-                    StatusStuId: status[0].dataValues.stu_id,
-                    PolePolId: req.body['pol_id']
+                    dateCreation : new Date(),
+                    businessUnit_id: req.body['bus_id'],
+                    profil_id: profil[0].dataValues.pro_id
                 },
                 { where: {
                     firstname: req.body['firstname'],
                     lastname: req.body['lastname'],
                     mail: req.body['mail'],
-                    PolePolId: req.body['pol_id']
+                    businessUnit_id: req.body['bus_id']
                 }}).then(function(managers){
                     // Flash message
                     req.flash('success', 'Vous avez choisi un validateur de ' + req.body.level);
                 });
-        } if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
-            && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== "" && one === false) {
-            Pole.findAll({
+            }*//*if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
+            && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== "" && two === true) {  //only for validator lvl 2
+            BusinessUnit.findAll({
                 where: {
-                    CompanyComId: req.body['com_id']
+                    company_id: req.body['com_id']
                 }
-            }).then(function(poles){
+            }).then(function(businessunits){
                 if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
-                    && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== "" && one === false) {
-                    poles.forEach(function(pole){
-                        Manager.upsert({
+                    && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== "" && two === true) {
+                    businessunits.forEach(function(unit){
+                        Person.upsert({
                                 firstname: req.body['firstname'],
                                 lastname: req.body['lastname'],
                                 mail: req.body['mail'],
                                 StatusStuId: status[0].dataValues.stu_id,
-                                PolePolId: pole.pol_id
+                                PolePolId: unit.pol_id
                             },
                             {
                                 where: {
@@ -128,11 +144,11 @@ const saveValidateur = (req, res) => {
                 }
             });
 
-        }
-        else {
+            }*/
+    else {
             req.flash('success', 'Veuillez choisir une personne dans la liste au pr&eacutealable.');
         }
-    });
+    //});
     res.redirect('/admin');
 };
 
@@ -159,29 +175,39 @@ const updateValidateur = (req, res) =>
         two = false;
     }
 
-    if(req.body['man_id'] !== null && req.body['man_id'] !== undefined && req.body['man_id'] !== "" && one === false){
-        Manager.findOne({
+    if(req.body['per_id'] !== null && req.body['per_id'] !== undefined && req.body['per_id'] !== "" && one === false){ //for a validator lvl 1
+        Person.findOne({           //first step : update former validator (update his profil)
             where: {
-                man_id: req.body['man_id']
+                per_id: req.body['per_id']
             }
         }).then(function(manager){
-            Status.findOne({where: {
-                stu_id: manager.StatusStuId
-            }}).then(function(stu){
-                Status.findOrCreate({
-                    where: {
-                        isValidatorLvlOne: one,
-                        isValidatorLvlTwo: stu.isValidatorLvlTwo
-                    }
-                }).then(function(status){
-                    manager.update({ StatusStuId: status[0].dataValues.stu_id}).then(function(manager){
+            Profil.findOne({where: {
+                pro_id: manager.profil_id
+            }}).then(function(profil){
+                    profil.update({isValidatorLvlOne :one})
+                }).then(function(profil){
+                        // step 2 : save the new validator
+                        saveValidateur(req, res);
+                });
+            });
+    }
+    if(req.body['per_id'] !== null && req.body['per_id'] !== undefined && req.body['per_id'] !== "" && two === false){ //for a validator lvl 2
+        Person.findOne({           //first step : update former validator ()
+            where: {
+                per_id: req.body['per_id']
+            }
+        }).then(function(manager){
+            Profil.findOne({where: {
+                pro_id: manager.profil_id
+            }}).then(function(profil){
+                    profil.update({isValidatorLvlTwo :two})
+                }).then(function(profil){
                         // save the new validator
                         saveValidateur(req, res);
-                    });
                 });
-            })
-        });
+            });
     }
+ /*
     if(req.body['man_id'] !== null && req.body['man_id'] !== undefined && req.body['man_id'] !== "" && two === false) {
         Manager.findOne({
             where: {
@@ -216,22 +242,23 @@ const updateValidateur = (req, res) =>
                 });
             });
         });
-    }
-    if(req.body['man_id'] === null || req.body['man_id'] === undefined || req.body['man_id'] === "") {
+    }*/
+    if(req.body['per_id'] === null || req.body['per_id'] === undefined || req.body['per_id'] === "") { //no former validator
             // save the new validator
             saveValidateur(req, res);
         }
-    };
+};
 
-    const getAllValidators = (req, res) => {
+const getAllValidators = (req, res) => {
     models.sequelize.query(
-        'SELECT managers.man_id as id, managers.firstname, managers.lastname, companies.name as company, ' +
-        'companies.com_id as com_id, poles.name as pole, poles.pol_id as pol_id, stu.isValidatorLvlOne, stu.isValidatorLvlTwo ' +
-        'from poles '+
-        'left join managers on poles.pol_id = managers.PolePolId ' +
-        'left join companies on companies.com_id = poles.CompanyComId ' +
-        'left join statuses as stu on stu.stu_id = managers.StatusStuId ' +
-        'order by companies.name desc, poles.name desc '
+        'SELECT person.per_id as id, person.firstname, person.lastname, company.name as company, ' +
+        'company.com_id as com_id, businessunit.name as pole, businessunit.pol_id as pol_id, profil.isValidatorLvlOne as lvlone, profil.isValidatorLvlTwo as lvltwo' +
+        'FROM businessunit'+
+        'LEFT JOIN person ON businessunit.bus_id = person.businessUnit_id ' +
+        'LEFT JOIN company ON company.com_id = businessunit.company_id ' +
+        'LEFT JOIN profil ON profil.pro_id = person.profil_id ' +
+        'WHERE (profil.isValidatorLvlOne=true OR profil.isValidatorLvlTwo=true)'+
+        'ORDER BY company.name desc, businessunit.name desc '
         , { replacements: { },
             type: models.sequelize.QueryTypes.SELECT
         })
