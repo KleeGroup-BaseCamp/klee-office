@@ -72,9 +72,9 @@ $(function(){
               if ((splitID[0] === undefined) || (splitID[1] === undefined)){  //check if the format of the desk is valid. If invalid, the desk number is defined as "noplace"
                 listeSplitID.push("noplace");}
               else {
-                listeIdentifiants.push([splitID[1],indice]);
                 if (listeSplitID.indexOf(splitID[1]) === -1){
-                  listeSplitID.push(splitID[1]);}} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
+                  listeSplitID.push(splitID[1]);
+                  listeIdentifiants.push([splitID[1],indice]);}} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
               console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
               console.log("Liste de splitID : " + listeSplitID);
               console.log("Nom des personnes : " + terms);
@@ -97,7 +97,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
   //console.log(people);
   // fills externPeople with noplace people names
   for (var n=0;n<terms.length;n++){
-    if (listeSplitID[n] === "noplace"){
+    if ((listeSplitID[n] === "noplace") && (terms.indexOf(terms[n]) === -1)){
       externPeople.push(terms[n]);
     }
   }
@@ -107,8 +107,7 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                 // -- update the list listePlateau with the data of each searched person -- 
 
                 for(k=0;k<listeSplitID.length;k++){ 
-                 if (terms.indexOf(terms[k]) === k){
-                    listePlateau.push(listeSplitID[k].split(/-/)[0]);}
+                    listePlateau.push(listeSplitID[k].split(/-/)[0]);
                 }
                 console.log("Liste Plateau : " + listePlateau);
 
@@ -130,7 +129,8 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                     break;
                                 case "O4": personneParPlateau.O4++;
                                     break;
-                                case "noplace" : personneParPlateau.externe++;
+                                case "noplace" : if (terms.indexOf(terms[k]) === -1){
+                                  personneParPlateau.externe++;}
                                     break;
                   }
                 }
@@ -511,6 +511,12 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                           .duration(200)
                                           .style("opacity", .9)
                                           .style("z-index", 20);
+                                     
+                                      $("html").click(function () {
+                                          infobulle.transition()
+                                            .duration(500)
+                                            .style("opacity", 0)
+                                            .style("z-index", -1);})
 
                                       event.stopPropagation();
                                    }

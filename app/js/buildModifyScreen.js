@@ -88,8 +88,8 @@
 
     });
     $("#cancel-movings").click(function(event){
-        window.location.href = "http://localhost:3000/configurations";
-       // window.location.href = "http://local-map/configurations";
+         window.location.href = "http://localhost:3000/configurations";
+        //window.location.href = "http://local-map/configurations";
     });
 
 }(window));
