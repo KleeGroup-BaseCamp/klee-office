@@ -66,7 +66,7 @@ var mapControl = {
 				d3.json( server+"people", function(error, data) {
 					var dataset = data,
 						table,
-						tooltip = d3.select(".tooltip");
+						tooltip = d3.select(".tooltip_map");
 
 
 					$.each(dataset, function(i, data){
@@ -100,9 +100,9 @@ var mapControl = {
 										yPosition += $(window).scrollTop();
 
 										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0] + "<br/>" + d.physicalDeliveryOfficeName[0])
-											.style("position","relative")
-											.style("left", (xPosition) + "px")
-											.style("top", (yPosition) + "px")
+											.style("position","absolute")
+											.style("left", (xPosition)-350 + "px")
+											.style("top", (yPosition)-300 + "px")
 											.style("height", "57px");
 										tooltip.transition()
 											.duration(200)
@@ -149,7 +149,7 @@ var mapControl = {
 							});
 					}
 
-						// Plot number of available offices --- add by Alex 30/05/2017
+				/*		// Plot number of available offices --- add by Alex 30/05/2017
 						var allTablees = d3.select("#tables")
 							.selectAll(".available")
 							.style("cursor", "pointer")
@@ -161,9 +161,9 @@ var mapControl = {
 									yPosition += $(window).scrollTop();
 
 									tooltip.html("Bureau " + d3.event.target.parentNode.id)
-											.style("position","relative")
-											.style("left", (xPosition) + "px")
-											.style("top", (yPosition) + "px")
+											.style("position","absolute")
+											.style("left", (xPosition)-350 + "px")
+											.style("top", (yPosition)-300 + "px")
 											.style("height", "20px");
 									tooltip.transition()
 											.duration(200)
@@ -172,7 +172,7 @@ var mapControl = {
 
 									event.stopPropagation();
 					
-							});
+							});*/
 
 					callback();
 				});
@@ -181,7 +181,7 @@ var mapControl = {
 
 // justPlotMap.js
 	smallMapPlot: function(name, callback) {
-		var	server= "http://local-map/";
+		//var	server= "http://local-map/";
 
 		var longTooltip = [];
 
@@ -358,7 +358,7 @@ var mapControl = {
 		});
 	},
 	confmapPlot: function(name, conId, callback) {
-		var	server= "http://local-map/";
+		//var	server= "http://local-map/";
 		//var	server= "http://localhost:3000/";
 		// add svg map to html
 		d3.xml( server + "maps/" + name + ".svg",

@@ -142,7 +142,10 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                       console.log(x);
                       switch (x){
                         case "externe":
-                          var text_e=externPeople;//.replace(",","<br/>");
+                          var text_e=externPeople[0];
+                          for (var f=1;f<externPeople.length;f++){
+                            text_e+="<br/>"+externPeople[f];
+                          }
                           var div_e = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           d3.select("#noplace-personnes")
                             .text("- " + personneParPlateau.externe + " -").style("color", "	rgb(20,200,20)")
@@ -462,7 +465,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                       .attr("height", "50")
                                       .attr("x", xPosition)
                                       .attr("y", yPosition);
-                            yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
+                            //yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
                             //To load tooltip with data on persons
                               }
                             tooltip = d3.select(".tooltip_map");
@@ -550,7 +553,7 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                                       .select("#" + id_person[0]);
                                     var xPosition = table.select("rect").attr("x")-10;
 											              var yPosition = table.select("rect").attr("y")-40;
-                                    yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
+                                    //yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
                                     table.append("image")
                                                 .attr("xlink:href", "./img/pin_final.png")
                                                 .attr("width", "30")

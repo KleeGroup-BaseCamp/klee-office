@@ -58,7 +58,6 @@ const associate = (req, res) => {
         //  Table BsusinessUnit : <fk> Company
         if(dpt !== null && dpt !== undefined && dpt !== ""
         && company !== undefined && company !== null && company !== "") {
-            console.log("I\'m here");
             models.sequelize.query('UPDATE \"BusinessUnit\" SET company_id = (' +
                 'SELECT com_id FROM \"Company\" WHERE name = :cpname' +
                 ') WHERE name = :buname ',
@@ -82,7 +81,7 @@ const associate = (req, res) => {
                     {replacements:{},type :models.sequelize.QueryTypes.INSERT}
                     ).then(function(pro){})*/
                     const pro =Profil.build({isValidatorLvlOne : false, isValidatorLvlOne : false}).save().error(function (err) {console.log(err + " ---------" + elem)
-                    }).then(function(pro){
+                    .then(function(pro){
                         models.sequelize.query('UPDATE \"Person\" SET profil_id = :profil '  +
                             'WHERE firstname = :firstname and lastname = :lastname',
                             {replacements: {profil: pro.pro_id, firstname: nameParts[0], lastname: nameParts[1]},
@@ -90,7 +89,7 @@ const associate = (req, res) => {
                             //console.log(per);
                             })
                         })
-                   
+                    })
             }
         }
         //Table Desk : <fk> person, <fk> site

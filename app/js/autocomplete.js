@@ -12,7 +12,8 @@ $(function(){
         people.push({value: element[1].cn[0], data: element[1]});
     }
 
-    $.getJSON('http://local-map/people', function(data) {
+   // $.getJSON('http://local-map/people', function(data) {
+    $.getJSON('http://localhost:3000/', function(data) {
         //data is the JSON file
         data.forEach(getName);
 

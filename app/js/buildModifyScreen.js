@@ -73,14 +73,14 @@
             }
         });
         var success = function(){
-           // window.location.href = "http://localhost:3000/configurations";
-            window.location.href = "http://local-map/configurations";
+            window.location.href = "http://localhost:3000/configurations";
+           // window.location.href = "http://local-map/configurations";
         };
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            //url: 'http://localhost:3000/saveMovings',
-            url: 'http://local-map/saveMovings',
+            url: 'http://localhost:3000/saveMovings',
+            //url: 'http://local-map/saveMovings',
             contentType: "application/json",
             data: JSON.stringify(movings),
             success: success
@@ -88,8 +88,8 @@
 
     });
     $("#cancel-movings").click(function(event){
-       // window.location.href = "http://localhost:3000/configurations";
-        window.location.href = "http://local-map/configurations";
+        window.location.href = "http://localhost:3000/configurations";
+       // window.location.href = "http://local-map/configurations";
     });
 
 }(window));

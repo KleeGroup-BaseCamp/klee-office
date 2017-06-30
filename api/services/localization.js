@@ -15,16 +15,10 @@ var MoveStatus = models.MoveStatus;
  * based on the current MoveSet
  */
 const getCurrentDeskName = (req,res) =>{
-    models.sequelize.query('SELECT desk.name, desk.des_id FROM Desk ' +
-        'JOIN \"Person\" ON desk.person_id=person.per_id '+
-        'WHERE person.firstname = :first AND person.lastname = :last',
-    /*    'JOIN \"MoveLine\" as mov ON mov.toDesk = desk.des_id '+
-        'JOIN \"MoveSet\" as set ON set.set_id = mov.move_set_id '+
-        'JOIN \"Person\" as per ON per.per_id = mov.person_id ' +
-        'JOIN \"MoveStatus\" ON set.status_id = movestatus.sta_id ' +
-        'WHERE movestatus.name = \"Validee\" ' +
-       // 'where conf.name = \'Configuration premiere\' ' +
-        'AND per.firstname = :first AND per.lastname = :last',*/
+    models.sequelize.query('SELECT \"Desk\".name , \"Desk\".des_id '+
+        'FROM \"Desk\" ' +
+       'JOIN \"Person\" ON \"Desk\".person_id=\"Person\".per_id '+
+        'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last;',
         { replacements: {first: req.params.first, last: req.params.last}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(desk){
             console.log(desk)
@@ -33,16 +27,10 @@ const getCurrentDeskName = (req,res) =>{
 }
 
 const getCurrentDeskNamebyId = (req,res) => {
-    models.sequelize.query('SELECT desk.name, desk.des_id FROM desk ' +
-        'JOIN \"Person\" ON desk.person_id=person.per_id '+
-        'WHERE person.per_id = :id',
-       /* 'JOIN moveline as mov ON mov.toDesk = desk.des_id '+
-        'JOIN moveset as set on set.set_id = mov.move_set_id '+
-        'JOIN person as per on per.per_id = mov.person_id ' +
-        'JOIN movestatus on set.status_id = movestatus.sta_id ' +
-        'where movestatus.name = "Validee" ' +
-            // 'where conf.name = \'Configuration premiere\' ' +
-        'and per.per_id = :id',*/
+    models.sequelize.query('SELECT \"Desk\".name , \"Desk\".des_id '+
+        'FROM \"Desk\" ' +
+        'JOIN \"Person\" ON \"Desk\".person_id=\"Person\".per_id '+
+        'WHERE \"Person\".per_id = :id',
         { replacements: {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(desk){
             console.log(desk)
@@ -59,82 +47,71 @@ const saveMyLocalization = (req, res) => {
         req.flash('error', 'Veuillez cliquer sur un bureau avant de valider.');
         res.redirect('/localization');
     }
-    State.find({where: {
-        name: "A valider"
-    }}).then(
-        function(status){
+    Person.findOne({
+        where :{firstname : req.body.firstname,lastname : req.body.lastname}
+    }).then(function(person_to_move){
+        MoveStatus.findOne({where: {name: "A valider"}})
+        .then(function(status){
             var date = new Date();
             var set = MoveSet.build({
-                name: "Nouvelle localisation pour " + req.body.firstname + " " + req.body.lastname + " " + date.toDateString(),
+                name: "Nouvelle localisation pour " + req.body.firstname + " " + req.body.lastname + " " + date,
                 creator: req.body.firstname + " " + req.body.lastname,
-                status_id: movestatus.dataValues.sta_id,
-                dateCreation: date.toDateString()
-            });
+                status_id: status.sta_id,
+                dateCreation: date,
+                creator_id: person_to_move.per_id
+            })
             set.save()
-                .error(function (err) {
+               .error(function (err) {
                     console.log(err + " ---------" + elem);
                 })
                 .then(function(moveset){
                     Desk.findOrCreate({
                         where: {
-                            name: req.body['desk-name']
+                            name: req.body['office-name']
                         }}).spread(function(desk){
-                        var today= Date.now();
-                        var desid = desk.dataValues.des_id;
-
-
-                        var setId = moveset.dataValues.set_id;
-                        var firstname = req.body.firstname;
-                        var lastname = req.body.lastname;
-
+                        var today= new Date();
+                        var desid = desk.des_id;
+                        var setId = moveset.set_id;
                         // add all moveline from current configuration
                         models.sequelize.query(
                             'SELECT * FROM \"MoveSet\" ' +
-                            'JOIN \"MoveStatus\" moveset.status_id = status_id ' +
-                            'WHERE status.name = "Validee"'
-                            , {
-                                replacements: {},
-                                type: models.sequelize.QueryTypes.SELECT
-                            })
-                            .then(function (moveset) {
+                            'JOIN \"MoveStatus\" ON \"MoveSet\".status_id = \"MoveStatus\".sta_id ' +
+                            'WHERE \"MoveStatus\".name = :statut'
+                            , {replacements: {setid:setId, statut:"Validee"},type: models.sequelize.QueryTypes.SELECT
+                            }).then(function (moveset) {
                                 console.log(MoveSet);
                                 MoveLine.findAll({
-                                    where: {
-                                        move_set_id: moveset[0].set_id
-                                    }
-                                })
-                                    .then(function (moveline) {
+                                    where: {move_set_id: moveset[0].set_id}
+                                }).then(function (moveline) {
                                         moveline.forEach(function(elem){
                                             // copy all the moveline from current configuration
                                             // except the one which is modified here
-                                            if (elem.toDesk.toString() !== offid.toString()){
-                                                Moving.create({
+                                            if (elem.toDesk.toString() !== desid.toString() && elem.person_id.toString()!==person_to_move.per_id.toString()){
+                                                MoveLine.create({
                                                     toDesk: elem.toDesk,
-                                                    OfficeOffId: elem.OfficeOffId,
-                                                    PersonPerId: elem.PersonPerId,
-                                                    ConfigurationConId: conId
+                                                    dateCreation : Date.now(),
+                                                    status :"no change",
+                                                    fromDesk: elem.toDesk,
+                                                    person_id: elem.PersonPerId,
+                                                    move_set_id: setId
                                                 }).then(function (newMoveLine) {
 //                                                    console.log(elem.toDesk.toString() + "-------"+ offid.toString());
                                                 });
                                             }
                                         });
                                         // insert new moving
-                                        models.sequelize.query(' INSERT INTO \"MoveLine\"(\'createdAt\', \'updatedAt\',' +
-                                            ' \'move_set_id\', \'person_id\', \'fromDesk\',' +
-                                            ' \'toDesk\') ' +
-                                            'VALUES(:today, :today, :setId ,' +
-                                            '(SELECT per_id FROM \"Person\" WHERE firstname= :firstname and lastname = :lastname), ' +
-                                            'coalesce((SELECT toDesk from moveline where person_id = ' +
-                                            '(select per_id from person where firstname= :firstname and lastname = :lastname) ' +
-                                            'and fromDesk is null), (select desk.des_id from desk where desk.name ="aucun") ) ' +
-                                            ', :desId, :desId) ',
-                                            { replacements: { today: today, setId: setId, firstname: firstname, lastname: lastname, desId: desid }, type: models.sequelize.QueryTypes.INSERT}
+                                        models.sequelize.query(' INSERT INTO \"MoveLine\"(\"dateCreation\",\"move_set_id\", \"person_id\", \"fromDesk\",\"toDesk\") ' +
+                                            'VALUES(:today,:setId ,:perid, ' +
+                                            'coalesce((SELECT \"toDesk\" FROM \"MoveLine\" WHERE person_id = :perid AND \"fromDesk\" is null), (SELECT \"Desk\".des_id FROM \"Desk\" WHERE \"Desk\".name = :namedesk) ) ' +
+                                            ', :desId) ',
+                                            { replacements: { today :today, setId: setId, perid : person_to_move.per_id, namedesk : "aucun", desId: desid }, type: models.sequelize.QueryTypes.INSERT}
                                         ).then(function(moveline){
                                                 console.log(moveline)
                                             });
                                     });
                             });
                     });
+                    })
                 });
         });
    // Flash message + redirect
