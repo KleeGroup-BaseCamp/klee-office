@@ -32,12 +32,12 @@ const API_PORT = process.env.PORT || 3000;
 
 const app = express();
 
- /*Partie Authentification SSO - need IDP from support
+ //Partie Authentification SSO - need IDP from support
 
 //authentication with saml2nm
 // create service provider
-var sp_options = {
-	entity_id: "https://local-map/metadata.xml",
+/*var sp_options = {
+	entity_id: "https://local-map/",
 	private_key: fs.readFileSync("localmap_privatekey.pem").toString(),
 	certificate: fs.readFileSync("cert.pem").toString(),
 	assert_endpoint : "https://local-map/assert"

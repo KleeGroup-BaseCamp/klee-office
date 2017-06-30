@@ -43,9 +43,9 @@ const countAllMoveLineByMoveSetId = (req, res) => {
      })*/
     models.sequelize.query(
         'SELECT count(*) as count ' +
-        'FROM moveline ' +
-        'WHERE moveline.move_set_id= :id ' +
-        'AND moveline.fromdesk is not null ', { replacements : {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT }
+        'FROM \"MoveLine\" ' +
+        'WHERE \"MoveLine\".move_set_id= :id ' +
+        'AND \"MoveLine\".\"fromDesk\" is not null ', { replacements : {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT }
     ).then(function(conf){
             res.json(conf);
         }
@@ -58,11 +58,11 @@ const countAllMoveLineByMoveSetId = (req, res) => {
  */
 const getPeopleMoveLineByMoveSetId = (req, res) => {
     models.sequelize.query(
-        'SELECT desk.name, person.firstname, person.lastname, person.mail ' +
+        'SELECT \"Desk\".name, \"Person\".firstname, \"Person\".lastname, \"Person\".mail ' +
         'FROM \"MoveLine\" ' +
-        'JOIN \"Person\" ON person.per_id = moveline.person_id ' +
-        'JOIN \"Desk\" ON desk.des_id = moveline.todesk ' +
-        'WHERE moveline.move_set_id = :conid '
+        'JOIN \"Person\" ON \"Person\".per_id = \"MoveLine\".person_id ' +
+        'JOIN \"Desk\" ON \"Desk\".des_id = \"MoveLine\".\"toDesk\" ' +
+        'WHERE \"MoveLine\".move_set_id = :conid '
         //and movings.formerOfficeOffId is not null
         , { replacements: { conid: req.params.id },
             type: models.sequelize.QueryTypes.SELECT
@@ -142,12 +142,12 @@ const validateMoveSet = (req, res) => {
  */
 const getMoveLineListByMoveSetId = (req, res) => {
     models.sequelize.query(
-        'SELECT depart.name as from_desk, arrivee.name as to_desk, person.firstname, person.lastname, person.mail ' +
+        'SELECT depart.name as from_desk, arrivee.name as to_desk, \"Person\".firstname, \"Person\".lastname, \"Person\".mail ' +
         'FROM \"MoveLine\" ' +
-        'JOIN person ON person.per_id = moveline.person_id ' +
-        'JOIN desk as depart ON depart.des_id = moveline.fromDesk ' +
-        'JOIN desk as arrivee ON arrivee.des_id = moveline.toDesk ' +
-        'WHERE moveline.move_set_id = :setid and moveline.fromDesk is not null '
+        'JOIN \"Person\" ON \"Person\".per_id = \"MoveLine\".person_id ' +
+        'JOIN \"Desk\" as depart ON depart.des_id = \"MoveLine\".\"fromDesk\" ' +
+        'JOIN \"Desk\" as arrivee ON arrivee.des_id = \"MoveLine\".\"toDesk\" ' +
+        'WHERE \"MoveLine\".move_set_id = :setid and \"MoveLine\".\"fromDesk\" is not null '
         , { replacements: { setid: req.params.id },
             type: models.sequelize.QueryTypes.SELECT
         })
@@ -201,10 +201,10 @@ const getMoveLineListByMoveSetId = (req, res) => {
  */
 const addNewMoveSet = (req, res) =>{
     models.sequelize.query(
-        'SELECT (*) '+
+        'SELECT * '+
         'FROM \"MoveSet\" ' +
-        'JOIN \"MoveStatus\" on moveset.status_id = movestatus.sta_id ' +
-        'WHERE MoveStatus.name = "Validee";'
+        'JOIN \"MoveStatus\" on \"MoveSet\".status_id = \"MoveStatus\".sta_id ' +
+        'WHERE \"MoveStatus\".name = "Validee";'
         , {
             replacements: {},
             type: models.sequelize.QueryTypes.SELECT
@@ -244,7 +244,7 @@ const addNewMoveSet = (req, res) =>{
                                     var nameParts = req.bodycreator.split(' ');
                                     if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
                                         && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                                            models.sequelize.query('UPDATE \"MoveSet\" SET creator_id=(SELECT per_id FROM person WHERE firstname= :firstname AND lastname= :lastname '+
+                                            models.sequelize.query('UPDATE \"MoveSet\" SET creator_id=(SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname '+
                                             'WHERE set_id=:setid',
                                             { replacements: {firstname:nameParts[0],lastname:nameParts[1],setid :movestatus.sta_id},type: models.sequelize.QueryTypes.UPDATE })
                                     }
@@ -326,20 +326,20 @@ const saveMoveLine = (req, res) =>{
  */
 const reportConsistency = (req,res) => {
     models.sequelize.query(
-        'select person.firstname, person.lastname, desk.name, desk.des_id from movings '+
-        'join person on person.per_id = moveline.person_id '+
-        'join desk on desk.des_id = moveline.toDesk '+
-        'where toDesk in ( '+
-        'select toDesk '+
-        'from moveline '+
+        'select \"Person\".firstname, \"Person\".lastname, \"Desk\".name, \"Desk\".des_id from \"MoveLine\" '+
+        'join \"Person\" on \"Person\".per_id = \"MoveLine\".person_id '+
+        'join \"Desk\" on \"Desk\".des_id = \"MoveLine\".\"toDesk\" '+
+        'where \"toDesk\" in ( '+
+        'select \"toDesk\" '+
+        'from \"MoveLine\" '+
         'where move_set_id = :setId '+
-        'group by toDesk '+
+        'group by \"toDesk\" '+
         'having count(*) > 1 ) ' +
-        'and moveset = :setId ' +
-        'and (moveline.fromDesk is not null or moveline.fromDesk in (select des_id from desk where name = "aucun")) ' +
-        'order by desk.name'
+        'and move_set_id = :setId ' +
+        'and (\"MoveLine\".\"fromDesk\" is not null or \"MoveLine\".\"fromDesk\" in (select des_id from \"Desk\" where name = :mt)) ' +
+        'order by \"Desk\".name'
         , {
-            replacements: {setId: req.params.id},
+            replacements: {setId: req.params.id, mt: "aucun"},
             type: models.sequelize.QueryTypes.SELECT
         })
         .then(function (info) {
@@ -352,19 +352,19 @@ const reportConsistency = (req,res) => {
 const formerPersonByDeskId = (req,res) => {
     models.sequelize.query(
 
-        'select person.firstname, person.lastname, moveline.fromDesk ' +
-        'from person ' +
-        'join moveline on moveline.person_id = person.per_id ' +
-        'where moveline.fromDesk = :desid ' +
-        'and moveline.move_set_id = :setid ' +
+        'select \"Person\".firstname, \"Person\".lastname, \"MoveLine\".\"fromDesk\" ' +
+        'from \"Person\" ' +
+        'join \"MoveLine\" on \"MoveLine\".person_id = \"Person\".per_id ' +
+        'where \"MoveLine\".\"fromDesk\" = :desid ' +
+        'and \"MoveLine\".move_set_id = :setid ' +
         'union all ' +
-        'select person.firstname, person.lastname, moveline.toDesk ' +
-        'from person ' +
-        'join moveline on moveline.person_id = person.per_id ' +
-        'where moveline.toDesk = :desid and moveline.fromDesk is null ' +
-        'and moveline.move_set_id= :setid '
+        'select \"Person\".firstname, \"Person\".lastname, \"MoveLine\".\"toDesk\" ' +
+        'from \"Person\" ' +
+        'join \"MoveLine\" on \"MoveLine\".person_id = \"Person\".per_id ' +
+        'where \"MoveLine\".\"toDesk\" = :desid and \"MoveLine\".\"fromDesk\" is null ' +
+        'and \"MoveLine\".move_set_id= :setid '
         , {
-            replacements: {desid: req.params.id, setid: req.params.setid},
+            replacements: {desid: req.params.id, setid: req.params.id},
             type: models.sequelize.QueryTypes.SELECT
         })
         .then(function (info) {
@@ -381,13 +381,13 @@ const formerPersonByDeskId = (req,res) => {
  */
 const getRecapOfMoveline = (req, res) => {
     models.sequelize.query(
-        'SELECT depart.name as depart, arrivee.name as arrivee, person.firstname || " " || person.lastname as name, person.mail ' +
-        'from moveline ' +
-        'join person on person.per_id = moveline.person_id ' +
-        'join desk as depart on depart.des_id = moveline.fromDesk ' +
-        'join desk as arrivee on arrivee.des_id = moveline.toDesk ' +
-        'where moveline.move_set_id = :setid and moveline.fromDesk is not null '
-        , { replacements: { setid: req.params.id },
+        'SELECT depart.name as depart, arrivee.name as arrivee, \"Person\".firstname || :yt || \"Person\".lastname as name, \"Person\".mail ' +
+        'from \"MoveLine\" ' +
+        'join \"Person\" on \"Person\".per_id = \"MoveLine\".person_id ' +
+        'join \"Desk\" as depart on depart.des_id = \"MoveLine\".\"fromDesk\" ' +
+        'join \"Desk\" as arrivee on arrivee.des_id = \"MoveLine\".\"toDesk\" ' +
+        'where \"MoveLine\".move_set_id = :setid and \"MoveLine\".\"fromDesk\" is not null '
+        , { replacements: { yt: " ", setid: req.params.id },
             type: models.sequelize.QueryTypes.SELECT
         })
         .then(function (person) {

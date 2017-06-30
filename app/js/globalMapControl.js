@@ -150,7 +150,7 @@ var mapControl = {
 					}
 
 						// Plot number of available offices --- add by Alex 30/05/2017
-						var allTablees = d3.select("#tables")
+						/*var allTablees = d3.select("#tables")
 							.selectAll(".available")
 							.style("cursor", "pointer")
 							.on("click", function(){
@@ -172,7 +172,7 @@ var mapControl = {
 
 									event.stopPropagation();
 					
-							});
+							});*/
 
 					callback();
 				});
@@ -181,7 +181,8 @@ var mapControl = {
 
 // justPlotMap.js
 	smallMapPlot: function(name, callback) {
-		var	server= "http://local-map/";
+		//var	server= "http://local-map/";
+		var	server= "http://localhost:3000/";
 
 		var longTooltip = [];
 
@@ -358,8 +359,8 @@ var mapControl = {
 		});
 	},
 	confmapPlot: function(name, conId, callback) {
-		var	server= "http://local-map/";
-		//var	server= "http://localhost:3000/";
+		//var	server= "http://local-map/";
+		var	server= "http://localhost:3000/";
 		// add svg map to html
 		d3.xml( server + "maps/" + name + ".svg",
 			function(error, documentFragment) {
