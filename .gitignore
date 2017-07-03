@@ -10,3 +10,6 @@ api/services/*.txt
 /config/config-ldap.json
 localmap_privatekey.pem
 cert.pem
+certificate_idp1.crt
+certificate_idp2.crt
+metadata_idp.xml
