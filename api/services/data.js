@@ -53,6 +53,7 @@ const populate = (req, res) => {
                 }
                 var peopleName = d.cn.toString();
                 var nameParts = peopleName.split(" ");
+                var lastname = peopleName.substr(peopleName.indexOf(" ")+1);
                 var mail="";
                 if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
                     mail = d.mail.toString();
@@ -85,27 +86,27 @@ const populate = (req, res) => {
                 }
                 if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
                 && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                    var pers = Person.build({firstname: nameParts[0], lastname: nameParts[1], mail: mail,dateUpdate : Date.now()});
+                    var pers = Person.build({firstname: nameParts[0], lastname: lastname, mail: mail,dateUpdate : Date.now()});
                     pers.save()
                         .error(function (err) {
                             console.log(err + " ---------" + elem);
                         }).then(function(newPerson){
                             //console.log(nameParts[0] + nameParts[1]);
                             var perId = newPerson.dataValues.per_id;
-                            var mov = MoveLine.build({PersonPerId: perId});
-                            mov.save()
+                            var date=new Date();
+                            var mov = MoveLine.build({person_id: perId,dateCreation :date, status :"initialisation" })
+                                .save()
                                 .error(function (err) {
                                     console.log(err + " ---------" + elem);
-                                }).then(function(){
+                                })
 
-                                });
+                            
                         });
                 }
         });
 
         companies.forEach(function(elem, index){
             var comp = Company.build({name : elem});
-            console.log(comp);
             comp.save()
                 .error(function (err) {
                     console.log(err + " ---------" + elem);
@@ -161,11 +162,7 @@ const populate = (req, res) => {
                             'VALUES (\'Configuration premiere\', \'System\', \:dateToday\, :date, :id)',
                             { replacements: { dateToday: today, date: technicaldate, id: id}, type: models.sequelize.QueryTypes.INSERT })
                     }
-                }).then(function(set) {
-                                console.log(set)
-                               /* models.sequelize.query('UPDATE MoveLine SET move_set_id = :setid;',
-                                //'WHERE move_set_id IS NULL',
-                                {replacements :{setid : set}, type : models.sequelize.QueryTypes.UPDATE})*/});
+                })
         });
     });
 

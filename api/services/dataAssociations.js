@@ -64,32 +64,30 @@ const associate = (req, res) => {
                 {replacements: {cpname: company, buname: dpt}, type: models.sequelize.QueryTypes.UPDATE}
                 
             ).then(function (poles) {
-                    console.log(poles)
+                    //console.log(poles)
                 });
             //Table Person : <fk> BusinessUnit <fl> Profil
             if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
                 && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                models.sequelize.query('UPDATE \"Person\" SET \"businessUnit_id\" = (' +
-                    'SELECT bus_id FROM \"BusinessUnit\" WHERE name = :polename' +
-                    ') WHERE firstname = :firstname AND lastname = :lastname',
-                    {replacements: {polename: dpt, firstname: nameParts[0], lastname: nameParts[1]},
-                        type: models.sequelize.QueryTypes.UPDATE}
-                ).then(function (people) {
-                        console.log(people)
-                    });
-                /*models.sequelize.query('INSERT INTO \"Profil\"(\"isValidatorLvlOne\",\"isValidatorLvlTwo\") VALUES(false,false)',
-                    {replacements:{},type :models.sequelize.QueryTypes.INSERT}
-                    ).then(function(pro){})*/
-                    const pro =Profil.build({isValidatorLvlOne : false, isValidatorLvlOne : false}).save().error(function (err) {console.log(err + " ---------" + elem)
-                    .then(function(pro){
-                        models.sequelize.query('UPDATE \"Person\" SET profil_id = :profil '  +
-                            'WHERE firstname = :firstname and lastname = :lastname',
-                            {replacements: {profil: pro.pro_id, firstname: nameParts[0], lastname: nameParts[1]},
-                            type: models.sequelize.QueryTypes.UPDATE}).then(function(per){
-                            //console.log(per);
+                const pro =Profil.build({isValidatorLvlOne : false, isValidatorLvlOne : false}).save()
+                    .error(function (err) {console.log(err + " ---------" + elem)
+                        .then(function(pro){
+                            models.sequelize.query('UPDATE \"Person\" SET profil_id = :profil '  +
+                                ' WHERE firstname = :firstname and lastname = :lastname',
+                                {replacements: {profil: pro.pro_id, firstname: nameParts[0], lastname: nameParts[1]},
+                                type: models.sequelize.QueryTypes.UPDATE}
+                            ).then(function (people) {
+                           // console.log(people)});
                             })
                         })
-                    })
+                    });
+                    if (dpt !== undefined && dpt !==null && dpt!==""){
+                        models.sequelize.query('UPDATE \"Person\" SET '  +
+                                '\"businessUnit_id\" = (SELECT bus_id FROM \"BusinessUnit\" WHERE name = :polename) ' +
+                                ' WHERE firstname = :firstname and lastname = :lastname',
+                                {replacements: {polename: dpt, firstname: nameParts[0], lastname: nameParts[1]},
+                                type: models.sequelize.QueryTypes.UPDATE})
+                    }
             }
         }
         //Table Desk : <fk> person, <fk> site
@@ -113,18 +111,27 @@ const associate = (req, res) => {
         // Table MoveLine :<fk> MoveSet pour la Configuration première (Initialisation des emplacements)
         if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
             && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-            var confname = "Configuration premiere";
             if (des !== undefined && des !== null && des !== "") {
                 models.sequelize.query('UPDATE \"MoveLine\" SET ' +
-                    '\"toDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname ),' +
-                    'move_set_id = (SELECT set_id FROM \"MoveSet\" where name = :confname )' +
-                    'WHERE person_id = (SELECT per_id from \"Person\" WHERE firstname= :firstname and lastname= :lastname) ',
-                    {replacements: {desname: des, confname: confname, firstname: nameParts[0], lastname: nameParts[1]}, type: models.sequelize.QueryTypes.UPDATE}
+                    '\"fromDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname_empty ), ' +
+                    '\"toDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname ), ' +
+                    'move_set_id = (SELECT set_id FROM \"MoveSet\" WHERE name=:config) '+
+                    'WHERE person_id = (SELECT per_id FROM \"Person\" WHERE (firstname= :firstname AND lastname= :lastname)) ',
+                    {replacements: {desname: des,desname_empty :"aucun", config : "Configuration premiere", firstname: nameParts[0], lastname: nameParts[1]}, type: models.sequelize.QueryTypes.UPDATE}
                 ).then(function (movings) {
-                        console.log(movings)
+                        //console.log(movings)
                     });
             }
+            else {
+                models.sequelize.query('UPDATE \"MoveLine\" SET ' +
+                '\"fromDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname_empty ), ' +
+                'move_set_id = (SELECT set_id FROM \"MoveSet\" WHERE name=:config), '+
+                '\"toDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname_empty ) '+
+                'WHERE person_id = (SELECT per_id from \"Person\" WHERE (firstname= :firstname AND lastname= :lastname)) ',
+                {replacements: {desname_empty: "aucun", config : "Configuration premiere", firstname: nameParts[0], lastname: nameParts[1]}, type: models.sequelize.QueryTypes.UPDATE}
+                )}
         }
+
 
     });
     // debug
