@@ -21,7 +21,7 @@ var fs = require("fs");
  */
 const getAllMoveSet = (req, res) => {
     models.sequelize.query(
-        'SELECT set.name as name, set.creator, \'set.dateCreation\', sta.name as state, set.status_id ' +
+        'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id ' +
         'FROM \"MoveSet\" as set ' +
         'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id', { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
             res.json(conf);
@@ -76,6 +76,7 @@ const getPeopleMoveLineByMoveSetId = (req, res) => {
  * delete a configuration and every related moving
  */
 const deleteMoveSet = (req, res) => {
+    console.log(req.params)
     MoveLine.destroy({
         where: {
             move_set_id: req.params.id
