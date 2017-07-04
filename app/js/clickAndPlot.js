@@ -6,6 +6,7 @@
 		N2 = document.querySelector('#svg-N2'),
 		N3 = document.querySelector('#svg-N3'),
 		N4 = document.querySelector('#svg-N4'),
+		O1 = document.querySelector('#svg-O1');
 		O2 = document.querySelector('#svg-O2'),
 		O3 = document.querySelector('#svg-O3'),
 		O4 = document.querySelector('#svg-O4');
@@ -94,6 +95,22 @@
 			mapControl.mapPlot(mapControl.mapName, false, function() {});
 		}
 		$('<h1 class="N4">Etage 4<br/>(N 4)</h1>').prependTo($('#legend'));
+	});
+	O1.addEventListener("click", function () {
+		mapControl.eraseMap();
+		// if no map, show mapO1
+		if (!mapControl.existMap) {
+			mapControl.mapName = "O1";
+			mapControl.mapPlot(mapControl.mapName, false, function() {});
+			mapControl.existMap = true;
+		}
+		// if other map, delete and show mapO1
+		else if (mapControl.mapName !== "O1") {
+			d3.select(".map").select("svg").remove();
+			mapControl.mapName = "O1";
+			mapControl.mapPlot(mapControl.mapName, false, function() {});
+		}
+		$('<h1 class="O1">Etage 1<br/>(O 1)</h1>').prependTo($('#legend'));
 	});
 	O2.addEventListener("click", function () {
 		mapControl.eraseMap();

@@ -6,8 +6,6 @@ var mapControl = {
 	existMap: false,
 	mapName: null,
 	mapPlot: function(name, isChoosingFloor, callback) {
-		//var	server= "http://local-map/";
-		var	server= "http://localhost:3000/";
 		// add svg map to html
 		d3.xml( server + "maps/" + name + ".svg",
 			function(error, documentFragment) {
@@ -204,8 +202,6 @@ var mapControl = {
 
 // justPlotMap.js
 	smallMapPlot: function(name, callback) {
-		//var	server= "http://local-map/";
-
 		var longTooltip = [];
 
 		d3.xml( server + "maps/" + name + ".svg",
@@ -278,7 +274,7 @@ var mapControl = {
 					// show all available tables
 					////////////////////////////////
 					allAvailables = d3.select("#tables").selectAll(".available");
-					allAvailables.selectAll("rect").attr("fill", "#99ff99");
+					allAvailables.selectAll("rect").attr("fill", "#99ff99"); ///.attr("fill-opacity","");
 					callback();
 				});
 			});
@@ -381,8 +377,6 @@ var mapControl = {
 		});
 	},
 	confmapPlot: function(name, conId, callback) {
-		//var	server= "http://local-map/";
-		var	server= "http://localhost:3000/";
 		// add svg map to html
 		d3.xml( server + "maps/" + name + ".svg",
 			function(error, documentFragment) {
@@ -436,8 +430,6 @@ var mapControl = {
 					.select("svg").call(zoom);
 
 				// for each people, search his table
-				//server = "http://localhost:3000/";
-
 				d3.json( server+"getPeopleMovingsByConId/"+conId, function(error, data) {
 					var dataset = data,
 						table,
@@ -523,7 +515,7 @@ var mapControl = {
 			.style("width", "0px")
 			.style("height", "0px");
 
-		var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", ""];
+		var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""];
 
 
 		$.each(mapNames, function(i, name){

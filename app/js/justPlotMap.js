@@ -6,7 +6,7 @@
  */
 (function(window){
 
-  var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
+  var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
     var addEvtListenerOn = function(type, mapNames, where){
 
         // tooltips for every floor

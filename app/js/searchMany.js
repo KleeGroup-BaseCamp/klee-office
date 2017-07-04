@@ -4,17 +4,68 @@
 //------------ script to manage the search of many persons --------
 
 'use strict';
+// global variables
+var	server= "http://localhost:3000/";
+var people = [];            //contains data about every person
+var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe"];
+var nbPeopleByArea = {}  // list to count the number of searched people by office area
+for (var i=0;i>list_area.length;i++){
+  nbPeopleByArea[list_area[i]]=0;
+}
+var dataSearchedPeople=[];// [[name,desk,location,mail],,...]
+
+function getNumberOfSearchedPeople(dataSearchedPeople){
+    return dataSearchedPeople.length;
+};
+
+function getPeopleByArea(area,dataSearchedPeople){
+    var res=[];
+    for (var i=0;i<dataSearchedPeople.length;i++){
+      if (area === "externe"){
+        if (dataSearchedPeople[i][1]==="noplace"){
+          res.push(dataSearchedPeople[i]);}
+      }
+      else{
+        if (dataSearchedPeople[i][1].split(/-/)[0]===area){
+          res.push(dataSearchedPeople[i]);}
+      }
+    }
+    return res;
+}
+
+function getSearchedMaps(dataSearchedPeople){
+  var res=[];
+  for (var i=0;i<dataSearchedPeople.length;i++){
+     var map=dataSearchedPeople[i][1].split(/-/)[0];
+     if (map ===undefined){
+       map="extern";}
+     if (res.indexOf(map)===-1){ //if the element is not in the list yet
+       res.push(map);
+     }
+  }
+  return res;
+}
+
+function getSearchedDesks(dataSearchedPeople){ //searched desks without "noplace"
+  var res=[];
+    for (var i=0;i<dataSearchedPeople.length;i++){
+        if (dataSearchedPeople[i][1] !== "noplace"){
+          res.push(dataSearchedPeople[i][1]);}
+    }
+    return res
+}
+
+function getExternPeople(dataSearchedPeople){
+  var res=[];
+  for (var i=0;i<dataSearchedPeople.length;i++){
+      if (dataSearchedPeople[i][1] === "noplace"){
+          res.push(dataSearchedPeople[i]);}
+    }
+    return res;
+}
+
 // call * : launched for each call of searchMany.js
 $(function(){
-    var people = [];            //contains data about every person
-   // var listePlateau =[];       // contains the office areas of searched people
-    var listeBureaux = [];      // contains the office location and desk number of searched people
-    var listeSplitID = [];      // contains the desk number of searched people
-    var personneParPlateau = {  // list to count the number of searched people by office area
-      N0: 0, N1: 0, N2: 0, N3: 0, N4: 0, O2: 0, O3: 0, O4: 0, externe: 0
-    }
-    var listeIdentifiants=[];
-
     // --- function getName : 
     function getName(element, index, array){
         people.push({value: element[1].cn[0], data: element[1]});
@@ -23,7 +74,7 @@ $(function(){
     // --- call getJSON : launched to create people
     $.getJSON('/people', function(data) {
         data.forEach(getName);
-        console.log(people);
+        //console.log(people);
       function split( val ) {
           return val.split( /;\s*/ );
        }
@@ -58,105 +109,57 @@ $(function(){
             },
             select: function( event, ui ) {
               var terms = split( this.value );
-              var nbSearch = terms.length;
+              var nbSearch=terms.length;
               terms.pop();                     // remove the current input
               terms.push( ui.item.value );     // add the selected item
               terms.push( "" );                // add placeholder to get the semicolon-and-space at the end
               this.value = terms.join( "; " );
               var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]); // get the index in the array people of the searched person
-              var bureau = people[indice].data.physicalDeliveryOfficeName[0];
-              listeBureaux.push(bureau);        //[location office, desk number] --> example listeBureaux=["La Boursidière:O2-D-03", "La Boursidière:N3-A-10","La Boursidère: N3-B-02"]
-
-             // -- update the array listeSplitID --
-              var splitID = bureau.split(/\s+:\s+/); 
-              if ((splitID[0] === undefined) || (splitID[1] === undefined)){  //check if the format of the desk is valid. If invalid, the desk number is defined as "noplace"
-                listeSplitID.push("noplace");}
-              else {
-                if (listeSplitID.indexOf(splitID[1]) === -1){
-                  listeSplitID.push(splitID[1]);
-                  listeIdentifiants.push([splitID[1],indice]);}} //keep only the desk number --> listeSplitID=["O2-D-03", "N3-A-10","N3-B-02"]
-              console.log("SplitID[0] : " + splitID[0] + " && Split[1] : " + splitID[1]);
-              console.log("Liste de splitID : " + listeSplitID);
-              console.log("Nom des personnes : " + terms);
-              //detectEmptySearch();
-              plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,listeIdentifiants);
-              console.log("Number of searched people having a location in the office : " + listeSplitID.length);
+              var is_already_on_list =false;
+              for (var i=0;i<dataSearchedPeople.length;i++){
+                if (dataSearchedPeople[i][0]===people[indice].data.cn[0]){  //check if it is already on the list or not
+                  is_already_on_list=true;
+                }
+              }
+              if (is_already_on_list===false){
+                var location = people[indice].data.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
+                if ((location[0] === undefined) || (location[1] === undefined)){  //check if the format of the desk is valid. If invalid, the desk number is defined as "noplace"
+                  dataSearchedPeople.push([people[indice].data.cn[0],"noplace","nolocation",people[indice].data.mail[0]]);}
+                else{ 
+                dataSearchedPeople.push([people[indice].data.cn[0],location[1],location[0],people[indice].data.mail[0]]);}
+              }
+              plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople); 
               return false;
             }
           });
        });
 });
 
- // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example personneParPlateau={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
-function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,listeIdentifiants){
+ // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example nbPeopleByArea={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
+function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
   console.log("plot nb personnes");
   var aaa = document.getElementById("search-button");
-  var k=0; 
-  var listePlateau =[];
-  var externPeople = []; //list of names of extern people
-  //console.log(people);
-  
-    
-  
+
+  //var k=0; 
        // -- event on button "search" clicked --
        aaa.onclick = function(){
-                // -- update the list listePlateau with the data of each searched person -- 
-
-                for(k=0;k<listeSplitID.length;k++){ 
-                    listePlateau.push(listeSplitID[k].split(/-/)[0]);
-                }
-                console.log("Liste Plateau : " + listePlateau);
-
-                // fills externPeople with noplace people names
-                for (var n=0;n<terms.length;n++){
-                  if (externPeople.indexOf(terms[n]) === -1){
-                  if (listeSplitID[n] === "noplace"){
-                    externPeople.push(terms[n]);}
-                  }
-                }
-                console.log("Extern People : " + externPeople);
-
-                for(k=0;k<listePlateau.length;k++){
-                  switch(listePlateau[k]){
-                                case "N0": personneParPlateau.N0++;
-                                    break;
-                                case "N1": personneParPlateau.N1++;
-                                    break;
-                                case "N2": personneParPlateau.N2++;
-                                    break;
-                                case "N3": personneParPlateau.N3++;
-                                    break;
-                                case "N4": personneParPlateau.N4++;
-                                    break;
-                                case "O2": personneParPlateau.O2++;
-                                    break;
-                                case "O3": personneParPlateau.O3++;
-                                    break;
-                                case "O4": personneParPlateau.O4++;
-                                    break;
-                  }
-                }
-
-                for(k=0;k<externPeople.length;k++){
-                  personneParPlateau.externe++;
-                }
-
-                console.log("Personnes Externe : " + personneParPlateau.externe );
-                var list_area=["N0","N1","N2","N3","N4","O2","O3","O4","externe"];
-                var people_same_area=""; // var to store searched people located in a specified area
-                for (var k=0;k<list_area.length;k++){
-                  var x=list_area[k];
-                  if (personneParPlateau[x]>0){
-                      console.log(x);
-                      switch (x){
+                // -- update the list nbPeopleByArea with the data of each searched person -- 
+                for (var i=0;i<list_area.length;i++){
+                  var area=list_area[i];
+                  nbPeopleByArea[area]=getPeopleByArea(area,dataSearchedPeople).length
+                  var people_same_area=""; 
+                  if (nbPeopleByArea[area]>0){
+                      switch (area){
                         case "externe":
-                          var text_e=externPeople[0];
-                          for (var f=1;f<externPeople.length;f++){
-                            text_e+="<br/>"+externPeople[f];
+                          console.log(getPeopleByArea(area,dataSearchedPeople));
+                          var text_e="";
+                          var list_extern=getExternPeople(dataSearchedPeople);
+                          for (var f=0;f<list_extern.length;f++){
+                            text_e+=list_extern[f][0]+"<br/>";
                           }
                           var div_e = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           d3.select("#noplace-personnes")
-                            .text("- " + personneParPlateau.externe + " -").style("color", "	rgb(20,200,20)")
+                            .text("- " + nbPeopleByArea.externe + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                             div_e.transition()		
                                 .duration(200)		
@@ -173,13 +176,13 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                         case "N0":
                           var div_N0 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_N0="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_N0+=people[people_same_area[l][1]].data.cn[0];
+                            text_N0+=people_same_area[l][0];
                             text_N0+="<br/>";
                           } 
-                          d3.select("#"+x+"-personnes")
-                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                            .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                               div_N0.transition()		
                                 .duration(200)		
@@ -196,13 +199,13 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                         case "N1":
                           var div_N1 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_N1="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_N1+=people[people_same_area[l][1]].data.cn[0];
+                            text_N1+=people_same_area[l][0];
                             text_N1+="<br/>";
                           } 
-                          d3.select("#"+x+"-personnes")
-                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                            .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                               div_N1.transition()		
                                 .duration(200)		
@@ -219,13 +222,13 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                         case "N2":
                           var div_N2 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_N2="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_N2+=people[people_same_area[l][1]].data.cn[0]
+                            text_N2+=people_same_area[l][0];
                             text_N2+="<br/>";
                           }
-                          d3.select("#"+x+"-personnes")
-                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                           .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                                 div_N2.transition()		
                                 .duration(200)		
@@ -242,13 +245,13 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                         case "N3":
                           var div_N3 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_N3="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_N3+=people[people_same_area[l][1]].data.cn[0];
+                            text_N3+=people_same_area[l][0];
                             text_N3+="<br/>";
                           } 
-                          d3.select("#"+x+"-personnes")
-                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                            .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                               div_N3.transition()		
                                 .duration(200)		
@@ -265,13 +268,13 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                         case "N4":
                           var div_N4 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_N4="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_N4+=people[people_same_area[l][1]].data.cn[0]
+                            text_N4+=people_same_area[l][0];
                             text_N4+="<br/>";
                           }
-                          d3.select("#"+x+"-personnes")
-                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                           .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                                 div_N4.transition()		
                                 .duration(200)		
@@ -284,17 +287,40 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                 .style("width","auto");})
                             .on("mouseout", function(d) {		
                               div_N4.transition().duration(500).style("opacity", 0);})
-                        break;                        
+                        break; 
+                        case "O1":
+                          var div_O1 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+                          var text_O1="";
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
+                          for (var l=0;l<people_same_area.length;l++){
+                            text_O1+=people_same_area[l][0];
+                            text_O1+="<br/>";
+                          } 
+                          d3.select("#"+area+"-personnes")
+                            .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
+                            .on("mouseover", function(d) {		
+                              div_O1.transition()		
+                                .duration(200)		
+                                .style("opacity", .9);		
+                              div_O1.html(text_O1)
+                                .style("position","absolute")
+                                .style("left", d3.event.pageX-10 + "px")
+											          .style("top", d3.event.pageY + "px")
+                                .style("height","auto")
+                                .style("width","auto");})
+                            .on("mouseout", function(d) {		
+                              div_O1.transition().duration(500).style("opacity", 0);})
+                        break;                       
                         case "O2":
                           var div_O2 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_O2="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_O2+=people[people_same_area[l][1]].data.cn[0];
+                            text_O2+=people_same_area[l][0];
                             text_O2+="<br/>";
                           } 
-                          d3.select("#"+x+"-personnes")
-                            .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                            .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                               div_O2.transition()		
                                 .duration(200)		
@@ -311,14 +337,13 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                         case "O3":
                           var div_O3 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_O3="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_O3+=people[people_same_area[l][1]].data.cn[0]
+                            text_O3+=people_same_area[l][0];
                             text_O3+="<br/>";
                           }
-                          console.log("I'm here"); 
-                          d3.select("#"+x+"-personnes")
-                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                           .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                                 div_O3.transition()		
                                 .duration(150)		
@@ -335,13 +360,13 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                         case "O4":
                           var div_O4 = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
                           var text_O4="";
-                          people_same_area=getPersonsByArea(listeIdentifiants,x);
+                          people_same_area=getPeopleByArea(area,dataSearchedPeople);
                           for (var l=0;l<people_same_area.length;l++){
-                            text_O4+=people[people_same_area[l][1]].data.cn[0]
+                            text_O4+=people_same_area[l][0];
                             text_O4+="<br/>";
                           }
-                          d3.select("#"+x+"-personnes")
-                           .text("- " + personneParPlateau[x] + " -").style("color", "	rgb(20,200,20)")
+                          d3.select("#"+area+"-personnes")
+                           .text("- " + nbPeopleByArea[area] + " -").style("color", "	rgb(20,200,20)")
                             .on("mouseover", function(d) {		
                                 div_O4.transition()		
                                 .duration(200)		
@@ -358,78 +383,35 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                       }	
                   }
                 }
-                
-                plotResult(listeSplitID, personneParPlateau.externe,people,listeIdentifiants,externPeople);
+                plotResult(nbPeopleByArea, dataSearchedPeople);
        };  
 };
 
-// ------Function to order the list listeIdentifiants -----------
-// example getPersonByArea([["N4-A-03",5],["O2-B-08",64],["N4-D-6",255]],"N4") =[["N4-A-03",5],["N4-D-6",255]]
-function getPersonsByArea(listPersons,area){
-  var res=[];
-  for (var i=0;i<listPersons.length;i++){ 
-    if (listPersons[i][0].split(/-/)[0]==area){
-    res.push(listPersons[i]);
-   }
- }
- return res; 
-}
-
-/*function detectEmptySearch(){
-  var searchValue = document.getElementById('search-terms').value; 
-  if(!searchValue.match(/\S/)) {
-        console.log('Empty value is not allowed');
-        return false;
-    } else {
-        console.log("correct input");
-        return true;
-    }
-}*/
-
-
 // ------Function plotResult : display the location of searched people on the maps -----
-// TO DO : Not possible to go back to the main page of results 
-function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeople){
-  var i=0;
-  var cpt=0;
-  var table_tot=d3.selectAll("#tables");
-  var mapSearch = []; //list of office areas of searched people --> example : mapSearch=[O2,N3] 
-
-  // fills mapSearch. No duplicate possible
-  for (i=0;i<listeSplitID.length;i++){
-    if (listeSplitID[i] === "noplace" ){ 
-      console.log("Personne : externe");
-      if (mapSearch.indexOf(listeSplitID[i]) ===(-1)){
-                   mapSearch.push(listeSplitID[i]);}
-    }
-    else{ 
-      var area= listeSplitID[i].split(/-/)[0];
-      console.log("Personne : " + area);
-      var id_people_same_area=getPersonsByArea(listeIdentifiants,area);
-      if (mapSearch.indexOf(area) ===(-1)){
-                   mapSearch.push(area);
-      
-      for (var k=0;k<id_people_same_area.length;k++){
-        var position = id_people_same_area[k][0]; 
-        var table=table_tot.select("#" + position);   //example :<g  id="N2-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="25.52841" height="12.577848" x="27.785971" y="249.75424" /></g>
+function plotResult(nbPeopleByArea, dataSearchedPeople){ 
+  var global_table=d3.selectAll("#tables");
+  var mapSearch = getSearchedMaps(dataSearchedPeople); //list of office areas of searched people --> example : mapSearch=[O2,N3] 
+ /* for (var i=0;i<mapSearch.length;i++){
+    var people_same_area=getPeopleByArea(mapSearch[i],dataSearchedPeople);   
+    for (var k=0;k<people_same_area.length;k++){
+        var table=global_table.select("#" + dataSearchedPeople[k][1]);   //example :<g  id="N2-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="25.52841" height="12.577848" x="27.785971" y="249.75424" /></g>
         table.append("image")
             .attr("xlink:href", "./img/pin_final.png")
             .attr("width", "30")
             .attr("height", "50")
             .attr("x",table.select("rect").attr("x") -10)
             .attr("y",table.select("rect").attr("y") -40);
-      }}
-    }
-  }
+      }
+  }*/
+
   console.log(mapSearch);
        //call result : display a map (user must have clicked on it) with the results of the search
       $('.result').click(function(){
-         var clicked_id = this.id;
-         var buro = clicked_id.split(/-/);
+         var buro = this.id.split(/-/);
          var j = mapSearch.indexOf(buro[0]);
          if(!mapControl.existMap) {
                         // erase all maps' overview
-                      mapControl.eraseMap();
+          mapControl.eraseMap();
                       d3.select("#map-show")
                                    .style("visibility", "visible")
                                    .style("width", "100%")
@@ -446,26 +428,15 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                         console.log("J = " + j);
                         // To load the map with all the data
                         mapControl.mapPlot(mapControl.mapName, false, function() {
-                          var tooltip; 
-                          var id_persons_by_area=[];
-                          var data_area="";
-                          //console.log("Liste identifiants : " + listeIdentifiants);
-                          id_persons_by_area=getPersonsByArea(listeIdentifiants,mapControl.mapName); //ex: [["N3-A-05",65],["N3-C-04",110]]
-                          console.log("Id_person_by_area : " + id_persons_by_area);
-                          var id_person=[];
-                         // var index_person=[];
-                          var data_person,xPosition,yPosition;
-                          for (var k=0;k<id_persons_by_area.length;k++){
-                            id_person=id_persons_by_area[k];
-                            console.log("id_person : " + id_person);
-                            data_person=people[id_person[1]].data;
-                            console.log("Personne de la MAP cliquée : " + id_person[0]);
-                            //console.log("DataPerson : " + data_person);
+                          var data_area=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
+                          var xPosition,yPosition;
+                          var textToPlot="";
+                          var table;
+                          for (var k=0;k<nbPeopleByArea[mapControl.mapName];k++){
                             table = d3.select("#tables")
-                                          .select("#" + id_person[0]);
+                                          .select("#" + data_area[k][1]);
                             var xPosition = table.select("rect").attr("x")-10;
 											      var yPosition = table.select("rect").attr("y")-40;
-                            data_area+=("<b>"+data_person.cn[0] + "</b> : "+ data_person.mail[0] + " - " + data_person.physicalDeliveryOfficeName[0]+"<br/>");
                             //to load pin on people position
                             table.append("image")
                                       .attr("xlink:href", "./img/pin_final.png")
@@ -473,11 +444,12 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                       .attr("height", "50")
                                       .attr("x", xPosition)
                                       .attr("y", yPosition);
+                            textToPlot+=("<b>"+data_area[k][0] + "</b> : "+ data_area[k][2]+" : "+data_area[k][1]+ " - " +data_area[k][3] +  "<br/>")
                             //yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
+                          }
                             //To load tooltip with data on persons
-                              }
-                            tooltip = d3.select(".tooltip_map");
-										        tooltip.html(data_area)
+                            var tooltip = d3.select(".tooltip_map");
+										        tooltip.html(textToPlot)
 											                  .style("position", "relative")
                                         .style("top","0%")
                                         .style("left","0%")
@@ -495,26 +467,25 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
 								                        .style("z-index", -1);})     
 
                               //to load tooltip result about extern people
+                            var text_extern="";
+                            for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=(getExternPeople(dataSearchedPeople)[i][0])+"<br/>";}
                             d3.select("#extern-result")
-                                  .text(nbExterne + " Personne(s) externe(s)")
-                                  //rajout début
+                                  .text(nbPeopleByArea.externe + " Personne(s) externe(s)")
                                   .style("cursor", "pointer")
                                   .on("click", function(){
                                    // console.log("Bureau : " + d3.event.target.parentNode.id);
-                                   if (externPeople.length > 0){
+                            if (nbPeopleByArea.externe > 0){
                                     var xPos = event.clientX,
                                       yPos = event.clientY;
-                                      var infobulle = d3.select(".tooltip_ext");
+                                    var infobulle = d3.select(".tooltip_ext");
                                         // get scroll pixels to correct tooltip's yPostion
                                       yPos += $(window).scrollTop();
-
-                                      infobulle.html(externPeople)
+                                      infobulle.html(text_extern)
                                           .style("position","relative")
                                           .style("left", "50%")
                                           .style("top", "100%")
                                           .style("width","auto")
                                           .style("height","auto");
-                                          //.style("height", "20px");
                                       infobulle.transition()
                                           .duration(200)
                                           .style("opacity", .9)
@@ -529,22 +500,16 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                       event.stopPropagation();
                                    }
                                   });
-                          
                           });
                           mapControl.existMap = true;
                         }
   
                        // call search-back : display the next map with results ("suivant" button)
                           $('#search-back').click(function(){
-
                               j= ( (j+1) % (mapSearch.length) );
-                              console.log("j = " + j);
-                              console.log("MapSearch[j] : " + mapSearch[j]);
-                              //console.log("listeSplitID : " + listeSplitID[i]);                                    
-                            
-                              if(mapSearch[j] !== "noplace"){
-                                
-                                
+                              //console.log("j = " + j);
+                              console.log("Current map : " + mapSearch[j]);                                  
+                              if(mapSearch[j] !== "extern"){
                                 d3.select(".map").select("svg").remove();
                                 mapControl.existMap = false;
                                 mapControl.mapName = mapSearch[j] ;
@@ -552,19 +517,13 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                 d3.select("#etage").data(["Etage "+mapControl.mapName]).text(function(d) { return d; });
 
                                 mapControl.mapPlot(mapSearch[j], false, function() {
-                                  var id_persons_by_area=[];
-                                  var data_area="";
-                                  id_persons_by_area=getPersonsByArea(listeIdentifiants,mapSearch [j]); //ex: [["N3-A-05",65],["N3-C-04",110]]
-                                  console.log(id_persons_by_area);
-                                  var id_person=[];
-                                  var data_person,xPosition,yPosition;
-                                  for (var k=0;k<id_persons_by_area.length;k++){ //all the searched people located in this area (mapSearch[j])
-                                    id_person=id_persons_by_area[k];
-                                    console.log(id_person);
-                                    data_person=people[id_person[1]].data;
-                                    console.log("Map suivante : " + mapSearch[j] + " || Personne de la map : " + data_person.cn[0]);
+                                  var data_area=getPeopleByArea(mapSearch[j],dataSearchedPeople);
+                                  var textToPlot="";
+                                  var table;
+                                  for (var k=0;k<nbPeopleByArea[mapControl.mapName];k++){ //all the searched people located in this area (mapSearch[j])
+                                    var xPosition,yPosition;
                                     table = d3.select("#tables")
-                                                      .select("#" + id_person[0]);
+                                                      .select("#" + data_area[k][1]);
                                     var xPosition = table.select("rect").attr("x")-10;
 											              var yPosition = table.select("rect").attr("y")-40;
                                     //yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
@@ -574,13 +533,13 @@ function plotResult(listeSplitID,nbExterne,people,listeIdentifiants ,externPeopl
                                                 .attr("height", "50")
                                                 .attr("x", xPosition)
                                                 .attr("y", yPosition);
-                                    data_area+=("<b>"+data_person.cn[0] + "</b> : "+ data_person.mail[0] + " - " + data_person.physicalDeliveryOfficeName[0]+"<br/>");
-                                    d3.select("#extern-result")
-                                       .text(nbExterne + " Personne(s) externe(s)");
-                                    mapControl.existMap = true;
+                                    textToPlot+=("<b>"+data_area[k][0] + "</b> : "+ data_area[k][2]+" : "+data_area[k][1]+ " - " +data_area[k][3] +  "<br/>");
                                   }
+                                    d3.select("#extern-result")
+                                       .text(nbPeopleByArea.externe + " Personne(s) externe(s)");
+                                    mapControl.existMap = true;
                                   var tooltip = d3.select(".tooltip_map");
-										              tooltip.html(data_area)
+										              tooltip.html(textToPlot)
 											                  .style("position", "relative")
                                         .style("top","0%")
                                         .style("left","0%")
