@@ -49,8 +49,9 @@ local-map uses the following additional node modules:
 * lodash 4.5.1 - some js functions for array treatment
 * sequelize 3.23.6 - ORM and database support
 * sequelize-cli 2.4.0 - ORM and database support
-* sqlite3 3.0.8 - support for sqlite3 database
+* postgreSQL - support for postgreSQL database
 * util - write to server's log
+* saml2-js - provide SSO service
 
 
 ## Structure
@@ -64,35 +65,26 @@ __Data__
 __Service__
 
 Admin : 
-
- 
 * *getAllCompanies(req, res)* - *req*: , *res*: **companies(json)** 
-
 * *getDepartmentsByCompany (req, res)* - *req*:**companyId** , *res*: **departments(json)**
-
 * *getPeopleByDepartment(req, res)* - *req*:**departmentId** , *res*: **people(json)**
-
 * *getPeopleByCompany (req, res)* - *req*:**companyId** , *res*: **people(json)**
-
 * *saveValidateur (req, res)* - *req*:**firstname**, **lastname**, **mail**, **statusId**, **poleId** , **level**, *res*: 
-
 * *updateValidateur (req, res)* - *req*:**managerId**, *res*:
-
-* getAllValidators (req, res)* - *req*:, *res*:**managers(json)**
+* *getAllValidators (req, res)* - *req*:, *res*:**managers(json)**
 
 Configurations 
-* *getAllConf (req, res)* - *req*:, *res*:**configurations(json)**
-
-* *getAllMovingsByConfIdCount (req, res)* - *req*:**configurationId**, *res*:**count(json)**
-*  *getPeopleMovingsByConId (req, res)* - *req*:**configurationId**, *res*:**movings(json)**
-*  *deleteConfiguration  (req, res)* - *req*:**configurationId**, *res*:
-*  *validateConfiguration  (req, res)* - *req*:**configurationId**, *res*:
-*  *getMovingsListByConfId (req, res)* - *req*:**configurationId**, *res*:**return txt file**
-*  *addNewConfiguration (req, res)* - *req*:**creator**, *res*:
-*  *saveMovings (req, res)* - *req*:**array of movings**, *res*:
+* *getAllMoveSet(req, res)* - *req*:, *res*:**configurations(json)**
+* *countAllMoveLineByMoveSetId (req, res)* - *req*:**configurationId**, *res*:**count(json)**
+*  *getPeopleMoveLineByMoveSetId (req, res)* - *req*:**configurationId**, *res*:**movings(json)**
+*  *deleteMoveSet  (req, res)* - *req*:**configurationId**, *res*:
+*  *validateMoveSet  (req, res)* - *req*:**configurationId**, *res*:
+*  *getMoveLineListByMoveSetId (req, res)* - *req*:**configurationId**, *res*:**return txt file**
+*  *addNewMoveSet (req, res)* - *req*:**creator**, *res*:
+*  *saveMoveLine (req, res)* - *req*:**array of movings**, *res*:
 *  *reportConsistency (req, res)* - *req*:**configurationId**, *res*:**info(json)**
-*  *formerPeopleByOffId (req, res)* - *req*:**configurationId**,**officeId**, *res*:**formerPeople(json)**
-*  getRecapOfMovings (req, res)* - *req*:**configurationId**, *res*:**movingsList(json)**
+*  *formerPersonByDeskId (req, res)* - *req*:**configurationId**,**officeId**, *res*:**formerPeople(json)**
+*  *getRecapOfMoveline (req, res)* - *req*:**configurationId**, *res*:**movingsList(json)**
 
 Data 
 * *populate (req, res)* - *req*:, *res*:
@@ -103,13 +95,16 @@ DataAssociation
 require KLeeGroup.json
 
 Localization
-* *getCurrentOfficeName (req, res)* - *req*:**firsname**, **lastname**, *res*:**office(json)**
-* *getCurrentOfficeNamebyId (req, res)* - *req*:**PeopleId**, *res*:**office(json)**
+* *getCurrentDeskName (req, res)* - *req*:**firsname**, **lastname**, *res*:**office(json)**
+* *getCurrentDeskNamebyId (req, res)* - *req*:**PeopleId**, *res*:**office(json)**
 * *saveMyLocalization  (req, res)* - *req*:**officeName**,**firstname**,**lastname**, *res*
 
+Map
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
+
+People
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
- 
+* *getPeople(req, res)* - *res*: **.json** (return json file) 
 
 -----------------------------------------------------------------
 
@@ -203,10 +198,10 @@ polyfill for Internet Explorer compatibility.
 - `mapControl.mapPlot(mapName, function(){})`: add-pin is in callback function (wait for map fully loaded).
 
 #### **_searchMany.js_**
-
+- **global var**: server, people, dataSearchedPeople, list_area, nbPeopleByArea   .
  - `$('#search-terms').on("keydown", function(event){}).autocomplete({minLength:0, source:function(request, response){}, focus:function(){}, select:function( event, ui){} })`: input names in search bar will show corresponding suggestions.
- - `plotNumberOfPeople(personneParPlateau, listeSplitID)` : plot number of people searched for each floor.
- - `plotResult(listeSplitID)` : show maps with pins for each people searched.
+ - `plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople)` : plot number of people searched for each floor.
+ - `plotResult(nbPeopleByArea, dataSearchedPeople)` : show maps with pins for each people searched.
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------
@@ -312,8 +307,8 @@ There are still other ways to add tables, such as using **inkscape** (but make s
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
 
-# For our sqlite3 database : 
-
+# For our sqlite3 database : ---TO UPDATE
+See diagram.xml
 
 If you want to recreate a clean database. 
 
@@ -333,7 +328,7 @@ The update process with foreign keys is done.
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
-# La maintenance de donnée (employé et plan) (*Version Français*)
+# La maintenance de donnée (employé et plan) (*Version Français*) 
 
 *    Changer les **datas d’employé** (déplacer vers un autre bureau) : il faut changer son data sur l’AD, après le serveur va mettre à jour les changement.
 
