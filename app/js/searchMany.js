@@ -95,12 +95,8 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
   var listePlateau =[];
   var externPeople = []; //list of names of extern people
   //console.log(people);
-  // fills externPeople with noplace people names
-  for (var n=0;n<terms.length;n++){
-    if ((listeSplitID[n] === "noplace") && (terms.indexOf(terms[n]) === -1)){
-      externPeople.push(terms[n]);
-    }
-  }
+  
+    
   
        // -- event on button "search" clicked --
        aaa.onclick = function(){
@@ -110,6 +106,15 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                     listePlateau.push(listeSplitID[k].split(/-/)[0]);
                 }
                 console.log("Liste Plateau : " + listePlateau);
+
+                // fills externPeople with noplace people names
+                for (var n=0;n<terms.length;n++){
+                  if (externPeople.indexOf(terms[n]) === -1){
+                  if (listeSplitID[n] === "noplace"){
+                    externPeople.push(terms[n]);}
+                  }
+                }
+                console.log("Extern People : " + externPeople);
 
                 for(k=0;k<listePlateau.length;k++){
                   switch(listePlateau[k]){
@@ -129,11 +134,14 @@ function plotNumberOfPeople(personneParPlateau, listeSplitID, terms,people,liste
                                     break;
                                 case "O4": personneParPlateau.O4++;
                                     break;
-                                case "noplace" : if (terms.indexOf(terms[k]) === -1){
-                                  personneParPlateau.externe++;}
-                                    break;
                   }
                 }
+
+                for(k=0;k<externPeople.length;k++){
+                  personneParPlateau.externe++;
+                }
+
+                console.log("Personnes Externe : " + personneParPlateau.externe );
                 var list_area=["N0","N1","N2","N3","N4","O2","O3","O4","externe"];
                 var people_same_area=""; // var to store searched people located in a specified area
                 for (var k=0;k<list_area.length;k++){
