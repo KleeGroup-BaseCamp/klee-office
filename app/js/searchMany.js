@@ -139,6 +139,7 @@ $(function(){
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
   console.log("plot nb personnes");
   var aaa = document.getElementById("search-button");
+
   //var k=0; 
        // -- event on button "search" clicked --
        aaa.onclick = function(){
