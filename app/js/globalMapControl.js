@@ -123,6 +123,29 @@ var mapControl = {
 									})
 								}
 							}
+							var allTablees = d3.select("#tables")
+							.selectAll(".available")
+							.style("cursor", "pointer")
+							.on("click", function(){
+								console.log("Bureau : " + d3.event.target.parentNode.id);
+								var xPosition = event.clientX,
+									yPosition = event.clientY;
+										// get scroll pixels to correct tooltip's yPostion
+									yPosition += $(window).scrollTop();
+
+									tooltip.html("Bureau " + d3.event.target.parentNode.id)
+											.style("position","absolute")
+											.style("left", (xPosition)-350 + "px")
+											.style("top", (yPosition)-300 + "px")
+											.style("height", "20px");
+									tooltip.transition()
+											.duration(200)
+											.style("opacity", .9)
+											.style("z-index", 20);
+
+									event.stopPropagation();
+					
+							});
 						}
 					});
 					////////////////////////////////
@@ -147,7 +170,7 @@ var mapControl = {
 							});
 					}
 
-						// Plot number of available offices --- add by Alex 30/05/2017
+						// Plot number of available offices 
 						/*var allTablees = d3.select("#tables")
 							.selectAll(".available")
 							.style("cursor", "pointer")

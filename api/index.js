@@ -36,18 +36,18 @@ const app = express();
 
 //authentication with saml2nm
 // create service provider
-/*var sp_options = {
-	entity_id: "https://local-map/",
+var sp_options = {
+	entity_id: "http://local-map.dev.klee.lan.net/",
 	private_key: fs.readFileSync("localmap_privatekey.pem").toString(),
 	certificate: fs.readFileSync("cert.pem").toString(),
-	assert_endpoint : "https://local-map/assert"
+	assert_endpoint : "http://local-map.dev.klee.lan.net/assert"
 };
 var sp= new saml2.ServiceProvider(sp_options);
 
 //create identity provider (to complete)
 var idp_options = {
-  sso_login_url: "https://......./login",
-  sso_logout_url: "https://......../logout",
+  sso_login_url: "https://sso.kleegroup.com/saml2/idp/SSOService.php",
+  sso_logout_url: "https://sso.kleegroup.com/saml2/idp/SingleLogoutService.php",
   certificates: [fs.readFileSync("certificate_idp1.crt").toString(), fs.readFileSync("certificate_idp2.crt").toString()]
 };
 var idp = new saml2.IdentityProvider(idp_options);
@@ -84,8 +84,21 @@ app.get("/saml2/sls", function(req, res) { //logout
     res.redirect(logout_url);
   });
 });
+
+app.get("/saml2/slsResponse", function(req, res){ //app.post ??
+  var options = {
+    in_response_to: request_id //req.id ??
+   // sign_get_request: aaaaaaaaa
+  };
+
+  sp.create_logout_response_url(IdP, options, function(err, logout_url){
+    if (err != null)
+      return res.send(500);
+    res.redirect(logout_url);
+  });
+});
  
-app.listen(3000);*/
+//app.listen(3000);
 
 
 // views engine for renders
