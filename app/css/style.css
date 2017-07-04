@@ -188,9 +188,13 @@
     padding-bottom: 20px;
     color: rgb(191, 216, 239);
 }
-#O2 a, .O2{
+#O1 a, .O1{
     padding-bottom: 20px;
     color: rgb(204, 31, 18);
+}
+#O2 a, .O2{
+    padding-bottom: 20px;
+    color: rgb(240, 5, 10);
 }
 #O3 a, .O3{
     padding-bottom: 20px;

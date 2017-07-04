@@ -38,7 +38,7 @@ const getCurrentDeskNamebyId = (req,res) => {
         });
 }
 
-const saveMyLocalization = (req, res) => {
+const saveMyLocalization = (req, res) => {      
     console.log('call of service to save my localization in DB');
     // debug
     console.log(req.body);
@@ -95,7 +95,7 @@ const saveMyLocalization = (req, res) => {
                                                     person_id: elem.PersonPerId,
                                                     move_set_id: setId
                                                 }).then(function (newMoveLine) {
-//                                                    console.log(elem.toDesk.toString() + "-------"+ offid.toString());
+    //                                                    console.log(elem.toDesk.toString() + "-------"+ offid.toString());
                                                 });
                                             }
                                         });

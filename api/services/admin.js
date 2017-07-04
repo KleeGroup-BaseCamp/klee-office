@@ -95,7 +95,7 @@ const saveValidateur = (req, res) => { //req contains {level :"Niveau 1", per_id
  * create new one
  */
 const updateValidateur = (req, res) => //req contains {level ,per_id}
-{
+ {
     /**
      * if a validator is already defined for the pole or the company
      * unset the booleans
