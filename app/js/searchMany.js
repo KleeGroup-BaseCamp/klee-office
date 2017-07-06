@@ -7,7 +7,7 @@ var people = [];            //contains data about every person
 var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe"];
 var nbPeopleByArea = {}  // list to count the number of searched people by office area
 var myData=["Alain Gournay","N4-C-01"];
-for (var i=0;i>list_area.length;i++){
+for (var i=0;i<list_area.length;i++){
   nbPeopleByArea[list_area[i]]=0;
 }
 var dataSearchedPeople=[];// [[name,desk,location,mail],,...]
@@ -62,17 +62,10 @@ function getExternPeople(dataSearchedPeople){
     return res;
 }
 
-$(document).ready(function(){
-    /* $("#cross-delete").click(function(){
-         console.log("CLICK SUR LA CROIX");
-         $("#search-terms").val("");
-         dataSearchedPeople=[];
-         nbPeopleByArea = {};
-         console.log("DataPerson : " + dataSearchedPeople);
-         console.log("nbPeopleByArea : " + nbPeopleByArea);
-    });*/
+// call removeSearchElement anytime on this page
+/*$(document).ready(function(){
     removeSearchElement();
-});
+});*/
 
 // call * : launched for each call of searchMany.js
 $(function(){
@@ -177,6 +170,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
   };    
 };
 
+// ----Function plotResult : shows pin for each searched Person on maps
 function plotResult(nbPeopleByArea, dataSearchedPeople){
   $('.list_etage').click(function(){
     var area = this.id.slice(1,3); //this.id="eN3" --> area="N3"
@@ -687,40 +681,25 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
 
 // ------------------------------- //
 
-function removeSearchElement(){
+/*function removeSearchElement(){
   $("#cross-delete").click(function(){
          console.log("CLICK SUR LA CROIX");
          $("#search-terms").val("");
-         dataSearchedPeople=[];
-         nbPeopleByArea = {};
+         dataSearchedPeople.length=0;
+         
          var k;
          console.log("DataPerson : " + dataSearchedPeople);
          console.log("nbPeopleByArea : " + nbPeopleByArea);
-         d3.select("#noplace-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N0-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N1-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N2-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N3-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N4-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O1-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O2-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O3-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O4-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         console.log("Etage : " + nbPeopleByArea.length);
+        
          for (var k=0;k<nbPeopleByArea[list_area[k]];k++){
                             table = d3.select("#tables")
-                                          .select("#" + data_area[k][1])
-                                          .remove("image");
-                            //var xPosition = table.select("rect").attr("x")-10;
-											      //var yPosition = table.select("rect").attr("y")-40;
-                            //to load pin on people position
-                           /* table.append("image")
-                                      .attr("xlink:href", "./img/pin_final.png")
-                                      .attr("width", "30")
-                                      .attr("height", "50")
-                                      .attr("x", xPosition)
-                                      .attr("y", yPosition);
-                            textToPlot+=("<b>"+data_area[k][0] + "</b> : "+ data_area[k][2]+" : "+data_area[k][1]+ " - " +data_area[k][3] +  "<br/>")*/
-                            //yPosition += $(window).scrollTop(); // get scroll pixels to correct tooltip's yPostion
-                          }
-    })
-}
+                                        .select("#" + nbPeopleByArea[list_area[k]])
+                                        .remove("image");
+                                       // console.log("Etage : " + nbPeopleByArea[list_area[k]]);
+                                      console.log("TOTOTO");}
+          nbPeopleByArea.length = 0;
+                            
+                          })
+   // })
+}*/
