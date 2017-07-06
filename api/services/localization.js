@@ -119,9 +119,40 @@ const saveMyLocalization = (req, res) => {
     res.redirect('/');
 };
 
+const getLastDeskUpdate = (req,res) =>{
+    models.sequelize.query('SELECT \"MoveLine\".\"dateCreation\" '+
+        'FROM \"MoveLine\" '+
+        'JOIN \"Person\" ON \"MoveLine\".person_id = \"Person\".per_id '+
+        'WHERE \"Person\".per_id = :id ' +
+        'ORDER BY \"MoveLine\".\"dateCreation\" desc ' +
+        'LIMIT 1 ',
+        { replacements: {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(updesk){
+            console.log(updesk);
+           res.json(updesk);
+        });
+}
+
+/*const getLastDeskUpdate = (req,res) =>{
+    models.sequelize.query('SELECT \"MoveLine\".\"dateCreation\" '+
+        'FROM \"MoveLine\" M1 '+
+        'WHERE NOT EXISTS ' +
+            '(SELECT 1 ' +
+            'FROM \"MoveLine\" M2 ' +
+            'WHERE M2.mov_id = M1.mov_id ' +
+            'AND M2.\"dateCreation\" > M2.\"dateCreation\" ',
+        { replacements: {}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(updesk){
+            console.log(updesk);
+           res.json(updesk);
+        });
+}*/
+
+
 
 module.exports = {
     saveMyLocalization,
     getCurrentDeskName,
-    getCurrentDeskNamebyId
+    getCurrentDeskNamebyId,
+    getLastDeskUpdate
 }

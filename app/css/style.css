@@ -38,7 +38,7 @@
     background-repeat: no-repeat;
 }
 #personal{
-    color: red;
+    color: white;
     width: 300px;
     height: 40px;
     position: absolute;
@@ -512,6 +512,10 @@ input[readonly] {
     right: 20px;
     z-index: 20;
     cursor:  pointer;
+}
+
+#cross-delete:hover{
+    transform: scale(1.1);
 }
 
 .admin-list td {

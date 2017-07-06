@@ -157,6 +157,7 @@ app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
 app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
+app.get('/getLastDeskUpdate/:id', localizationServices.getLastDeskUpdate);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
