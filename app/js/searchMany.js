@@ -142,13 +142,10 @@ $(function(){
 
 
 
- // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example nbPeopleByArea={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
+ // ----Function plotNumberOfPeople : shows the number of searched people group by maps on the navigation menu
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
   var click= document.getElementById("search-button");
   click.onclick = function(){
-      console.log("launch plotnb");
-      console.log(nbPeopleByArea);
-      console.log(dataSearchedPeople);
       for (var i=0;i<list_area.length;i++){
         var area =list_area[i];
         nbPeopleByArea[area]=getPeopleByArea(area,dataSearchedPeople).length;
@@ -156,20 +153,50 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
           console.log(area);
           if (area==="externe"){
               d3.select("#ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
-            console.log("externe!")}
+          }
           else{
-              console.log(area);
-              console.log("I'm out");
               d3.select("#e"+area).text("Etage "+area+" ("+nbPeopleByArea[area]+")").style("color","red");
-              //plotSearchedMap(area,getPeopleByArea(area,dataSearchedPeople));
-             // var dataSearchedPeopleByArea=getPeopleByArea(area,dataSearchedPeople);       	  
-            }
+
+              //if I'm searching people on my own map, results must appear directly (without clicking on the navigation menu)
+              if (area==myData[1].split(/-/)[0]){
+                var dataSearchedPeopleByArea=getPeopleByArea(area,dataSearchedPeople);
+                var xPosition,yPosition;
+                var textToPlot="";
+                var table;
+                for (var k=0;k<nbPeopleByArea[area];k++){
+                  table = d3.select("#tables").select("#" + dataSearchedPeopleByArea[k][1]);
+                  var xPosition = table.select("rect").attr("x")-5;
+					        var yPosition = table.select("rect").attr("y")-22;
+                  //to load pin on people position
+                  table.append("image")
+                    .attr("xlink:href", "./img/pin_final.png")
+                    .attr("width", "20")
+                    .attr("height", "35")
+                    .attr("x", xPosition)
+                    .attr("y", yPosition);
+                  textToPlot+=("<b>"+dataSearchedPeopleByArea[k][0] + "</b> : "+ dataSearchedPeopleByArea[k][2]+" : "+dataSearchedPeopleByArea[k][1]+ " - " +dataSearchedPeopleByArea[k][3] +  "<br/>")
+                };
+                //to load information about people
+                var tooltip = d3.select(".tooltip_map");
+	              tooltip.html(textToPlot)
+		                .style("position", "relative")
+                    .style("top","0%")
+                    .style("left","0%")
+      	        tooltip.transition()
+		                .duration(200)
+		                .style("opacity", .9)
+	                  .style("z-index", 20);
+                event.stopPropagation();
+                $("html").click(function (event) {event.stopPropagation();})
+                $(".tooltip").click(function () {div.transition().duration(500).style("opacity", 0).style("z-index", -1);})   
+              }
+          }
         }
       };
       plotResult(nbPeopleByArea, dataSearchedPeople);
   };    
 };
-
+ // ----Function plotResult : display the map with the position and information about searched people when clicking on an area in the navigation menu
 function plotResult(nbPeopleByArea, dataSearchedPeople){
   $('.list_etage').click(function(){
     var area = this.id.slice(1,3); //this.id="eN3" --> area="N3"
@@ -252,7 +279,8 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
   })
 }
 
-    /*  
+    /* NOT USED ANYMORE  // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example nbPeopleByArea={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
+function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
                 // -- update the list nbPeopleByArea with the data of each searched person -- 
                 for (var i=0;i<list_area.length;i++){
                   var area=list_area[i];
@@ -497,12 +525,11 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
        };  
 };*/
 
-// ------Function plotResult : display the location of searched people on the maps -----
+// NOT USED ANYMORE ------Function plotResult : display the location of searched people on the maps -----
 /*function plotResult(nbPeopleByArea, dataSearchedPeople){ 
   var global_table=d3.selectAll("#tables");
   var mapSearch = getSearchedMaps(dataSearchedPeople); //list of office areas of searched people --> example : mapSearch=[O2,N3] 
-*/
- /* for (var i=0;i<mapSearch.length;i++){
+  for (var i=0;i<mapSearch.length;i++){
       var people_same_area=getPeopleByArea(mapSearch[i],dataSearchedPeople);   
       for (var k=0;k<people_same_area.length;k++){
         var table=global_table.select("#" + dataSearchedPeople[k][1]);   //example :<g  id="N2-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="25.52841" height="12.577848" x="27.785971" y="249.75424" /></g>
@@ -514,7 +541,8 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
             .attr("y",table.select("rect").attr("y") -40);
       }
     }*/
-/*
+
+/* NOT USED ANYMORE
   console.log(mapSearch);
        //call result : display a map (user must have clicked on it) with the results of the search
       $('.result').click(function(){
