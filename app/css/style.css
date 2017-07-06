@@ -260,11 +260,12 @@
     z-index: 20; 
 }
 .tooltip_ext {
+    position:relative ;
     opacity: 0;        
     text-align: center;   
     width: auto;
     height: auto;
-    padding: 2px;               
+    padding: 6px;               
     font: 15px sans-serif;      
     background: lightsteelblue; 
     border: 0px;        
@@ -329,29 +330,29 @@
     height : 100%;
     background-color: #add6eb;;
 }
-#navigation #etages-menu{
-
-    display :block;
+#navigation #etages_withResult, #etages_withoutResult{
+    /*display :block;*/
     font-size : 25px;
     padding : 20px;
     text-align: center;
     color :black;
     line-height: 200%;
 }
+
 #navigation .list_etage:hover{
     text-decoration:underline;
     color : blue;
     cursor :pointer;
 }
-#navigation #ext{
+#navigation .ext{
     font-size:15px;
     text-decoration : italic;
 }
 
-
-#navigation #eN0:hover #eN1:hover #eN2:hover #eN3:hover #eN4:hover #eO1:hover #eO2:hover{
+/*
+#navigation #N0_withResult:hover #N1_with:hover #eN2:hover #eN3:hover #eN4:hover #eO1:hover #eO2:hover{
     text-decoration:underline;
-}
+}*/
 
 #map-show {
     position : relative;

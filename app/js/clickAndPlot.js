@@ -1,15 +1,15 @@
 // add actions for all small maps
 (function(){
 	// get vars
-	var N0 = document.querySelector('#svg-N0'),
-		N1 = document.querySelector('#svg-N1'),
-		N2 = document.querySelector('#svg-N2'),
-		N3 = document.querySelector('#svg-N3'),
-		N4 = document.querySelector('#svg-N4'),
-		O1 = document.querySelector('#svg-O1');
-		O2 = document.querySelector('#svg-O2'),
-		O3 = document.querySelector('#svg-O3'),
-		O4 = document.querySelector('#svg-O4');
+	var N0 = document.querySelector('#N0_withoutResult'),
+		N1 = document.querySelector('#N1_withoutResult'),
+		N2 = document.querySelector('#N2_withoutResult'),
+		N3 = document.querySelector('#N3_withoutResult'),
+		N4 = document.querySelector('#N4_withoutResult'),
+		O1 = document.querySelector('#O1_withoutResult');
+		O2 = document.querySelector('#O2_withoutResult'),
+		O3 = document.querySelector('#O3_withoutResult'),
+		O4 = document.querySelector('#O4_withoutResult');
 
 
 	// register click class

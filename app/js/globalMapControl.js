@@ -45,13 +45,12 @@ var mapControl = {
 
 				//color of current map on the navigation menu
 				d3.selectAll(".list_etage").style("font-weight","normal");
-				d3.select("#navigation").select("#e"+mapName).style("font-weight","bold");
-
+				d3.select("#"+mapName+"_withResult").style("font-weight","bold");
+				d3.select("#"+mapName+"_withoutResult").style("font-weight","bold");
 				// if plot map N0, add upper padding, because of N0's svg size
 				if(mapName === "N0"){
 					d3.select("#whole-map")
 						.style("padding-top", "130px");
-
 				}
 				else{
 					d3.select("#whole-map")

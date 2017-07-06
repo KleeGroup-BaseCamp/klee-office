@@ -153,16 +153,25 @@ $(function(){
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
   var click= document.getElementById("search-button");
   click.onclick = function(){
+    d3.selectAll("#etages_withoutResult").style("visibility", "hidden")
+					.style("width", "0px")
+					.style("height", "0px")
+          .style("padding","0px");
+    d3.selectAll("#etages_withResult").style("visibility", "visible")
+          .style("width","auto")
+          .style("height","auto")
+          .style("padding","20px");
       for (var i=0;i<list_area.length;i++){
         var area =list_area[i];
         nbPeopleByArea[area]=getPeopleByArea(area,dataSearchedPeople).length;
         if (nbPeopleByArea[area]>0){
           console.log(area);
           if (area==="externe"){
-              d3.select("#ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
+              d3.select(".ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
+              plotResultExtern(nbPeopleByArea,dataSearchedPeople);
           }
           else{
-              d3.select("#e"+area).text("Etage "+area+" ("+nbPeopleByArea[area]+")").style("color","red");
+              d3.select("#"+area+"_withResult").text("Etage "+area+" ("+nbPeopleByArea[area]+")").style("color","red");
 
               //if I'm searching people on my own map, results must appear directly (without clicking on the navigation menu)
               if (area==myData[1].split(/-/)[0]){
@@ -206,7 +215,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
  // ----Function plotResult : display the map with the position and information about searched people when clicking on an area in the navigation menu
 function plotResult(nbPeopleByArea, dataSearchedPeople){
   $('.list_etage').click(function(){
-    var area = this.id.slice(1,3); //this.id="eN3" --> area="N3"
+    var area = this.id.split(/_/)[0]; //this.id="N3_withResult" --> area="N3"
     mapControl.eraseMap();
     //if no map, show my map
     if (!mapControl.existMap) {
@@ -285,6 +294,34 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
     $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#legend'));  
   })
 }
+
+function plotResultExtern(nbPeopleByArea,dataSearchedPeople){
+  var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
+  var text_extern="";
+  for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=(dataSearchedPeopleExtern[i][0])+"<br/>";}
+    console.log(text_extern);
+    d3.select(".ext")
+    .style("cursor", "pointer")
+    .on("mouseover", function(){
+      var tooltip_ext = d3.select(".tooltip_ext");
+      console.log("tooltip");
+      tooltip_ext.html(text_extern)
+        .style("top", "90px")
+        .style("left","35px");
+      tooltip_ext.transition()
+                  .duration(200)
+                  .style("opacity", .95)
+                  .style("z-index", 20);
+      event.stopPropagation();                                    
+      $("html").click(function () {
+        tooltip_ext.transition()
+                    .duration(500)
+                    .style("opacity", 0)
+                    .style("z-index", -1);})
+
+
+    })                         
+};
 
     /* NOT USED ANYMORE  // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example nbPeopleByArea={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){

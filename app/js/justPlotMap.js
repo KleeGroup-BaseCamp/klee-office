@@ -67,6 +67,11 @@
 			.style("height", "100%");
         d3.select("#navigation")
 			.style("visibility", "visible")
+        d3.selectAll("#etages_withResult").style("visibility", "hidden")
+					.style("width", "0px")
+					.style("height", "0px")
+                    .style("padding","0px");
+        d3.selectAll("#etages_withoutResult").style("visibility", "visible");
 
 
         mapControl.mapPlot(myData,mapName,false,function(){})           
