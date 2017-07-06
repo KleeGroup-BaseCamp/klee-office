@@ -1,6 +1,3 @@
-// -------- edit by almorin -------
-
-
 //------------ script to manage the search of many persons --------
 
 'use strict';
@@ -64,6 +61,18 @@ function getExternPeople(dataSearchedPeople){
     }
     return res;
 }
+
+$(document).ready(function(){
+    /* $("#cross-delete").click(function(){
+         console.log("CLICK SUR LA CROIX");
+         $("#search-terms").val("");
+         dataSearchedPeople=[];
+         nbPeopleByArea = {};
+         console.log("DataPerson : " + dataSearchedPeople);
+         console.log("nbPeopleByArea : " + nbPeopleByArea);
+    });*/
+    removeSearchElement();
+});
 
 // call * : launched for each call of searchMany.js
 $(function(){
@@ -129,8 +138,6 @@ $(function(){
                 else{ 
                 dataSearchedPeople.push([people[indice].data.cn[0],location[1],location[0],people[indice].data.mail[0]]);}
               }
-
-
               return false;
             }
           });
@@ -707,3 +714,32 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
       });        
 };*/
 
+// ------------------------------- //
+
+function removeSearchElement(){
+  $("#cross-delete").click(function(){
+         console.log("CLICK SUR LA CROIX");
+         $("#search-terms").val("");
+         dataSearchedPeople=[];
+         nbPeopleByArea = {};
+         var k;
+         console.log("DataPerson : " + dataSearchedPeople);
+         console.log("nbPeopleByArea : " + nbPeopleByArea);
+         d3.select("#noplace-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#N0-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#N1-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#N2-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#N3-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#N4-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#O1-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#O2-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#O3-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         d3.select("#O4-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         for (var k=0;k<nbPeopleByArea[list_area[k]];k++){
+                            table = d3.select("#tables")
+                                          .select("#" + data_area[k][1])
+                                          .remove("image");
+
+                          }
+    })
+}
