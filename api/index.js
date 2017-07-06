@@ -31,7 +31,7 @@ const confServices = require('./services/configurations.js');
 const API_PORT = process.env.PORT || 3000;
 
 const app = express();
-
+/*
  //Partie Authentification SSO - need IDP from support
 
 //authentication with saml2nm
@@ -96,7 +96,7 @@ app.get("/saml2/slsResponse", function(req, res){ //app.post ??
       return res.send(500);
     res.redirect(logout_url);
   });
-});
+});*/
  
 //app.listen(3000);
 

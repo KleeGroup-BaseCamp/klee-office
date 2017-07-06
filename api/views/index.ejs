@@ -29,16 +29,16 @@
     <div id="info-bar">
         <div id="back-to-home">
             <div id="home">
-                <a href="/"><p id="home-label">search</p></a>
+                <a href="/"><p id="home-label" title="Home">search</p></a>
             </div>
             <div id="location">
-                <a href="/localization"><p id="location-label">location</p></a>
+                <a href="/localization"><p id="location-label" title="Changer ma localisation">location</p></a>
             </div>
             <div id="configurations">
-                <a href="/configurations"><p id="configurations-label">configurations</p></a>
+                <a href="/configurations"><p id="configurations-label" title="Liste des configurations">configurations</p></a>
             </div>
             <div id="admin">
-                <a href="/admin"><p id="admin-label">administration</p></a>
+                <a href="/admin"><p id="admin-label" title="Liste des validateurs">administration</p></a>
             </div>
             <div id="personal">
                 <table>
@@ -83,6 +83,21 @@
             <% } %>
         </div>
         <div class="container">
+            <div id="navigation">
+                <ul id="etages-menu">
+                    <li class ="list_etage" id ="eN0">Etage N0</li>
+                    <li class ="list_etage" id ="eN1">Etage N1</li>
+                    <li class ="list_etage" id ="eN2">Etage N2</li>                    
+                    <li class ="list_etage" id ="eN3">Etage N3</li>                                           
+                    <li class ="list_etage" id ="eN4">Etage N4</li>                    
+                    <li class ="list_etage" id ="eO1">Etage O1</li>                                             
+                    <li class ="list_etage" id ="eO2">Etage O2</li>                    
+                    <li class ="list_etage" id ="eO3">Etage O3</li>                    
+                    <li class ="list_etage" id ="eO4">Etage O4 </li></ul>  
+                    <p id ="ext"> </p>                      
+                                                             
+                
+            </div>
             <!-- show mini-maps -->
             <div id="navigation-chart">
                 <br>
@@ -186,24 +201,49 @@
                         </td>
                     </tr>
                 </table>
-            </div>
+            </div> 
+
+            <div id="map-show">
+                <table>
+                    <tr>
+                        <td>
+                            <div id="whole-map">
+                                <div class ="tooltip_map"></div>
+                                <svg class="map"></svg>
+                            </div>
+                        </td>
+                        <td id="legend">
+                            <d id="etage">
+                            </d>
+                            <h3>
+                                Légende
+                            </h3>
+                            <svg width="30" height="15">
+                                <rect width="30" height="15" style="fill:#ff9900"></rect>
+                            </svg>
+                            <p>
+                                Occupé
+                            </p>
+                            <br/>
+                            <svg width="30" height="15">
+                                <rect width="30" height="15" style="fill:#99ff99"></rect>
+                            </svg>
+                            <p>
+                                Libre
+                            </p>
+                            <br/>
+                            <p id="zoom">Zoomer avec <br/>la molette</p>
+                            <br/>
+                            <button id="change_localization"><a href="/localization"> Mettre <br/>à jour <br/>mon bureau </a></button>
+                        </td>
+                    </tr>
+                </table>
+            <div/>
             <!-- show main departments or info about people -->
             <div class="tooltip"></div>
 
-            <!-- show supplemental messages-->
-            <!--<div id="message">
-                <table id="info-chart">
-                    <tr>
-                        <td class="chartTitle">Mail:</td><td class="content" id="mail"></td>
-                        <td id="tableID"></td>
-                    </tr>
-                    <tr><td class="chartTitle">Site:</td><td class="content" id="site"></td></tr>
-                    <tr><td class="chartTitle">Bat:</td><td class="content" id="building"></td></tr>
-                    <tr><td class="chartTitle">Etage:</td><td class="content" id="floor"></td></tr>
-                </table>
-            </div>-->
             <!-- show main maps-->
-            <div id="map-show">
+           <!-- <div id="map-show">
                 <table>
                     <tr>
                         <td>
@@ -240,7 +280,7 @@
                         </td>
                     </tr>
                 </table>
-            </div>
+            </div> -->
             <!-- #main -->
             <footer>
                 <div class="container">

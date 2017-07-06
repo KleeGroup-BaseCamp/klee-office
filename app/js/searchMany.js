@@ -6,6 +6,7 @@ var	server= "http://localhost:3000/";
 var people = [];            //contains data about every person
 var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe"];
 var nbPeopleByArea = {}  // list to count the number of searched people by office area
+var myData=["Alain Gournay","N4-C-01"];
 for (var i=0;i>list_area.length;i++){
   nbPeopleByArea[list_area[i]]=0;
 }
@@ -137,27 +138,128 @@ $(function(){
                 else{ 
                 dataSearchedPeople.push([people[indice].data.cn[0],location[1],location[0],people[indice].data.mail[0]]);}
               }
-              plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople); 
-              //Fonction pour effacer le champ de recherche 
-              /*$(document).ready(function(){
-                $("#cross-delete").click(function(){
-                    $("input:text").val("");
-                });
-              });*/
               return false;
             }
           });
+
        });
+
+      plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople);
 });
+
+
 
  // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example nbPeopleByArea={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
-  console.log("plot nb personnes");
-  var aaa = document.getElementById("search-button");
+  var click= document.getElementById("search-button");
+  click.onclick = function(){
+      console.log("launch plotnb");
+      console.log(nbPeopleByArea);
+      console.log(dataSearchedPeople);
+      for (var i=0;i<list_area.length;i++){
+        var area =list_area[i];
+        nbPeopleByArea[area]=getPeopleByArea(area,dataSearchedPeople).length;
+        if (nbPeopleByArea[area]>0){
+          console.log(area);
+          if (area==="externe"){
+              d3.select("#ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
+            console.log("externe!")}
+          else{
+              console.log(area);
+              console.log("I'm out");
+              d3.select("#e"+area).text("Etage "+area+" ("+nbPeopleByArea[area]+")").style("color","red");
+              //plotSearchedMap(area,getPeopleByArea(area,dataSearchedPeople));
+             // var dataSearchedPeopleByArea=getPeopleByArea(area,dataSearchedPeople);       	  
+            }
+        }
+      };
+      plotResult(nbPeopleByArea, dataSearchedPeople);
+  };    
+};
 
-  //var k=0; 
-       // -- event on button "search" clicked --
-       aaa.onclick = function(){
+function plotResult(nbPeopleByArea, dataSearchedPeople){
+  $('.list_etage').click(function(){
+    var area = this.id.slice(1,3); //this.id="eN3" --> area="N3"
+    mapControl.eraseMap();
+    //if no map, show my map
+    if (!mapControl.existMap) {
+		  mapControl.mapName = area;
+			mapControl.mapPlot(myData,area, function() {
+        var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
+        var xPosition,yPosition;
+        var textToPlot="";
+        var table;
+        for (var k=0;k<nbPeopleByArea[mapControl.mapName];k++){
+          table = d3.select("#tables").select("#" + dataSearchedPeopleByArea[k][1]);
+          //console.log(table);
+          var xPosition = table.select("rect").attr("x")-5;
+					var yPosition = table.select("rect").attr("y")-22;
+          //to load pin on people position
+          table.append("image")
+                  .attr("xlink:href", "./img/pin_final.png")
+                  .attr("width", "20")
+                  .attr("height", "35")
+                  .attr("x", xPosition)
+                  .attr("y", yPosition);
+          textToPlot+=("<b>"+dataSearchedPeopleByArea[k][0] + "</b> : "+ dataSearchedPeopleByArea[k][2]+" : "+dataSearchedPeopleByArea[k][1]+ " - " +dataSearchedPeopleByArea[k][3] +  "<br/>")
+        };
+        var tooltip = d3.select(".tooltip_map");
+	      tooltip.html(textToPlot)
+		            .style("position", "relative")
+                .style("top","0%")
+                .style("left","0%")
+      	tooltip.transition()
+		            .duration(200)
+		            .style("opacity", .9)
+	              .style("z-index", 20);
+        event.stopPropagation();
+        $("html").click(function (event) {event.stopPropagation();})
+        $(".tooltip").click(function () {div.transition().duration(500).style("opacity", 0).style("z-index", -1);})              
+      });
+			mapControl.existMap = true;
+		}
+		// if other map, delete and show my map
+		else if (mapControl.mapName !== area) {
+			d3.select(".map").select("svg").remove();
+			mapControl.mapName = area;              
+      mapControl.mapPlot(myData,area, function() {
+        var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
+        var xPosition,yPosition;
+        var textToPlot="";
+        var table;
+        for (var k=0;k<nbPeopleByArea[mapControl.mapName];k++){
+          table = d3.select("#tables").select("#" + dataSearchedPeopleByArea[k][1]);
+          //console.log(table);
+          var xPosition = table.select("rect").attr("x")-5;
+					var yPosition = table.select("rect").attr("y")-22;
+          //to load pin on people position
+          table.append("image")
+                  .attr("xlink:href", "./img/pin_final.png")
+                  .attr("width", "20")
+                  .attr("height", "35")
+                  .attr("x", xPosition)
+                  .attr("y", yPosition);
+          textToPlot+=("<b>"+dataSearchedPeopleByArea[k][0] + "</b> : "+ dataSearchedPeopleByArea[k][2]+" : "+dataSearchedPeopleByArea[k][1]+ " - " +dataSearchedPeopleByArea[k][3] +  "<br/>")
+        };
+        var tooltip = d3.select(".tooltip_map");
+	      tooltip.html(textToPlot)
+		            .style("position", "relative")
+                .style("top","0%")
+                .style("left","0%")
+      	tooltip.transition()
+		            .duration(200)
+		            .style("opacity", .9)
+	              .style("z-index", 20);
+        event.stopPropagation();
+        $("html").click(function (event) {event.stopPropagation();})
+        $(".tooltip").click(function () {div.transition().duration(500).style("opacity", 0).style("z-index", -1);})                         
+      });
+    }
+    $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#legend'));  
+  })
+}
+
+    /*  
                 // -- update the list nbPeopleByArea with the data of each searched person -- 
                 for (var i=0;i<list_area.length;i++){
                   var area=list_area[i];
@@ -400,15 +502,16 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
                 }
                 plotResult(nbPeopleByArea, dataSearchedPeople);
        };  
-};
+};*/
 
 // ------Function plotResult : display the location of searched people on the maps -----
-function plotResult(nbPeopleByArea, dataSearchedPeople){ 
+/*function plotResult(nbPeopleByArea, dataSearchedPeople){ 
   var global_table=d3.selectAll("#tables");
   var mapSearch = getSearchedMaps(dataSearchedPeople); //list of office areas of searched people --> example : mapSearch=[O2,N3] 
+*/
  /* for (var i=0;i<mapSearch.length;i++){
-    var people_same_area=getPeopleByArea(mapSearch[i],dataSearchedPeople);   
-    for (var k=0;k<people_same_area.length;k++){
+      var people_same_area=getPeopleByArea(mapSearch[i],dataSearchedPeople);   
+      for (var k=0;k<people_same_area.length;k++){
         var table=global_table.select("#" + dataSearchedPeople[k][1]);   //example :<g  id="N2-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="25.52841" height="12.577848" x="27.785971" y="249.75424" /></g>
         table.append("image")
             .attr("xlink:href", "./img/pin_final.png")
@@ -417,8 +520,7 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
             .attr("x",table.select("rect").attr("x") -10)
             .attr("y",table.select("rect").attr("y") -40);
       }
-  }*/
-  
+
   console.log(mapSearch);
        //call result : display a map (user must have clicked on it) with the results of the search
       $('.result').click(function(){
@@ -450,6 +552,7 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
                           for (var k=0;k<nbPeopleByArea[mapControl.mapName];k++){
                             table = d3.select("#tables")
                                           .select("#" + data_area[k][1]);
+                            console.log(table);
                             var xPosition = table.select("rect").attr("x")-10;
 											      var yPosition = table.select("rect").attr("y")-40;
                             //to load pin on people position
@@ -580,7 +683,7 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
                           });
          }
       });        
-};
+};*/
 
 // ------------------------------- //
 
