@@ -36,7 +36,7 @@
         });
         mapControl.buildTooltips(mapNames);
 };*/
-    myData=["Alain Gournay","N4-C-01"];
+    myData=["Alain GOURLAY","N4-C-01"];
     //var mapName = "N4";
     var addEvtListenerOn = function(type, myData, where){
 

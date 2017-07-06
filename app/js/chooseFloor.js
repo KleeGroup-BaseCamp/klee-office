@@ -8,8 +8,8 @@
 (function(window){
     var server= "http://localhost:3000/"
    // var server= "http://local-map/"
-    var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
-    var myData=["Alain Gournay","N4-C-01"];
+    var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
+    var myData=["Alain GOURLAY","N4-C-01"];
     var addEvtListenerOn = function(type, mapNames, where){
     
         where.addEventListener(type, function(){
@@ -53,22 +53,22 @@
             // if no map, show map
             if (!mapControl.existMap) {
                 mapControl.mapName = name;
-                mapControl.mapPlot(myData,mapControl.mapName, function() {});
+                mapControl.mapPlot(myData,mapControl.mapName,true, function() {});
                 mapControl.existMap = true;
             }
             // if other map, delete and show mapN0
             else if (mapControl.mapName !== name) {
                 d3.select(".map").select("svg").remove();
                 mapControl.mapName = name;
-                mapControl.mapPlot(myDta,mapControl.mapName,  function() {});
+                mapControl.mapPlot(myData,mapControl.mapName, true, function() {});
             }
             if (name === "N0"){
-                $('<h1 class="N0">RDC<br/>(N 0)</h1>').prependTo($('#legend'));
+                $('<h1 class="N0">RDC<br/>N0</h1>').prependTo($('#legend'));
             } else {
-                $('<h1 class='+name+'>('+name+')</h1>').prependTo($('#legend'));
+                $('<h1 class='+name+'>Etage <br/>'+name+'</h1>').prependTo($('#legend'));
             }
            // here a name is already set to be able to test the service but it has to be replaced with the name of the connected person
-            d3.json( server+"currentOfficeName/Thomas/GALLON", function(error, data) {
+            d3.json( server+"currentOfficeName/"+myData[0].split(/ /)[0]+"/"+myData[0].split(/ /)[1], function(error, data) {
                 d3.select("#former-office").attr("value", data[0].name);
                 d3.select("#former-office-id").attr("value", data[0].off_id);
             });

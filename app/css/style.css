@@ -422,6 +422,10 @@
     width: 50%;
     height: 100%;
 }
+#localization_map{
+    position : relative;
+    left : -180px;
+}
 #search-back {
     position: relative;
     top: 70px;

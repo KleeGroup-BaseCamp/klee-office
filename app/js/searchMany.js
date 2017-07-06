@@ -6,7 +6,7 @@ var	server= "http://localhost:3000/";
 var people = [];            //contains data about every person
 var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe"];
 var nbPeopleByArea = {}  // list to count the number of searched people by office area
-var myData=["Alain Gournay","N4-C-01"];
+var myData=["Alain GOURLAY","N4-C-01"];
 for (var i=0;i>list_area.length;i++){
   nbPeopleByArea[list_area[i]]=0;
 }
@@ -220,7 +220,7 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
     //if no map, show my map
     if (!mapControl.existMap) {
 		  mapControl.mapName = area;
-			mapControl.mapPlot(myData,area, function() {
+			mapControl.mapPlot(myData,area,false, function() {
         var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
         var xPosition,yPosition;
         var textToPlot="";
@@ -258,7 +258,7 @@ function plotResult(nbPeopleByArea, dataSearchedPeople){
 		else if (mapControl.mapName !== area) {
 			d3.select(".map").select("svg").remove();
 			mapControl.mapName = area;              
-      mapControl.mapPlot(myData,area, function() {
+      mapControl.mapPlot(myData,area, false,function() {
         var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
         var xPosition,yPosition;
         var textToPlot="";
