@@ -36,7 +36,7 @@
         });
         mapControl.buildTooltips(mapNames);
 };*/
-    myData=["Alain Gournay","N4-C-01"];
+    myData=["Alain GOURLAY","N4-C-01"];
     //var mapName = "N4";
     var addEvtListenerOn = function(type, myData, where){
 
@@ -67,6 +67,11 @@
 			.style("height", "100%");
         d3.select("#navigation")
 			.style("visibility", "visible")
+        d3.selectAll("#etages_withResult").style("visibility", "hidden")
+					.style("width", "0px")
+					.style("height", "0px")
+                    .style("padding","0px");
+        d3.selectAll("#etages_withoutResult").style("visibility", "visible");
 
 
         mapControl.mapPlot(myData,mapName,false,function(){})           

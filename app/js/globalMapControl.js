@@ -6,7 +6,7 @@ var mapControl = {
 	existMap: false,
 	mapName: null,
 	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""],
-	mapPlot: function(myData, mapName,callback) {
+	mapPlot: function(myData, mapName,isChoosingFloor, callback) {
 		console.log("globalcontrol mapName :"+mapName);
 		console.log("myData "+myData);
 		// add svg map to html
@@ -45,13 +45,12 @@ var mapControl = {
 
 				//color of current map on the navigation menu
 				d3.selectAll(".list_etage").style("font-weight","normal");
-				d3.select("#navigation").select("#e"+mapName).style("font-weight","bold");
-
+				d3.select("#"+mapName+"_withResult").style("font-weight","bold");
+				d3.select("#"+mapName+"_withoutResult").style("font-weight","bold");
 				// if plot map N0, add upper padding, because of N0's svg size
 				if(mapName === "N0"){
 					d3.select("#whole-map")
 						.style("padding-top", "130px");
-
 				}
 				else{
 					d3.select("#whole-map")
@@ -179,7 +178,7 @@ var mapControl = {
 					 * add event listener on click on table
 					 * to choose it as its new office
 					 */
-					/*if(isChoosingFloor === true){
+					if(isChoosingFloor === true){
 						var allTables = d3.select("#tables")
 							.selectAll("g")
 							.style("cursor", "pointer")
@@ -189,7 +188,7 @@ var mapControl = {
 								d3.select("#office-name")
 									.attr("value", officeName);
 							});
-					}*/
+					
 
 						// Plot number of available offices 
 						/*var allTablees = d3.select("#tables")
@@ -215,6 +214,7 @@ var mapControl = {
 									event.stopPropagation();
 					
 							});*/
+					}
 				});
 				if (callback){callback();}
 			});

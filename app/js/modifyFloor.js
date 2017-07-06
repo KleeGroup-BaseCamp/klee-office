@@ -8,8 +8,8 @@
 (function(window){
     var server= "http://localhost:3000/"
     //var server= "http://local-map/"
-    var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
-    var myData=["Alain Gournay","N4-C-01"];
+    var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
+    var myData=["Alain GOURLAY","N4-C-01"];
 
     /**
      * on floor name : click to choose a floor and plot it
