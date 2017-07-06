@@ -9,8 +9,9 @@
     var server= "http://localhost:3000/"
    // var server= "http://local-map/"
     var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
+    var myData=["Alain Gournay","N4-C-01"];
     var addEvtListenerOn = function(type, mapNames, where){
-
+    
         where.addEventListener(type, function(){
             var everyMap = [];
             everyMap  = document.getElementsByClassName("small-map");
@@ -52,14 +53,14 @@
             // if no map, show map
             if (!mapControl.existMap) {
                 mapControl.mapName = name;
-                mapControl.mapPlot(mapControl.mapName, true, function() {});
+                mapControl.mapPlot(myData,mapControl.mapName, function() {});
                 mapControl.existMap = true;
             }
             // if other map, delete and show mapN0
             else if (mapControl.mapName !== name) {
                 d3.select(".map").select("svg").remove();
                 mapControl.mapName = name;
-                mapControl.mapPlot(mapControl.mapName, true, function() {});
+                mapControl.mapPlot(myDta,mapControl.mapName,  function() {});
             }
             if (name === "N0"){
                 $('<h1 class="N0">RDC<br/>(N 0)</h1>').prependTo($('#legend'));

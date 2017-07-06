@@ -9,6 +9,7 @@
     var server= "http://localhost:3000/"
     //var server= "http://local-map/"
     var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2"];
+    var myData=["Alain Gournay","N4-C-01"];
 
     /**
      * on floor name : click to choose a floor and plot it
@@ -29,14 +30,14 @@
             // if no map, show map
             if (!mapControl.existMap) {
                 mapControl.mapName = name;
-                mapControl.confmapPlot(mapControl.mapName, conId, function() {});
+                mapControl.confmapPlot(myData,mapControl.mapName,  function() {});
                 mapControl.existMap = true;
             }
             // if other map, delete and show mapN0
             else if (mapControl.mapName !== name) {
                 d3.select(".map").select("svg").remove();
                 mapControl.mapName = name;
-                mapControl.confmapPlot(mapControl.mapName, conId, function() {});
+                mapControl.confmapPlot(myData,mapControl.mapName,  function() {});
             }
             if (name === "N0"){
                 $('<h1 class="N0">RDC<br/>(N 0)</h1>').prependTo($('#legend'));

@@ -5,9 +5,14 @@ var	server= "http://localhost:3000/";
 var mapControl = {
 	existMap: false,
 	mapName: null,
-	mapPlot: function(name, isChoosingFloor, callback) {
+	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""],
+	mapPlot: function(myData, mapName,callback) {
+		console.log("globalcontrol mapName :"+mapName);
+		console.log("myData "+myData);
 		// add svg map to html
-		d3.xml( server + "maps/" + name + ".svg",
+		var myDesk =myData[1];
+		var myMap=myDesk.split(/-/)[0];
+		d3.xml( server + "maps/" + mapName + ".svg",
 			function(error, documentFragment) {
 				if(error){
 					console.log(error);
@@ -15,7 +20,6 @@ var mapControl = {
 				}
 				var svgNode,
 					map,
-					floorName,
 					allTables,
 					allAvailables;
 				// request on json file
@@ -23,12 +27,31 @@ var mapControl = {
 				svgNode = documentFragment.getElementsByTagName("svg")[0];
 				map = d3.select(".map");
 				map.node().appendChild(svgNode);
-				floorName = name;
+
+				//to load pin on own position
+				if (mapName===myMap){
+					var myTable = d3.selectAll("#tables").select("#"+myDesk);
+        			var myX = myTable.select("rect").attr("x")-10;
+					var myY = myTable.select("rect").attr("y")-40;					        		
+        			myTable.append("image")
+          		  		.attr("xlink:href", "./img/pin_final.png")
+           		 		.attr("width", "30")
+           		 		.attr("height", "50")
+           		 		.attr("x", myX)
+           		 		.attr("y", myY);
+					d3.select("#change_localization").style("visibility","visible");
+				}
+				else{d3.select("#change_localization").style("visibility","hidden")}
+
+				//color of current map on the navigation menu
+				d3.selectAll(".list_etage").style("font-weight","normal");
+				d3.select("#navigation").select("#e"+mapName).style("font-weight","bold");
 
 				// if plot map N0, add upper padding, because of N0's svg size
-				if(name === "N0"){
+				if(mapName === "N0"){
 					d3.select("#whole-map")
 						.style("padding-top", "130px");
+
 				}
 				else{
 					d3.select("#whole-map")
@@ -143,14 +166,12 @@ var mapControl = {
 											.style("opacity", .9)
 											.style("z-index", 20);
 
-									event.stopPropagation();
-					
+									event.stopPropagation();					
 							});
 						}
 					});
-					////////////////////////////////
+
 					// show all available tables
-					////////////////////////////////
 					allAvailables = d3.select("#tables").selectAll(".available");
 					allAvailables.selectAll("rect").attr("fill", "#99ff99");
 
@@ -158,7 +179,7 @@ var mapControl = {
 					 * add event listener on click on table
 					 * to choose it as its new office
 					 */
-					if(isChoosingFloor === true){
+					/*if(isChoosingFloor === true){
 						var allTables = d3.select("#tables")
 							.selectAll("g")
 							.style("cursor", "pointer")
@@ -168,7 +189,7 @@ var mapControl = {
 								d3.select("#office-name")
 									.attr("value", officeName);
 							});
-					}
+					}*/
 
 						// Plot number of available offices 
 						/*var allTablees = d3.select("#tables")
@@ -194,9 +215,8 @@ var mapControl = {
 									event.stopPropagation();
 					
 							});*/
-
-					callback();
 				});
+				if (callback){callback();}
 			});
 	},
 
@@ -216,6 +236,11 @@ var mapControl = {
 					.style("height", "100%");
 
 				d3.select("#map-show")
+					.style("visibility", "hidden")
+					.style("width", "0px")
+					.style("height", "0px");
+				console.log('set invisible for ' + name);
+				d3.select("#own-position")
 					.style("visibility", "hidden")
 					.style("width", "0px")
 					.style("height", "0px");
@@ -386,14 +411,12 @@ var mapControl = {
 				}
 				var svgNode,
 					map,
-					floorName,
 					allTables,
 					allAvailables;
 
 				svgNode = documentFragment.getElementsByTagName("svg")[0];
 				map = d3.select(".map");
 				map.node().appendChild(svgNode);
-				floorName = name;
 
 				// if plot map N0, add upper padding, because of N0's svg size
 				if(name === "N0"){
@@ -491,7 +514,148 @@ var mapControl = {
 				});
 			});
 	},
+/*	myPositionPlot:function(myData,callback){
+		// add svg map to html
+		var desk=myData[1];
+		var mapName=desk.split(/-/)[0];
+		d3.xml( server + "maps/" + mapName + ".svg",
+			function(error, documentFragment) {
+				if(error){
+					console.log(error);
+					return;
+				}
+				var svgNode,
+					map,
+					allTables,
+					allAvailables;
 
+				// request on json file
+				svgNode = documentFragment.getElementsByTagName("svg")[0];
+				map = d3.select(".map");
+				map.node().appendChild(svgNode);
+				
+
+				// if plot map N0, add upper padding, because of N0's svg size
+				if(mapName === "N0"){
+					d3.select("#my-map").style("padding-top", "130px");}
+				else{
+					d3.select("#my-map").style("padding-top", "0px");}
+
+				// mark all tables as available
+				allTables = d3.select("#tables").selectAll("g");
+				allTables.attr("class", "available");
+
+				// zoom and translate on the maps
+				var zoom = d3.behavior.zoom()
+					.scaleExtent([1, 8])
+					.on("zoom", function() {
+						var wholeMap = d3.select("#my-map")
+							.select("svg");
+						wholeMap.select("#tables")
+							.attr("transform", "translate(" +
+							d3.event.translate + ")scale(" +
+							d3.event.scale + ")");
+						wholeMap.select("#AutoLayers")
+							.attr("transform", "translate(" +
+							d3.event.translate + ")scale(" +
+							d3.event.scale + ")");
+
+						wholeMap.on("dblclick.zoom", null);
+					});
+				var svg = d3.select("#my-map")
+					.select("svg").call(zoom);
+
+
+				// for each people, search his table
+				d3.json( server+"people", function(error, data) {
+					var dataset = data,
+						table,
+						tooltip = d3.select(".tooltip_map");
+
+					$.each(dataset, function(i, data){
+						var d = data[1];
+						if (d.physicalDeliveryOfficeName) {
+							var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
+							if(splitID[1]){
+								table = d3.select("#"+splitID[1]);
+								// if found in map, change table color, add hover actions
+								if(table[0][0] !== null){
+									// mark as occupied
+									table.attr("class", "occupied");
+									table.select("rect")
+										.attr("id", d.cn[0])
+										.attr("fill", "#ff9900")
+										.attr("cursor", "pointer");
+
+									// mouse click on the button will give more info
+									$("#" + splitID[1]).click( function(event) {
+										var xPosition = event.clientX,
+											yPosition = event.clientY;
+										// get scroll pixels to correct tooltip's yPostion
+										yPosition += $(window).scrollTop();
+
+										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0] + "<br/>" + d.physicalDeliveryOfficeName[0])
+											.style("position","absolute")
+											.style("left", (xPosition)-350 + "px")
+											.style("top", (yPosition)-300 + "px")
+											.style("height", "57px");
+										tooltip.transition()
+											.duration(200)
+											.style("opacity", .9)
+											.style("z-index", 20);
+
+										event.stopPropagation();
+									});
+									
+									// click the tooltip won't let it disappear
+									$(".tooltip").click(function(event) {
+										event.stopPropagation();
+									})
+									// click elsewhere will make tooltip disappear
+									$("html").click(function () {
+										tooltip.transition()
+											.duration(500)
+											.style("opacity", 0)
+											.style("z-index", -1);
+									})
+								}
+							}
+
+							//tooltips available tables
+							var allTablees = d3.select("#tables")
+								.selectAll(".available")
+								.style("cursor", "pointer")
+								.on("click", function(){
+								console.log("Bureau : " + d3.event.target.parentNode.id);
+								var xPosition = event.clientX,
+									yPosition = event.clientY;
+										// get scroll pixels to correct tooltip's yPostion
+									yPosition += $(window).scrollTop();
+
+									tooltip.html("Bureau " + d3.event.target.parentNode.id)
+											.style("position","absolute")
+											.style("left", (xPosition)-350 + "px")
+											.style("top", (yPosition)-300 + "px")
+											.style("height", "20px");
+									tooltip.transition()
+											.duration(200)
+											.style("opacity", .9)
+											.style("z-index", 20);
+
+									event.stopPropagation();
+					
+							});
+						}
+					});
+				})
+					////////////////////////////////
+					// show all available tables
+					////////////////////////////////
+					allAvailables = d3.select("#tables").selectAll(".available");
+					allAvailables.selectAll("rect").attr("fill", "#99ff99");
+			});
+
+	},*/
 
 // Erase all maps from the chart, visualize big map with 100% width and height
 	eraseMap: function() {
@@ -499,6 +663,7 @@ var mapControl = {
 
 		// erase small maps
 		var everyMap = [];
+		var myMap;
 		everyMap = document.getElementsByClassName("small-map");
 		// if small maps are already there, remove them
 
@@ -510,15 +675,17 @@ var mapControl = {
 				});
 			}
 		});
+
 		d3.select("#navigation-chart")
 			.style("visibility", "hidden")
 			.style("width", "0px")
 			.style("height", "0px");
+		d3.select("#own-position")
+			.style("visibility", "hidden")
+			.style("width", "0px")
+			.style("height", "0px");
 
-		var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""];
-
-
-		$.each(mapNames, function(i, name){
+		$.each(mapControl.listMaps, function(i, name){
 			// erase floor title of the legend
 			if(document.getElementsByClassName(name).length >0
 				&& document.getElementsByClassName(name) !== null
