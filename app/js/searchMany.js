@@ -62,17 +62,10 @@ function getExternPeople(dataSearchedPeople){
     return res;
 }
 
-$(document).ready(function(){
-    /* $("#cross-delete").click(function(){
-         console.log("CLICK SUR LA CROIX");
-         $("#search-terms").val("");
-         dataSearchedPeople=[];
-         nbPeopleByArea = {};
-         console.log("DataPerson : " + dataSearchedPeople);
-         console.log("nbPeopleByArea : " + nbPeopleByArea);
-    });*/
+// call removeSearchElement anytime on this page
+/*$(document).ready(function(){
     removeSearchElement();
-});
+});*/
 
 // call * : launched for each call of searchMany.js
 $(function(){
@@ -802,30 +795,27 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
 
 // ------------------------------- //
 
-function removeSearchElement(){
+/*function removeSearchElement(){
   $("#cross-delete").click(function(){
          console.log("CLICK SUR LA CROIX");
          $("#search-terms").val("");
-         dataSearchedPeople=[];
-         nbPeopleByArea = {};
+         dataSearchedPeople.length=0;
+         
          var k;
          console.log("DataPerson : " + dataSearchedPeople);
          console.log("nbPeopleByArea : " + nbPeopleByArea);
-         d3.select("#noplace-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N0-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N1-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N2-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N3-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#N4-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O1-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O2-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O3-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
-         d3.select("#O4-personnes").text("- 0 -").style("color", "	rgb(220, 220, 220)");
+         console.log("Etage : " + nbPeopleByArea.length);
+        
          for (var k=0;k<nbPeopleByArea[list_area[k]];k++){
                             table = d3.select("#tables")
-                                          .select("#" + data_area[k][1])
-                                          .remove("image");
+<<<<<<< HEAD
+                                        .select("#" + nbPeopleByArea[list_area[k]])
+                                        .remove("image");
+                                       // console.log("Etage : " + nbPeopleByArea[list_area[k]]);
+                                      console.log("TOTOTO");}
+          nbPeopleByArea.length = 0;
+                            
+                          })
+   // })
+}*/
 
-                          }
-    })
-}
