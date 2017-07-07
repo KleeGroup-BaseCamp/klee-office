@@ -152,6 +152,7 @@ app.get('/consistency:id', function(req, res){
 app.get('/test', peopleServices.test);
 app.get('/people', peopleServices.getAllPeople);
 app.get('/getPeople', peopleServices.getPeople);
+app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
 app.get('/maps/:name', mapServices.getMap);
 app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
@@ -159,6 +160,7 @@ app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
 app.get('/getLastDeskUpdate/:id', localizationServices.getLastDeskUpdate);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
+app.get('/getPersonByDesk/:name', localizationServices.getPersonByDesk);
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);

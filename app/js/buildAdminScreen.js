@@ -3,7 +3,10 @@
  * Created by msalvi on 08/09/2016.
  */
 (function(window) {
-
+    
+    var myData=["Alain GOURLAY","N4-C-01"];
+    d3.select("#personal-name").html(myData[0]);
+    d3.select("#personal-desk").html(myData[1]);
     function preparePlot() {
         // remove info msg
         d3.select("#info-pole").remove();

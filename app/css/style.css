@@ -22,19 +22,20 @@
     background: url("../img/home_final.png") 0px 0px;
     background-size: 40px 40px;
 }
+/*
 #location p {
     background: url("../img/loc01.png") 0px 0px;
     background-size: 30px 40px;
     background-repeat: no-repeat;
-}
+}*/
 #admin p {
     background: url("../img/lock-open.png") 0px 0px;
-    background-size: 30px 40px;
+    background-size: 35px 40px;
     background-repeat: no-repeat;
 }
 #configurations p {
-    background: url("../img/mutliple-locations.png") 0px 0px;
-    background-size: 30px 40px;
+    background: url("../img/config2.png") 0px 0px;
+    background-size: 35px 40px;
     background-repeat: no-repeat;
 }
 #personal{
@@ -287,11 +288,14 @@
     z-index: 20;    
 }
 
-/*.tooltip_ext_map{
-    position : absolute;
-    left :50%;
-    top : 50%;
-}*/
+.tooltip_ext_map{
+    position :relative;
+    border-left: 2px solid #297aa3;
+    border-right: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;
+    width : 1037px;
+    margin:0px;
+}
 
 #message {
     opacity: 0;
@@ -327,22 +331,24 @@
 }
 #navigation {
     z-index:0;
-    float : left;
-    margin-right : 20px;
-    border-left : 2px solid black;
-    border-right : 2px solid black;
-    border-bottom : 2px solid black;
+    position : absolute;
+    margin-left :0px;
+    border-left : 5px solid #297aa3;
+    border-right : 5px solid #297aa3;
+    border-bottom : 5px solid #297aa3;
     width: 220px;
-    height : 600px;
+    height : 750px;
     background-color: #add6eb;;
 }
 #navigation #etages_withResult, #etages_withoutResult{
-    /*display :block;*/
+    padding-top :50px;
+    padding-left:20px;
+    padding-right:20px;
     font-size : 25px;
-    padding : 20px;
     text-align: center;
+    vertical-align: middle;
     color :black;
-    line-height: 200%;
+    line-height: 250%;
 }
 
 #navigation .list_etage:hover{
@@ -356,14 +362,36 @@
     font-style :italic;
 }
 
-/*
-#navigation #N0_withResult:hover #N1_with:hover #eN2:hover #eN3:hover #eN4:hover #eO1:hover #eO2:hover{
-    text-decoration:underline;
-}*/
+.info-bar{
+    padding : 10px;
+    width :1037px;
+    position :relative;
+    height:150px;
+    margin-left :220px;
+    z-index: 0;
+    border-left: 2px solid #297aa3;
+    border-right: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;
+    background-color: #c2d1f0;
+    line-height: 150%;
+}
+#text-default{
+    font-size:16px;
+}
+#title-default{
+    font-size : 20px;
+    font-weight: bold;
+}
+
+#map-show #map-name{
+    padding : 10px;
+    text-align :center;
+    height :50px
+}
 
 #map-show {
     position : relative;
-    margin-left :170px;
+    margin-left :220px;
     z-index: 0;
 }
 #map-show #whole-map {
@@ -371,12 +399,13 @@
     border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;
+    height:600px;
 
 }
 #map-show .map {
     position: relative;
     width: 900px;
-    height: 600px;
+    height: 550px;
 }
 #legend {
     width: 132px;
