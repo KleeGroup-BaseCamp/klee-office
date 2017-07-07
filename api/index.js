@@ -31,7 +31,35 @@ const confServices = require('./services/configurations.js');
 const API_PORT = process.env.PORT || 3000;
 
 const app = express();
-/*
+
+
+//app.listen(3000);
+
+
+// views engine for renders
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
+app.use(cors());
+app.use(bodyParser.json());
+// CHECK IF OK....
+app.use(bodyParser.urlencoded({extended: false}))
+
+// serve static page files
+app.use(express.static('../app'));
+
+// send flash messages to the user
+app.use(cookieParser('secret'));
+app.use(session({
+  secret: 'secret option',
+  resave: true,
+  saveUninitialized: false,
+  cookie: { secure: true,
+            maxAge: 60000 
+          }
+}));
+app.use(flash());
+
  //Partie Authentification SSO - need IDP from support
 
 //authentication with saml2nm
@@ -48,40 +76,62 @@ var sp= new saml2.ServiceProvider(sp_options);
 var idp_options = {
   sso_login_url: "https://sso.kleegroup.com/saml2/idp/SSOService.php",
   sso_logout_url: "https://sso.kleegroup.com/saml2/idp/SingleLogoutService.php",
-  certificates: [fs.readFileSync("certificate_idp1.crt").toString(), fs.readFileSync("certificate_idp2.crt").toString()]
+  certificates: fs.readFileSync("certificate_idp1.crt").toString()
 };
 var idp = new saml2.IdentityProvider(idp_options);
 // Starting point for login 
 app.get("/login", function(req, res) {
-  sp.create_login_request_url(idp, {}, function(err, login_url, request_id) {
-    if (err != null)
-      return res.send(500);
+var options = {relay_state: "/"};
+  sp.create_login_request_url(idp, options, function(err, login_url, request_id) {
+    if (err != null){
+	console.log("Echec login");
+      return res.send(500);}
+    console.log("Login Fait!");
+    console.log("Login Url : " + login_url);
+    console.log("Request ID : " + request_id);	
     res.redirect(login_url);
   });
 });
 // Assert endpoint for when login completes 
 app.post("/saml2/acs", function(req, res) { // assert
-  var options = {request_body: req.body};
+  var options = {
+			request_body: req.body,
+			allow_unencrypted_assertion: true,
+			require_session_index: false,
+			relay_state: "/" 	
+		};
+  //console.log(req);
+  //console.log("Req.body : " + req.body);
   sp.post_assert(idp, options, function(err, saml_response) {
-    if (err != null)
-      return res.send(500);
+    if (err != null){
+	console.log("Echec Assert!");
+	console.log(err);
+	console.log(saml_response);
+	return res.send("Erreur Assertion");
+    }
+    
+    console.log("Assert Succeed");
     // Save name_id and session_index for logout 
-    name_id = saml_response.user.name_id;
-    session_index = saml_response.user.session_index;
-    res.send("Hello #{saml_response.user.name_id}!");
+    var name_id = saml_response.user.attributes.uid[0];
+    res.send(name_id);
   });
+
+	//res.send("TITI");  
 });
 // Starting point for logout 
 app.get("/saml2/sls", function(req, res) { //logout
   var options = {
-    name_id: name_id,
-    session_index: session_index
-  };
- 
-  sp.create_logout_request_url(idp, options, function(err, logout_url) {
-    if (err != null)
-      return res.send(500);
-    res.redirect(logout_url);
+			name_id: "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
+			allow_unencrypted_assertion: true,
+                	require_session_index: false
+		};
+  console.log(req.body);
+  sp.create_logout_request_url(idp, {}, function(err, logout_url) {
+    if (err != null){
+      console.log(err);	
+      return res.send("Erreur déconnexion");}
+  console.log("Logout URL : " + logout_url);  
+  res.redirect(logout_url);
   });
 });
 
@@ -96,52 +146,63 @@ app.get("/saml2/slsResponse", function(req, res){ //app.post ??
       return res.send(500);
     res.redirect(logout_url);
   });
-});*/
+});
+
+app.get("/welcome", function (req, res) {
+  // On stocke dans la session
+  req.session.user = "Toto";
+  console.log(req.session);
+  res.send("Hello " + req.session.user);
+});
  
-//app.listen(3000);
-
-
-// views engine for renders
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-app.use(cors());
-app.use(bodyParser.json());
-// CHECK IF OK....
-app.use(bodyParser.urlencoded({extended: true}))
-
-// serve static page files
-app.use(express.static('../app'));
-
-// send flash messages to the user
-app.use(cookieParser('secret'));
-app.use(session({cookie: { maxAge: 60000 }}));
-app.use(flash());
-
 // views
 //home
 app.get('/', function(req, res){
-	res.render('index', { message: req.flash('success') });
+	req.session.user = "User";
+  req.session.desk = "Desk";
+  res.render('index', { message: req.flash('success'),
+                        myName: req.session.user,
+                        myDesk: req.session.desk});
 });
 // employee localization
 app.get('/localization', function(req, res){
-	res.render('tell-localization', { message: req.flash('error') });
+  req.session.user = "User";
+  req.session.desk = "Desk";
+	res.render('tell-localization', { message: req.flash('success'),
+                        myName: req.session.user,
+                        myDesk: req.session.desk});
 });
 // admin screen
 app.get('/admin', function(req, res){
-	res.render('admin', { message: req.flash('success') });
+  req.session.user = "User";
+  req.session.desk = "Desk";
+	res.render('admin', { message: req.flash('success'),
+                        myName: req.session.user,
+                        myDesk: req.session.desk});
 });
 // configurations screen
 app.get('/configurations', function(req, res){
-	res.render('conf-list', { message: req.flash('success') });
+  req.session.user = "User";
+  req.session.desk = "Desk";
+	res.render('conf-list', { message: req.flash('success'),
+                        myName: req.session.user,
+                        myDesk: req.session.desk});
 });
 // work on a configuration
 app.get('/modify:id', function(req, res){
-	res.render('modify', { message: req.flash('success') });
+  req.session.user = "User";
+  req.session.desk = "Desk";
+	res.render('modify', { message: req.flash('success'),
+                        myName: req.session.user,
+                        myDesk: req.session.desk});
 });
 // check consistency
 app.get('/consistency:id', function(req, res){
-	res.render('consistency-list', { message: req.flash('success') });
+  req.session.user = "User";
+  req.session.desk = "Desk";
+	res.render('consistency-list', { message: req.flash('success'),
+                        myName: req.session.user,
+                        myDesk: req.session.desk});;
 });
 
 // people
@@ -157,7 +218,6 @@ app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
 app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
-app.get('/getLastDeskUpdate/:id', localizationServices.getLastDeskUpdate);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
