@@ -8,7 +8,7 @@ var mapControl = {
 	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""],
 	mapPlot: function(myData, mapName,isChoosingFloor, callback) {
 		console.log("globalcontrol mapName :"+mapName);
-		console.log("myData "+myData);
+
 		// add svg map to html
 		var myDesk =myData[1];
 		var myMap=myDesk.split(/-/)[0];
@@ -26,6 +26,7 @@ var mapControl = {
 
 				svgNode = documentFragment.getElementsByTagName("svg")[0];
 				map = d3.select(".map");
+				console.log(map);
 				map.node().appendChild(svgNode);
 
 				//to load pin on own position
@@ -34,9 +35,9 @@ var mapControl = {
         			var myX = myTable.select("rect").attr("x")-10;
 					var myY = myTable.select("rect").attr("y")-40;					        		
         			myTable.append("image")
-          		  		.attr("xlink:href", "./img/pin_final.png")
-           		 		.attr("width", "30")
-           		 		.attr("height", "50")
+          		  		.attr("xlink:href", "./img/pin_home.png")
+           		 		.attr("width", "35")
+           		 		.attr("height", "60")
            		 		.attr("x", myX)
            		 		.attr("y", myY);
 					d3.select("#change_localization").style("visibility","visible");
@@ -178,7 +179,7 @@ var mapControl = {
 					 * add event listener on click on table
 					 * to choose it as its new office
 					 */
-					if(isChoosingFloor === true){
+					/*if(isChoosingFloor === true){
 						var allTables = d3.select("#tables")
 							.selectAll("g")
 							.style("cursor", "pointer")
@@ -187,7 +188,7 @@ var mapControl = {
 								var officeName = d3.event.target.parentNode.id;
 								d3.select("#office-name")
 									.attr("value", officeName);
-							});
+							});}*/
 					
 
 						// Plot number of available offices 
@@ -214,7 +215,7 @@ var mapControl = {
 									event.stopPropagation();
 					
 							});*/
-					}
+					
 				});
 				if (callback){callback();}
 			});
@@ -308,7 +309,6 @@ var mapControl = {
 // justPlotMap.js
 // show small maps' tooltip: departements of small map
 	buildTooltips: function(names) {
-		//console.log("HELLOOOOOOOOOO");
 		$.each(names, function(i, element){
 			// get the departments in one map
 			d3.xml(server + "maps/" + element + ".svg",
@@ -514,148 +514,7 @@ var mapControl = {
 				});
 			});
 	},
-/*	myPositionPlot:function(myData,callback){
-		// add svg map to html
-		var desk=myData[1];
-		var mapName=desk.split(/-/)[0];
-		d3.xml( server + "maps/" + mapName + ".svg",
-			function(error, documentFragment) {
-				if(error){
-					console.log(error);
-					return;
-				}
-				var svgNode,
-					map,
-					allTables,
-					allAvailables;
 
-				// request on json file
-				svgNode = documentFragment.getElementsByTagName("svg")[0];
-				map = d3.select(".map");
-				map.node().appendChild(svgNode);
-				
-
-				// if plot map N0, add upper padding, because of N0's svg size
-				if(mapName === "N0"){
-					d3.select("#my-map").style("padding-top", "130px");}
-				else{
-					d3.select("#my-map").style("padding-top", "0px");}
-
-				// mark all tables as available
-				allTables = d3.select("#tables").selectAll("g");
-				allTables.attr("class", "available");
-
-				// zoom and translate on the maps
-				var zoom = d3.behavior.zoom()
-					.scaleExtent([1, 8])
-					.on("zoom", function() {
-						var wholeMap = d3.select("#my-map")
-							.select("svg");
-						wholeMap.select("#tables")
-							.attr("transform", "translate(" +
-							d3.event.translate + ")scale(" +
-							d3.event.scale + ")");
-						wholeMap.select("#AutoLayers")
-							.attr("transform", "translate(" +
-							d3.event.translate + ")scale(" +
-							d3.event.scale + ")");
-
-						wholeMap.on("dblclick.zoom", null);
-					});
-				var svg = d3.select("#my-map")
-					.select("svg").call(zoom);
-
-
-				// for each people, search his table
-				d3.json( server+"people", function(error, data) {
-					var dataset = data,
-						table,
-						tooltip = d3.select(".tooltip_map");
-
-					$.each(dataset, function(i, data){
-						var d = data[1];
-						if (d.physicalDeliveryOfficeName) {
-							var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
-							if(splitID[1]){
-								table = d3.select("#"+splitID[1]);
-								// if found in map, change table color, add hover actions
-								if(table[0][0] !== null){
-									// mark as occupied
-									table.attr("class", "occupied");
-									table.select("rect")
-										.attr("id", d.cn[0])
-										.attr("fill", "#ff9900")
-										.attr("cursor", "pointer");
-
-									// mouse click on the button will give more info
-									$("#" + splitID[1]).click( function(event) {
-										var xPosition = event.clientX,
-											yPosition = event.clientY;
-										// get scroll pixels to correct tooltip's yPostion
-										yPosition += $(window).scrollTop();
-
-										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0] + "<br/>" + d.physicalDeliveryOfficeName[0])
-											.style("position","absolute")
-											.style("left", (xPosition)-350 + "px")
-											.style("top", (yPosition)-300 + "px")
-											.style("height", "57px");
-										tooltip.transition()
-											.duration(200)
-											.style("opacity", .9)
-											.style("z-index", 20);
-
-										event.stopPropagation();
-									});
-									
-									// click the tooltip won't let it disappear
-									$(".tooltip").click(function(event) {
-										event.stopPropagation();
-									})
-									// click elsewhere will make tooltip disappear
-									$("html").click(function () {
-										tooltip.transition()
-											.duration(500)
-											.style("opacity", 0)
-											.style("z-index", -1);
-									})
-								}
-							}
-
-							//tooltips available tables
-							var allTablees = d3.select("#tables")
-								.selectAll(".available")
-								.style("cursor", "pointer")
-								.on("click", function(){
-								console.log("Bureau : " + d3.event.target.parentNode.id);
-								var xPosition = event.clientX,
-									yPosition = event.clientY;
-										// get scroll pixels to correct tooltip's yPostion
-									yPosition += $(window).scrollTop();
-
-									tooltip.html("Bureau " + d3.event.target.parentNode.id)
-											.style("position","absolute")
-											.style("left", (xPosition)-350 + "px")
-											.style("top", (yPosition)-300 + "px")
-											.style("height", "20px");
-									tooltip.transition()
-											.duration(200)
-											.style("opacity", .9)
-											.style("z-index", 20);
-
-									event.stopPropagation();
-					
-							});
-						}
-					});
-				})
-					////////////////////////////////
-					// show all available tables
-					////////////////////////////////
-					allAvailables = d3.select("#tables").selectAll(".available");
-					allAvailables.selectAll("rect").attr("fill", "#99ff99");
-			});
-
-	},*/
 
 // Erase all maps from the chart, visualize big map with 100% width and height
 	eraseMap: function() {
@@ -677,10 +536,6 @@ var mapControl = {
 		});
 
 		d3.select("#navigation-chart")
-			.style("visibility", "hidden")
-			.style("width", "0px")
-			.style("height", "0px");
-		d3.select("#own-position")
 			.style("visibility", "hidden")
 			.style("width", "0px")
 			.style("height", "0px");

@@ -57,6 +57,7 @@
 			//mapControl.mapPlot(mapName, false, function() {});
 		}
 		$('<h1 class='+mapName+'>Etage <br/>'+mapName+'</h1>').prependTo($('#legend'));
+        d3.select("#change_localization").style("visibility","visible");
         d3.select("#navigation-chart")
 					.style("visibility", "hidden")
 					.style("width", "0")

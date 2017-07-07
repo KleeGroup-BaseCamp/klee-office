@@ -287,6 +287,12 @@
     z-index: 20;    
 }
 
+/*.tooltip_ext_map{
+    position : absolute;
+    left :50%;
+    top : 50%;
+}*/
+
 #message {
     opacity: 0;
     position: absolute;         
@@ -327,7 +333,7 @@
     border-right : 2px solid black;
     border-bottom : 2px solid black;
     width: 220px;
-    height : 100%;
+    height : 600px;
     background-color: #add6eb;;
 }
 #navigation #etages_withResult, #etages_withoutResult{
@@ -345,8 +351,9 @@
     cursor :pointer;
 }
 #navigation .ext{
-    font-size:15px;
-    text-decoration : italic;
+    cursor :pointer;
+    font-size :15px;
+    font-style :italic;
 }
 
 /*
