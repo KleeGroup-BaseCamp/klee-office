@@ -6,8 +6,9 @@ var	server= "http://localhost:3000/";
 var people = [];            //contains data about every person
 var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe"];
 var nbPeopleByArea = {}  // list to count the number of searched people by office area
+
 var myData=["Alain GOURLAY","N4-C-01"];
-for (var i=0;i>list_area.length;i++){
+for (var i=0;i<list_area.length;i++){
   nbPeopleByArea[list_area[i]]=0;
 }
 var dataSearchedPeople=[];// [[name,desk,location,mail],,...]
@@ -809,7 +810,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
         
          for (var k=0;k<nbPeopleByArea[list_area[k]];k++){
                             table = d3.select("#tables")
-<<<<<<< HEAD
+
                                         .select("#" + nbPeopleByArea[list_area[k]])
                                         .remove("image");
                                        // console.log("Etage : " + nbPeopleByArea[list_area[k]]);
