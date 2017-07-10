@@ -53,10 +53,12 @@ app.use(cookieParser('secret'));
 app.use(session({
   secret: 'secret option',
   resave: true,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: { secure: true,
             maxAge: 60000 
-          }
+          },
+  //user: "Toto",
+  //desk: "Buro"        
 }));
 app.use(flash());
 
@@ -160,14 +162,16 @@ app.get("/welcome", function (req, res) {
 app.get('/', function(req, res){
 	req.session.user = "User";
   req.session.desk = "Desk";
+  console.log(req.session);
   res.render('index', { message: req.flash('success'),
                         myName: req.session.user,
                         myDesk: req.session.desk});
 });
 // employee localization
 app.get('/localization', function(req, res){
-  req.session.user = "User";
-  req.session.desk = "Desk";
+  //req.session.user = "User";
+  //req.session.desk = "Desk";
+  console.log(req.session);
 	res.render('tell-localization', { message: req.flash('success'),
                         myName: req.session.user,
                         myDesk: req.session.desk});
