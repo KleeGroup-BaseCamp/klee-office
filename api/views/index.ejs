@@ -31,24 +31,24 @@
             <div id="home">
                 <a href="/"><p id="home-label" title="Home">search</p></a>
             </div>
-            <div id="location">
+            <!--div id="location">
                 <a href="/localization"><p id="location-label" title="Changer ma localisation">location</p></a>
-            </div>
+            </div-->
             <div id="configurations">
                 <a href="/configurations"><p id="configurations-label" title="Liste des configurations">configurations</p></a>
             </div>
             <div id="admin">
                 <a href="/admin"><p id="admin-label" title="Liste des validateurs">administration</p></a>
             </div>
-            <div id="personal">
+        </div>
+        <div id="personal">
                 <table>
                     <tr>
-                        <td id="personal-name"><%- myName %></td>
+                        <td id="personal-name"></td>
                         <td>___</td>
-                        <td id="personal-desk"><%- myDesk %></td>
+                        <td id="personal-desk"></td>
                     </tr>
                 </table>
-            </div>
         </div>
     </div>
     <!-- /#info-bar -->
@@ -106,13 +106,19 @@
                     <li class="list_etage" id ="O1_withoutResult">Etage O1</li>                                             
                     <li class="list_etage" id ="O2_withoutResult">Etage O2</li>                    
                     <li class="list_etage" id ="O3_withoutResult">Etage O3</li>                    
-                    <li class="list_etage" id ="O4_withoutResult">Etage O4</li>
-                    <div class ="ext"> </div>                        
+                    <li class="list_etage" id ="O4_withoutResult">Etage O4</li>                   
                 </ul> 
             </div>
+            
+            <div class="info-bar">
+                <div id="title-default"></div>
+                <br/>
+                <div id="text-default"></div>
+                <br/>
+                <button id="button-localization" name="Mettre à jour mon bureau">Mettre à jour mon bureau</button>
+            </div>
             <!-- show mini-maps -->
-            <div class="info_bar"></div>
-            <div id="navigation-chart">
+            <!--div id="navigation-chart">
                 <br>
                 <table id="offices-chart">
                     <thead class="floor">
@@ -214,14 +220,16 @@
                         </td>
                     </tr>
                 </table>
-            </div> 
-
+            </div--> 
+            <!-- show main maps-->
             <div id="map-show">
                 <table>
                     <tr>
+                        <div class="tooltip_ext_map"></div>
                         <td>
                             <div id="whole-map">
-                                <div class="tooltip_ext_map"></div>
+                                <div id="map-name"></div>
+                                
                                 <div class ="tooltip_map"></div>
                                 <svg class="map"></svg>
                             </div>
@@ -248,7 +256,6 @@
                             <br/>
                             <p id="zoom">Zoomer avec <br/>la molette</p>
                             <br/>
-                            <button id="change_localization"><a href="/localization"> Mettre <br/>à jour <br/>mon bureau </a></button>
                         </td>
                     </tr>
                 </table>
@@ -256,45 +263,7 @@
             <!-- show main departments or info about people -->
             <div class="tooltip"></div>
 
-            <!-- show main maps-->
-           <!-- <div id="map-show">
-                <table>
-                    <tr>
-                        <td>
-                            <div id="whole-map">
-                                <div class ="tooltip_map"></div>
-                                <svg class="map"></svg>
-                            </div>
-                        </td>
-                        <td id="legend">
-                            <d id="etage">
-                            </d>
-                            <h3>
-                                Légende
-                            </h3>
-                            <svg width="30" height="15">
-                                <rect width="30" height="15" style="fill:#ff9900"></rect>
-                            </svg>
-                            <p>
-                                Occupé
-                            </p>
-                            <br/>
-                            <svg width="30" height="15">
-                                <rect width="30" height="15" style="fill:#99ff99"></rect>
-                            </svg>
-                            <p>
-                                Libre
-                            </p>
-                            <br/>
-                            <p id="zoom">Zoomer avec <br/>la molette</p>
-                            <br/>
-                            <button id="search-back">Suivant</button>
-                            <br/>
-                            <p id="extern-result"><div class ="tooltip_ext"></div></p>
-                        </td>
-                    </tr>
-                </table>
-            </div> -->
+            
             <!-- #main -->
             <footer>
                 <div class="container">
@@ -321,6 +290,7 @@
 <!-- <script type="text/javascript" src="js/autocomplete.js"></script> -->
 <script type="text/javascript" src="js/searchMany.js"></script>
 <script type="text/javascript" src="js/justPlotMap.js"></script>
+<script type="text/javascript" src="js/changeLocalization.js"></script>
 </body>
 
 </html>

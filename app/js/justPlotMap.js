@@ -6,7 +6,7 @@
  */
 (function(window){
 
- /* var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
+ /*NOT USED ANYMORE var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
     var addEvtListenerOn = function(type, mapNames, where){
 
         // tooltips for every floor
@@ -36,7 +36,9 @@
         });
         mapControl.buildTooltips(mapNames);
 };*/
-    myData=["Alain GOURLAY","N4-C-01"];
+    var myData=["Alain GOURLAY","N4-C-01"];
+    d3.select("#personal-name").html(myData[0]);
+    d3.select("#personal-desk").html(myData[1]);
     //var mapName = "N4";
     var addEvtListenerOn = function(type, myData, where){
 
@@ -56,8 +58,8 @@
 			mapControl.mapName = mapName;
 			//mapControl.mapPlot(mapName, false, function() {});
 		}
-		$('<h1 class='+mapName+'>Etage <br/>'+mapName+'</h1>').prependTo($('#legend'));
-        d3.select("#change_localization").style("visibility","visible");
+		$('<h1 class='+mapName+'>Etage '+mapName[1]+'<br/>('+mapName+')</h1>').prependTo($('#map-name'));
+
         d3.select("#navigation-chart")
 					.style("visibility", "hidden")
 					.style("width", "0")
@@ -66,6 +68,7 @@
 			.style("visibility", "visible")
 			.style("width", "100%")
 			.style("height", "100%");
+
         d3.select("#navigation")
 			.style("visibility", "visible")
         d3.selectAll("#etages_withResult").style("visibility", "hidden")
@@ -73,7 +76,8 @@
 					.style("height", "0px")
                     .style("padding","0px");
         d3.selectAll("#etages_withoutResult").style("visibility", "visible");
-
+        d3.select("#title-default").html("MODE Navigation");
+        d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes étage "+mapName+" !");
 
         mapControl.mapPlot(myData,mapName,false,function(){})           
         })

@@ -142,7 +142,7 @@ const populate = (req, res) => {
                 console.log(err + " ---------" + elem);
             });
 
-        var states = ["A valider", "Validee", "Brouillon"];
+        var states = ["Déplacement personnel", "Validee", "Brouillon"];
         // insert states and a new configuration "Validee"
         Promise.each(states, function(elem, index, length){
             var state = MoveStatus.build({name: elem});

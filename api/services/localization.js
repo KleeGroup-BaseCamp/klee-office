@@ -50,7 +50,7 @@ const saveMyLocalization = (req, res) => {
     Person.findOne({
         where :{firstname : req.body.firstname,lastname : req.body.lastname}
     }).then(function(person_to_move){
-        MoveStatus.findOne({where: {name: "A valider"}})
+        MoveStatus.findOne({where: {name: "Déplacement personnel"}})
         .then(function(status){
             var date = new Date();
             var set = MoveSet.build({
@@ -132,6 +132,17 @@ const getLastDeskUpdate = (req,res) =>{
            res.json(updesk);
         });
 }
+const getPersonByDesk = (req,res) =>{
+        models.sequelize.query('SELECT \"Person\".firstname,\"Person\".lastname '+
+        'FROM \"Person\" '+
+        'JOIN \"Desk\" ON \"Desk\".person_id = \"Person\".per_id '+
+        'WHERE \"Desk\".name = :name ',
+        { replacements: {name: req.params.name}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(person){
+            console.log(person);
+           res.json(person);
+        });
+}
 
 /*const getLastDeskUpdate = (req,res) =>{
     models.sequelize.query('SELECT \"MoveLine\".\"dateCreation\" '+
@@ -154,5 +165,6 @@ module.exports = {
     saveMyLocalization,
     getCurrentDeskName,
     getCurrentDeskNamebyId,
-    getLastDeskUpdate
+    getLastDeskUpdate,
+    getPersonByDesk
 }

@@ -25,9 +25,21 @@ const getPeople = (req, res) => {
 	});
 };
 
+const getLevelValidator =(req,res) =>{
+	models.sequelize.query('SELECT \"Person\".isValidatorLvlOne, \"Person\".isValidatorLevelTwo '+
+        'FROM \"Person\" ' +
+        'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last;',
+        { replacements: {first: req.params.firstname, last: req.params.lastname}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(valid){
+            console.log(valid)
+           res.json(valid);
+        });
+}
+
 
 module.exports = {
     test,
     getAllPeople,
-	getPeople
+	getPeople,
+	getLevelValidator
 }

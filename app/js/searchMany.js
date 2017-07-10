@@ -170,8 +170,11 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
               if (first_area_not_empty===""){first_area_not_empty=area}
           }
         }
-    }  
-      console.log("first area "+first_area_not_empty);
+    } 
+      d3.select("#button-localization").style("visibility","hidden").style("width","0px").style("height","0px");
+      d3.select("#title-default").html("MODE Recherche de personnes");
+      d3.select("#text-default").html("Vous avez recherché "+getNumberOfSearchedPeople(dataSearchedPeople)+" personne(s)"
+      +"<br/><button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
       plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty);
       plotResultClick(nbPeopleByArea, dataSearchedPeople);
   };    
@@ -181,20 +184,18 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
     //Load the first result
     mapControl.eraseMap();
     if (first_area_not_empty==="externe"){
-      d3.select(".map").style("visibility","hidden").style("height","0px");;
-      d3.select("#legend").style("visibility","hidden").style("height","0px");;
-      d3.select("#change_localization").style("visibility","hidden");
-      d3.select(".tooltip_ext_map").style("visibility","visible").style("height","600px");;
+      d3.select("#whole-map").style("visibility","hidden").style("height","0px");
+      d3.select("#legend").style("visibility","hidden").style("height","0px");
+      d3.select(".tooltip_ext_map").style("visibility","visible");
       var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
       var text_extern="<h2> Personne(s) externe(s) :</h2><br/><br/><ul>";
       for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+"</li>");}
       text_extern+="</ul>"
       var tooltip_ext = d3.select(".tooltip_ext_map");
       tooltip_ext.html(text_extern)
-                  //.style("position","relative")
                   .style("position","relative")
-                  .style("margin","20px");
-                //  .style("left","300px");
+                  .style("padding","20px")
+                  .style("height","600px");
         tooltip_ext.transition()
                   .duration(200)
                   .style("opacity", .95)
@@ -202,9 +203,9 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
         event.stopPropagation(); 
     }
     else{
-      d3.select(".tooltip_ext_map").style("visibility","hidden").style("height","0px");;
-      d3.select("#legend").style("visibility","visible").style("height","600px");;
-		  d3.select(".map").style("visibility","visible").style("height","600px");;
+      //d3.select(".tooltip_ext_map").style("visibility","hidden").style("height","0px");
+      d3.select("#legend").style("visibility","visible").style("height","600px");
+		  d3.select("#whole-map").style("visibility","visible").style("height","600px");
       var area =first_area_not_empty;
       //if no map, show my map
       if (!mapControl.existMap) {
@@ -251,7 +252,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
           }       
         });
       }
-      $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#legend'));  
+      $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#map-name'));  
     }
 }
 
@@ -263,8 +264,8 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
 function plotResultClick(nbPeopleByArea, dataSearchedPeople){
   $('.list_etage').click(function(){
     d3.select(".tooltip_ext_map").style("visibility","hidden").style("height","0px");
-		d3.select(".map").style("visibility","visible").style("height","600px");;
-    d3.select("#legend").style("visibility","visible").style("height","600px");;
+		d3.select("#whole-map").style("visibility","visible").style("height","600px");
+    d3.select("#legend").style("visibility","visible").style("height","600px");
     var area = this.id.split(/_/)[0]; //this.id="N3_withResult" --> area="N3"
     mapControl.eraseMap();
     //if no map, show my map
@@ -315,13 +316,12 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
         }       
       });
     }
-    $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#legend'));  
+    $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#map-name'));  
   })
   $('.ext').click(function(){
-      d3.select(".map").style("visibility","hidden").style("height","0px");
+      d3.select("#whole-map").style("visibility","hidden").style("height","0px");
       d3.select("#legend").style("visibility","hidden").style("height","0px");
-      d3.select("#change_localization").style("visibility","hidden");
-      d3.select(".tooltip_ext_map").style("visibility","visible").style("height","600px");
+      d3.select(".tooltip_ext_map").style("visibility","visible");
       var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
       var text_extern="<h2> Personne(s) externe(s) :</h2><br/><br/><ul>";
       for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+"</li>");}
@@ -329,7 +329,8 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
         var tooltip_ext = d3.select(".tooltip_ext_map");
         tooltip_ext.html(text_extern)
                   .style("position","relative")
-                  .style("margin","20px");
+                  .style("padding","20px")
+                  .style("height","600px");
         tooltip_ext.transition()
                   .duration(200)
                   .style("opacity", .95)
