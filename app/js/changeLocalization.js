@@ -14,14 +14,12 @@ function changeLocalization() {
     d3.select("#button-localization").style("visibility","hidden").style("width","0px").style("height","0px");
     d3.select("#title-default").html("MODE Changement de bureau");
     d3.select("#text-default").html("<br/>Veuillez cliquer sur un nouveau bureau<br/><button id=\"cancelMove\"><a href=\"http://localhost:3000/\">Annuler</a></button>");
-    ;
-	console.log("localisation i'm here");
 	var allTables = d3.select("#tables")
 		.selectAll("g")
 		.style("cursor", "pointer").on("click", function(){
 			var newDesk = d3.event.target.parentNode.id;
             d3.json(server + "getPersonByDesk/"+newDesk, function(isDeskAvailable){
-                    if (isDeskAvailable===[]){
+                    if (isDeskAvailable.length===0){
                         d3.select("#text-default").html("Vous avez choisi le bureau "+newDesk
                             +"<br/>Confirmez-vous ce changement ?"+
                             "<button id=\"validateMove\" ><a href=\"http://localhost:3000/\">Valider</a></button>"+
@@ -48,8 +46,12 @@ function changeLocalization() {
 
 
 function validateMove(newDesk){
-
     d3.select("#text-default").html("Vous avez validé un nouveau bureau "+
             "<br/>Votre nouveau bureau est "+newDesk)
+    var data={"desk-name":newDesk,"firstname":myData[0].split(/ /)[0],"lastname":myData[0].split(/ /)[1]};
+    d3.json(server +"myLocalization", function(){
+            console.log("save my new desk !")})
+        .header("Content-Type","application/json")
+        .send("POST", JSON.stringify(data));
 }
 

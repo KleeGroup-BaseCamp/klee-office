@@ -94,13 +94,23 @@ const populate = (req, res) => {
                             //console.log(nameParts[0] + nameParts[1]);
                             var perId = newPerson.dataValues.per_id;
                             var date=new Date();
-                            var mov = MoveLine.build({person_id: perId,dateCreation :date, status :"initialisation" })
+                            MoveLine.build({person_id: perId,dateCreation :date, status :"initialisation" })
                                 .save()
                                 .error(function (err) {
                                     console.log(err + " ---------" + elem);
                                 })
-
-                            
+                            Profil.build({isValidatorLvlOne:false,isValidatorLvlTwo:false })
+                                .save()
+                                .error(function (err) {
+                                    console.log(err + " ---------" + elem);
+                                })
+                                .then(function(pro){
+                            models.sequelize.query(
+                                'UPDATE \"Person\" SET profil_id= :proid ' +
+                                'WHERE \"Person\".per_id = :perid '
+                                , { replacements: { proid: pro.pro_id, perid: perId },
+                                    type: models.sequelize.QueryTypes.UPDATE})
+                                })
                         });
                 }
         });

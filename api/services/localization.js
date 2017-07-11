@@ -67,7 +67,7 @@ const saveMyLocalization = (req, res) => {
                 .then(function(moveset){
                     Desk.findOrCreate({
                         where: {
-                            name: req.body['office-name']
+                            name: req.body['desk-name']
                         }}).spread(function(desk){
                         var today= new Date();
                         var desid = desk.des_id;

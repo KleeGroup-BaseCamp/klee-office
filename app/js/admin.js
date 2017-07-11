@@ -481,8 +481,60 @@ var adminControl = {
             });
         });
     }
-}
+}    
+
+/*
+        function guid() {
+                    function s4() {
+                        return Math.floor((1 + Math.random()) * 0x10000)
+                            .toString(16)
+                            .substring(1);
+                    }
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+                }
+        d3.json(server+ "getAllCompanies",function(error,datasetComp){
+            datasetComp.forEach(function(dataCompany){
+                var company=dataCompany.name;
+                d3.json(server+"getDepartmentsByCompany/"+dataCompany.com_id,function(error,datasetDep){
+                    datasetDep.forEach(function(dataDep){
+                        var dep=dataDep.name;
+                        var title=company+"_"+dep;
+                        console.log(title);
+                        d3.json(server+"getValidatorsByDep/"+dataDep.bus_id,function(error,validators){
+                                var nameOne="Renseigner un validateur";
+                                var nameTwo="Renseigner un validateur";
+                                var idOne ="no_id";
+                                var idTwo="no_id";
+                                var classNameOne="add-one-empty";
+                                var classNameTwo="add-two-empty";
+                                if (validators.length!==0){
+                                    validators.forEach(function(validator){
+                                        if (validator.lvlOne==true){
+                                            nameOne=validator.firstname+' '+validator.lastname;
+                                            idOne=validator.per_id;
+                                            classNameOne="add-one";
+                                        }
+                                        if (validator.lvlTwo==true){
+                                            nameTwo=validator.firstname+' '+validator.lastname;
+                                            idTwo=validator.per_id;
+                                            classNameTwo="add-two";
+                                        }
+                                    })
+                                }
+                                var one = guid();
+                                var two = guid();
+                                $('<tr class="admin-list_' + title + '">' +
+                                    '<td>' + company + '</td>' +
+                                    '<td>' + dep + '</td>' +
+                                    '<td  id="one-'+ one + '" class="'+classNameOne+'"><p id="'+idOne+'">'+nameOne+'</p><label class="val-one one-'+ one + '" ></label></td>' +
+                                    '<td  id="two-'+ two  + '" class="'+classNameTwo+'"><p id="'+idTwo+'">'+nameTwo+'</p><label class="val-two two-'+ two  + '"  ></label></td>' +
+                                    '</tr>').insertAfter($('.table-content'));
 
 
 
-
+                        })
+                    })
+                })
+            })
+        })*/

@@ -196,6 +196,8 @@ app.get('/consistency:id', function(req, res){
 app.get('/test', peopleServices.test);
 app.get('/people', peopleServices.getAllPeople);
 app.get('/getPeople', peopleServices.getPeople);
+app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
+app.get('/getAdministrator/:firstname/:lastname', peopleServices.getAdministrator);
 app.get('/maps/:name', mapServices.getMap);
 app.get('/populateDB', dataServices.populate);
 app.get('/associateData', dataAssociationServices.associate);
@@ -206,9 +208,11 @@ app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
 app.get('/getPeopleByCompany/:id', adminServices.getPeopleByCompany);
-app.post('/saveValidateur', adminServices.saveValidateur);
+app.post('/saveValidator', adminServices.saveValidateur);
 app.post('/updateValidateur', adminServices.updateValidateur);
+app.post('/saveAdministrator', adminServices.saveAdministrator);
 app.get('/getAllValidators', adminServices.getAllValidators);
+app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
 app.get('/getAllMovingsByConfIdCount/:id', confServices.countAllMoveLineByMoveSetId);
 app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetId);
 app.delete('/deleteConfiguration/:id', confServices.deleteMoveSet);
@@ -220,6 +224,7 @@ app.get('/getAllConf', confServices.getAllMoveSet);
 app.get('/reportConsistency/:id', confServices.reportConsistency);
 app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
+
 
         
    

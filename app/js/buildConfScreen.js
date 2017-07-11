@@ -1,11 +1,24 @@
 /**
- *
+ *  Function to build configurations screen
  */
+
 (function(window) {
+
+    //control access to the page
+    console.log("configurations-screen");
+    var server="http://localhost:3000/";
     var myData=["Alain GOURLAY","N4-C-01"];
-    d3.select("#personal-name").html(myData[0]);
-    d3.select("#personal-desk").html(myData[1]);
-    
+    d3.json(server + "getLevelValidator/"+myData[0].split(/ /)[0]+"/"+myData[0].split(/ /)[1], function(isValidator){
+        if (isValidator[0].isValidatorLvlOne ||isValidator[0].isValidatorLvlTwo){
+            console.log("I'm a validator !");
+            //give acces to company or business unit
+        }
+        else{
+            d3.select("#two-columns conf container").style("visibility","hidden");
+            //give acces to my own conf ?
+        }
+    })
+
     window.addEventListener("load", function(){
         configurationsControl.plotConfList();
     });
@@ -24,10 +37,10 @@
                 '<div class="inline">'+
                 '<input class="field" type="text" id="name" name="name" required/><br />'+
                     '<!-- here a name is already set to be able to test the service but it has to be replaced with the name a the connected person -->' +
-                '<input class="disabled-field" type="text" id="creator" name="creator"  value="Marie-Pierre SALVI" readonly /><br />'+ //remplacer le Marie-Pierre par le nom de l'utilisateur
+                '<input class="disabled-field" type="text" id="creator" name="creator"  value='+myData[0]+' readonly /><br />'+
                 '<input class="disabled-field" type="text" id="dateCreation" name="dateCreation" value="" readonly /><br />'+
                 '</div>'+
-                '<input class="submit" id="#add-conf" type="submit" value="Valider"/>'+
+                '<input class="submit" id="add-conf" type="submit" value="Valider"/>'+
                 '</form>'+
                 '</div>').insertAfter($('.two-columns'));
         }
@@ -42,6 +55,13 @@
         jQuery('html,body').animate({scrollTop:0},0);
         event.stopPropagation();
     });
+    $("#add-conf").click(function () {
+        if(configurationsControl.isPopin === true){
+            $('#popin-add').remove();
+            configurationsControl.isPopin = false;
+        }
+        
+    });    
 
     $("html").click(function () {
         if(configurationsControl.isPopin === true){

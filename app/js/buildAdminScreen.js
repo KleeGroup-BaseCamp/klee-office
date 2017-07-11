@@ -3,10 +3,25 @@
  * Created by msalvi on 08/09/2016.
  */
 (function(window) {
-    
+
+    //control access to the page - limited for administrators only
+    console.log("admin-screen");
+    var server="http://localhost:3000/";
     var myData=["Alain GOURLAY","N4-C-01"];
-    d3.select("#personal-name").html(myData[0]);
-    d3.select("#personal-desk").html(myData[1]);
+    d3.json(server + "getAdministrator/"+myData[0].split(/ /)[0]+"/"+myData[0].split(/ /)[1], function(res){
+        console.log(res[0].isAdministrator);
+        if (res[0].isAdministrator){
+            d3.select("#error-admin").style("visibility","hidden").style("height","0px").style("width","0px");
+            d3.select(".list-validators").style("visibility","visible").style("height","auto").style("width","auto");
+        }
+        else{
+            d3.select(".list-validators").style("visibility","hidden");
+            d3.select("#error-admin").style("height","auto").style("width","auto").html(" Vous n'avez les droits d'accès à cette page <br/><a href=\""+server+"\"><button class=\"back-index\">Revenir à la page d'accueil</button></a>")
+        }
+    })
+
+
+/*
     function preparePlot() {
         // remove info msg
         d3.select("#info-pole").remove();
@@ -23,7 +38,7 @@
         // clean autocomplete field
         d3.select('#validator-search')
             .attr("value, ");
-    }
+    }*/
     window.addEventListener("load", function(){
         adminControl.plotValidatorsList();
     });
