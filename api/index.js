@@ -5,6 +5,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 var flash = require('connect-flash');
 var session = require('express-session');
+//var RedisStore = require('connect-redis')(session);
+var sessionStore = new session.MemoryStore();
 var cookieParser = require('cookie-parser');
 var ejs = require('ejs');
 var saml2 = require('saml2-js');
@@ -47,22 +49,19 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // serve static page files
 app.use(express.static('../app'));
-
+//app.use('../app', express.static('app'));
 // send flash messages to the user
 app.use(cookieParser('secret'));
-app.use(session({
-  secret: 'secret option',
-  resave: true,
-  saveUninitialized: false,
-  cookie: { secure: true,
-            maxAge: 60000 
-          }
-}));
+app.use(session({store: sessionStore,
+		secret: 'secretsecret',
+		resave: false,
+		saveUninitialized: true
+		/*cookie: { secure: true, maxAge: 60000 }*/}));
 app.use(flash());
 
  //Partie Authentification SSO - need IDP from support
 
-//authentication with saml2nm
+//authentication with saml2-js
 // create service provider
 var sp_options = {
 	entity_id: "http://local-map.dev.klee.lan.net/",
@@ -76,12 +75,13 @@ var sp= new saml2.ServiceProvider(sp_options);
 var idp_options = {
   sso_login_url: "https://sso.kleegroup.com/saml2/idp/SSOService.php",
   sso_logout_url: "https://sso.kleegroup.com/saml2/idp/SingleLogoutService.php",
-  certificates: fs.readFileSync("certificate_idp1.crt").toString()
+  certificates: fs.readFileSync("certificate_idp.crt").toString()
 };
 var idp = new saml2.IdentityProvider(idp_options);
+//var name_id;
 // Starting point for login 
-app.get("/login", function(req, res) {
-var options = {relay_state: "/"};
+app.get("/", function(req, res) {
+var options = {relay_state: "/accueil"};
   sp.create_login_request_url(idp, options, function(err, login_url, request_id) {
     if (err != null){
 	console.log("Echec login");
@@ -98,111 +98,93 @@ app.post("/saml2/acs", function(req, res) { // assert
 			request_body: req.body,
 			allow_unencrypted_assertion: true,
 			require_session_index: false,
-			relay_state: "/" 	
+			relay_state: "/accueil" 	
 		};
   //console.log(req);
   //console.log("Req.body : " + req.body);
   sp.post_assert(idp, options, function(err, saml_response) {
     if (err != null){
 	console.log("Echec Assert!");
-	console.log(err);
-	console.log(saml_response);
 	return res.send("Erreur Assertion");
     }
     
     console.log("Assert Succeed");
     // Save name_id and session_index for logout 
-    var name_id = saml_response.user.attributes.uid[0];
-    res.send(name_id);
-  });
-
-	//res.send("TITI");  
+    req.session.user = saml_response.user.attributes.uid[0];
+    req.session.fullName = saml_response.user.attributes.cn[0];
+    /*res.render('index', { message: req.flash('success'),
+			  myMail: name_id});*/
+	//res.send(name_id);
+	console.log(req.session);
+	console.log(req.sessionID);
+	/*req.session.save(function(err)
+	{
+		if(err){
+			console.log(err);}
+		else{
+		req.session.user = saml_response.user.attributes.uid[0];
+		console.log(req.session);
+		console.log(req.sessionID);
+		res.redirect("/accueil");}
+	});*/
+	res.redirect("/accueil");
+  });  
 });
+
 // Starting point for logout 
 app.get("/saml2/sls", function(req, res) { //logout
   var options = {
-			name_id: "urn:oasis:names:tc:SAML:2.0:nameid-format:transient",
-			allow_unencrypted_assertion: true,
-                	require_session_index: false
+			name_id: req.session.user,
+			//allow_unencrypted_assertion: true
+                	//require_session_index: false
 		};
-  console.log(req.body);
-  sp.create_logout_request_url(idp, {}, function(err, logout_url) {
+  //console.log(req.body);
+  sp.create_logout_request_url(idp, options, function(err, logout_url) {
     if (err != null){
       console.log(err);	
       return res.send("Erreur déconnexion");}
-  console.log("Logout URL : " + logout_url);  
+  console.log("Logout URL : " + logout_url);
+  console.log("Logout Successful");  
   res.redirect(logout_url);
   });
 });
 
-app.get("/saml2/slsResponse", function(req, res){ //app.post ??
-  var options = {
-    in_response_to: request_id //req.id ??
-   // sign_get_request: aaaaaaaaa
-  };
-
-  sp.create_logout_response_url(IdP, options, function(err, logout_url){
+app.post("/saml2/slsResponse", function(req, res){ //app.post ??
+  sp.create_logout_response_url(idp, {}, function(err, logout_url){
     if (err != null)
       return res.send(500);
-    res.redirect(logout_url);
+    res.send("Logout Response : OK");
   });
-});
-
-app.get("/welcome", function (req, res) {
-  // On stocke dans la session
-  req.session.user = "Toto";
-  console.log(req.session);
-  res.send("Hello " + req.session.user);
 });
  
 // views
 //home
-app.get('/', function(req, res){
-	req.session.user = "User";
-  req.session.desk = "Desk";
-  res.render('index', { message: req.flash('success'),
-                        myName: req.session.user,
-                        myDesk: req.session.desk});
-});
+app.get('/accueil', function(req, res){
+	console.log(req.session);
+	console.log(req.sessionID);
+	res.render('index', { message: req.flash('success'),
+				myName: req.session.fullName}) 
+	//res.redirect('/login')
+ });
 // employee localization
 app.get('/localization', function(req, res){
-  req.session.user = "User";
-  req.session.desk = "Desk";
-	res.render('tell-localization', { message: req.flash('success'),
-                        myName: req.session.user,
-                        myDesk: req.session.desk});
+	res.render('tell-localization', { message: req.flash('error') });
 });
 // admin screen
 app.get('/admin', function(req, res){
-  req.session.user = "User";
-  req.session.desk = "Desk";
-	res.render('admin', { message: req.flash('success'),
-                        myName: req.session.user,
-                        myDesk: req.session.desk});
+	res.render('admin', { message: req.flash('success') });
 });
 // configurations screen
 app.get('/configurations', function(req, res){
-  req.session.user = "User";
-  req.session.desk = "Desk";
-	res.render('conf-list', { message: req.flash('success'),
-                        myName: req.session.user,
-                        myDesk: req.session.desk});
+	res.render('conf-list', { message: req.flash('success') });
 });
 // work on a configuration
 app.get('/modify:id', function(req, res){
-  req.session.user = "User";
-  req.session.desk = "Desk";
-	res.render('modify', { message: req.flash('success'),
-                        myName: req.session.user,
-                        myDesk: req.session.desk});
+	res.render('modify', { message: req.flash('success') });
 });
 // check consistency
 app.get('/consistency:id', function(req, res){
-  req.session.user = "User";
-  req.session.desk = "Desk";
-	res.render('consistency-list', { message: req.flash('success'),
-                        myName: req.session.user,
-                        myDesk: req.session.desk});;
+	res.render('consistency-list', { message: req.flash('success') });
 });
 
 // people
@@ -221,7 +203,6 @@ app.get('/associateData', dataAssociationServices.associate);
 app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
-app.get('/getPersonByDesk/:name', localizationServices.getPersonByDesk);
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
