@@ -66,21 +66,9 @@ const associate = (req, res) => {
             ).then(function (poles) {
                     //console.log(poles)
                 });
-            //Table Person : <fk> BusinessUnit <fl> Profil
+            //Table Person : <fk> BusinessUnit
             if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
                 && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                const pro =Profil.build({isValidatorLvlOne : false, isValidatorLvlOne : false}).save()
-                    .error(function (err) {console.log(err + " ---------" + elem)
-                        .then(function(pro){
-                            models.sequelize.query('UPDATE \"Person\" SET profil_id = :profil '  +
-                                ' WHERE firstname = :firstname and lastname = :lastname',
-                                {replacements: {profil: pro.pro_id, firstname: nameParts[0], lastname: nameParts[1]},
-                                type: models.sequelize.QueryTypes.UPDATE}
-                            ).then(function (people) {
-                           // console.log(people)});
-                            })
-                        })
-                    });
                     if (dpt !== undefined && dpt !==null && dpt!==""){
                         models.sequelize.query('UPDATE \"Person\" SET '  +
                                 '\"businessUnit_id\" = (SELECT bus_id FROM \"BusinessUnit\" WHERE name = :polename) ' +

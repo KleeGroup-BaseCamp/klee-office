@@ -806,6 +806,11 @@ input[readonly] {
 .cancel-button {
     display: inline-block;
 }
+#error-admin{
+    padding : 10px;
+}
+
+
 .conf {
     margin-left: auto;
     margin-right: auto;
