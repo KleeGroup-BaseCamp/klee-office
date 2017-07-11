@@ -80,8 +80,8 @@ var idp_options = {
 var idp = new saml2.IdentityProvider(idp_options);
 //var name_id;
 // Starting point for login 
-app.get("/", function(req, res) {
-var options = {relay_state: "/accueil"};
+app.get("/login", function(req, res) {
+var options = {relay_state: "/"};
   sp.create_login_request_url(idp, options, function(err, login_url, request_id) {
     if (err != null){
 	console.log("Echec login");
@@ -98,7 +98,7 @@ app.post("/saml2/acs", function(req, res) { // assert
 			request_body: req.body,
 			allow_unencrypted_assertion: true,
 			require_session_index: false,
-			relay_state: "/accueil" 	
+			relay_state: "/" 	
 		};
   //console.log(req);
   //console.log("Req.body : " + req.body);
@@ -127,7 +127,7 @@ app.post("/saml2/acs", function(req, res) { // assert
 		console.log(req.sessionID);
 		res.redirect("/accueil");}
 	});*/
-	res.redirect("/accueil");
+	res.redirect("/");
   });  
 });
 
@@ -159,11 +159,12 @@ app.post("/saml2/slsResponse", function(req, res){ //app.post ??
  
 // views
 //home
-app.get('/accueil', function(req, res){
+app.get('/', function(req, res){
 	console.log(req.session);
 	console.log(req.sessionID);
 	res.render('index', { message: req.flash('success'),
-				myName: req.session.fullName}) 
+				//myName: req.session.fullName
+				myName: "ToTo"}) 
 	//res.redirect('/login')
  });
 // employee localization
