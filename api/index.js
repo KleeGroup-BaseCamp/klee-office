@@ -163,7 +163,8 @@ app.get('/', function(req, res){
 	console.log(req.session);
 	console.log(req.sessionID);
 	res.render('index', { message: req.flash('success'),
-				myName: req.session.fullName}) 
+				//myName: req.session.fullName
+				myName: "ToTo"}) 
 	//res.redirect('/login')
  });
 // employee localization
