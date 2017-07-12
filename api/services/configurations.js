@@ -150,7 +150,7 @@ const getMoveLineListByMoveSetId = (req, res) => {
         'JOIN \"Desk\" as arrivee ON arrivee.des_id = \"MoveLine\".\"toDesk\" ' +
         'WHERE \"MoveLine\".move_set_id = :setid '
         , { replacements: { setid: req.params.id },
-            type: models.sequelize.QueryTypes.SELECT}
+            type: models.sequelize.QueryTypes.SELECT})
        .then(function (person) {
             function createFile() {
                 // write header in text file
@@ -192,6 +192,7 @@ const getMoveLineListByMoveSetId = (req, res) => {
                 }
             });
        });
+
             
 }
 
