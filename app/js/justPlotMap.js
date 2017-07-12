@@ -36,10 +36,12 @@
         });
         mapControl.buildTooltips(mapNames);
 };*/
-    /*var myData=["Alain GOURLAY","N4-C-01"];
-    d3.select("#personal-name").html(myData[0]);
-    d3.select("#personal-desk").html(myData[1]);*/
-    //var mapName = "N4";
+    var server="http://localhost:3000/";
+    var myData=["Alain GOURLAY", ""];
+    d3.json(server+"currentOfficeName/"+myData[0].split(/ /)[0]+'/'+myData[0].split(/ /)[1],function(error,res){
+        myData[2] = res[0].name;
+    });
+
     var addEvtListenerOn = function(type, myData, where){
 
         // tooltips for every floor

@@ -7,7 +7,10 @@
     //control access to the page - limited for administrators only
     console.log("admin-screen");
     var server="http://localhost:3000/";
-    var myData=["Alain GOURLAY","N4-C-01"];
+    var myData=["Alain GOURLAY", ""];
+    d3.json(server+"currentOfficeName/"+myData[0].split(/ /)[0]+'/'+myData[0].split(/ /)[1],function(error,res){
+        myData[2] = res[0].name;
+    });
     d3.json(server + "getAdministrator/"+myData[0].split(/ /)[0]+"/"+myData[0].split(/ /)[1], function(res){
         console.log(res[0].isAdministrator);
         if (res[0].isAdministrator){

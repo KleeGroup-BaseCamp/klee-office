@@ -1,3 +1,22 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Marketplace
+Gist
+ @MarjorieJ
+ Sign out
+ Watch 9
+  Star 0
+  Fork 2 KleeGroup/local-map
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki Insights 
+Branch: master Find file Copy pathlocal-map/app/css/style.css
+da7ae66  5 hours ago
+@MarjorieJ MarjorieJ Add control account, control access to pages (admin, validators)
+3 contributors @ZekunZh @mpsalvi @MarjorieJ
+RawBlameHistory     
+845 lines (796 sloc)  16.1 KB
 /* ------------------------------------------------------------ *\
 |* ------------------------------------------------------------ *|
 |* Map, Autocomplete, Nav bar, search, and nav
@@ -81,6 +100,7 @@
 }
 #location, #admin, #configurations, #add, .inline{
     display: inline-block;
+    margin-left:20px;
 }
 #add-title {
     float: right;
@@ -608,11 +628,32 @@ input[readonly] {
     height: 30px;
     vertical-align: middle;
 }
+.list-validators td {
+    padding :4px;
+    text-align: center;
+    width: 290px;
+    height: 30px;
+    vertical-align: middle;
+}
 .empty {
     font-style: italic;
 }
+.list-validators{
+    margin-left:25px;
+}
 
-.admin-list label, .admin-list label  {
+.list-validators .table-content{
+    font-size : 20px;
+    border: 3px solid black;
+}
+
+#table-validators tr:nth-child(even){background-color: #f2f2f2}
+
+#table-validators{
+    border : 3px solid black;
+}
+
+.list-validators label, .list-validators label  {
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -806,8 +847,8 @@ input[readonly] {
 .cancel-button {
     display: inline-block;
 }
-#error-admin{
-    padding : 10px;
+#error-admin, #error-conf{
+    padding : 50px;
 }
 
 
@@ -831,6 +872,58 @@ input[readonly] {
    right: -100px;
    width: 100px;
 }
+
+/* table admin page*/
+
+#val-row{
+    position:relative;
+    width:300px;
+    height:50px;    
+}
+#val-row #search{
+    position:absolute;
+    width:300px;
+    height:50px;
+    left:60px;    
+}
+
+#val-search{
+    position:absolute;
+    top:15px;
+    left:0px;
+    width: 30px;
+    height: 30px;
+}
+#val-cancel-one,#val-cancel-two{
+    position:absolute;
+    top:0px;
+    right:0px;
+    cursor:pointer;
+}
+#val-input{
+    position:absolute;
+    top:15px;
+    left:26px;
+
+}
+#val-valid{
+    position:absolute;
+    top:15px;
+    left:206px;
+}
+
+#val-input #validator-search{
+    font-size:13px;
+    background :#e6f5ff;
+    width:180px;
+    height:30px;
+}
+#val-delete-one, #val-delete-two{
+    cursor :pointer;
+    padding-left :25px
+}
+
+
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
 .autocomplete-selected { background: #f0f0f0; }
@@ -843,3 +936,5 @@ input[readonly] {
 /* * html .ui-autocomplete {
     height: 100px;
   }*/
+Contact GitHub API Training Shop Blog About
+© 2017 GitHub, Inc. Terms Privacy Security Status Help
