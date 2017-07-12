@@ -5,10 +5,10 @@ Session {
    { path: '/',
      _expires: null,
      originalMaxAge: null,
-     httpOnly: true } }
-g27qfwKbfyDt1XuD7Me1vw-RP-Rz96WI
+     httpOnly: true },
+  flash: {} }
+AB7cLkoG9x8_RPOiplRcrT4Fwh1amcK-
+Executing (default): SELECT "Desk".name , "Desk".des_id FROM "Desk" JOIN "Person" ON "Desk".person_id="Person".per_id WHERE "Person".firstname = 'Alain' AND "Person".lastname = 'GOURLAY';
 call of service to get KleeGroup.json
-call of service to get map N4.svg
-call of service to get KleeGroup.json
-call of service to get map N3.svg
-call of service to get KleeGroup.json
+[ { name: 'N4-C-01', des_id: 5 } ]
+call of service to get map .svg
