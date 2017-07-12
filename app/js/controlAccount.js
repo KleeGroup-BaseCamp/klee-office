@@ -26,3 +26,10 @@ d3.json(server +"saveAdministrator", function(){
     .send("POST", JSON.stringify(data));
 console.log(data.firstname+" "+data.lastname+" est un administrateur");*/
 
+/*
+var data={"firstname":"Alain","lastname":"GOURLAY"};
+d3.json(server +"deleteAdministrator", function(){
+    }).header("Content-Type","application/json")
+    .send("POST", JSON.stringify(data));
+console.log(data.firstname+" "+data.lastname+" n'est plus un administrateur");*/
+

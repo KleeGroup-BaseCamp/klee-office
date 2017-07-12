@@ -212,6 +212,7 @@ app.post('/saveValidator', adminServices.saveValidateur);
 app.post('/updateValidator', adminServices.updateValidateur);
 app.post('/deleteValidator', adminServices.deleteValidator);
 app.post('/saveAdministrator', adminServices.saveAdministrator);
+app.post('/deleteAdministrator', adminServices.deleteAdministrator);
 app.get('/getAllValidators', adminServices.getAllValidators);
 app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
 app.get('/getAllMovingsByConfIdCount/:id', confServices.countAllMoveLineByMoveSetId);

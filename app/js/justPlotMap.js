@@ -39,14 +39,21 @@
     var server="http://localhost:3000/";
     var myData=["Alain GOURLAY", ""];
     d3.json(server+"currentOfficeName/"+myData[0].split(/ /)[0]+'/'+myData[0].split(/ /)[1],function(error,res){
-        myData[2] = res[0].name;
+        if (res.length>0){
+            myData[1] = res[0].name;
+        }else{myData[1] ="no-desk" };
     });
-
+    
     var addEvtListenerOn = function(type, myData, where){
-
-        // tooltips for every floor
-        var desk=myData[1];
-        var mapName=desk.split(/-/)[0];
+        if (myData[1]=="no-desk"){
+            desk="none";
+            mapName="N0";
+            console.log("mais ou est mon bureau?")
+        }
+        else{
+            var desk=myData[1];
+            var mapName=desk.split(/-/)[0];
+        }
         where.addEventListener(type, function(){
 		    mapControl.eraseMap();
 		// if no map, show myMap
@@ -79,8 +86,11 @@
                     .style("padding","0px");
         d3.selectAll("#etages_withoutResult").style("visibility", "visible");
         d3.select("#title-default").html("MODE Navigation");
+        if (desk!=="none"){
+            d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous n'avez pas de position. Veuillez mettre à jour votre bureau");
+        }else{
         d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes étage "+mapName+" !");
-
+        }
         mapControl.mapPlot(myData,mapName,false,function(){})           
         })
     };
