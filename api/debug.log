@@ -1,0 +1,14 @@
+Initializing the API...
+API listening on port 3000
+Session {
+  cookie: 
+   { path: '/',
+     _expires: null,
+     originalMaxAge: null,
+     httpOnly: true } }
+g27qfwKbfyDt1XuD7Me1vw-RP-Rz96WI
+call of service to get KleeGroup.json
+call of service to get map N4.svg
+call of service to get KleeGroup.json
+call of service to get map N3.svg
+call of service to get KleeGroup.json
