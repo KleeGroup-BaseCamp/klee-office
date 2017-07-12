@@ -148,11 +148,10 @@ const getMoveLineListByMoveSetId = (req, res) => {
         'JOIN \"Person\" ON \"Person\".per_id = \"MoveLine\".person_id ' +
         'JOIN \"Desk\" as depart ON depart.des_id = \"MoveLine\".\"fromDesk\" ' +
         'JOIN \"Desk\" as arrivee ON arrivee.des_id = \"MoveLine\".\"toDesk\" ' +
-        'WHERE \"MoveLine\".move_set_id = :setid and \"MoveLine\".\"fromDesk\" is not null '
+        'WHERE \"MoveLine\".move_set_id = :setid '
         , { replacements: { setid: req.params.id },
-            type: models.sequelize.QueryTypes.SELECT
-        })
-        .then(function (person) {
+            type: models.sequelize.QueryTypes.SELECT}
+       .then(function (person) {
             function createFile() {
                 // write header in text file
                 var header = "\ufeffPersonne \u00E0 d\u00E9placer" + " : \t\t" +
@@ -161,7 +160,7 @@ const getMoveLineListByMoveSetId = (req, res) => {
                 );
                 // write data lines
                 person.forEach(function (elem) {
-                    // console.log(elem);
+                     console.log(elem);
                     var text = elem.firstname + " " + elem.lastname + " : \t\t" +
                         elem.depart + " -> " + elem.arrivee + "\r\n";
                     fs.appendFileSync('configuration-' + req.params.id + '.txt',
@@ -192,7 +191,7 @@ const getMoveLineListByMoveSetId = (req, res) => {
                     console.log('Sent : '+ 'configuration-' + req.params.id + '.txt');
                 }
             });
-        });
+       });
             
 }
 

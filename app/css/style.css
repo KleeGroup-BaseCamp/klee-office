@@ -847,8 +847,8 @@ input[readonly] {
 .cancel-button {
     display: inline-block;
 }
-#error-admin{
-    padding : 10px;
+#error-admin, #error-conf{
+    padding : 50px;
 }
 
 
