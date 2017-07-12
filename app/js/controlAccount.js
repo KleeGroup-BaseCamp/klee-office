@@ -9,18 +9,12 @@ var myData=["Alain GOURLAY","N4-C-01"];
 d3.select("#personal-name").html(myData[0]);
 d3.select("#personal-desk").html(myData[1]);
 
-
-
 /* TO add manually new validators
-var data={"level":"Niveau 2","firstname":"Laurent","lastname":"BAROT"};
+var data={"level":"2","firstname":"Laurent","lastname":"BAROT"};
 d3.json(server +"saveValidator", function(){
     }).header("Content-Type","application/json")
     .send("POST", JSON.stringify(data));
 
-var data={"level":"Niveau 1","firstname":"Alain","lastname":"GOURLAY"};
-d3.json(server +"saveValidator", function(){
-    }).header("Content-Type","application/json")
-    .send("POST", JSON.stringify(data));*/
 
 
 /**

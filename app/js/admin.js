@@ -227,263 +227,6 @@ var adminControl = {
         this.erase(remove);
     },
     plotValidatorsList: function(){
-
-        d3.json(server+  "getAllValidators", function(error, dataset){
-            var i = 0;
-            var couples = [];
-            dataset.forEach(function(data){
-                var nameOne = "Renseigner un validateur";
-                var nameTwo = "Renseigner un validateur";
-                var classOne = "add-one empty";
-                var classTwo = "add-two empty";
-                if (data.isValidatorLvlOne ===  1 &&
-                    (data.firstname !== null || data.firstname !== undefined || data.firstname !== "")
-                    && (data.lastname !== null || data.lastname !== undefined || data.lastname !== "" )){
-                    nameOne = data.firstname + " " + data.lastname;
-                    classOne = "add-one";
-                }
-                if (data.isValidatorLvlTwo ===  1 &&
-                    (data.firstname !== null || data.firstname !== undefined || data.firstname !== "")
-                    && (data.lastname !== null || data.lastname !== undefined || data.lastname !== "" )){
-                    nameTwo = data.firstname + " " + data.lastname;
-                    classTwo = "add-two";
-                }
-                function guid() {
-                    function s4() {
-                        return Math.floor((1 + Math.random()) * 0x10000)
-                            .toString(16)
-                            .substring(1);
-                    }
-                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                        s4() + '-' + s4() + s4() + s4();
-                }
-                var one = guid();
-                var two = guid();
-                var form = guid();
-                var title = (data.company + data.pole).replace(/ /g, '_');
-                if (couples.indexOf(title) < 0){
-                    var valueOne = null;
-                    var valueTwo = null;
-                    if (data.isValidatorLvlOne === 1){
-                        valueOne = data.id;
-                    }
-                    if (data.isValidatorLvlOne === 1){
-                        valueTwo = data.id;
-                    }
-                        $('<tr class="admin-list ' + title + ' ">' +
-                            '<td>' + data.company + '</td>' +
-                            '<td>' + data.pole + '</td>' +
-                            '<td  id="one-'+ one + '" class="'+ classOne + '"><p id="' +valueOne +' ">' + nameOne + '</p><label class="val-one one-'+ one + '" ></label></td>' +
-                            '<td  id="two-'+ two  + '" class="'+ classTwo + '"><p id="' +valueTwo +' ">' + nameTwo + '</p><label class="val-two two-'+ two  + '"  ></label></td>' +
-                            '</tr>').insertAfter($('.table-content'));
-                    couples.push(title);
-                }
-                else {
-                    if (data.isValidatorLvlOne !== 0 || data.isValidatorLvlTwo !== 0){
-                        var cellNumber;
-                        var className;
-                        if(data.isValidatorLvlOne === 1){
-                            // so add the lvl one validator
-                            cellNumber = 2
-                            className = "add-one";
-                        }
-                        if (data.isValidatorLvlTwo === 1){
-                            // so add the lvl two validator
-                            cellNumber = 3
-                            className = "add-two";
-                        }
-                        if(cellNumber !== undefined){
-                            var oldhtml = document.getElementsByClassName(title)[0]
-                                .getElementsByTagName('td')[cellNumber].getElementsByTagName('p')[0]
-                                .innerHTML;
-                            document.getElementsByClassName(title)[0]
-                                .getElementsByTagName('td')[cellNumber].getElementsByTagName('p')[0]
-                                .innerHTML = oldhtml.replace("Renseigner un validateur", data.firstname + " " +data.lastname);
-                            document.getElementsByClassName(title)[0]
-                                .getElementsByTagName('td')[cellNumber]
-                                .className = className;
-                            document.getElementsByClassName(title)[0]
-                                .getElementsByTagName('td')[cellNumber].getElementsByTagName('p')[0]
-                                .id = data.id;
-                        }
-                    }
-                }
-                var selectone = d3.select('.one-'+one)
-                    .on("click", function(){
-
-                        // remove all forms and search bars already here
-                        d3.selectAll(".none").remove();
-                        d3.selectAll(".admin").remove();
-                        // display all hidden fields
-                        d3.selectAll(".add-one").selectAll("p").style("display", "");
-                        d3.selectAll(".add-two").selectAll("p").style("display", "");
-                        d3.selectAll(".add-one").selectAll("label").style("display", "");
-                        d3.selectAll(".add-two").selectAll("label").style("display", "");
-
-                        ($('#one-'+ one)).append($('<div class="admin row"><form id="search" onsubmit="return false">' +
-                            '<div id="label">'+
-                            '<label for="search-terms" id="search-label">search</label>'+
-                            '</div>'+
-                            '<div id="input">'+
-                            '<input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">'+
-                            '</div>'+
-                            '</form></div>' +
-                            ''));
-
-                        d3.select("#one-"+ one).select("p").style("display", "none");
-                        d3.select("#one-"+ one).select("label").style("display", "none");
-
-                        ($('#one-'+ one)).append($('<td class="none row" id="form-' + form +'"> <form action="/updateValidateur" method="post">' +
-                            '<input class="disabled-field" type="text" id="level" name="level" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="man_id" name="man_id" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="mail" name="mail" value="" readonly />'+
-                            '<input class="submit admin-cell" id="#save-my-localisation" type="submit" value="Valider"/>'+
-                            '</form></td>'));
-
-                        d3.select('#form-'+form).style("display", 'block')
-                            .style("width", "290px");
-
-                        var url = "getPeopleByDepartment/";
-                        var param = data['pol_id'];
-                        var man_id = data.id;
-                        d3.json(server + url + param, function (error, data) {
-                            data.forEach(getName);
-                            $('#validator-search').autocomplete({
-                                lookup: people,
-                                onSelect: function (suggestion) {
-                                    setPeopleFields(suggestion);
-                                    d3.select("#pol_id")
-                                        .attr("value", suggestion.data['PolePolId']);
-                                    d3.select("#level")
-                                        .attr("value", "Niveau 1");
-                                    if ( document.getElementsByClassName(title)[0]
-                                            .getElementsByTagName('td')[2].getElementsByTagName('p')[0]
-                                            .id !== null && document.getElementsByClassName(title)[0]
-                                            .getElementsByTagName('td')[2].getElementsByTagName('p')[0]
-                                            .id !== undefined && document.getElementsByClassName(title)[0]
-                                            .getElementsByTagName('td')[2].getElementsByTagName('p')[0]
-                                            .id !== "null "){
-                                        d3.select("#man_id")
-                                            .attr("value", document.getElementsByClassName(title)[0]
-                                                .getElementsByTagName('td')[2]
-                                                .getElementsByTagName('p')[0]
-                                                .id);
-                                    }
-                                    else {
-                                        d3.select("#man_id")
-                                            .attr("value", man_id);
-                                    }
-                                }
-                            });
-                        });
-                    });
-
-                /**
-                 * prepare autocomplete data
-                 * @param element
-                 * @param index
-                 * @param array
-                 */
-                var people = [];
-                function getName(element, index, array){
-                    people.push({value: element.firstname + " " + element.lastname,
-                        data: element});
-                }
-
-                /**
-                 * set firstname lastname and mail fields of form
-                 * @param suggestion data from autocomplete from people list
-                 */
-                function setPeopleFields(suggestion) {
-                    d3.select("#firstname")
-                        .attr("value", suggestion.data['firstname']);
-                    d3.select("#lastname")
-                        .attr("value", suggestion.data['lastname']);
-                    d3.select("#mail")
-                        .attr("value", suggestion.data['mail']);
-                }
-
-                d3.select('.two-'+two)
-                    .on("click", function(){
-
-                        var man_id = data.id;
-                        // remove all forms and search bars already here
-                        d3.selectAll(".none").remove();
-                        d3.selectAll(".admin").remove();
-                        // display all hidden fields
-                        d3.selectAll(".add-one").selectAll("p").style("display", "");
-                        d3.selectAll(".add-two").selectAll("p").style("display", "");
-                        d3.selectAll(".add-one").selectAll("label").style("display", "");
-                        d3.selectAll(".add-two").selectAll("label").style("display", "");
-
-                        ($('#two-'+ two)).append($('<div class="admin"><form id="search" onsubmit="return false">' +
-                            '<div id="label">'+
-                            '<label for="search-terms" id="search-label">search</label>'+
-                            '</div>'+
-                            '<div id="input">'+
-                            '<input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">'+
-                            '</div>'+
-                            '</form></div>' +
-                            ''));
-
-                        d3.select("#two-"+ two).select("p").style("display", "none");
-                        d3.select("#two-"+ two).select("label").style("display", "none");
-
-
-                        ($('#two-'+ two)).append($('<td class="none" id="form-' + form +'"> <form action="/updateValidateur" method="post">' +
-                            '<input class="disabled-field" type="text" id="level" name="level" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="man_id" name="man_id" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="pol_id" name="pol_id" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="com_id" name="com_id" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="firstname" name="firstname" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="lastname" name="lastname" value="" readonly />'+
-                            '<input class="disabled-field" type="text" id="mail" name="mail" value="" readonly />'+
-                            '<input class="submit" id="#save-my-valone" type="submit" value="Valider"/>'+
-                            '</form></td>'));
-
-                        d3.select('#form-'+form).style("display", 'block')
-                            .style("width", "290px");
-                        d3.json(server + "getPeopleByCompany/" + data['com_id'], function (error, data) {
-                            data.forEach(getName);
-                            $('#validator-search').autocomplete({
-                                lookup: people,
-                                onSelect: function (suggestion) {
-                                    setPeopleFields(suggestion);
-                                    d3.select("#pol_id")
-                                        .attr("value", suggestion.data['pol_id']);
-                                    d3.select("#com_id")
-                                        .attr("value", suggestion.data['com_id']);
-                                    d3.select("#level")
-                                        .attr("value", "Niveau 2");
-                                    if ( document.getElementsByClassName(title)[0]
-                                            .getElementsByTagName('td')[3].getElementsByTagName('p')[0]
-                                            .id !== null && document.getElementsByClassName(title)[0]
-                                            .getElementsByTagName('td')[3].getElementsByTagName('p')[0]
-                                            .id !== undefined  && document.getElementsByClassName(title)[0]
-                                            .getElementsByTagName('td')[3].getElementsByTagName('p')[0]
-                                            .id !== "null "){
-                                        d3.select("#man_id")
-                                            .attr("value", document.getElementsByClassName(title)[0]
-                                                .getElementsByTagName('td')[3].getElementsByTagName('p')[0]
-                                                .id);
-                                    }
-                                    else {
-                                        d3.select("#man_id")
-                                            .attr("value", man_id);
-                                    }
-                                }
-                            });
-                        });
-                    });
-            });
-        });
-    }
-}    
-
-/*
         function guid() {
                     function s4() {
                         return Math.floor((1 + Math.random()) * 0x10000)
@@ -492,7 +235,7 @@ var adminControl = {
                     }
                     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                         s4() + '-' + s4() + s4() + s4();
-                }
+        }
         d3.json(server+ "getAllCompanies",function(error,datasetComp){
             datasetComp.forEach(function(dataCompany){
                 var company=dataCompany.name;
@@ -502,39 +245,255 @@ var adminControl = {
                         var title=company+"_"+dep;
                         console.log(title);
                         d3.json(server+"getValidatorsByDep/"+dataDep.bus_id,function(error,validators){
+                            //to display either the validator if exists or a message "renseigner un validateur"
                                 var nameOne="Renseigner un validateur";
                                 var nameTwo="Renseigner un validateur";
                                 var idOne ="no_id";
                                 var idTwo="no_id";
                                 var classNameOne="add-one-empty";
                                 var classNameTwo="add-two-empty";
-                                if (validators.length!==0){
+                                if (validators.length!==0){                                   
                                     validators.forEach(function(validator){
-                                        if (validator.lvlOne==true){
+                                        if (validator.lvlone==true){                                           
                                             nameOne=validator.firstname+' '+validator.lastname;
-                                            idOne=validator.per_id;
+                                            idOne=validator.id;
                                             classNameOne="add-one";
                                         }
-                                        if (validator.lvlTwo==true){
+                                        if (validator.lvltwo==true){
                                             nameTwo=validator.firstname+' '+validator.lastname;
-                                            idTwo=validator.per_id;
+                                            idTwo=validator.id;
                                             classNameTwo="add-two";
                                         }
                                     })
                                 }
                                 var one = guid();
                                 var two = guid();
+                                var form = guid();
                                 $('<tr class="admin-list_' + title + '">' +
                                     '<td>' + company + '</td>' +
                                     '<td>' + dep + '</td>' +
-                                    '<td  id="one-'+ one + '" class="'+classNameOne+'"><p id="'+idOne+'">'+nameOne+'</p><label class="val-one one-'+ one + '" ></label></td>' +
-                                    '<td  id="two-'+ two  + '" class="'+classNameTwo+'"><p id="'+idTwo+'">'+nameTwo+'</p><label class="val-two two-'+ two  + '"  ></label></td>' +
-                                    '</tr>').insertAfter($('.table-content'));
+                                    '<td  id="one-'+ one + '" class="'+classNameOne+'"><p id="'+idOne+'">'+nameOne+'</p><label title="add validator" class="val-one one-'+ one + '" ></label><img id="val-delete-one" src="img/delete.png" title="delete validator" height="20px"/></td>' +
+                                    '<td  id="two-'+ two  + '" class="'+classNameTwo+'"><p id="'+idTwo+'">'+nameTwo+'</p><label title="add validator" class="val-two two-'+ two  + '"  ></label><img id="val-delete-two" src="img/delete.png" title="delete validator" height="20px"/></td>' +
+                                    '</tr>').insertAfter($('.table-content'));                                
+                                if (idOne==="no_id"){
+                                    d3.select("#val-delete-one").style("display","none");
+                                }
+                                if (idTwo==="no_id"){
+                                    d3.select("#val-delete-two").style("display","none");
+                                }
+
+                                //event to delete a validator if exists when clicking on the delete
+                                d3.select("#val-delete-one").on("click",function(){
+                                        var data={"level":"1","id":d3.select('#one-'+ one).select("p")[0][0].id};
+                                        if (data.id!=="no_id"){
+                                        d3.json(server +"deleteValidator", function(){
+                                        }).header("Content-Type","application/json")
+                                            .send("POST", JSON.stringify(data));
+                                        d3.select('#one-'+ one).attr("class","add-one-empty");
+                                        d3.select('#one-'+ one).selectAll("p").html("Renseigner un validateur").attr("id","no_id").style("display","block");
+                                        d3.select('#one-'+ one).select("#val-delete-one").style("display", "none");
+                                        }  
+
+                                })
+                                d3.select("#val-delete-two").on("click",function(){
+                                        var data={"level":"2","id":d3.select('#two-'+ two).select("p")[0][0].id};
+                                        if (data.id!=="no_id"){
+                                        d3.json(server +"deleteValidator", function(){
+                                        }).header("Content-Type","application/json")
+                                            .send("POST", JSON.stringify(data));
+                                            d3.select('#two-'+ two).attr("class","add-two-empty");
+                                            d3.select('#two-'+ two).selectAll("p").html("Renseigner un validateur").attr("id","no_id").style("display","block");
+                                            d3.select('#two-'+ two).select("#val-delete-two").style("display", "none");     
+                                        }                                 
+                                })
 
 
+                                //event to add a new validator level one when clicking on the plus or update if exists
+                                var selectone = d3.select('.one-'+one)
+                                    .on("click", function(){
+                                        // remove all forms and search bars already here on the page
+                                        d3.selectAll(".none").remove();
+                                        d3.selectAll(".row").remove();
+                                        // display all hidden fields on the page
+                                        d3.selectAll(".add-one").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-one-empty").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-two").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-two-empty").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-one").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-one-empty").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-two").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-two-empty").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-one").selectAll("#val-delete-one").style("display", "");
+                                        d3.selectAll(".add-two").selectAll("#val-delete-two").style("display", "");
 
-                        })
-                    })
-                })
-            })
-        })*/
+                                        //hide former message
+                                        d3.select("#one-"+ one).select("p").style("display", "none");
+                                        d3.select("#one-"+ one).select("label").style("display", "none");
+                                        d3.select("#one-"+ one).select("#val-delete-one").style("display", "none");
+
+                                        //add research bar
+                                        ($('#one-'+ one)).append($('<div class="row" id="val-row">'+
+                                            '<form id="search" onsubmit="return false">' +
+                                                '<div id="val-search">'+
+                                                    '<img src="/img/search01.png" width="30px" height="30px">'+
+                                                '</div>'+                                  
+                                                '<div id="val-input">'+
+                                                    '<input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">'+
+                                                '</div>'+
+                                                '<div id="val-valid">'+
+                                                    '<button class="new_validator-one" value="Valider">Valider</button>'+
+                                                '</div>'+
+                                                '<div id="val-cancel-one">'+
+                                                    '<img src="/img/crossDelete.png" width="15px" height="15px">'+
+                                                '</div>'+
+                                            '</form></div>'));
+                                        var content;
+                                        d3.json(server + "getPeopleByDepartment/"+ dataDep.bus_id, function (error, data) {
+                                            data.forEach(getName);
+                                            $('#validator-search').autocomplete({
+                                                lookup: people,
+                                                onSelect: function (suggestion) {
+                                                    console.log(suggestion);
+                                                    content=suggestion;
+                                                }   
+                                            });
+                                        });
+
+                                        //event to valiate change of validator when cicking on the button "valider"
+                                        d3.select('.new_validator-one')
+                                            .on("click", function(){
+                                                if (content!==undefined && content!==null && content!==''){
+                                                    console.log("Nouveau validateur: "+content.data.firstname+" "+content.data.lastname);
+                                                    var data={"level":"1","firstname":content.data.firstname,"lastname":content.data.lastname};
+                                                    if (d3.select('#one-'+ one).select("p")[0][0].id==="no_id"){ //no validator yet
+                                                        d3.json(server +"saveValidator", function(){})
+                                                        .header("Content-Type","application/json")
+                                                        .send("POST", JSON.stringify(data));
+
+                                                    }
+                                                    else{
+                                                         d3.json(server +"updateValidator", function(){})
+                                                        .header("Content-Type","application/json")
+                                                        .send("POST", JSON.stringify(data));
+                                                    }
+                                                    d3.select('#one-'+ one).attr("class","add-one");
+                                                    d3.select('#one-'+ one).selectAll("p").html(content.data.firstname+" "+content.data.lastname).style("display","block").attr("id",content.data.per_id)
+                                                    d3.select('#one-'+ one).select("label").style("display", "inline-block");
+                                                    d3.select('#one-'+ one).selectAll(".row").remove();
+                                                    d3.select('#one-'+ one).selectAll("#val-delete-one").style("display", "inline");
+                                                }
+                                            })
+
+                                        //event to cancel the change when clicking on the image "cross"
+                                        d3.select("#val-cancel-one").on("click", function(){
+                                            // remove all forms and search bars already here on the page
+                                            d3.select('#one-'+ one).selectAll("p").style("display","block");
+                                            d3.select('#one-'+ one).select("label").style("display", "inline-block");
+                                            if (d3.select('#one-'+ one).select("p")[0][0].id!=="no_id"){
+                                                d3.select('#one-'+ one).select("#val-delete-one").style("display", "none");
+                                            }
+                                            d3.select('#one-'+ one).selectAll(".row").remove();
+                                        });
+                                    });
+
+                                //event to add a new validator level two when clicking on the plus or update if exists
+                                var selecttwo = d3.select('.two-'+two)
+                                    .on("click", function(){
+                                        d3.selectAll(".none").remove();
+                                        d3.selectAll(".row").remove();
+                                        // display all hidden fields on the page
+                                        d3.selectAll(".add-one").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-one-empty").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-two").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-two-empty").selectAll("p").style("display", "");
+                                        d3.selectAll(".add-one").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-one-empty").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-two").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-two-empty").selectAll("label").style("display", "");
+                                        d3.selectAll(".add-one").selectAll("#val-delete-one").style("display", "");
+                                        d3.selectAll(".add-two").selectAll("#val-delete-two").style("display", "");
+
+                                        //hide former message
+                                        d3.select("#two-"+ two).select("p").style("display", "none");
+                                        d3.select("#two-"+ two).select("label").style("display", "none");
+                                        d3.select("#two-"+ two).select("#val-delete-two").style("display", "none");
+
+                                        //add research bar
+                                        ($('#two-'+ two)).append($('<div class="row" id="val-row">'+
+                                            '<form id="search" onsubmit="return false">' +
+                                                '<div id="val-search">'+
+                                                    '<img src="/img/search01.png" width="30px" height="30px">'+
+                                                '</div>'+                                  
+                                                '<div id="val-input">'+
+                                                    '<input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">'+
+                                                '</div>'+
+                                                '<div id="val-valid">'+
+                                                    '<button class="new_validator-two" value="Valider">Valider</button>'+
+                                                '</div>'+
+                                                '<div id="val-cancel-two">'+
+                                                    '<img src="/img/crossDelete.png" width="15px" height="15px">'+
+                                                '</div>'+
+                                            '</form></div>'));
+                                        var content;
+                                        d3.json(server + "getPeopleByCompany/" + dataCompany.com_id, function (error, data) {
+                                            data.forEach(getName);
+                                            $('#validator-search').autocomplete({
+                                                lookup: people,
+                                                onSelect: function (suggestion) {
+                                                    content=suggestion;
+                                                    console.log(suggestion);
+                                                }
+                                            })
+                                        });
+                                        //event to valiate change of validator when cicking on the button "valider"
+                                        d3.select('.new_validator-two')
+                                            .on("click", function(){
+                                                if (content!==undefined && content!==null && content!==''){
+                                                    console.log("Nouveau validateur: "+content.data.firstname+" "+content.data.lastname);
+                                                    var data={"level":"2","firstname":content.data.firstname,"lastname":content.data.lastname};
+                                                    if (d3.select('#two-'+ two).select("p")[0][0].id==="no_id"){ //no validator yet
+                                                        d3.json(server +"saveValidator", function(){})
+                                                        .header("Content-Type","application/json")
+                                                        .send("POST", JSON.stringify(data));
+
+                                                    }
+                                                    else{
+                                                         d3.json(server +"updateValidator", function(){})
+                                                        .header("Content-Type","application/json")
+                                                        .send("POST", JSON.stringify(data));
+                                                    }
+                                                    d3.select('#two-'+ two).attr("class","add-two");
+                                                    d3.select('#two-'+ two).selectAll("p").html(content.data.firstname+" "+content.data.lastname).style("display","block").attr("id",content.data.per_id)
+                                                    d3.select('#two-'+ two).select("label").style("display", "inline-block");
+                                                    d3.select('#two-'+ two).selectAll(".row").remove();
+                                                    d3.select('#two-'+ two).selectAll("#val-delete-two").style("display", "inline");
+                                                }
+                                            })
+
+                                        //event to cancel the change when clicking on the image "cross"
+                                        d3.select("#val-cancel-two").on("click", function(){
+                                            // remove all forms and search bars already here on the page
+                                            d3.select('#two-'+ two).selectAll("p").style("display","block");
+                                            d3.select('#two-'+ two).select("label").style("display", "inline-block");
+                                            if (d3.select('#two-'+ two).select("p")[0][0].id!=="no_id"){
+                                                d3.select('#two-'+ two).select("#val-delete-two").style("display", "");
+                                            }
+                                            
+                                            d3.select('#two-'+ two).selectAll(".row").remove();
+                                        });
+                                    });
+
+                                    
+                                    /** prepare autocomplete data*/
+                                    var people = [];
+                                    function getName(element, index, array){
+                                        people.push({value: element.firstname + " " + element.lastname,data: element});
+                                    }
+                        });
+
+                    });
+                });
+            });
+        })
+    }
+}
