@@ -2,12 +2,18 @@
  * control the acces to configuration and administrators pages
  */
 var server="http://localhost:3000/";
-var myData=["Alain GOURLAY","N4-C-01"];
-
+var myData=["Alain", "GOURLAY",""];
+d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
+        if (res.length>0){
+            myData[2] = res[0].name;
+        }else{myData[2] ="no-desk" };
+        d3.select("#personal-firsname").html(myData[0]);
+        d3.select("#personal-lastname").html(myData[1]);
+        d3.select("#personal-desk").html(myData[2]);
+});
 //Peronnal account
 //to show information about my account on each page
-d3.select("#personal-name").html(myData[0]);
-d3.select("#personal-desk").html(myData[1]);
+
 
 /* TO add manually new validators
 var data={"level":"2","firstname":"Laurent","lastname":"BAROT"};

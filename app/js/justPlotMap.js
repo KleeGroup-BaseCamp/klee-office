@@ -6,11 +6,9 @@
  */
 (function(window){
 
- /*NOT USED ANYMORE var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
-    var addEvtListenerOn = function(type, mapNames, where){
 
         // tooltips for every floor
-        var toolTips = [];
+       /* var toolTips = [];
         where.addEventListener(type, function(){
             var everyMap = [];
             everyMap  = document.getElementsByClassName("small-map");
@@ -35,40 +33,42 @@
             console.log("existMap = false");
         });
         mapControl.buildTooltips(mapNames);
-};*/
-    var server="http://localhost:3000/";
-    var myData=["Alain GOURLAY", ""];
-    d3.json(server+"currentOfficeName/"+myData[0].split(/ /)[0]+'/'+myData[0].split(/ /)[1],function(error,res){
+        };*/
+    var myData=["Alain", "GOURLAY",""];
+    //myData[0]=document.getElementById("personal-firstName").textContent;
+    //myData[1]=document.getElementById("personal-lastName").textContent;
+
+    d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
         if (res.length>0){
-            myData[1] = res[0].name;
-        }else{myData[1] ="no-desk" };
+            myData[2] = res[0].name;
+        }else{myData[2] ="no-desk" };
+		addEvtListenerOn("load", myData)
     });
     
-    var addEvtListenerOn = function(type, myData, where){
-        if (myData[1]=="no-desk"){
+    var addEvtListenerOn = function(type, myData){
+        //Define my desk and my map
+        var desk,mapName;
+        if (myData[2]=="no-desk"){
             desk="none";
-            mapName="N0";
+            mapName="N0"; //default value
             console.log("mais ou est mon bureau?")
         }
         else{
-            var desk=myData[1];
-            var mapName=desk.split(/-/)[0];
+            desk=myData[2];
+            mapName=desk.split(/-/)[0];
         }
-        where.addEventListener(type, function(){
-		    mapControl.eraseMap();
+
+		mapControl.eraseMap();
 		// if no map, show myMap
 		if (!mapControl.existMap) {
-			//mapControl.mapPlot(mapName, false, function() {});
 			mapControl.existMap = true;
 		}
 		// if other map, delete and show myMap
 		else if (mapControl.mapName !== mapName) {
 			d3.select(".map").select("svg").remove();
-			mapControl.mapName = mapName;
-			//mapControl.mapPlot(mapName, false, function() {});
-		}
-		$('<h1 class='+mapName+'>Etage '+mapName[1]+'<br/>('+mapName+')</h1>').prependTo($('#map-name'));
-
+			mapControl.mapName = mapName;}
+			
+        $('<h1 class='+mapName+'>Etage '+mapName[1]+'<br/>('+mapName+')</h1>').appendTo($('#map-name'));
         d3.select("#navigation-chart")
 					.style("visibility", "hidden")
 					.style("width", "0")
@@ -86,20 +86,23 @@
                     .style("padding","0px");
         d3.selectAll("#etages_withoutResult").style("visibility", "visible");
         d3.select("#title-default").html("MODE Navigation");
-        if (desk!=="none"){
+
+        if (desk=="none"){
             d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous n'avez pas de position. Veuillez mettre à jour votre bureau");
         }else{
         d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes étage "+mapName+" !");
         }
         mapControl.mapPlot(myData,mapName,false,function(){})           
-        })
     };
-    /**
-     * on title 'explorer les locaux'
-     */
-    //addEvtListenerOn("load", mapNames, window);
-    addEvtListenerOn("load", myData, window);
-    //addEvtListenerOn("click", mapNames, document.querySelector("#home-label"));
+    
+
+
+	//addEvtListenerOn("load", myData, window)});
+
+    
 
 
 }(window));
+
+
+
