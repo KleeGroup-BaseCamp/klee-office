@@ -56,7 +56,7 @@ const getInfoPerson =(req,res) =>{
         'JOIN \"Site\" ON \"Site\".sit_id = \"Desk\".site_id',
         { replacements: {}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(valid){
-            console.log(valid)
+            //console.log(valid)
            res.json(valid);
         });
 }
