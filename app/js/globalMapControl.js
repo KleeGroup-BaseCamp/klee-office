@@ -10,7 +10,7 @@ var mapControl = {
 		console.log("globalcontrol mapName :"+mapName);
 
 		// add svg map to html
-		var myDesk =myData[1];
+		var myDesk =myData[2];
 		var myMap=myDesk.split(/-/)[0];
 		d3.xml( server + "maps/" + mapName + ".svg",
 			function(error, documentFragment) {

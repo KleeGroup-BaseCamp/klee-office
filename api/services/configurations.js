@@ -28,12 +28,11 @@ const getAllMoveSet = (req, res) => {
         });
 }
 
-const getMovetSetById = (req,res) => {
+const getMoveSetById = (req,res) => {
         models.sequelize.query(
         'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id ' +
         'FROM \"MoveSet\" as set ' +
-        'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id'//+
-       // 'WHERE "MoveSet".creator'
+        'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id'
         , { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
             res.json(conf);
         });
@@ -211,35 +210,28 @@ const getMoveLineListByMoveSetId = (req, res) => {
  */
 const addNewMoveSet = (req, res) =>{
     models.sequelize.query(
-        'SELECT * '+
+        'SELECT "MoveSet\".name, "MoveSet\".set_id, \"MoveStatus\".name ' +
         'FROM \"MoveSet\" ' +
-        'JOIN \"MoveStatus\" on \"MoveSet\".status_id = \"MoveStatus\".sta_id ' +
-        'WHERE \"MoveStatus\".name = "Validee";'
-        , {
-            replacements: {},
-            type: models.sequelize.QueryTypes.SELECT
-        })
+        'JOIN \"MoveStatus\" ON "MoveStatus".sta_id = \"MoveSet\".status_id '+
+        'WHERE \"MoveStatus\".name= :sta '+
+        'ORDER BY \"MoveSet\"."dateCreation"', { replacements : {sta : "Validee"}, type: models.sequelize.QueryTypes.SELECT } )
         .then(function (moveset) {
             console.log(moveset);
             MoveLine.findAll({
-                where: {
-                    move_set_id: moveset[0].set_id
-                }
-            })
-                .then(function (moveline) {
+                where: {move_set_id: moveset[0].set_id}
+            }).then(function (moveline){
                     MoveStatus.findOne({
-                        where: {
-                            name: "Brouillon"
-                        }
+                        where: {name: "Brouillon"}
                     }).then(function (movestatus) {
+                        console.log(movestatus);
                         MoveSet.create({
                             name: req.body.name,
-                            status_id: movestatus.sta_id,
+                            status_id: movestatus.dataValues.sta_id,
                             creator: req.body.creator,
                             dateCreation: Date.now(),
                             dateUpdate : Date.now()
-
                         }).then(function (set) {
+                            console.log(set);
                             moveline.forEach(function(elem){
                                 MoveLine.create({
                                     fromDesk :elem.toDesk,
@@ -251,7 +243,7 @@ const addNewMoveSet = (req, res) =>{
                                     req.flash();
                                     res.redirect("modify"+set.dataValues.set_id);
                                 }).then(function (a){
-                                    var nameParts = req.bodycreator.split(' ');
+                                    var nameParts = req.body.creator.split(' ');
                                     if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
                                         && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
                                             models.sequelize.query('UPDATE \"MoveSet\" SET creator_id=(SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname '+
@@ -410,6 +402,7 @@ const getRecapOfMoveline = (req, res) => {
 
 module.exports = {
     getAllMoveSet,
+    getMoveSetById,
     countAllMoveLineByMoveSetId,
     getPeopleMoveLineByMoveSetId ,
     deleteMoveSet,

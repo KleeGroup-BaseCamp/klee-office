@@ -730,6 +730,11 @@ input[readonly] {
     font-size: inherit;
     /*float: right;*/
 }
+#conf-cancel{
+    position: absolute;
+    right:20px;
+}
+
 #conf-list td {
     vertical-align: middle;
 }

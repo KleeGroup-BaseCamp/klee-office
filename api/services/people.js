@@ -26,7 +26,7 @@ const getPeople = (req, res) => {
 };
 
 const getLevelValidator =(req,res) =>{
-	models.sequelize.query('SELECT \"Profil\".\"isValidatorLvlOne\", \"Profil\".\"isValidatorLvlTwo\" '+
+	models.sequelize.query('SELECT \"Profil\".\"isValidatorLvlOne\", \"Profil\".\"isValidatorLvlTwo\", "Person"."businessUnit_id" '+
         'FROM \"Person\" ' +
 		'JOIN \"Profil\" ON \"Profil\".pro_id=\"Person\".profil_id '+
         'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last;',

@@ -3,6 +3,8 @@
  * Created by msalvi on 08/09/2016.
  */
 (function(window) {
+    var server="http://localhost:3000/";
+
     function preparePlot() {
         // remove info msg
         d3.select("#info-pole").remove();
@@ -72,13 +74,13 @@
             }
         });
         var success = function(){
-            window.location.href = "http://localhost:3000/configurations";
+            window.location.href = server+"configurations";
            // window.location.href = "http://local-map/configurations";
         };
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: 'http://localhost:3000/saveMovings',
+            url: server+'saveMovings',
             //url: 'http://local-map/saveMovings',
             contentType: "application/json",
             data: JSON.stringify(movings),
@@ -87,7 +89,7 @@
 
     });
     $("#cancel-movings").click(function(event){
-         window.location.href = "http://localhost:3000/configurations";
+         window.location.href = server+"configurations";
         //window.location.href = "http://local-map/configurations";
     });
 

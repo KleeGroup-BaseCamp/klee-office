@@ -7,8 +7,8 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
         if (res.length>0){
             myData[2] = res[0].name;
         }else{myData[2] ="no-desk" };
-        d3.select("#personal-firsname").html(myData[0]);
-        d3.select("#personal-lastname").html(myData[1]);
+        d3.select("#personal-firstname").html(myData[0]+/ /);
+        d3.select("#personal-lastname").html(myData[1]+" -- ");
         d3.select("#personal-desk").html(myData[2]);
 });
 //Peronnal account

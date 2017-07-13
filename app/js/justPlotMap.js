@@ -44,7 +44,6 @@
         }else{myData[2] ="no-desk" };
 		addEvtListenerOn("load", myData)
     });
-    
     var addEvtListenerOn = function(type, myData){
         //Define my desk and my map
         var desk,mapName;
@@ -57,7 +56,7 @@
             desk=myData[2];
             mapName=desk.split(/-/)[0];
         }
-
+        console.log(desk);
 		mapControl.eraseMap();
 		// if no map, show myMap
 		if (!mapControl.existMap) {
