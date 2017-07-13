@@ -74,7 +74,7 @@ var mapControl = {
 				
 
 				// for each people, search his table
-				d3.json( server+"people", function(error, data) {
+				d3.json( server+"getInfoPerson", function(error, data) {
 					var dataset = data,
 						table,
 						tooltip = d3.select(".tooltip_map");
@@ -84,33 +84,34 @@ var mapControl = {
 						// data example: ["CN=Laurence EYRAUD-JOLY,OU=Klee SA,OU=Utilisateurs,DC=KLEE,DC=LAN,DC=NET",
 						//					{ "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }]
 						// only need data[1]
-						var d = data[1];
+						//var d = data[1];
+						var fullName = data.firstname + " " + data.lastname;
 						// split tableID into two parts.
 						// ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
 
-						if (d.physicalDeliveryOfficeName) {
-							var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
+						//if (d.physicalDeliveryOfficeName) {
+						//	var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
 
 							// do following if we have the second part
-							if(splitID[1]){
-								table = d3.select("#"+splitID[1]);
+							if(data.deskname){
+								table = d3.select("#"+data.deskname);
 								// if found in map, change table color, add hover actions
 								if(table[0][0] !== null){
 									// mark as occupied
 									table.attr("class", "occupied");
 									table.select("rect")
-										.attr("id", d.cn[0])
+										.attr("id", fullName)
 										.attr("fill", "#ff9900")
 										.attr("cursor", "pointer");
 
 									// mouse click on the button will give more info
-									$("#" + splitID[1]).click( function(event) {
+									$("#" + data.deskname).click( function(event) {
 										var xPosition = event.clientX,
 											yPosition = event.clientY;
 										// get scroll pixels to correct tooltip's yPostion
 										yPosition += $(window).scrollTop();
 
-										tooltip.html(d.cn[0] + "<br/>"+ d.mail[0] + "<br/>" + d.physicalDeliveryOfficeName[0])
+										tooltip.html(fullName + "<br/>"+ data.mail + "<br/>" + data.deskname)
 											.style("position","absolute")
 											.style("left", (xPosition)-600 + "px")
 											.style("top", (yPosition)-400 + "px")
@@ -158,7 +159,7 @@ var mapControl = {
 
 									event.stopPropagation();					
 							});
-						}
+						//}
 					});
 
 					// show all available tables
