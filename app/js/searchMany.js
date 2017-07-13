@@ -72,13 +72,13 @@ function getExternPeople(dataSearchedPeople){
 $(function(){
     // --- function getName : 
     function getName(element, index, array){
-        people.push({value: element[1].cn[0], data: element[1]});
+        people.push({value: element.firstname + " " + element.lastname, data: element});
     }
 
     // --- call getJSON : launched to create people
-    $.getJSON('/people', function(data) {
+    $.getJSON('/getInfoPerson', function(data) {
         data.forEach(getName);
-        //console.log(people);
+        console.log(people);
       function split( val ) {
           return val.split( /;\s*/ );
        }
@@ -92,12 +92,12 @@ $(function(){
             }
           }
           return -1;
-      }
+       }
 
       // call search-terms : launched when user click on search button
        $('#search-terms')
            // .on : don't navigate away from the field on tab when selecting an item
-           .on( "keydown", function( event ) {
+          .on( "keydown", function( event ) {
             if ( event.keyCode === $.ui.keyCode.TAB && $( this ).autocomplete( "instance" ).menu.active ) {
               event.preventDefault();
             }
@@ -121,16 +121,15 @@ $(function(){
               var indice = indexOfObjectsArray(people, 'value', terms[nbSearch-1]); // get the index in the array people of the searched person
               var is_already_on_list =false;
               for (var i=0;i<dataSearchedPeople.length;i++){
-                if (dataSearchedPeople[i][0]===people[indice].data.cn[0]){  //check if it is already on the list or not
+                if (dataSearchedPeople[i][0]===people[indice].value){  //check if it is already on the list or not
                   is_already_on_list=true;
                 }
               }
               if (is_already_on_list===false){
-                var location = people[indice].data.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
-                if ((location[0] === undefined) || (location[1] === undefined)){  //check if the format of the desk is valid. If invalid, the desk number is defined as "noplace"
-                  dataSearchedPeople.push([people[indice].data.cn[0],"noplace","nolocation",people[indice].data.mail[0]]);}
+                if ((people[indice].data.site === undefined) || (people[indice].data.deskname === undefined)){  //check if the format of the desk is valid. If invalid, the desk number is defined as "noplace"
+                  dataSearchedPeople.push([people[indice].value,"noplace","nolocation",people[indice].data.mail]);}
                 else{ 
-                dataSearchedPeople.push([people[indice].data.cn[0],location[1],location[0],people[indice].data.mail[0]]);}
+                dataSearchedPeople.push([people[indice].value,people[indice].data.deskname,people[indice].data.site,people[indice].data.mail]);}
               }
               return false;
             }
