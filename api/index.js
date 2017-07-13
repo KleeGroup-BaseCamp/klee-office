@@ -204,6 +204,7 @@ app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
 app.get('/getAllCompanies', adminServices.getAllCompanies);
+app.get('/getPersonByDesk/:name', localizationServices.getPersonByDesk);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
 app.get('/getPeopleByCompany/:id', adminServices.getPeopleByCompany);
@@ -221,11 +222,13 @@ app.post('/addNewConfiguration', confServices.addNewMoveSet);
 app.post('/saveMovings', confServices.saveMoveLine);
 app.post('/validateConfiguration', confServices.validateMoveSet);
 app.get('/getAllConf', confServices.getAllMoveSet);
+app.get('/getConfByDep/:id', confServices.getMoveSetById);
 app.get('/reportConsistency/:id', confServices.reportConsistency);
 app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
 app.get('/getInfoPerson', peopleServices.getInfoPerson);
 app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
+app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
 
 
 

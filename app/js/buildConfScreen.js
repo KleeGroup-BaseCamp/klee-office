@@ -7,30 +7,32 @@
     //control access to the page
     console.log("configurations-screen");
     var server="http://localhost:3000/";
-    var myData=["Alain GOURLAY","N4-C-01"];
-    var level="none";
 
-    d3.json(server + "getLevelValidator/"+myData[0].split(/ /)[0]+"/"+myData[0].split(/ /)[1], function(isValidator){
+    var myData=["Alain","GOURLAY","N4-C-01"];
+    var level="none";
+    var dep=""
+
+    d3.json(server + "getLevelValidator/"+myData[0]+"/"+myData[1], function(isValidator){
+        console.log(isValidator);
         //give access to members of his business unit
-        if (isValidator[0].isValidatorLvlOne==true && isValidator[0].isValidatorLvlTwo !==false){
+        if (isValidator[0].isValidatorLvlOne==true && isValidator[0].isValidatorLvlTwo ==false){
             level="1";
+            dep=isValidator[0].businessUnit_id;
             d3.select("#error-conf").style("display","none");
+            console.log(dep);
         }
         //give access to memebers of his company 
         if (isValidator[0].isValidatorLvlTwo==true){
             level="2"; 
             d3.select("#error-conf").style("display","none");
+            dep="all";
         }
         else{
             d3.select(".two-columns").style("visibility","hidden");
             d3.select("#error-conf").style("height","auto").style("width","auto").html(" Vous n'avez les droits d'accès à cette page <br/><a href=\""+server+"\"><button class=\"back-index\">Revenir à la page d'accueil</button></a>");
         }
-
-    
-        window.addEventListener("load", function(){
-            configurationsControl.plotConfList(level);
-        });
-
+        configurationsControl.plotConfList(level,dep);
+    });
     // print popin to add a new configuration
     $("#add-title").click(function (event) {
         if(configurationsControl.isPopin !== true){
@@ -46,11 +48,11 @@
                 '</div>'+ 
                 '<div class="inline">'+
                 '<input class="field" type="text" id="name" name="name" required/><br />'+
-                    '<!-- here a name is already set to be able to test the service but it has to be replaced with the name a the connected person -->' +
                 '<input class="disabled-field" type="text" id="creator" name="creator"  value="" readonly /><br />'+
                 '<input class="disabled-field" type="text" id="dateCreation" name="dateCreation" value="" readonly /><br />'+
                 '</div>'+
                 '<input class="submit" id="add-conf" type="submit" value="Valider"/>'+
+                '<input class="submit" id="conf-cancel" type="reset" value="Annuler"/>'+
                 '</form>'+
 
                 '</div>').insertAfter($('.two-columns'));
@@ -58,7 +60,7 @@
         configurationsControl.isPopin = true;
         var today = new Date().toLocaleDateString();
         d3.select("#dateCreation").attr("value", today);
-        d3.select("#creator").attr("value",myData[0]);
+        d3.select("#creator").attr("value",myData[0]+" "+myData[1]);
 
         // remove popin
         // click somewhere else will make popin disappear
@@ -69,6 +71,7 @@
         event.stopPropagation();
     });
     $("#add-conf").click(function () {
+        console.log("j'ai clické");
         if(configurationsControl.isPopin === true){
             $('#popin-add').remove();
             configurationsControl.isPopin = false;
@@ -89,5 +92,5 @@
             configurationsControl.isPopin = false;
         }
     }); 
-    })
+    
 }(window));
