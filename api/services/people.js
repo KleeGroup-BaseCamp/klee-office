@@ -49,11 +49,23 @@ const getAdministrator =(req,res) =>{
         });
 }
 
+const getDeskToPeople =(req,res) =>{
+	models.sequelize.query('SELECT \"Person\".firstname, \"Person\".lastname, \"Desk\".name  '+
+        'FROM \"Person\" '+
+		'JOIN \"Desk\" ON \"Desk\".person_id = \"Person\".per_id ',
+        { replacements: {}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(valid){
+            console.log(valid)
+           res.json(valid);
+        });
+}
+
 
 module.exports = {
     test,
     getAllPeople,
 	getPeople,
 	getLevelValidator,
-	getAdministrator
+	getAdministrator,
+    getDeskToPeople
 }

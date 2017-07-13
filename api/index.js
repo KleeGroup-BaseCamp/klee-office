@@ -223,6 +223,7 @@ app.get('/getAllConf', confServices.getAllMoveSet);
 app.get('/reportConsistency/:id', confServices.reportConsistency);
 app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
+app.get('/getDeskToPeople', peopleServices.getDeskToPeople);
 
         
    
