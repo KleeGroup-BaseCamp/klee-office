@@ -226,8 +226,10 @@ app.get('/getConfByDep/:id', confServices.getMoveSetById);
 app.get('/reportConsistency/:id', confServices.reportConsistency);
 app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
+app.get('/getInfoPerson', peopleServices.getInfoPerson);
 app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
 app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
+
 
 
 
