@@ -10,8 +10,9 @@ var	server= "http://localhost:3000/";
 var configurationsControl = {
     isPopin: false,
     plotConfList: function (level){
-        if (level=="1"){
-        d3.json(server + "getConfByDep", function(dataset){
+        console.log(level);
+        if (level=="1"){ 
+          d3.json(server + "getConfByDep", function(dataset){
             var dateCrea;
             dataset.forEach(function(data){
                 if(data.dateCreation !== null && data.dateCreation !== undefined && data.dateCreation !== ""){
@@ -67,11 +68,11 @@ var configurationsControl = {
                     });
                 });
             });
-        });
-      }
-    
+         });
+        }
 
-      if (level=="2"){
+        if (level=="2"){
+          console.log("I'm validator 2")
         d3.json(server + "getAllConf", function(dataset){
             var dateCrea;
             dataset.forEach(function(data){

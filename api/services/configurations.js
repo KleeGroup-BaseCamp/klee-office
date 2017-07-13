@@ -28,7 +28,16 @@ const getAllMoveSet = (req, res) => {
         });
 }
 
-
+const getMovetSetById = (req,res) => {
+        models.sequelize.query(
+        'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id ' +
+        'FROM \"MoveSet\" as set ' +
+        'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id'//+
+       // 'WHERE "MoveSet".creator'
+        , { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
+            res.json(conf);
+        });
+}
 /**
  * get number of movings for a configuration
  */
@@ -162,7 +171,7 @@ const getMoveLineListByMoveSetId = (req, res) => {
                 person.forEach(function (elem) {
                      console.log(elem);
                     var text = elem.firstname + " " + elem.lastname + " : \t\t" +
-                        elem.depart + " -> " + elem.arrivee + "\r\n";
+                        elem.from_desk + " -> " + elem.to_desk + "\r\n";
                     fs.appendFileSync('configuration-' + req.params.id + '.txt',
                         text, 'utf8'
                     );

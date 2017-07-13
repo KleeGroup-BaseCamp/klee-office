@@ -12,12 +12,12 @@
 
     d3.json(server + "getLevelValidator/"+myData[0].split(/ /)[0]+"/"+myData[0].split(/ /)[1], function(isValidator){
         //give access to members of his business unit
-        if (isValidator[0].isValidatorLvlOne){
+        if (isValidator[0].isValidatorLvlOne==true && isValidator[0].isValidatorLvlTwo !==false){
             level="1";
             d3.select("#error-conf").style("display","none");
         }
         //give access to memebers of his company 
-        else if (isValidator[0].isValidatorLvlTwo){
+        if (isValidator[0].isValidatorLvlTwo==true){
             level="2"; 
             d3.select("#error-conf").style("display","none");
         }
@@ -25,11 +25,12 @@
             d3.select(".two-columns").style("visibility","hidden");
             d3.select("#error-conf").style("height","auto").style("width","auto").html(" Vous n'avez les droits d'accès à cette page <br/><a href=\""+server+"\"><button class=\"back-index\">Revenir à la page d'accueil</button></a>");
         }
-    })
 
-    window.addEventListener("load", function(){
-        configurationsControl.plotConfList(level);
-    });
+    
+        window.addEventListener("load", function(){
+            configurationsControl.plotConfList(level);
+        });
+
     // print popin to add a new configuration
     $("#add-title").click(function (event) {
         if(configurationsControl.isPopin !== true){
@@ -88,4 +89,5 @@
             configurationsControl.isPopin = false;
         }
     }); 
+    })
 }(window));

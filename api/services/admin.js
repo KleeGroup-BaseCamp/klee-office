@@ -260,6 +260,26 @@ const saveAdministrator = (req, res) => {
     res.redirect('/admin');
 }
 
+const deleteAdministrator =(req,res) =>{
+       if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
+        && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== ""){ 
+            Person.findOne({           //find the person
+                   where: {lastname:req.body.lastname,firstname: req.body.firstname}
+            }).then(function(new_admin){      //find his profil
+                    new_admin.update({dateUpdate : new Date()})
+                    Profil.findOne({where: {
+                        pro_id: new_admin.dataValues.profil_id}})
+            .then(function(profil){           //update his profil
+                    profil.update({isAdministrator : false})                               
+                    // Flash message + redirect
+                    req.flash('success', 'Vous avez choisi un administrateur ')});})
+    }
+    else {
+            req.flash('success', 'Veuillez choisir une personne dans la liste au pr&eacutealable.');
+        }
+    res.redirect('/admin');
+}
+
     module.exports = {
         getAllCompanies,
         getDepartmentsByCompany,
@@ -270,5 +290,6 @@ const saveAdministrator = (req, res) => {
         updateValidateur,
         saveAdministrator,
         getValidatorsByDep,
-        deleteValidator
+        deleteValidator,
+        deleteAdministrator
     }

@@ -211,6 +211,7 @@ app.post('/saveValidator', adminServices.saveValidateur);
 app.post('/updateValidator', adminServices.updateValidateur);
 app.post('/deleteValidator', adminServices.deleteValidator);
 app.post('/saveAdministrator', adminServices.saveAdministrator);
+app.post('/deleteAdministrator', adminServices.deleteAdministrator);
 app.get('/getAllValidators', adminServices.getAllValidators);
 app.get('/getAllMovingsByConfIdCount/:id', confServices.countAllMoveLineByMoveSetId);
 app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetId);
@@ -224,6 +225,11 @@ app.get('/reportConsistency/:id', confServices.reportConsistency);
 app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
 app.get('/getDeskToPeople', peopleServices.getDeskToPeople);
+app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
+
+
+
+
 
         
    
