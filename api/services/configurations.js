@@ -397,7 +397,7 @@ const getRecapOfMoveline = (req, res) => {
         });
 }
 
-const getNoPlacePerson = (req, res) => {
+const getNoPlacePersonByBusUnit = (req, res) => {
     models.sequelize.query(
         'SELECT \"Person\".firstname, \"Person\".lastname, \"BusinessUnit\".name AS businessunit, \"Company\".name AS company '  +
         'FROM \"Person\" ' +
@@ -414,6 +414,20 @@ const getNoPlacePerson = (req, res) => {
         });
 }
 
+const getNoPlacePersonByCompany = (req, res) => {
+    models.sequelize.query(
+        'SELECT \"Person\".firstname, \"Person\".lastname, \"BusinessUnit\".name AS businessunit, \"Company\".name AS company '  +
+        'FROM \"Person\" ' +
+        'JOIN \"BusinessUnit\" ON \"BusinessUnit\".bus_id = \"Person\".\"businessUnit_id\" ' +
+        'JOIN \"Company\" ON \"Company\".com_id = \"BusinessUnit\".company_id ' +
+        'JOIN \"Desk\" ON \"Desk\".person_id = \"Person\".per_id  ' +
+        'WHERE \"Company\".com_id = :comid AND \"Desk\".name = :aucun'
+        , { replacements: {comid: req.params.comid, aucun: "aucun"}, type: models.sequelize.QueryTypes.SELECT
+        })
+        .then(function (noplace) {
+            res.json(noplace);
+        });
+}
 
 
 module.exports = {
@@ -429,5 +443,6 @@ module.exports = {
     reportConsistency,
     formerPersonByDeskId,
     getRecapOfMoveline,
-    getNoPlacePerson
+    getNoPlacePersonByBusUnit,
+    getNoPlacePersonByCompany    
 }

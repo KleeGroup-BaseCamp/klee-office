@@ -229,8 +229,10 @@ app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
 app.get('/getInfoPerson', peopleServices.getInfoPerson);
 app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
 app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
-app.get('/getNoPlacePerson/:busid/:comid', confServices.getNoPlacePerson);
-
+app.get('/getNoPlacePersonByBusUnit/:busid/:comid', confServices.getNoPlacePersonByBusUnit);
+app.get('/getNoPlacePersonByCompany/:comid', confServices.getNoPlacePersonByCompany);
+app.get('/getBusUnitCompanyByPerson/:first/:last', peopleServices.getBusUnitCompanyByPerson);
+app.get('/getProfilByPerson/:first/:last', peopleServices.getProfilByPerson);
 
 
 
