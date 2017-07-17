@@ -110,7 +110,7 @@
             else if(profil[0].lvltwo === true){
                 d3.json(server + "getBusUnitCompanyByPerson/"+myData[0]+"/"+myData[1], function(info){
                     console.log(info[0].comid);
-                    d3.json(server + "getNoPlacePersonByCompany/2"/*+info[0].comid*/, function(company){
+                    d3.json(server + "getNoPlacePersonByCompany/"+info[0].comid, function(company){
                         var i=0;
                         var mytext='';
                         for (i=0;i<company.length;i++){

@@ -806,16 +806,15 @@ input[readonly] {
 }
 #list-noplace{
     z-index: 300;
-    border-style: solid;
-    border-color: blue;
-    width: 500px;
-    height: 500px;
+    width: 320px;
+    height: 300px;
     overflow: scroll;
     cursor:pointer;
     position: absolute;
     left: 400px;
     top: 280px;
-    vertical-align: middle;
+    background-color: white;
+    border: 1px solid #297aa3;
     
     visibility: hidden;
 }
