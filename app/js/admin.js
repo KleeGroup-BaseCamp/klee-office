@@ -243,7 +243,6 @@ var adminControl = {
                     datasetDep.forEach(function(dataDep){
                         var dep=dataDep.name;
                         var title=company+"_"+dep;
-                        console.log(title);
                         d3.json(server+"getValidatorsByDep/"+dataDep.bus_id,function(error,validators){
                             //to display either the validator if exists or a message "renseigner un validateur"
                                 var nameOne="Renseigner un validateur";

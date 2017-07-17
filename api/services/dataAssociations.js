@@ -26,8 +26,6 @@ var Promise = require("bluebird");
 const associate = (req, res) => {
 
 // UPDATES have to be done after all the INSERTS
-
-
     peopleFile.forEach(function (data) {
         var d = data[1];
         var company;
@@ -45,16 +43,37 @@ const associate = (req, res) => {
         if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
             mail = d.mail.toString();
         } 
-        // ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
-        var des;
-        if (d.physicalDeliveryOfficeName) {
-            var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
-
-            if (splitID[1]) {
-                des = splitID[1];
-
-            }
-        }
+        // ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"],, "KLEE Le Mans" => ["Le Mans","externe"]
+                var desk="aucun";
+                var site="aucun";
+                if (d.physicalDeliveryOfficeName) {
+                    var location=d.physicalDeliveryOfficeName[0];
+                    if (location.split(/\s+:\s+/)[0]=="La Boursidière"){ 
+                        site="La Boursidière";
+                         //check desk is the correct form
+                        if (location.split(/\s+:\s+/)[1].split(/-/).length==3){ // XX-X-XX
+                            desk=location.split(/\s+:\s+/)[1];
+                        }else {desk="aucun"}
+                    }else if(location.search("issy")!=-1 || location.search("Issy")!=-1){
+                        site="Issy-les-Moulineaux";
+                        desk="externe";
+                    }else if(location.search("mans")!=-1 || location.search("Mans")!=-1){
+                        site="Le Mans";
+                        desk="externe";
+                    }else if(location.search("lyon")!=-1 || location.search("Lyon")!=-1){
+                        site="Lyon";
+                        desk="externe";
+                    }else if(location.search("bourgoin")!=-1 || location.search("Bourgoin")!=-1){
+                        site="Bourgoin-Jailleux";
+                        desk="externe";
+                    }else if(location.search("montpellier")!=-1 || location.search("Montpellier")!=-1){
+                        site="Montpellier";
+                        desk="externe";
+                    }else if(location.search("client")!=-1 || location.search("Client")!=-1){
+                        site="sur site client";
+                        desk="externe";
+                    }
+                }
         //  Table BsusinessUnit : <fk> Company
         if(dpt !== null && dpt !== undefined && dpt !== ""
         && company !== undefined && company !== null && company !== "") {
@@ -78,50 +97,12 @@ const associate = (req, res) => {
                     }
             }
         }
-        //Table Desk : <fk> person, <fk> site
-        if (des!== null && des !== undefined && des !== ""){
-            if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
-                && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                    models.sequelize.query('UPDATE \"Desk\" SET person_id ='+
-                    '(SELECT per_id FROM \"Person\" WHERE firstname=:firstname AND lastname=:lastname)'+
-                    'WHERE name = :deskname',
-                {replacements:{firstname: nameParts[0], lastname: nameParts[1], deskname : des},
-                type :models.sequelize.QueryTypes.UPDATE,logging:false}) 
-            }
-            if (des !== "aucun"){
-                models.sequelize.query('UPDATE \"Desk\" SET site_id ='+
-                    '(SELECT sit_id FROM \"Site\" WHERE name= :sitename) '+
-                    'WHERE name = :deskname' ,
-                {replacements:{sitename:"La Boursidière",deskname:des},type :models.sequelize.QueryTypes.UPDATE,logging:false})
-            }
-        }
-
-        // Table MoveLine :<fk> MoveSet pour la Configuration première (Initialisation des emplacements)
-        if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
-            && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-            if (des !== undefined && des !== null && des !== "") {
-                models.sequelize.query('UPDATE \"MoveLine\" SET ' +
-                    '\"fromDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname_empty ), ' +
-                    '\"toDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname ), ' +
-                    'move_set_id = (SELECT set_id FROM \"MoveSet\" WHERE name=:config) '+
-                    'WHERE person_id = (SELECT per_id FROM \"Person\" WHERE (firstname= :firstname AND lastname= :lastname)) ',
-                    {replacements: {desname: des,desname_empty :"aucun", config : "Configuration premiere", firstname: nameParts[0], lastname: nameParts[1]}, type: models.sequelize.QueryTypes.UPDATE}
-                ).then(function (movings) {
-                        //console.log(movings)
-                    });
-            }
-            else {
-                models.sequelize.query('UPDATE \"MoveLine\" SET ' +
-                '\"fromDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname_empty ), ' +
-                'move_set_id = (SELECT set_id FROM \"MoveSet\" WHERE name=:config), '+
-                '\"toDesk\" = (SELECT des_id FROM \"Desk\" WHERE name= :desname_empty ) '+
-                'WHERE person_id = (SELECT per_id from \"Person\" WHERE (firstname= :firstname AND lastname= :lastname)) ',
-                {replacements: {desname_empty: "aucun", config : "Configuration premiere", firstname: nameParts[0], lastname: nameParts[1]}, type: models.sequelize.QueryTypes.UPDATE}
-                )}
-        }
-
-
     });
+    // Moveline : <fk> moveset
+    models.sequelize.query('UPDATE "MoveLine" SET move_set_id= (SELECT set_id FROM "MoveSet" WHERE name= :set) WHERE status= :line;',
+    {replacements:{set:"Configuration premiere",line:"initialisation"},type :models.sequelize.QueryTypes.UPDATE})
+
+
     // debug
     res.json(peopleFile);
 };

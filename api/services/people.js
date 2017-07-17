@@ -38,10 +38,10 @@ const getLevelValidator =(req,res) =>{
 }
 
 const getAdministrator =(req,res) =>{
-	models.sequelize.query('SELECT \"Profil\".\"isAdministrator\" '+
-        'FROM \"Person\" ' +
-		'JOIN \"Profil\" ON \"Profil\".pro_id=\"Person\".profil_id '+
-        'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last;',
+	models.sequelize.query('SELECT "Profil"."isAdministrator" '+
+        'FROM "Person" ' +
+		'JOIN "Profil" ON "Profil".pro_id="Person".profil_id '+
+        'WHERE "Person".firstname = :first AND "Person".lastname = :last;',
         { replacements: {first: req.params.firstname, last: req.params.lastname}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(valid){
             console.log(valid)

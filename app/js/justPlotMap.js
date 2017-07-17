@@ -2,59 +2,54 @@
  * Created by msalvi on 19/08/2016.
  */
 /**
- * plot map on the selector
+ * plot map on the index page
  */
 (function(window){
-
-
-        // tooltips for every floor
-       /* var toolTips = [];
-        where.addEventListener(type, function(){
-            var everyMap = [];
-            everyMap  = document.getElementsByClassName("small-map");
-            // if maps are already there, remove them
-            Array.from(everyMap).forEach( function(element){
-                if(element.hasChildNodes()){
-                    element.childNodes.forEach(function(node){
-                        node.remove();
-                    });
-                }
-            });
-            mapNames.forEach( function(element){
-                mapControl.mapName = element;
-                toolTips.push(mapControl.smallMapPlot(element, function() {}));
-            });
-
-            // erase normal map
-            if(mapControl.existMap){
-                d3.select(".map").select("svg").remove();
-            }
-            mapControl.existMap = false;
-            console.log("existMap = false");
-        });
-        mapControl.buildTooltips(mapNames);
-        };*/
-    var myData=["Alain", "GOURLAY",""];
-    //myData[0]=document.getElementById("personal-firstName").textContent;
-    //myData[1]=document.getElementById("personal-lastName").textContent;
-
-    d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
+var myData=["Alain", "GOURLAY","",""];
+//console.log(d3.select("#personal-firstname")[0][0].textContent)    
+d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
         if (res.length>0){
-            myData[2] = res[0].name;
-        }else{myData[2] ="no-desk" };
-		addEvtListenerOn("load", myData)
-    });
+            if (res[0].site=="La Boursidière"){
+                myData[2] = res[0].name;
+                myData[3]= res[0].site;}
+            else if (res[0].site !==undefined ||res[0].site !=="" ||res[0].site !=="aucun"){
+                myData[2] = "externe";
+                myData[3]= res[0].site;}
+            else{
+                myData[2] = "aucun";
+                myData[3]= "aucun";}
+        }        
+        else{
+            myData[2] = "aucun";
+            myData[3]= "aucun";
+        };
+        addEvtListenerOn("load", myData)
+})
+
     var addEvtListenerOn = function(type, myData){
         //Define my desk and my map
         var desk,mapName;
-        if (myData[2]=="no-desk"){
+        if (myData[3]=="La Boursidière"){
+            if (myData[2]=="aucun"){
+                desk="none";
+                mapName="N0"; //default value
+                d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site La Boursidière mais vous n'avez pas d'emplacement. Veuillez mettre à jour votre bureau");
+            }
+            else{
+                desk=myData[2];
+                mapName=desk.split(/-/)[0];
+                d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site La Boursidière étage "+mapName+" !");
+            }
+        }
+        else if (myData[3]=="aucun"){
             desk="none";
             mapName="N0"; //default value
-            console.log("mais ou est mon bureau?")
+            d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous n'avez pas de position. Veuillez mettre à jour votre bureau");
         }
-        else{
-            desk=myData[2];
-            mapName=desk.split(/-/)[0];
+        else {
+            desk="none";
+            mapName="N0"; //default value
+            d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site "+myData[3]);
         }
         console.log(desk);
 		mapControl.eraseMap();
@@ -86,11 +81,7 @@
         d3.selectAll("#etages_withoutResult").style("visibility", "visible");
         d3.select("#title-default").html("MODE Navigation");
 
-        if (desk=="none"){
-            d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous n'avez pas de position. Veuillez mettre à jour votre bureau");
-        }else{
-        d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes étage "+mapName+" !");
-        }
+
         mapControl.mapPlot(myData,mapName,false,function(){})           
     };
     

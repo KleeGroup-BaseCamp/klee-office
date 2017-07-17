@@ -229,7 +229,7 @@ app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
 app.get('/getInfoPerson', peopleServices.getInfoPerson);
 app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
 app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
-
+app.get('/getAdministrator/:firstname/:lastname', peopleServices.getAdministrator);
 
 
 

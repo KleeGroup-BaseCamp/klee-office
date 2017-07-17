@@ -8,7 +8,7 @@
     console.log("configurations-screen");
     var server="http://localhost:3000/";
 
-    var myData=["Alain","GOURLAY","N4-C-01"];
+    var myData=["Alain","GOURLAY","",""];
     var level="none";
     var dep=""
 

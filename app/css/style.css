@@ -361,16 +361,21 @@ RawBlameHistory
     background-color: #add6eb;;
 }
 #navigation #etages_withResult, #etages_withoutResult{
-    padding-top :50px;
+    padding-top :20px;
     padding-left:20px;
     padding-right:20px;
-    font-size : 25px;
+    font-size : 18px;
     text-align: center;
     vertical-align: middle;
     color :black;
-    line-height: 250%;
+    line-height: 220%;
 }
-
+.site{
+    padding-top :20px;
+    padding-left:20px;
+    padding-right:20px;
+    font-size : 22px;
+}
 #navigation .list_etage:hover{
     text-decoration:underline;
     color : blue;

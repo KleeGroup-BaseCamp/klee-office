@@ -8,10 +8,13 @@ var mapControl = {
 	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""],
 	mapPlot: function(myData, mapName,isChoosingFloor, callback) {
 		console.log("globalcontrol mapName :"+mapName);
-
 		// add svg map to html
 		var myDesk =myData[2];
-		var myMap=myDesk.split(/-/)[0];
+		if (myDesk!=="aucun" || myDesk!== "externe"){
+			var myMap=myDesk.split(/-/)[0];
+		}else{
+			var myMap="aucun";
+		}
 		d3.xml( server + "maps/" + mapName + ".svg",
 			function(error, documentFragment) {
 				if(error){

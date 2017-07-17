@@ -35,8 +35,39 @@ const populate = (req, res) => {
 
     var companies = [];
     var departments = [];
-    var desks = [];
-    var sites = [];
+    var desks=[];
+    var sites = ["La Boursidière","Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","sur site client"];
+    // insert states and a new configuration "Validee"
+    Promise.each(sites, function(elem, index, length){
+        Site.build({name : elem})
+            .save()
+            .error(function (err) {
+            console.log(err + " ---------" + elem);
+            });
+    });
+    
+    var states = ["Déplacement personnel", "Validee", "Brouillon"];
+    // insert states and a new configuration "Validee"
+    Promise.each(states, function(elem, index, length){
+            var state = MoveStatus.build({name: elem});
+            state.save()
+                .error(function (err) {
+                    console.log(err + " ---------" + elem);
+                })
+                .then(function(savedState){
+                    console.log("states saved !");
+                    if(elem == "Validee"){
+                        var id = savedState.dataValues.sta_id;
+                        //console.log(savedState.dataValues)
+                        var today = new Date();
+                        var technicaldate = new Date();
+                        // insert current configuration
+                        models.sequelize.query('INSERT into \"MoveSet\"(name, creator, \"dateCreation\", \"dateUpdate\",status_id) ' +
+                            'VALUES (\'Configuration premiere\', \'System\', \:dateToday\, :date, :id)',
+                            { replacements: { dateToday: today, date: technicaldate, id: id}, type: models.sequelize.QueryTypes.INSERT })
+                    }
+                })
+    });
 
     var doInserts = new Promise(function(callback){
 
@@ -58,32 +89,51 @@ const populate = (req, res) => {
                 if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
                     mail = d.mail.toString();
                 } 
-                // ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
+                // ex location ="La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
+                
+                var desk="aucun";
+                var site="aucun";
+                var desk_building=null;
+                var desk_floor=null;
                 if (d.physicalDeliveryOfficeName) {
-                    var splitID = d.physicalDeliveryOfficeName[0].split(/\s+:\s+/);
-                    if (splitID[1]) {
-                        var desk = splitID[1];
-                        var building;
-                        var floor=desk[1];
-                        if (desk[0]=='N'){
-                            building="Normandie";
-                        }else if (desk[0]='O'){
-                            building='Orléans';
-                        }
+                    var location=d.physicalDeliveryOfficeName[0];
+                    if (location.split(/\s+:\s+/)[0]=="La Boursidière"){ 
+                        site="La Boursidière";
+                         //check desk is the correct form
+                        if (location.split(/\s+:\s+/)[1].split(/-/).length==3){ // XX-X-XX
+                            desk=location.split(/\s+:\s+/)[1];
+                            desks.push(desk);
+                            var desk_building=desk[0];
+                            var desk_floor=desk[1];
+                        }else {desk="aucun"}
+                    }else if(location.search("issy")!=-1 || location.search("Issy")!=-1){
+                        site="Issy-les-Moulineaux";
+                        desk="externe";
+                    }else if(location.search("mans")!=-1 || location.search("Mans")!=-1){
+                        site="Le Mans";
+                        desk="externe";
+                    }else if(location.search("lyon")!=-1 || location.search("Lyon")!=-1){
+                        site="Lyon";
+                        desk="externe";
+                    }else if(location.search("bourgoin")!=-1 || location.search("Bourgoin")!=-1){
+                        site="Bourgoin-Jailleux";
+                        desk="externe";
+                    }else if(location.search("montpellier")!=-1 || location.search("Montpellier")!=-1){
+                        site="Montpellier";
+                        desk="externe";
+                    }else if(location.search("client")!=-1 || location.search("Client")!=-1){
+                        site="sur site client";
+                        desk="externe";
                     }
                 }
+                    
                 if(companies.indexOf(company) < 0 && company !== null && company !== undefined && company !== ""){
                     companies.push(company);
                 }
                 if(departments.indexOf(dpt) < 0 && dpt !== null && dpt !== undefined && dpt !== ""){
                     departments.push(dpt);
                 }
-                if(sites.indexOf(site) < 0 && site !== null && site !== undefined && site !== ""){
-                    sites.push(site);
-                }
-                if(desks.indexOf(desk) < 0 && desk !== null && desk !== undefined && desk !== ""){
-                    desks.push([desk,building,floor]);
-                }
+
                 if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
                 && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
                     var pers = Person.build({firstname: nameParts[0], lastname: lastname, mail: mail,dateUpdate : Date.now()});
@@ -94,24 +144,46 @@ const populate = (req, res) => {
                             //console.log(nameParts[0] + nameParts[1]);
                             var perId = newPerson.dataValues.per_id;
                             var date=new Date();
-                            MoveLine.build({person_id: perId,dateCreation :date, status :"initialisation" })
-                                .save()
-                                .error(function (err) {
-                                    console.log(err + " ---------" + elem);
+                            // create the desk and the initial moveline
+                            models.sequelize.query('SELECT * FROM "Site" WHERE "Site".name = :sitename ',{ replacements: {sitename: site },type: models.sequelize.QueryTypes.SELECT})
+                                .then(function(mysite){
+                                    var sitId=null;
+                                    if (mysite.length>0){sitId=mysite[0].sit_id};
+                                    if (site=="La Boursidière"){ // condition to avoid having two instances of the same desk
+                                        if (desks.indexOf(desk)!=-1){
+                                            Desk.create({name:desk,dateUpdate:new Date(),building:desk_building,floor:desk_floor,person_id:perId, site_id: sitId})
+                                            .then(function(newDesk){
+                                                MoveLine.create({person_id: perId, fromDesk:null, toDesk:newDesk.des_id, dateCreation :date, status :"initialisation" })
+                                            })
+                                        }else{
+                                            Desk.create({name:"aucun",dateUpdate:new Date(),building:desk_building,floor:desk_floor,person_id:perId, site_id: sitId})
+                                            .then(function(newDesk){
+                                                MoveLine.create({person_id: perId, fromDesk:null, toDesk:newDesk.des_id, dateCreation :date, status :"initialisation" })
+                                            })
+                                        }
+                                    }
+                                    else {
+                                        Desk.create({name:desk,dateUpdate:new Date(),building:desk_building,floor:desk_floor,person_id:perId, site_id: sitId})
+                                        .then(function(newDesk){
+                                            MoveLine.create({person_id: perId, fromDesk:null, toDesk:newDesk.des_id, dateCreation :date, status :"initialisation"})
+                                        })
+                                    }
                                 })
+                            
+                            //create the profil
                             Profil.build({isValidatorLvlOne:false,isValidatorLvlTwo:false })
                                 .save()
                                 .error(function (err) {
                                     console.log(err + " ---------" + elem);
                                 })
                                 .then(function(pro){
-                            models.sequelize.query(
-                                'UPDATE \"Person\" SET profil_id= :proid ' +
-                                'WHERE \"Person\".per_id = :perid '
-                                , { replacements: { proid: pro.pro_id, perid: perId },
+                                models.sequelize.query(
+                                    'UPDATE \"Person\" SET profil_id= :proid ' +
+                                    'WHERE \"Person\".per_id = :perid '
+                                    , { replacements: { proid: pro.pro_id, perid: perId },
                                     type: models.sequelize.QueryTypes.UPDATE})
                                 })
-                        });
+                        })
                 }
         });
 
@@ -130,50 +202,8 @@ const populate = (req, res) => {
                 });
         });
 
-        var site = Site.build({name : "La Boursidière"});
-            site.save()
-                .error(function (err) {
-                    console.log(err + " ---------" + elem);
-                });
 
 
-        desks.forEach(function(elem, index){
-            var off = Desk.build({name : elem[0], building : elem[1], floor : elem[2]});
-            off.save()
-                .error(function (err) {
-                    console.log(err + " ---------" + elem);
-                });
-        });
-
-        // for non assigned former offices
-        var offAucun = Desk.build({name : "aucun"});
-        offAucun.save()
-            .error(function (err) {
-                console.log(err + " ---------" + elem);
-            });
-
-        var states = ["Déplacement personnel", "Validee", "Brouillon"];
-        // insert states and a new configuration "Validee"
-        Promise.each(states, function(elem, index, length){
-            var state = MoveStatus.build({name: elem});
-            state.save()
-                .error(function (err) {
-                    console.log(err + " ---------" + elem);
-                })
-                .then(function(savedState){
-                    console.log("states saved !");
-                    if(elem == "Validee"){
-                        var id = savedState.dataValues.sta_id;
-                        //console.log(savedState.dataValues)
-                        var today = new Date();
-                        var technicaldate = new Date();
-                        // insert current configuration
-                        models.sequelize.query('INSERT into \"MoveSet\"(name, creator, \"dateCreation\", \"dateUpdate\",status_id) ' +
-                            'VALUES (\'Configuration premiere\', \'System\', \:dateToday\, :date, :id)',
-                            { replacements: { dateToday: today, date: technicaldate, id: id}, type: models.sequelize.QueryTypes.INSERT })
-                    }
-                })
-        });
     });
 
     // do insert THEN updates
