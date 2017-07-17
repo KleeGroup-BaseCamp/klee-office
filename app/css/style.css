@@ -806,6 +806,24 @@ input[readonly] {
 #left #input {
     left: 30px;
 }
+#plot-noplace{
+    z-index: 20;
+}
+#list-noplace{
+    z-index: 300;
+    width: 320px;
+    height: 300px;
+    overflow: scroll;
+    cursor:pointer;
+    position: absolute;
+    left: 400px;
+    top: 280px;
+    background-color: white;
+    border: 1px solid #297aa3;
+    
+    visibility: hidden;
+}
+
 .block-title {
     border: 1px solid #297aa3;
     padding: 5px;

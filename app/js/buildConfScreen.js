@@ -92,5 +92,45 @@
             configurationsControl.isPopin = false;
         }
     }); 
+
+    $("#plot-noplace").click(function () {
+         d3.json(server + "getProfilByPerson/"+myData[0]+"/"+myData[1], function(profil){
+            if((profil[0].lvlone === true) && (profil[0].lvltwo === false)){
+                d3.json(server + "getBusUnitCompanyByPerson/"+myData[0]+"/"+myData[1], function(info){
+                    d3.json(server + "getNoPlacePersonByBusUnit/"+info[0].busid+"/"+info[0].comid, function(bus){
+                        var i=0;
+                        var mytext='';
+                        for (i=0;i<bus.length;i++){
+                            mytext += bus[i].firstname + " " + bus[i].lastname + '<br/>';} 
+                        d3.select("#list-noplace") 
+                        .html(mytext);
+                    });
+                });
+            }
+            else if(profil[0].lvltwo === true){
+                d3.json(server + "getBusUnitCompanyByPerson/"+myData[0]+"/"+myData[1], function(info){
+                    console.log(info[0].comid);
+                    d3.json(server + "getNoPlacePersonByCompany/"+info[0].comid, function(company){
+                        var i=0;
+                        var mytext='';
+                        for (i=0;i<company.length;i++){
+                            mytext += company[i].firstname + " " + company[i].lastname + '<br/>';}       
+                        d3.select("#conf-list")
+                            .style("visibility", "hidden");
+                        d3.select("#list-noplace") 
+                         .style("visibility", "visible")
+                        .html(mytext);
+                    });
+                });
+            }
+        });
+    });
+
+    $("#plot-config").click(function () {
+        d3.select("#conf-list")
+            .style("visibility", "visible");
+        d3.select("#list-noplace")
+            .style("visibility", "hidden");
+    });
     
 }(window));
