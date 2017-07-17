@@ -12,3 +12,4 @@ localmap_privatekey.pem
 cert.pem
 certificate_idp.crt
 metadata_idp.xml
+/api/debug.log
