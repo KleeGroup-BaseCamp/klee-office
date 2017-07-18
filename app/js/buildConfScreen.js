@@ -18,11 +18,11 @@
         if (isValidator[0].isValidatorLvlOne==true && isValidator[0].isValidatorLvlTwo ==false){
             level="1";
             dep=isValidator[0].businessUnit_id;
-            d3.select("#error-conf").style("display","none");
+            d3.select("#error-conf").style("display","none");          
             console.log(dep);
         }
         //give access to memebers of his company 
-        if (isValidator[0].isValidatorLvlTwo==true){
+        else if (isValidator[0].isValidatorLvlTwo==true){
             level="2"; 
             d3.select("#error-conf").style("display","none");
             dep="all";
@@ -94,32 +94,28 @@
     }); 
 
     $("#plot-noplace").click(function () {
-         d3.json(server + "getProfilByPerson/"+myData[0]+"/"+myData[1], function(profil){
+        d3.select("#conf-list").style("visibility", "hidden");
+        d3.select("#add-title").style("visibility", "hidden");
+        d3.select("#list-noplace") .style("visibility", "visible");
+
+        d3.json(server + "getProfilByPerson/"+myData[0]+"/"+myData[1], function(profil){
             if((profil[0].lvlone === true) && (profil[0].lvltwo === false)){
                 d3.json(server + "getBusUnitCompanyByPerson/"+myData[0]+"/"+myData[1], function(info){
-                    d3.json(server + "getNoPlacePersonByBusUnit/"+info[0].busid+"/"+info[0].comid, function(bus){
-                        var i=0;
-                        var mytext='';
-                        for (i=0;i<bus.length;i++){
-                            mytext += bus[i].firstname + " " + bus[i].lastname + '<br/>';} 
-                        d3.select("#list-noplace") 
-                        .html(mytext);
+                    d3.json(server + "getNoPlacePersonByBusUnit/"+info[0].busid+"/"+info[0].comid, function(person){
+                        for (var i=0;i<person.length;i++){
+                            $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td></tr>').insertAfter($('.table-noplace'));
+                        }  
                     });
                 });
             }
             else if(profil[0].lvltwo === true){
                 d3.json(server + "getBusUnitCompanyByPerson/"+myData[0]+"/"+myData[1], function(info){
-                    console.log(info[0].comid);
-                    d3.json(server + "getNoPlacePersonByCompany/"+info[0].comid, function(company){
-                        var i=0;
-                        var mytext='';
-                        for (i=0;i<company.length;i++){
-                            mytext += company[i].firstname + " " + company[i].lastname + '<br/>';}       
-                        d3.select("#conf-list")
-                            .style("visibility", "hidden");
-                        d3.select("#list-noplace") 
-                         .style("visibility", "visible")
-                        .html(mytext);
+                    //console.log(info[0].comid);
+                    d3.json(server + "getNoPlacePersonByCompany/"+info[0].comid, function(person){
+                        for (var i=0;i<person.length;i++){
+                            $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td></tr>').insertAfter($('.table-noplace'));
+                        }       
+
                     });
                 });
             }

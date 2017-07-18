@@ -416,7 +416,7 @@ const getNoPlacePersonByBusUnit = (req, res) => {
 
 const getNoPlacePersonByCompany = (req, res) => {
     models.sequelize.query(
-        'SELECT \"Person\".firstname, \"Person\".lastname, \"BusinessUnit\".name AS businessunit, \"Company\".name AS company '  +
+        'SELECT \"Person\".firstname, \"Person\".lastname, \"BusinessUnit\".name AS businessunit, \"Company\".name AS company, "Person".mail AS mail '  +
         'FROM \"Person\" ' +
         'JOIN \"BusinessUnit\" ON \"BusinessUnit\".bus_id = \"Person\".\"businessUnit_id\" ' +
         'JOIN \"Company\" ON \"Company\".com_id = \"BusinessUnit\".company_id ' +
