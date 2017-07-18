@@ -21,12 +21,21 @@ function getPeopleByArea(area,dataSearchedPeople){
     var res=[];
     for (var i=0;i<dataSearchedPeople.length;i++){
       if (area === "externe"){
-        if (dataSearchedPeople[i][1]==="noplace"){
+        if (dataSearchedPeople[i][1]==="externe"){
           res.push(dataSearchedPeople[i]);}
       }
       else{
         if (dataSearchedPeople[i][1].split(/-/)[0]===area){
           res.push(dataSearchedPeople[i]);}
+      }
+    }
+    return res;
+}
+function getPeopleBySite(site,dataSearchedPeople){
+    var res=[];
+    for (var i=0;i<dataSearchedPeople.length;i++){
+      if (dataSearchedPeople[i][2]===site){
+          res.push(dataSearchedPeople[i]);
       }
     }
     return res;
@@ -57,7 +66,7 @@ function getSearchedDesks(dataSearchedPeople){ //searched desks without "noplace
 function getExternPeople(dataSearchedPeople){
   var res=[];
   for (var i=0;i<dataSearchedPeople.length;i++){
-      if (dataSearchedPeople[i][1] === "noplace"){
+      if (dataSearchedPeople[i][1] === "externe"){
           res.push(dataSearchedPeople[i]);}
     }
     return res;
@@ -78,7 +87,7 @@ $(function(){
     // --- call getJSON : launched to create people
     $.getJSON('/getInfoPerson', function(data) {
         data.forEach(getName);
-        console.log(people);
+        //console.log(people);
       function split( val ) {
           return val.split( /;\s*/ );
        }
@@ -131,6 +140,7 @@ $(function(){
                 else{ 
                 dataSearchedPeople.push([people[indice].value,people[indice].data.deskname,people[indice].data.site,people[indice].data.mail]);}
               }
+              console.log(dataSearchedPeople)
               return false;
             }
           });
@@ -161,7 +171,15 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
         if (nbPeopleByArea[area]>0){
           console.log(area);
           if (area==="externe"){
-              d3.select(".ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
+            var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","sur site client"];
+            for (var j=0;j<sitesExterne.length;j++){
+              var site=sitesExterne[j];
+              if (getPeopleBySite(site,dataSearchedPeople).length>0){
+                console.log(getPeopleBySite(site,dataSearchedPeople));
+                d3.select("#"+site).text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
+              }
+            }
+              //d3.select(".ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
               if (first_area_not_empty===""){first_area_not_empty="externe"}
           }
           else{
@@ -181,6 +199,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
 
 function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
     //Load the first result
+    console.log("first arear not empty" +first_area_not_empty)
     mapControl.eraseMap();
     if (first_area_not_empty==="externe"){
       d3.select("#whole-map").style("visibility","hidden").style("height","0px");
@@ -188,7 +207,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
       d3.select(".tooltip_ext_map").style("visibility","visible");
       var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
       var text_extern="<h2> Personne(s) externe(s) :</h2><br/><br/><ul>";
-      for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+"</li>");}
+      for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+" -- "+dataSearchedPeopleExtern[i][2]+"</li>");}
       text_extern+="</ul>"
       var tooltip_ext = d3.select(".tooltip_ext_map");
       tooltip_ext.html(text_extern)
@@ -702,8 +721,8 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
                                   .on("click", function(){
                                    // console.log("Bureau : " + d3.event.target.parentNode.id);
                             if (nbPeopleByArea.externe > 0){
-                                    var xPos = event.clientX,
-                                      yPos = event.clientY;
+                                    var xPos = event.X,
+                                      yPos = event.Y;
                                     var infobulle = d3.select(".tooltip_ext");
                                         // get scroll pixels to correct tooltip's yPostion
                                       yPos += $(window).scrollTop();
