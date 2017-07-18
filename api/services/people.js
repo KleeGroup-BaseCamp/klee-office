@@ -26,9 +26,10 @@ const getPeople = (req, res) => {
 };
 
 const getLevelValidator =(req,res) =>{
-	models.sequelize.query('SELECT \"Profil\".\"isValidatorLvlOne\", \"Profil\".\"isValidatorLvlTwo\", "Person"."businessUnit_id" '+
+	models.sequelize.query('SELECT \"Profil\".\"isValidatorLvlOne\", \"Profil\".\"isValidatorLvlTwo\", "Person"."businessUnit_id", "BusinessUnit".company_id AS company '+
         'FROM \"Person\" ' +
 		'JOIN \"Profil\" ON \"Profil\".pro_id=\"Person\".profil_id '+
+        'JOIN "BusinessUnit" ON "BusinessUnit".bus_id="Person"."businessUnit_id" '+
         'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last;',
         { replacements: {first: req.params.firstname, last: req.params.lastname}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(valid){
@@ -76,19 +77,7 @@ const getBusUnitCompanyByPerson = (req, res) => {
         });
 };
 
-const getProfilByPerson = (req, res) => {
-    models.sequelize.query(
-        'SELECT \"Person\".firstname, \"Person\".lastname, \"Profil\".\"isValidatorLvlOne\" as lvlone, \"Profil\".\"isValidatorLvlTwo\" as lvltwo, \"Profil\".\"isAdministrator\" as admin  ' + 
-        'FROM \"Profil\" ' +
-        'JOIN \"Person\" ON \"Person\".profil_id = \"Profil\".pro_id ' +
-        'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last'
-        , { replacements: {first: req.params.first, last: req.params.last},
-            type: models.sequelize.QueryTypes.SELECT
-        })
-        .then(function (valid) {
-            res.json(valid);
-        });
-};
+
 
 
 module.exports = {
@@ -99,5 +88,4 @@ module.exports = {
 	getAdministrator,
     getInfoPerson,
     getBusUnitCompanyByPerson,
-    getProfilByPerson
 }
