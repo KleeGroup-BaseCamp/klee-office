@@ -9,7 +9,29 @@
     var server= "http://localhost:3000/"
    // var server= "http://local-map/"
     var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
-    var myData=["Alain GOURLAY","N4-C-01"];
+    var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
+    function fillMyData(myData,callback){
+        d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
+            if (res.length>0){
+             if (res[0].site=="La Boursidière"){
+                myData[2] = res[0].name;
+                myData[3]= res[0].site;}
+             else if (res[0].site !==undefined ||res[0].site !=="" ||res[0].site !=="aucun"){
+                myData[2] = "externe";
+                myData[3]= res[0].site;}
+             else{
+                myData[2] = "aucun";
+                myData[3]= "aucun";}
+            }        
+            else{
+                myData[2] = "aucun";
+                myData[3]= "aucun";
+            };    
+            callback();
+        })
+    }
+
+    fillMyData(myData,function(){});
     var addEvtListenerOn = function(type, mapNames, where){
     
         where.addEventListener(type, function(){

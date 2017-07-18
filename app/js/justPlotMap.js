@@ -5,9 +5,9 @@
  * plot map on the index page
  */
 (function(window){
-var myData=["Alain", "GOURLAY","",""];
-//console.log(d3.select("#personal-firstname")[0][0].textContent)    
+var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];   
 d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
+
         if (res.length>0){
             if (res[0].site=="La Boursidière"){
                 myData[2] = res[0].name;
@@ -82,12 +82,8 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
         d3.select("#title-default").html("MODE Navigation");
 
 
-        mapControl.mapPlot(myData,mapName,false,function(){})           
+        mapControl.mapPlot(myData,mapName,function(){})           
     };
-    
-
-
-	//addEvtListenerOn("load", myData, window)});
 
     
 

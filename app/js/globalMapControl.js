@@ -6,7 +6,7 @@ var mapControl = {
 	existMap: false,
 	mapName: null,
 	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""],
-	mapPlot: function(myData, mapName,isChoosingFloor, callback) {
+	mapPlot: function(myData, mapName, callback) {
 		console.log("globalcontrol mapName :"+mapName);
 		// add svg map to html
 		var myDesk =myData[2];
@@ -162,7 +162,7 @@ var mapControl = {
 
 									event.stopPropagation();					
 							});
-						//}
+						
 					});
 
 					// show all available tables

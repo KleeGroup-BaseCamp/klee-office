@@ -3,7 +3,7 @@
 'use strict';
 // global variables
 var	server= "http://localhost:3000/";
-var myData=["Alain", "GOURLAY","",""];
+var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
 
 document.getElementById("button-localization").addEventListener("click",function() {changeLocalization()});

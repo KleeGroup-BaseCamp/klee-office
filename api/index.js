@@ -164,29 +164,37 @@ app.get('/', function(req, res){
 	console.log(req.session);
 	console.log(req.sessionID);
 	res.render('index', { message: req.flash('success'),
-				myFirstName: req.session.firstName,
-				myLastName: req.session.lastName}) 
+				myFirstName: "Alain",
+				myLastName: "GOURLAY"}) 
 	//res.redirect('/login')
  });
 // employee localization
-app.get('/localization', function(req, res){
+/*app.get('/localization', function(req, res){
 	res.render('tell-localization', { message: req.flash('error') });
-});
+});*/
 // admin screen
 app.get('/admin', function(req, res){
-	res.render('admin', { message: req.flash('success') });
+	res.render('admin', { message: req.flash('success'),
+					myFirstName: "Alain",
+					myLastName: "GOURLAY" });
 });
 // configurations screen
 app.get('/configurations', function(req, res){
-	res.render('conf-list', { message: req.flash('success') });
+	res.render('conf-list', { message: req.flash('success'),
+				myFirstName: "Alain",
+				myLastName: "GOURLAY" });
 });
 // work on a configuration
 app.get('/modify:id', function(req, res){
-	res.render('modify', { message: req.flash('success') });
+	res.render('modify', { message: req.flash('success'),
+				myFirstName: "Alain",
+				myLastName: "GOURLAY" });
 });
 // check consistency
 app.get('/consistency:id', function(req, res){
-	res.render('consistency-list', { message: req.flash('success') });
+	res.render('consistency-list', { message: req.flash('success'),
+				myFirstName: "Alain",
+				myLastName: "GOURLAY" });
 });
 
 // people
@@ -194,15 +202,25 @@ app.get('/consistency:id', function(req, res){
 // admin/sync => Active directory => Save in LevelDB
 
 
-app.get('/test', peopleServices.test);
+
 app.get('/people', peopleServices.getAllPeople);
 app.get('/getPeople', peopleServices.getPeople);
+app.get('/getInfoPerson', peopleServices.getInfoPerson);
+app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
+app.get('/getAdministrator/:firstname/:lastname', peopleServices.getAdministrator);
+app.get('/getBusUnitCompanyByPerson/:first/:last', peopleServices.getBusUnitCompanyByPerson);
+app.get('/getProfilByPerson/:first/:last', peopleServices.getProfilByPerson);
+
 app.get('/maps/:name', mapServices.getMap);
+
 app.get('/populateDB', dataServices.populate);
+
 app.get('/associateData', dataAssociationServices.associate);
+
 app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
+
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getPersonByDesk/:name', localizationServices.getPersonByDesk);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
@@ -214,6 +232,8 @@ app.post('/deleteValidator', adminServices.deleteValidator);
 app.post('/saveAdministrator', adminServices.saveAdministrator);
 app.post('/deleteAdministrator', adminServices.deleteAdministrator);
 app.get('/getAllValidators', adminServices.getAllValidators);
+app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
+
 app.get('/getAllMovingsByConfIdCount/:id', confServices.countAllMoveLineByMoveSetId);
 app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetId);
 app.delete('/deleteConfiguration/:id', confServices.deleteMoveSet);
@@ -226,14 +246,11 @@ app.get('/getConfByDep/:id', confServices.getMoveSetById);
 app.get('/reportConsistency/:id', confServices.reportConsistency);
 app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
-app.get('/getInfoPerson', peopleServices.getInfoPerson);
-app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
-app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
-app.get('/getAdministrator/:firstname/:lastname', peopleServices.getAdministrator);
 app.get('/getNoPlacePersonByBusUnit/:busid/:comid', confServices.getNoPlacePersonByBusUnit);
 app.get('/getNoPlacePersonByCompany/:comid', confServices.getNoPlacePersonByCompany);
-app.get('/getBusUnitCompanyByPerson/:first/:last', peopleServices.getBusUnitCompanyByPerson);
-app.get('/getProfilByPerson/:first/:last', peopleServices.getProfilByPerson);
+
+
+
 
 
 

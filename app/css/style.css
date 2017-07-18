@@ -370,6 +370,10 @@ RawBlameHistory
     color :black;
     line-height: 220%;
 }
+
+#personal-firstname, #personal-lastname{
+    padding-right:7px;
+}
 .site{
     padding-top :20px;
     padding-left:20px;

@@ -8,7 +8,7 @@
     console.log("configurations-screen");
     var server="http://localhost:3000/";
 
-    var myData=["Alain","GOURLAY","",""];
+    var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
     var level="none";
     var dep=""
 

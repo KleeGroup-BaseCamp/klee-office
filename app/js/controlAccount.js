@@ -4,10 +4,9 @@
 var server="http://localhost:3000/";
 
 //Peronnal account
-var myData=["Alain", "GOURLAY","",""];
+var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
 function fillMyData(myData,callback){
-    // TO DO : récupérer nom prénom envoyer par l'idp
     d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
         if (res.length>0){
             if (res[0].site=="La Boursidière"){
@@ -23,7 +22,7 @@ function fillMyData(myData,callback){
         else{
             myData[2] = "aucun";
             myData[3]= "aucun";
-        };    
+        };   
     callback();
     })
 }
@@ -32,15 +31,13 @@ fillMyData(myData,displayMyData);
 
 function displayMyData(){
     console.log(myData)
-        //to show information about my account on each page
-        d3.select("#personal-firstname").html(myData[0]+"&nbsp");
-        d3.select("#personal-lastname").html(myData[1]+" -- ");
+        //to show information about my account on each page);
         if (myData[3]==""||myData[3]==null||myData[3]==undefined ||myData[3]=="aucun" ){
-            d3.select("#personal-site").html(" Site non défini --");
-            d3.select("#personal-desk").html("Bureau non défini");
+            d3.select("#personal-site").html(" Site non défini -");
+            d3.select("#personal-desk").html("- Bureau non défini");
         }else{
-        d3.select("#personal-site").html(myData[3]+" -- ");
-            d3.select("#personal-desk").html(myData[2]);
+        d3.select("#personal-site").html(myData[3]+" -");
+            d3.select("#personal-desk").html("- "+myData[2]);
         }
 };
 
