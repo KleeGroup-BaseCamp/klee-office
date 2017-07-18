@@ -62,7 +62,7 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
 			d3.select(".map").select("svg").remove();
 			mapControl.mapName = mapName;}
 			
-        $('<h1 class='+mapName+'>Etage '+mapName[1]+'<br/>('+mapName+')</h1>').appendTo($('#map-name'));
+        $('<h1 class='+mapName+'>Etage '+mapName+'</h1>').appendTo($('#map-name'));
         d3.select("#navigation-chart")
 					.style("visibility", "hidden")
 					.style("width", "0")

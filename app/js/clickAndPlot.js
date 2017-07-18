@@ -10,7 +10,12 @@
 		O2 = document.querySelector('#O2_withoutResult'),
 		O3 = document.querySelector('#O3_withoutResult'),
 		O4 = document.querySelector('#O4_withoutResult');
-
+		issy = document.querySelector('#Issy-les-Moulineaux');
+		lemans = document.querySelector('#le_mans');
+		lyon = document.querySelector('#Lyon');
+		bourgoin = document.querySelector('#Bourgoin-Jailleux');
+		montpellier = document.querySelector('#Montpellier');
+		client = document.querySelector('#sur_site_client');
 
 	// register click class
 	// ------------------------------
@@ -30,7 +35,7 @@
 			mapControl.mapName = "N0";
 			mapControl.mapPlot(myData,mapControl.mapName, function() {});
 		}
-		$('<h1 class="N0">RDC<br/>(N 0)</h1>').prependTo($('#map-name'));
+		$('<h1 class="N0">RDC (N0)</h1>').prependTo($('#map-name'));
 	});
 	N1.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -46,7 +51,7 @@
 			mapControl.mapName = "N1";
 			mapControl.mapPlot(myData,mapControl.mapName,function() {});
 		}
-		$('<h1 class="N1">Etage 1<br/>(N 1)</h1>').prependTo($('#map-name'));
+		$('<h1 class="N1">Etage N1</h1>').prependTo($('#map-name'));
 	});
 	N2.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -62,7 +67,7 @@
 			mapControl.mapName = "N2";
 			mapControl.mapPlot(myData,mapControl.mapName, function() {});
 		}
-		$('<h1 class="N2">Etage 2<br/>(N 2)</h1>').prependTo($('#map-name'));
+		$('<h1 class="N2">Etage N2</h1>').prependTo($('#map-name'));
 	});
 	N3.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -78,7 +83,7 @@
 			mapControl.mapName = "N3";
 			mapControl.mapPlot(myData,mapControl.mapName,function() {});
 		}
-		$('<h1 class="N3">Etage 3<br/>(N 3)</h1>').prependTo($('#map-name'));
+		$('<h1 class="N3">Etage N3</h1>').prependTo($('#map-name'));
 	});
 	N4.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -94,7 +99,7 @@
 			mapControl.mapName = "N4";
 			mapControl.mapPlot(myData,mapControl.mapName, function() {});
 		}
-		$('<h1 class="N4">Etage 4<br/>(N 4)</h1>').prependTo($('#map-name'));
+		$('<h1 class="N4">Etage N4</h1>').prependTo($('#map-name'));
 	});
 	O1.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -110,7 +115,7 @@
 			mapControl.mapName = "O1";
 			mapControl.mapPlot(myData,mapControl.mapName,  function() {});
 		}
-		$('<h1 class="O1">Etage 1<br/>(O 1)</h1>').prependTo($('#map-name'));
+		$('<h1 class="O1">Etage O1</h1>').prependTo($('#map-name'));
 	});
 	O2.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -126,7 +131,7 @@
 			mapControl.mapName = "O2";
 			mapControl.mapPlot(myData,mapControl.mapName, function() {});
 		}
-		$('<h1 class="O2">Etage 2<br/>(O 2)</h1>').prependTo($('#map-name'));
+		$('<h1 class="O2">Etage O2</h1>').prependTo($('#map-name'));
 	});
 	O3.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -142,7 +147,7 @@
 			mapControl.mapName = "O3";
 			mapControl.mapPlot(myData,mapControl.mapName, function() {});
 		}
-		$('<h1 class="O3">Etage 3<br/>(O 3)</h1>').prependTo($('#map-name'));
+		$('<h1 class="O3">Etage O3</h1>').prependTo($('#map-name'));
 	});
 	O4.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -158,7 +163,49 @@
 			mapControl.mapName = "O4";
 			mapControl.mapPlot(myData,mapControl.mapName, function() {});
 		}
-		$('<h1 class="O4">Etage 4<br/>(O 4)</h1>').prependTo($('#map-name'));
+		$('<h1 class="O4">Etage O4</h1>').prependTo($('#map-name'));
+	});
+	issy.addEventListener("click", function () {
+		mapControl.eraseMap();
+		if (mapControl.existMap) {
+			d3.select(".map").select("svg").remove();	
+		}
+		$('<h1 class="issy">Pas de plan disponible</h1>').prependTo($('#map-name'));
+	});
+	lemans.addEventListener("click", function () {
+		mapControl.eraseMap();
+		if (mapControl.existMap) {
+			d3.select(".map").select("svg").remove();	
+		}
+		$('<h1 class="lemans">Pas de plan disponible</h1>').prependTo($('#map-name'));
+	});
+	lyon.addEventListener("click", function () {
+		mapControl.eraseMap();
+		if (mapControl.existMap) {
+			d3.select(".map").select("svg").remove();	
+		}
+		$('<h1 class="lyon">Pas de plan disponible</h1>').prependTo($('#map-name'));
+	});
+	bourgoin.addEventListener("click", function () {
+		mapControl.eraseMap();
+		if (mapControl.existMap) {
+			d3.select(".map").select("svg").remove();	
+		}
+		$('<h1 class="bourgoin">Pas de plan disponible</h1>').prependTo($('#map-name'));
+	});
+	montpellier.addEventListener("click", function () {
+		mapControl.eraseMap();
+		if (mapControl.existMap) {
+			d3.select(".map").select("svg").remove();	
+		}
+		$('<h1 class="montpellier">Pas de plan disponible</h1>').prependTo($('#map-name'));
+	});
+	client.addEventListener("click", function () {
+		mapControl.eraseMap();
+		if (mapControl.existMap) {
+			d3.select(".map").select("svg").remove();	
+		}
+		$('<h1 class="client">Pas de plan disponible</h1>').prependTo($('#map-name'));
 	});
 }());
 
