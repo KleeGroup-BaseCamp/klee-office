@@ -209,7 +209,7 @@ app.get('/getInfoPerson', peopleServices.getInfoPerson);
 app.get('/getLevelValidator/:firstname/:lastname', peopleServices.getLevelValidator);
 app.get('/getAdministrator/:firstname/:lastname', peopleServices.getAdministrator);
 app.get('/getBusUnitCompanyByPerson/:first/:last', peopleServices.getBusUnitCompanyByPerson);
-app.get('/getProfilByPerson/:first/:last', peopleServices.getProfilByPerson);
+app.get('/getLastMoveline/:firstname/:lastname', peopleServices.getLastMoveline);
 
 app.get('/maps/:name', mapServices.getMap);
 

@@ -26,9 +26,10 @@ const getPeople = (req, res) => {
 };
 
 const getLevelValidator =(req,res) =>{
-	models.sequelize.query('SELECT \"Profil\".\"isValidatorLvlOne\", \"Profil\".\"isValidatorLvlTwo\", "Person"."businessUnit_id" '+
+	models.sequelize.query('SELECT \"Profil\".\"isValidatorLvlOne\", \"Profil\".\"isValidatorLvlTwo\", "Person"."businessUnit_id", "BusinessUnit".company_id AS company '+
         'FROM \"Person\" ' +
 		'JOIN \"Profil\" ON \"Profil\".pro_id=\"Person\".profil_id '+
+        'JOIN "BusinessUnit" ON "BusinessUnit".bus_id="Person"."businessUnit_id" '+
         'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last;',
         { replacements: {first: req.params.firstname, last: req.params.lastname}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(valid){
@@ -63,7 +64,7 @@ const getInfoPerson =(req,res) =>{
 
 const getBusUnitCompanyByPerson = (req, res) => {
     models.sequelize.query(
-        'SELECT \"BusinessUnit\".bus_id as busid, \"Company\".com_id as comid ' + 
+        'SELECT \"BusinessUnit\".bus_id as busid, \"Company\".com_id as comid, "BusinessUnit".name ' + 
         'FROM \"BusinessUnit\" ' +
         'JOIN \"Company\" ON \"Company\".com_id = \"BusinessUnit\".company_id ' +
         'JOIN \"Person\" ON \"Person\".\"businessUnit_id\" = \"BusinessUnit\".bus_id ' +
@@ -76,19 +77,20 @@ const getBusUnitCompanyByPerson = (req, res) => {
         });
 };
 
-const getProfilByPerson = (req, res) => {
+const getLastMoveline = (req,res) =>{
     models.sequelize.query(
-        'SELECT \"Person\".firstname, \"Person\".lastname, \"Profil\".\"isValidatorLvlOne\" as lvlone, \"Profil\".\"isValidatorLvlTwo\" as lvltwo, \"Profil\".\"isAdministrator\" as admin  ' + 
-        'FROM \"Profil\" ' +
-        'JOIN \"Person\" ON \"Person\".profil_id = \"Profil\".pro_id ' +
-        'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last'
-        , { replacements: {first: req.params.first, last: req.params.last},
-            type: models.sequelize.QueryTypes.SELECT
+        'SELECT "dateCreation", status '  +
+        'FROM "MoveLine" ' +
+        'WHERE person_id= (SELECT per_id FROM "Person"  WHERE firstname= :first AND lastname= :last) '+
+        'ORDER BY "dateCreation" DESC '+
+        'FETCH FIRST 1 ROWS ONLY;'
+        
+        , { replacements: {first: req.params.firstname, last:req.params.lastname}, type: models.sequelize.QueryTypes.SELECT
         })
-        .then(function (valid) {
-            res.json(valid);
+        .then(function (noplace) {
+            res.json(noplace);
         });
-};
+}
 
 
 module.exports = {
@@ -98,6 +100,6 @@ module.exports = {
 	getLevelValidator,
 	getAdministrator,
     getInfoPerson,
-    getBusUnitCompanyByPerson,
-    getProfilByPerson
+    getBusUnitCompanyByPerson
+    ,getLastMoveline
 }
