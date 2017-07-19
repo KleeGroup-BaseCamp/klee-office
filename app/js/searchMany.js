@@ -224,9 +224,9 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
       d3.select("#whole-map").style("visibility","hidden").style("height","0px");
       d3.select("#legend").style("visibility","hidden").style("height","0px");
       d3.select(".tooltip_ext_map").style("visibility","visible");
-      var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
+      var dataSearchedPeopleBySite=getExternPeople(dataSearchedPeople);
       var text_extern="<br/><ul>";
-      for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+" -- "+dataSearchedPeopleExtern[i][2]+"</li>");}
+      for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleBySite[i][0]+" -- "+dataSearchedPeopleBySite[i][2]+"</li>");}
       text_extern+="</ul>"
       var tooltip_ext = d3.select(".tooltip_ext_map");
       tooltip_ext.html(text_extern)
@@ -365,22 +365,65 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
       //d3.select("#map-name").style("visibility","hidden").style("height","0px");
      // d3.select(".map").style("visibility","hidden").style("height","0px");
       d3.select(".tooltip_ext_map").style("visibility","visible");
-      var dataSearchedPeopleExtern = [];
+      var dataSearchedPeopleBySite = [];
       var siteExtern = event.target.id;
       if (siteExtern === "le_mans_result"){
-        dataSearchedPeopleExtern=getPeopleBySite("Le Mans",dataSearchedPeople);
+        dataSearchedPeopleBySite=getPeopleBySite("Le Mans",dataSearchedPeople);
+        d3.selectAll(".siteResult").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#"+siteExtern).style("font-weight","bold");
       }else if (siteExtern === "sur_site_client_result"){
-        dataSearchedPeopleExtern=getPeopleBySite("Sur site client",dataSearchedPeople);
+        dataSearchedPeopleBySite=getPeopleBySite("Sur site client",dataSearchedPeople);
+        d3.selectAll(".siteResult").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#"+siteExtern).style("font-weight","bold");
       }else {
-        dataSearchedPeopleExtern=getPeopleBySite(siteExtern.split(/_/)[0],dataSearchedPeople);
+        dataSearchedPeopleBySite=getPeopleBySite(siteExtern.split(/_/)[0],dataSearchedPeople);
+        console.log(dataSearchedPeopleBySite);
+        d3.selectAll(".siteResult").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#"+siteExtern).style("font-weight","bold");
       }
       console.log(event.target.id);
-      
+      //var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","Sur site client"];
       var text_extern="<br/><ul>";
-      
+      console.log(dataSearchedPeopleBySite.length);
       for (var i=0;i<nbPeopleByArea.externe;i++){
-        if (dataSearchedPeopleExtern[i] !== undefined){
-        text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+"</li>");}}
+        if (dataSearchedPeopleBySite[i] !== undefined){
+        text_extern+=("<li>"+dataSearchedPeopleBySite[i][0]+"</li>");}
+      }
+
+     /*for(i=0;i<sitesExterne.length;i++){
+        console.log("IAULEAUX 00");
+        for (var j=0;j<dataSearchedPeopleBySite.length;j++){ //faire un console.log de dataSearchedPeopleBySite.length
+          console.log("IAULEAUX 100");
+          if (dataSearchedPeopleBySite[j].indexOf(sitesExterne[i]) === -1){
+            console.log("IAULEAUX 10 000");
+            d3.select(".tooltip_ext_map").html("Pas de résultat sur ce site")
+                  .style("position","relative")
+                  .style("padding","20px")
+                  .style("height","600px");
+             d3.select(".tooltip_ext_map").transition()
+                  .duration(200)
+                  .style("opacity", .95)
+                  .style("z-index", 20);
+            event.stopPropagation();
+          }
+        }
+      }*/
+      if (dataSearchedPeopleBySite.length === 0){
+        var tooltip_ext = d3.select(".tooltip_ext_map");
+        tooltip_ext.html("Pas de résultat sur ce site ")
+                  .style("position","relative")
+                  .style("padding","20px")
+                  .style("height","600px");
+        tooltip_ext.transition()
+                  .duration(200)
+                  .style("opacity", .95)
+                  .style("z-index", 20);
+        event.stopPropagation();
+      }
+      else{
       text_extern+="</ul>"
         var tooltip_ext = d3.select(".tooltip_ext_map");
         tooltip_ext.html(text_extern)
@@ -391,14 +434,14 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
                   .duration(200)
                   .style("opacity", .95)
                   .style("z-index", 20);
-        event.stopPropagation(); 
+        event.stopPropagation(); }
   })
 }
 /*
 function plotResultExtern(nbPeopleByArea,dataSearchedPeople){
-  var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
+  var dataSearchedPeopleBySite=getExternPeople(dataSearchedPeople);
   var text_extern="";
-  for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=(dataSearchedPeopleExtern[i][0])+"<br/>";}
+  for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=(dataSearchedPeopleBySite[i][0])+"<br/>";}
     console.log(text_extern);
     d3.select(".ext")
     .style("cursor", "pointer")
