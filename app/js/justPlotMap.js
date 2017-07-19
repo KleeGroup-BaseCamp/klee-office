@@ -79,6 +79,11 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
 					.style("height", "0px")
                     .style("padding","0px");
         d3.selectAll("#etages_withoutResult").style("visibility", "visible");
+        d3.selectAll(".siteResult").style("visibility", "hidden")
+					.style("width", "0px")
+					.style("height", "0px")
+                    .style("padding","0px");
+        d3.selectAll(".site").style("visibility", "visible")
         d3.select("#title-default").html("MODE Navigation");
 
 
