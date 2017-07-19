@@ -3,7 +3,7 @@
 **Qui** va utiliser
 
 * les employées Klee Group (Plessis-Robinson, Issy les Moulineaux, étranger...)
-* Managers (validation de déplacement)
+* Managers (validation de déplacements et création de déplacements)
 
 
 **Où** utiliser
@@ -66,38 +66,46 @@ __Service__
 
 Admin : 
 * *getAllCompanies(req, res)* - *req*: , *res*: **companies(json)** 
+* *getPersonByDesk(req, res)* - *req*:**name** , *res*: **people(json)** 
 * *getDepartmentsByCompany (req, res)* - *req*:**companyId** , *res*: **departments(json)**
 * *getPeopleByDepartment(req, res)* - *req*:**departmentId** , *res*: **people(json)**
 * *getPeopleByCompany (req, res)* - *req*:**companyId** , *res*: **people(json)**
-* *saveValidateur (req, res)* - *req*:**firstname**, **lastname**, **mail**, **statusId**, **poleId** , **level**, *res*: 
-* *updateValidateur (req, res)* - *req*:**managerId**, *res*:
+* *saveValidator (req, res)* - *req*:**firstname**, **lastname**, **level**, *res*: 
+* *updateValidator (req, res)* - *req*:**firstname**, **lastname**, **level**, *res*:
+* *deleteValidator (req, res)* - *req*:**firstname**, **lastname**, **level**, *res*:
 * *getAllValidators (req, res)* - *req*:, *res*:**managers(json)**
+* *getValidatorsByDep (req, res)* - *req*: **depId**, *res*:**managers(json)**
+* *saveAdministrator(req, res)* - *req*:**firstname**, **lastname** , *res*:
+* *deleteAdministrator(req, res)* - *req*:**firstname**, **lastname** , *res*:
 
 Configurations 
-* *getAllMoveSet(req, res)* - *req*:, *res*:**configurations(json)**
-* *countAllMoveLineByMoveSetId (req, res)* - *req*:**configurationId**, *res*:**count(json)**
-*  *getPeopleMoveLineByMoveSetId (req, res)* - *req*:**configurationId**, *res*:**movings(json)**
-*  *deleteMoveSet  (req, res)* - *req*:**configurationId**, *res*:
-*  *validateMoveSet  (req, res)* - *req*:**configurationId**, *res*:
-*  *getMoveLineListByMoveSetId (req, res)* - *req*:**configurationId**, *res*:**return txt file**
-*  *addNewMoveSet (req, res)* - *req*:**creator**, *res*:
-*  *saveMoveLine (req, res)* - *req*:**array of movings**, *res*:
-*  *reportConsistency (req, res)* - *req*:**configurationId**, *res*:**info(json)**
-*  *formerPersonByDeskId (req, res)* - *req*:**configurationId**,**officeId**, *res*:**formerPeople(json)**
-*  *getRecapOfMoveline (req, res)* - *req*:**configurationId**, *res*:**movingsList(json)**
+* *getAllConf(req, res)* - *req*:, *res*:**configurations(json)**
+* *getConfByDep(req, res)* - *req*:**confId**, *res*:**configurations(json)**
+* *getAllMovingsByConfIdCount (req, res)* - *req*:**configurationId**, *res*:**count(json)**
+* *getPeopleMovingsByConId (req, res)* - *req*:**configurationId**, *res*:**movings(json)**
+* *deleteConfiguration  (req, res)* - *req*:**configurationId**, *res*:
+* *validateConfiguration  (req, res)* - *req*:**configurationId**, *res*:
+* *getMovingsListByConfId (req, res)* - *req*:**configurationId**, *res*:**return txt file**
+* *addNewConfiguration (req, res)* - *req*:**creator**, *res*:
+* *saveMovings (req, res)* - *req*:**array of movings**, *res*:
+* *reportConsistency (req, res)* - *req*:**configurationId**, *res*:**info(json)**
+* *formerPeopleByOffId (req, res)* - *req*:**configurationId**,**officeId**, *res*:**formerPeople(json)**
+* *getRecapOfMovings (req, res)* - *req*:**configurationId**, *res*:**movingsList(json)**
+* *getNoPlacePersonByBusUnit (req, res)* - *req*:**businessUnitId**,**companyId**, *res*:**people(json)**
+* *getNoPlacePersonByCompany (req, res)* - *req*:**companyId**, *res*:**people(json)**
 
 Data 
-* *populate (req, res)* - *req*:, *res*:
+* *populateDB (req, res)* - *req*:, *res*:
 require KLeeGroup.json
 
 DataAssociation 
-* *associate(req, res)* - *req*:, *res*:
+* *associateData(req, res)* - *req*:, *res*:
 require KLeeGroup.json
 
 Localization
-* *getCurrentDeskName (req, res)* - *req*:**firsname**, **lastname**, *res*:**office(json)**
-* *getCurrentDeskNamebyId (req, res)* - *req*:**PeopleId**, *res*:**office(json)**
-* *saveMyLocalization  (req, res)* - *req*:**officeName**,**firstname**,**lastname**, *res*
+* *currentOfficeName (req, res)* - *req*:**firsname**, **lastname**, *res*:**office(json)**
+* *currentOfficeNamebyId (req, res)* - *req*:**PeopleId**, *res*:**office(json)**
+* *myLocalization  (req, res)* - *req*:**officeName**,**firstname**,**lastname**, *res*
 
 Map
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
@@ -105,6 +113,10 @@ Map
 People
 * *getAllPeople(req, res)* - *res*: **.json** (return json file)
 * *getPeople(req, res)* - *res*: **.json** (return json file) 
+* *getLevelValidator  (req, res)* - *req*:**firstname**,**lastname**, *res* : **people(json)**
+* *getAdministrator  (req, res)* - *req*:**firstname**,**lastname**, *res* : **people(json)**
+* *getBusUnitCompanyByPerson  (req, res)* - *req*:**firstname**,**lastname**, *res* : **businessUnit(json)**
+* *getProfilByPerson  (req, res)* - *req*:**firstname**,**lastname**, *res* : **profil(json)**
 
 -----------------------------------------------------------------
 
@@ -115,7 +127,7 @@ People
 - **global function**: 
 ```javascript
 // plot single large map (table color, zoom, tooltip)
-mapPlot: function(name, callback){},
+mapPlot: function(myData,mapName, callback){},
 // plot all small maps (table color)
 smallMapPlot: function(name, callback){},
 // add tooltips for all small maps, where departments on each floor are listed
@@ -125,8 +137,7 @@ eraseMap: function(){}
 ```
 
 #### **_admin.js_** 
-
-plotList : plot companies/departments/people list 
+alreadyOneSelected :boolean
 erase : remove a list
 eraseAll : remove all lists
 plotValidatorsList : plot list of validators
@@ -135,12 +146,12 @@ plotValidatorsList : plot list of validators
 
 #### **_buildAdminScreen.js_** 
 
-plot everything for admin screen. 
+plot everything for admin screen. Control access include 
 
 
 #### **_buildConfScreen.js_** 
 
-plot everything for configurations screen. 
+plot everything for configurations screen. Control access include 
 
 
 #### **_buildConsistencyScreen.js_** 
@@ -177,16 +188,14 @@ same as chooseFloor but without pictures and adapted to modify configuration scr
 polyfill for Internet Explorer compatibility.
 
 #### **_justPlotMap.js_**
-
-- `mapControl.smallMapPlot(name, function(){})`: plot small maps in `<div id="navigation-chart">`.
-- `mapControl.buildTooltips(mapNames)`: add tooltips for all small maps.
+- `mapControl.mapPlot(myData,mapName,callback)`:  plot the map where the user is located on the index page.
 
 #### **_clickAndPlot.js_**
 
-- 'mapControl.mapPlot(mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
+- 'mapControl.mapPlot(myData,mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
 - prepend mapName to legend.
 
-#### **_toggle.js + classie.js_** 
+#### **_toggle.js + classie.js_** to delete
 
 - Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
 
@@ -201,14 +210,23 @@ polyfill for Internet Explorer compatibility.
 - **global var**: server, people, dataSearchedPeople, list_area, nbPeopleByArea   .
  - `$('#search-terms').on("keydown", function(event){}).autocomplete({minLength:0, source:function(request, response){}, focus:function(){}, select:function( event, ui){} })`: input names in search bar will show corresponding suggestions.
  - `plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople)` : plot number of people searched for each floor.
+ - `plotFirstMap(nbPeopleByArea, dataSearchedPeople,first_area_not_empty)` : plot the first map with a result.
  - `plotResult(nbPeopleByArea, dataSearchedPeople)` : show maps with pins for each people searched.
+ 
+ #### **_controlAccount.js_** 
+ - Get the data on the user and display it (firstname, lastname, desk, location)
+ 
+  #### **_changeLocalization.js_** 
+ - Call when the user wants to update his position
+ - Display messages to guide the user
+ - Update the database once the change is done
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------
 
 # Installation & Configuration
 
-Since now all our services and datas have been moved to the server, I will help you to connect to server and configure it as you want.
+Since now all our services and data have been moved to the server, I will help you to connect to server and configure it as you want.
 
 ##Connect to server
 
@@ -233,7 +251,7 @@ When you login with ``dev@local-map.dev.klee.lan.net``, your user directory is `
 
 ##Move local file to server
 
-when you have finished your coding dans your local machine, use ``scp`` command to transport local file to server. For example,
+when you have finished your coding in your local machine, use ``scp`` command to transport local file to server. For example,
 
 * Use ``scp -r api dev@local-map.dev.klee.lan.net:local-map`` to transfer ``api`` folder to server  
 
@@ -260,7 +278,7 @@ We have listed all necessary packages in ``package.json``. If not,
 
 ##Set up autorun for python script
 
-Since our programe for updating *KleeGroup.json* is written with python, you have to make sure ``python-ldap`` is installed on your server. 
+Since our program to update *KleeGroup.json* is written with python, you have to make sure ``python-ldap`` is installed on your server. 
 
 To set up autorun of python script, ``crontab -e`` will be very helpful. Maybe you need more documentation with this command: ``man crontab``
 
@@ -270,11 +288,14 @@ My ``crontab`` command is as follows:
 ````
 This means that: every 30 minutes, system will open folder ``/home/dev/local-map/admin``, then use ``/home/dev/anaconda2/bin/python`` as python interpreter to run following python file ``/home/dev/local-map/admin/activedirectory.py``.
 
-The same thing has to be done to run the script updateDataBase.py, which will delete former Klee employees and add the new ones into the SQLite database. 
-Here is the command, it will run the script every day : 
-````
-@daily cd /home/dev/local-map/admin && /home/dev/anaconda2/bin/python /home/dev/local-map/admin/updateDataBase.py
-````
+----- TO UPDATE ----: 
+Current situation
+Kleegroup.json is used to create our database postgresql
+The database does need to be recreated often (every day), to add new memebers of Klee group for example
+
+What we want
+Kleegroup.json is used to create our database postgresql only once
+Then if a member is add to Klee group, we want the database to be updated directly
 
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
@@ -283,12 +304,15 @@ Here is the command, it will run the script every day :
 
 After having talked about how to install the backend from zero, we need to change our data base from time to time. There are mainly **two** kinds of changes: 
 
-1. modify **_staff's data_**: move to another table, or even change his name :)
+1. modify **_staff's data_**: move to another table
 2. modify **_maps_** : add table, change table's position, etc.
 
-_For the first kind_, we only need to change his infos of AD (Active Directory), and then the server will automatically update his position in the map (every 30 minutes).
+_For the first kind_, if we want to it manually, we only need to change his infos in the database, and then the server will automatically update his position in the map.
+But a easier solution would be to change it in the application direclty thanks to the button "Mettre à jour ma position"
 
-_For the second kind_, things could become a little difficult. Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
+_For the second kind_, things could become a little more difficult. Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
+
+----TO UPDATE : a solution to modify easily our svg must be develop (to move, add or delete desks)---
 
 Search **tables**, you will find all the infos about tables in one block
 
@@ -307,18 +331,27 @@ There are still other ways to add tables, such as using **inkscape** (but make s
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
 
-# For our sqlite3 database : ---TO UPDATE
-See diagram.xml
+# For our postgresql database : 
+	1. Global content
+See local-map_diagram.xml in the repository to find out about the structure of the database
 
+- Each person has a profil containing three booleans (isValidatorLvlOne, isValidatorLvlTwo, isAdministrator).
+	* a validator level One is responsible for the members of his departement/business Unit
+	* a validator level Two is responsible for the members of his company (=several departements)
+	* a administrator is responsible for the choice of all validators. This can be donne on the admin page in the application
+Modifying validators can be donne on the admin page in the application
+Modifying administrator must be done in app/js/controlAccount.js
+
+	2. Creating or recreating the database
 If you want to recreate a clean database. 
 
 Stop node server so as the database is not in use anymore.
 
-Connect on the server with ssh and delete this file : api/db.development (it is the sqlite3 database of the project).
+Connect on the server with pgAdminIII, go to localmap_dev and delete all the tables (9) by using "supprimer en cascade" .
 
 Start node again : it will recreate the tables, without data. 
 
-Go on http://local-map/populateDB and wait for 5 minutes to be sure not to lock the database or make uncoherent data. 
+Go on http://local-map/populateDB and wait for 2 minutes to be sure not to lock the database or make uncoherent data. 
 
 The insert process is done. Then go on http://local-map/associateData and wait as well as for the first step. 
 
@@ -328,7 +361,7 @@ The update process with foreign keys is done.
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
-# La maintenance de donnée (employé et plan) (*Version Français*) 
+# La maintenance de donnée (employé et plan) (*Version Français*) --Non mise à jour-- voir english version au-dessus
 
 *    Changer les **datas d’employé** (déplacer vers un autre bureau) : il faut changer son data sur l’AD, après le serveur va mettre à jour les changement.
 

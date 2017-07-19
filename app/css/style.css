@@ -240,6 +240,12 @@ RawBlameHistory
     margin-left: 30px;
 }
 
+#Issy-les-Moulineaux:hover, #le_mans:hover, #Lyon:hover, #Bourgoin-Jailleux:hover, #Montpellier:hover, #sur_site_client:hover{
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
 #noplace-personnes{
     color: rgb(220, 220, 220);
     margin-left: 30px;

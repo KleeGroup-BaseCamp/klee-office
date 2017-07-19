@@ -5,7 +5,7 @@ var	server= "http://localhost:3000/";
 var mapControl = {
 	existMap: false,
 	mapName: null,
-	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1",""],
+	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1","issy", "lemans", "lyon", "bourgoin", "montpellier", "client", ""],
 	mapPlot: function(myData, mapName, callback) {
 		console.log("globalcontrol mapName :"+mapName);
 		// add svg map to html

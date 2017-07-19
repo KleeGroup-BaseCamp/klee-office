@@ -171,13 +171,20 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
         if (nbPeopleByArea[area]>0){
           console.log(area);
           if (area==="externe"){
-            var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","sur site client"];
+            var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","Sur site client"];
             for (var j=0;j<sitesExterne.length;j++){
               var site=sitesExterne[j];
               if (getPeopleBySite(site,dataSearchedPeople).length>0){
                 console.log(getPeopleBySite(site,dataSearchedPeople));
-                d3.select("#"+site).text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
-              }
+                if(site === "Le Mans" ){
+                  d3.select("#le_mans").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
+                }
+                else if(site === "Sur site client" ){
+                  d3.select("#sur_site_client").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
+                }
+                else{
+                  d3.select("#"+site).text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");}
+                }
             }
               //d3.select(".ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
               if (first_area_not_empty===""){first_area_not_empty="externe"}
@@ -206,7 +213,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
       d3.select("#legend").style("visibility","hidden").style("height","0px");
       d3.select(".tooltip_ext_map").style("visibility","visible");
       var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
-      var text_extern="<h2> Personne(s) externe(s) :</h2><br/><br/><ul>";
+      var text_extern="<br/><ul>";
       for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+" -- "+dataSearchedPeopleExtern[i][2]+"</li>");}
       text_extern+="</ul>"
       var tooltip_ext = d3.select(".tooltip_ext_map");
@@ -341,7 +348,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
       d3.select("#legend").style("visibility","hidden").style("height","0px");
       d3.select(".tooltip_ext_map").style("visibility","visible");
       var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
-      var text_extern="<h2> Personne(s) externe(s) :</h2><br/><br/><ul>";
+      var text_extern="<br/><ul>";
       for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+"</li>");}
       text_extern+="</ul>"
         var tooltip_ext = d3.select(".tooltip_ext_map");
