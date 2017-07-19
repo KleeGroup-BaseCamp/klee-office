@@ -156,25 +156,10 @@ $(function(){
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
   var click= document.getElementById("search-button");
   click.onclick = function(){
-    d3.selectAll("#etages_withoutResult").style("visibility", "hidden")
-					.style("width", "0px")
-					.style("height", "0px")
-          .style("padding","0px");
-    d3.selectAll("#etages_withResult").style("visibility", "visible")
-          .style("width","auto")
-          .style("height","auto")
-          .style("padding","0px");
-    d3.selectAll(".site").style("visibility", "hidden")
-					.style("width", "0px")
-					.style("height", "0px")
-          .style("padding","0px");
-    d3.selectAll(".siteResult").style("visibility", "visible")
-          .style("width","auto")
-          .style("height","auto")
-          .style("padding","20px")
-          .style("padding-bottom","0px");
-    d3.select("#boursidiere_result").style("visibility", "visible")
-          .style("padding-bottom","20px");
+    d3.select("#menu-withoutresult").style("display", "none");
+    d3.select("#menu-newlocation").style("display", "none");
+    d3.select("#menu-withresult").style("display", "");
+
     var first_area_not_empty="";
     for (var i=0;i<list_area.length;i++){
         var area =list_area[i];        
@@ -247,7 +232,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
       //if no map, show my map
       if (!mapControl.existMap) {
 		    mapControl.mapName = area;
-			  mapControl.mapPlot(myData,area,function() {
+			  mapControl.mapPlot(myData,area,false,function() {
           var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
           var xPosition,yPosition;
           var table;
@@ -271,7 +256,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
 		  else if (mapControl.mapName !== area) {
 			  d3.select(".map").select("svg").remove();
 		  	mapControl.mapName = area;              
-        mapControl.mapPlot(myData,area, function() {
+        mapControl.mapPlot(myData,area,false, function() {
           var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
           var xPosition,yPosition;
           var table;
@@ -310,7 +295,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
     if (!mapControl.existMap) {
       console.log("If de list_etage!");
 		  mapControl.mapName = area;
-			mapControl.mapPlot(myData,area, function() {
+			mapControl.mapPlot(myData,area, false,function() {
         var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
         var xPosition,yPosition;
         var textToPlot="";
@@ -336,7 +321,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
       console.log("Else de list_etage!");
 			d3.select(".map").select("svg").remove();
 			mapControl.mapName = area;              
-      mapControl.mapPlot(myData,area, function() {
+      mapControl.mapPlot(myData,area,false, function() {
         var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
         var xPosition,yPosition;
         var textToPlot="";
@@ -437,6 +422,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
         event.stopPropagation(); }
   })
 }
+<<<<<<< HEAD
 /*
 function plotResultExtern(nbPeopleByArea,dataSearchedPeople){
   var dataSearchedPeopleBySite=getExternPeople(dataSearchedPeople);
@@ -461,10 +447,9 @@ function plotResultExtern(nbPeopleByArea,dataSearchedPeople){
                     .duration(500)
                     .style("opacity", 0)
                     .style("z-index", -1);})
+=======
+>>>>>>> d5ac5c35f4dba6fadbecfca240e3f91ad828ed25
 
-
-    })                         
-};*/
 
     /* NOT USED ANYMORE  // ----Function plotNumberOfPeople : shows on the page the number of searched people group by maps --> example nbPeopleByArea={n0: 0, n1: 0, n2: 0, n3: 2, n4: 0, o2: 1, o3: 0, o4: 0, externe: 0}
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){

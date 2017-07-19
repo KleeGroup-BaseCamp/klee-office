@@ -21,13 +21,13 @@
             dep=isValidator[0].businessUnit_id;
             comp=isValidator[0].company;
             d3.select("#error-conf").style("display","none"); 
-            d3.select("#list-noplace").style("display","none");         
+            d3.select("#noplace-block").style("display","none");         
         }
         //give access to memebers of his company 
         else if (isValidator[0].isValidatorLvlTwo==true){
             level="2"; 
             d3.select("#error-conf").style("display","none");
-            d3.select("#list-noplace").style("display","none");
+            d3.select("#noplace-block").style("display","none");
             dep="all";
             comp=isValidator[0].company;
         }
@@ -124,19 +124,20 @@
         }
     }); 
 
-    $("#plot-noplace").click(function () {
+    $("#noplace-toexcel").click(function () {
+        window.open('data:application/vnd.ms-excel,' + encodeURIComponent("<table>"+$('#list-noplace').html()+"</table>"));
+    });
 
-        d3.select("#conf-list").style("display","none");
-        d3.select("#add-title").style("visibility", "hidden");
-        d3.select("#list-noplace") .style("display","");
+
+    $("#plot-noplace").click(function () {
+        d3.select("#conf-block").style("display","none");
+        d3.select("#noplace-block") .style("display","");
     });
 
 
     $("#plot-config").click(function () {
-        d3.select("#conf-list")
-            .style("display","");
-        d3.select("#list-noplace")
-            .style("display","none");
+        d3.select("#conf-block").style("display","");
+        d3.select("#noplace-block").style("display","none");
     });
     
 }(window));

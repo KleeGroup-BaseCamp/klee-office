@@ -90,11 +90,6 @@ RawBlameHistory
     background-size: 10px;
     background-repeat: no-repeat;
 }
-#add p {
-    background: url("../img/plus.png") 0px 0px;
-    background-size: 30px;
-    background-repeat: no-repeat;
-}
 #home {
     float: left;
 }
@@ -102,12 +97,17 @@ RawBlameHistory
     display: inline-block;
     margin-left:20px;
 }
-#add-title {
-    float: right;
+#add-title ,#noplace-toexcel{
+    
     font-weight: bold;
     color: #246b8f;
     vertical-align: middle;
     font-size: 20px;
+    margin-bottom:15px;
+    margin-top:15px;
+    text-align:center;
+    cursor :pointer;
+
 }
 #title {
     padding-bottom: 10px;
@@ -240,10 +240,13 @@ RawBlameHistory
     margin-left: 30px;
 }
 
-#Issy-les-Moulineaux:hover, #le_mans:hover, #Lyon:hover, #Bourgoin-Jailleux:hover, #Montpellier:hover, #sur_site_client:hover, #Issy-les-Moulineaux_result:hover, #le_mans_result:hover, #Lyon_result:hover, #Bourgoin-Jailleux_result:hover, #Montpellier_result:hover, #sur_site_client_result:hover{
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
+
+#Issy-les-Moulineaux:hover, #le_mans:hover, #Lyon:hover, #Bourgoin-Jailleux:hover, #Montpellier:hover, #sur_site_client:hover, 
+#Issy-les-Moulineaux_result:hover, #le_mans_result:hover, #Lyon_result:hover, #Bourgoin-Jailleux_result:hover, #Montpellier_result:hover, #sur_site_client_result:hover
+,#Issy_location:hover, #Mans_location:hover, #Lyon_location:hover,#Bourgoin_location:hover, #Montpellier_location:hover, #Client_location:hover{
+    text-decoration:underline;
+    color : blue;
+    cursor :pointer;
 }
 
 #noplace-personnes{
@@ -366,7 +369,7 @@ RawBlameHistory
     height : 750px;
     background-color: #add6eb;;
 }
-#navigation #etages_withResult, #etages_withoutResult{
+#navigation #etages_withResult, #etages_withoutResult, #etages_location{
     padding-top :20px;
     padding-left:20px;
     padding-right:20px;
@@ -380,16 +383,13 @@ RawBlameHistory
 #personal-firstname, #personal-lastname{
     padding-right:7px;
 }
-.site, #Issy-les-Moulineaux_result, #le_mans_result, #Lyon_result, #Bourgoin-Jailleux_result, #Montpellier_result, #sur_site_client_result{
+.site, .siteResult, .siteLocation{
     padding-top :20px;
     padding-left:20px;
     padding-right:20px;
     font-size : 22px;
 }
-#boursidiere_result{
-    padding : 20px;
-    font-size : 22px;
-}
+
 #navigation .list_etage:hover{
     text-decoration:underline;
     color : blue;
@@ -828,10 +828,15 @@ input[readonly] {
     overflow: scroll;
     padding : 5px;
     background-color: white;
-    width:auto;
+    width :100%;
+    
+
 }
 #plot-noplace,#plot-config{
     margin-bottom:10px;
+}
+#noplace-block, #conf-block{
+    margin-bottom:20px;
 }
 
 #list-noplace td{

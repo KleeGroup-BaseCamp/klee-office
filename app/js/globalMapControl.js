@@ -6,8 +6,8 @@ var mapControl = {
 	existMap: false,
 	mapName: null,
 	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1","issy", "lemans", "lyon", "bourgoin", "montpellier", "client", ""],
-	mapPlot: function(myData, mapName, callback) {
-		console.log("globalcontrol mapName :"+mapName);
+	mapPlot: function(myData, mapName, isSavingLocalization, callback) {
+		console.log("plot mapName :"+mapName);
 		// add svg map to html
 		var myDesk =myData[2];
 		if (myDesk!=="aucun" || myDesk!== "externe"){
@@ -29,7 +29,6 @@ var mapControl = {
 
 				svgNode = documentFragment.getElementsByTagName("svg")[0];
 				map = d3.select(".map");
-				console.log(map);
 				map.node().appendChild(svgNode);
 
 				//to load pin on own position
@@ -76,7 +75,7 @@ var mapControl = {
 				var svg = d3.select("#whole-map")
 					.select("svg").call(zoom);
 				
-
+			  
 				// for each people, search his table
 				d3.json( server+"getInfoPerson", function(error, data) {
 					var dataset = data,
@@ -107,63 +106,60 @@ var mapControl = {
 										.attr("id", fullName)
 										.attr("fill", "#ff9900")
 										.attr("cursor", "pointer");
-
-									// mouse click on the button will give more info
-									$("#" + data.deskname).click( function(event) {
-										var xPosition = event.clientX,
+									if (isSavingLocalization==false){
+										// mouse click on the button will give more info
+										$("#" + data.deskname).click( function(event) {
+											var xPosition = event.clientX,
 											yPosition = event.clientY;
-										// get scroll pixels to correct tooltip's yPostion
-										yPosition += $(window).scrollTop();
+											// get scroll pixels to correct tooltip's yPostion
+											yPosition += $(window).scrollTop();
 
-										tooltip.html(fullName + "<br/>"+ data.mail + "<br/>" + data.deskname)
-											.style("position","absolute")
-											.style("left", (xPosition)-600 + "px")
-											.style("top", (yPosition)-400 + "px")
-											.style("height", "57px");
-										tooltip.transition()
-											.duration(200)
-											.style("opacity", .9)
-											.style("z-index", 20);
+											tooltip.html(fullName + "<br/>"+ data.mail + "<br/>" + data.deskname)
+												.style("position","absolute")
+												.style("left", (xPosition)-600 + "px")
+												.style("top", (yPosition)-400 + "px")
+												.style("height", "57px");
+											tooltip.transition()
+												.duration(200)
+												.style("opacity", .9)
+												.style("z-index", 20);
 
-										event.stopPropagation();
-									});
+											event.stopPropagation();
+										});
 									
-									// click the tooltip won't let it disappear
-									$(".tooltip").click(function(event) {
-										event.stopPropagation();
-									})
-									// click elsewhere will make tooltip disappear
-									$("html").click(function () {
-										tooltip.transition()
-											.duration(500)
-											.style("opacity", 0)
-											.style("z-index", -1);
-									})
+										// click the tooltip won't let it disappear
+										$(".tooltip").click(function(event) {
+											event.stopPropagation();
+										})
+										// click elsewhere will make tooltip disappear
+										$("html").click(function () {
+											tooltip.transition()
+												.duration(500)
+												.style("opacity", 0)
+												.style("z-index", -1);
+										})
+								
+										var allTablees = d3.select("#tables")
+											.selectAll(".available")
+											.style("cursor", "pointer")
+											.on("click", function(){
+												console.log("Bureau : " + d3.event.target.parentNode.id);
+												var xPosition = event.clientX,
+													yPosition = event.clientY;
+												// get scroll pixels to correct tooltip's yPostion
+												yPosition += $(window).scrollTop();
+												tooltip.html("Bureau " + d3.event.target.parentNode.id)
+													.style("position","absolute")
+													.style("left", (xPosition)-600 + "px")
+													.style("top", (yPosition)-400 + "px")
+													.style("height", "20px");
+												tooltip.transition().duration(200).style("opacity", .9).style("z-index", 20);
+												event.stopPropagation();	
+											});		
+									}		
+							
 								}
 							}
-							var allTablees = d3.select("#tables")
-							.selectAll(".available")
-							.style("cursor", "pointer")
-							.on("click", function(){
-								console.log("Bureau : " + d3.event.target.parentNode.id);
-								var xPosition = event.clientX,
-									yPosition = event.clientY;
-										// get scroll pixels to correct tooltip's yPostion
-									yPosition += $(window).scrollTop();
-
-									tooltip.html("Bureau " + d3.event.target.parentNode.id)
-											.style("position","absolute")
-											.style("left", (xPosition)-600 + "px")
-											.style("top", (yPosition)-400 + "px")
-											.style("height", "20px");
-									tooltip.transition()
-											.duration(200)
-											.style("opacity", .9)
-											.style("z-index", 20);
-
-									event.stopPropagation();					
-							});
-						
 					});
 
 					// show all available tables
@@ -175,6 +171,8 @@ var mapControl = {
 					 * to choose it as its new office
 					 */					
 				});
+			  
+				
 				if (callback){callback();}
 		});
 	},
@@ -476,8 +474,6 @@ var mapControl = {
 
 // Erase all maps from the chart, visualize big map with 100% width and height
 	eraseMap: function() {
-		console.log("erase map called");
-
 		// erase small maps
 		var everyMap = [];
 		var myMap;
@@ -510,6 +506,5 @@ var mapControl = {
 			.style("visibility", "visible")
 			.style("width", "100%")
 			.style("height", "100%");
-		console.log('set visible for ' + name);
 	}
 };

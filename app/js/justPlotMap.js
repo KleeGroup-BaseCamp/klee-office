@@ -51,7 +51,6 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
             mapName="N0"; //default value
             d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site "+myData[3]);
         }
-        console.log(desk);
 		mapControl.eraseMap();
 		// if no map, show myMap
 		if (!mapControl.existMap) {
@@ -74,20 +73,13 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
 
         d3.select("#navigation")
 			.style("visibility", "visible")
-        d3.selectAll("#etages_withResult").style("visibility", "hidden")
-					.style("width", "0px")
-					.style("height", "0px")
-                    .style("padding","0px");
-        d3.selectAll("#etages_withoutResult").style("visibility", "visible");
-        d3.selectAll(".siteResult").style("visibility", "hidden")
-					.style("width", "0px")
-					.style("height", "0px")
-                    .style("padding","0px");
-        d3.selectAll(".site").style("visibility", "visible")
+        d3.select("#menu-withoutresult").style("display", "");
+        d3.select("#menu-withresult").style("display", "none");
+        d3.select("#menu-newlocation").style("display", "none");
         d3.select("#title-default").html("MODE Navigation");
 
 
-        mapControl.mapPlot(myData,mapName,function(){})           
+        mapControl.mapPlot(myData,mapName,false,function(){})           
     };
 
     
