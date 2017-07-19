@@ -75,14 +75,14 @@
             // if no map, show map
             if (!mapControl.existMap) {
                 mapControl.mapName = name;
-                mapControl.mapPlot(myData,mapControl.mapName,true, function() {});
+                mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
                 mapControl.existMap = true;
             }
             // if other map, delete and show mapN0
             else if (mapControl.mapName !== name) {
                 d3.select(".map").select("svg").remove();
                 mapControl.mapName = name;
-                mapControl.mapPlot(myData,mapControl.mapName, true, function() {});
+                mapControl.mapPlot(myData,mapControl.mapName, false, function() {});
             }
             if (name === "N0"){
                 $('<h1 class="N0">RDC<br/>N0</h1>').prependTo($('#legend'));

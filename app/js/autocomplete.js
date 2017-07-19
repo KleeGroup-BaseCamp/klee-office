@@ -97,7 +97,7 @@ $(function(){
                         mapControl.eraseMap();
 
                         mapControl.mapName = mapName;
-                        mapControl.mapPlot(mapName, false, function() {
+                        mapControl.mapPlot([],mapName, false, function() {
                             table = d3.select("#tables")
                                         .select("#" + splitID[1]);
                             table.append("image")
