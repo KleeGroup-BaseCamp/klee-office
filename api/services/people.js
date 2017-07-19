@@ -64,7 +64,7 @@ const getInfoPerson =(req,res) =>{
 
 const getBusUnitCompanyByPerson = (req, res) => {
     models.sequelize.query(
-        'SELECT \"BusinessUnit\".bus_id as busid, \"Company\".com_id as comid ' + 
+        'SELECT \"BusinessUnit\".bus_id as busid, \"Company\".com_id as comid, "BusinessUnit".name ' + 
         'FROM \"BusinessUnit\" ' +
         'JOIN \"Company\" ON \"Company\".com_id = \"BusinessUnit\".company_id ' +
         'JOIN \"Person\" ON \"Person\".\"businessUnit_id\" = \"BusinessUnit\".bus_id ' +
@@ -77,7 +77,20 @@ const getBusUnitCompanyByPerson = (req, res) => {
         });
 };
 
-
+const getLastMoveline = (req,res) =>{
+    models.sequelize.query(
+        'SELECT "dateCreation", status '  +
+        'FROM "MoveLine" ' +
+        'WHERE person_id= (SELECT per_id FROM "Person"  WHERE firstname= :first AND lastname= :last) '+
+        'ORDER BY "dateCreation" DESC '+
+        'FETCH FIRST 1 ROWS ONLY;'
+        
+        , { replacements: {first: req.params.firstname, last:req.params.lastname}, type: models.sequelize.QueryTypes.SELECT
+        })
+        .then(function (noplace) {
+            res.json(noplace);
+        });
+}
 
 
 module.exports = {
@@ -87,5 +100,6 @@ module.exports = {
 	getLevelValidator,
 	getAdministrator,
     getInfoPerson,
-    getBusUnitCompanyByPerson,
+    getBusUnitCompanyByPerson
+    ,getLastMoveline
 }

@@ -20,21 +20,50 @@
             level="1";
             dep=isValidator[0].businessUnit_id;
             comp=isValidator[0].company;
-            d3.select("#error-conf").style("display","none");          
+            d3.select("#error-conf").style("display","none"); 
+            d3.select("#list-noplace").style("display","none");         
         }
         //give access to memebers of his company 
         else if (isValidator[0].isValidatorLvlTwo==true){
             level="2"; 
             d3.select("#error-conf").style("display","none");
+            d3.select("#list-noplace").style("display","none");
             dep="all";
             comp=isValidator[0].company;
         }
         else{
-            d3.select(".two-columns").style("visibility","hidden");
+            d3.select(".two-columns").style("display","none");
             d3.select("#error-conf").style("height","auto").style("width","auto").html(" Vous n'avez les droits d'accès à cette page <br/><a href=\""+server+"\"><button class=\"back-index\">Revenir à la page d'accueil</button></a>");
         }
         configurationsControl.plotConfList(level,dep);
+        plotNoPlaceList(level,dep,comp)
     });
+
+    function plotNoPlaceList(level,dep,comp){
+        var list_id=[]
+        if(level=== "1"){
+            d3.json(server + "getNoPlacePersonByBusUnit/"+dep+"/"+info[0].comid, function(person){
+                for (var i=0;i<person.length;i++){
+                    if (list_id.indexOf(person[i].per_id)==-1){
+                        $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td><td>'+person[i].date+'</td><td>'+person[i].status+'</td></tr>').insertAfter($('.table-noplace'));
+                        list_id.push(person[i].per_id);
+                    }                
+                }  
+            });
+        }
+        else if(level === "2"){
+            d3.json(server + "getNoPlacePersonByCompany/"+comp+"/", function(person){
+                for (var i=0;i<person.length;i++){
+                    if (list_id.indexOf(person[i].person_id)==-1){
+                        $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td><td>'+person[i].date+'</td><td>'+person[i].status+'</td></tr>').insertAfter($('.table-noplace'));
+                        list_id.push(person[i].person_id);
+                    }
+                }  
+            })     
+        }
+    }
+
+
     // print popin to add a new configuration
     $("#add-title").click(function (event) {
         if(configurationsControl.isPopin !== true){
@@ -96,31 +125,18 @@
     }); 
 
     $("#plot-noplace").click(function () {
-        d3.select("#conf-list").style("visibility", "hidden");
+
+        d3.select("#conf-list").style("display","none");
         d3.select("#add-title").style("visibility", "hidden");
-        d3.select("#list-noplace") .style("visibility", "visible");
-        if(level=== "1"){
-            d3.json(server + "getNoPlacePersonByBusUnit/"+dep+"/"+info[0].comid, function(person){
-                        for (var i=0;i<person.length;i++){
-                            $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td></tr>').insertAfter($('.table-noplace'));
-                        }  
-            });
-        }
-        else if(level === "2"){
-            d3.json(server + "getNoPlacePersonByCompany/"+comp, function(person){
-                        for (var i=0;i<person.length;i++){
-                            $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td></tr>').insertAfter($('.table-noplace'));
-                        }       
-            });
-        }
+        d3.select("#list-noplace") .style("display","");
     });
 
 
     $("#plot-config").click(function () {
         d3.select("#conf-list")
-            .style("visibility", "visible");
+            .style("display","");
         d3.select("#list-noplace")
-            .style("visibility", "hidden");
+            .style("display","none");
     });
     
 }(window));
