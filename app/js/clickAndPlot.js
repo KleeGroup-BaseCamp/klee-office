@@ -19,8 +19,9 @@
 
 	// register click class
 	// ------------------------------
-	// sloved; problem here, one click will block other clicks
+	// sloved; problem here, one click will b other clicks
 	//-------------------------------
+
 	N0.addEventListener("click", function () {
 		mapControl.eraseMap();
 		// if no map, show mapN0

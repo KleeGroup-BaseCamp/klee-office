@@ -72,8 +72,11 @@
             <div class="">
                 <button id="plot-noplace">Afficher les personnes sans bureau renseigné</button>
                 <button id="plot-config">Afficher les configurations</button><br/>
-                
-                <table id="conf-list" class="">
+                <div id="conf-block">
+                    <div id="add-title">
+                        <img src="/img/plus.png" width="30px"/><p class="inline">Ajouter une configuration</p>
+                    </div>
+                  <table id="conf-list" class="">
                     <thead class="table-content">
                     <tr class="">
                         <th class="action-one action">
@@ -105,8 +108,11 @@
                         </th>
                     </tr>
                     </thead>
-                </table>
-                <table id="list-noplace">
+                  </table>
+                </div>
+                <div id="noplace-block">
+                   <div id="noplace-toexcel"><img src="/img/toexcel.png" width="30px"/>Exporter en excel</div>
+                  <table id="list-noplace">
                     <thead class="table-noplace">
                     <tr class="">
                         <th class="no-place-title">
@@ -129,10 +135,9 @@
                         </th>
                     </tr>
                     </thead>
-                </table>
-                <div id="add-title">
-                    <div id="add"><p>Ajouter une configuration</p></div><p class="inline">Ajouter une configuration</p>
+                  </table>
                 </div>
+
                 
             </div>
         </div>

@@ -90,11 +90,6 @@ RawBlameHistory
     background-size: 10px;
     background-repeat: no-repeat;
 }
-#add p {
-    background: url("../img/plus.png") 0px 0px;
-    background-size: 30px;
-    background-repeat: no-repeat;
-}
 #home {
     float: left;
 }
@@ -102,12 +97,17 @@ RawBlameHistory
     display: inline-block;
     margin-left:20px;
 }
-#add-title {
-    float: right;
+#add-title ,#noplace-toexcel{
+    
     font-weight: bold;
     color: #246b8f;
     vertical-align: middle;
     font-size: 20px;
+    margin-bottom:15px;
+    margin-top:15px;
+    text-align:center;
+    cursor :pointer;
+
 }
 #title {
     padding-bottom: 10px;
@@ -824,10 +824,15 @@ input[readonly] {
     overflow: scroll;
     padding : 5px;
     background-color: white;
-    width:auto;
+    width :100%;
+    
+
 }
 #plot-noplace,#plot-config{
     margin-bottom:10px;
+}
+#noplace-block, #conf-block{
+    margin-bottom:20px;
 }
 
 #list-noplace td{

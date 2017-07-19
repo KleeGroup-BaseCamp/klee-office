@@ -6,14 +6,16 @@ var	server= "http://localhost:3000/";
 var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
 
-document.getElementById("button-localization").addEventListener("click",function() {changeLocalization()});
-//
+document.getElementById("button-localization").addEventListener("click",changeLocalization);
 
 //First user need to choose the site
 function changeLocalization() {
     var newSite;
     d3.select("#button-localization").style("visibility","hidden").style("width","0px").style("height","0px");
     d3.select("#title-default").html("MODE Changement de bureau");
+    d3.select("#text-default").html('<p>Veuillez choisir le site</p><br/>');
+    /*document.getElementsByClassName("site").onclick = function() {
+        console.log("bip")*/
     d3.select("#text-default").html('<p><label for="site">Veuillez choisir le site</label><br/>'+
         '<select name="site" id="site">'+
            '<option value="La Boursidière">La Boursidière</option>'+
