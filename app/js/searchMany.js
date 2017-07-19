@@ -163,7 +163,18 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
     d3.selectAll("#etages_withResult").style("visibility", "visible")
           .style("width","auto")
           .style("height","auto")
-          .style("padding","20px");
+          .style("padding","0px");
+    d3.selectAll(".site").style("visibility", "hidden")
+					.style("width", "0px")
+					.style("height", "0px")
+          .style("padding","0px");
+    d3.selectAll(".siteResult").style("visibility", "visible")
+          .style("width","auto")
+          .style("height","auto")
+          .style("padding","20px")
+          .style("padding-bottom","0px");
+    d3.select("#boursidiere_result").style("visibility", "visible")
+          .style("padding-bottom","20px");
     var first_area_not_empty="";
     for (var i=0;i<list_area.length;i++){
         var area =list_area[i];        
@@ -177,14 +188,15 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
               if (getPeopleBySite(site,dataSearchedPeople).length>0){
                 console.log(getPeopleBySite(site,dataSearchedPeople));
                 if(site === "Le Mans" ){
-                  d3.select("#le_mans").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
+                  d3.select("#le_mans_result").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
                 }
                 else if(site === "Sur site client" ){
-                  d3.select("#sur_site_client").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
+                  d3.select("#sur_site_client_result").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
                 }
                 else{
-                  d3.select("#"+site).text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");}
-                }
+                  console.log("coucou");
+                  d3.select("#"+site+"_result").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");}
+               }
             }
               //d3.select(".ext").text("Personnes externe(s) : "+nbPeopleByArea.externe);
               if (first_area_not_empty===""){first_area_not_empty="externe"}
@@ -288,13 +300,15 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
  // ----Function plotResult : display the map with the position and information about searched people when clicking on an area in the navigation menu
 function plotResultClick(nbPeopleByArea, dataSearchedPeople){
   $('.list_etage').click(function(){
-    d3.select(".tooltip_ext_map").style("visibility","hidden").style("height","0px");
+    console.log("T'es dans list_etage !!");
+    d3.select(".tooltip_ext_map").style("visibility","hidden").style("height","0px").style("padding","0px");
 		d3.select("#whole-map").style("visibility","visible").style("height","600px");
     d3.select("#legend").style("visibility","visible").style("height","600px");
     var area = this.id.split(/_/)[0]; //this.id="N3_withResult" --> area="N3"
     mapControl.eraseMap();
     //if no map, show my map
     if (!mapControl.existMap) {
+      console.log("If de list_etage!");
 		  mapControl.mapName = area;
 			mapControl.mapPlot(myData,area, function() {
         var dataSearchedPeopleByArea=getPeopleByArea(mapControl.mapName,dataSearchedPeople);
@@ -319,6 +333,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
 		}
 		// if other map, delete and show my map
 		else if (mapControl.mapName !== area) {
+      console.log("Else de list_etage!");
 			d3.select(".map").select("svg").remove();
 			mapControl.mapName = area;              
       mapControl.mapPlot(myData,area, function() {
@@ -343,13 +358,29 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
     }
     $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#map-name'));  
   })
-  $('.ext').click(function(){
+  $('.siteResult').click(function(){
+    console.log("T'es dans .ext !!");
       d3.select("#whole-map").style("visibility","hidden").style("height","0px");
       d3.select("#legend").style("visibility","hidden").style("height","0px");
+      //d3.select("#map-name").style("visibility","hidden").style("height","0px");
+     // d3.select(".map").style("visibility","hidden").style("height","0px");
       d3.select(".tooltip_ext_map").style("visibility","visible");
-      var dataSearchedPeopleExtern=getExternPeople(dataSearchedPeople);
+      var dataSearchedPeopleExtern = [];
+      var siteExtern = event.target.id;
+      if (siteExtern === "le_mans_result"){
+        dataSearchedPeopleExtern=getPeopleBySite("Le Mans",dataSearchedPeople);
+      }else if (siteExtern === "sur_site_client_result"){
+        dataSearchedPeopleExtern=getPeopleBySite("Sur site client",dataSearchedPeople);
+      }else {
+        dataSearchedPeopleExtern=getPeopleBySite(siteExtern.split(/_/)[0],dataSearchedPeople);
+      }
+      console.log(event.target.id);
+      
       var text_extern="<br/><ul>";
-      for (var i=0;i<nbPeopleByArea.externe;i++){text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+"</li>");}
+      
+      for (var i=0;i<nbPeopleByArea.externe;i++){
+        if (dataSearchedPeopleExtern[i] !== undefined){
+        text_extern+=("<li>"+dataSearchedPeopleExtern[i][0]+"</li>");}}
       text_extern+="</ul>"
         var tooltip_ext = d3.select(".tooltip_ext_map");
         tooltip_ext.html(text_extern)
