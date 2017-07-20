@@ -170,7 +170,9 @@ a:hover {
 |* ------------------------------------------------------------ *|
 \* ------------------------------------------------------------ */
 #info-bar {
-    background-color: #246b8f
+    background-color: white;
+    font-family: Georgia;
+    color :black;
 }
 span.all-tutorials,
 span.back-to-tutorial {
@@ -195,10 +197,12 @@ header {
     padding-bottom: 10px;
 }
 #title {
-    text-align: center
+    text-align: center;
+    height:40px;
+    margin-top:10px;
 }
 #title h1 {
-    color: #fff;
+    color: black;
     font-size: 30px;
     margin-bottom: 10px;
 }

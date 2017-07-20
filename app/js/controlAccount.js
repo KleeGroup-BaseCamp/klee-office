@@ -4,6 +4,7 @@
 var server="http://localhost:3000/";
 
 //Peronnal account
+
 var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
 function fillMyData(myData,callback){
@@ -33,11 +34,11 @@ function displayMyData(){
     console.log(myData)
         //to show information about my account on each page);
         if (myData[3]==""||myData[3]==null||myData[3]==undefined ||myData[3]=="aucun" ){
-            d3.select("#personal-site").html(" Site non défini -");
-            d3.select("#personal-desk").html("- Bureau non défini");
+            d3.select("#personal-site").html(" Site non défini");
+            d3.select("#personal-desk").html("Bureau non défini");
         }else{
-        d3.select("#personal-site").html(myData[3]+" -");
-            d3.select("#personal-desk").html("- "+myData[2]);
+        d3.select("#personal-site").html(myData[3]);
+            d3.select("#personal-desk").html(myData[2]);
         }
 };
 
