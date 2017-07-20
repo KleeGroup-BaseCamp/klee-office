@@ -422,7 +422,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
         event.stopPropagation(); }
   })
 }
-<<<<<<< HEAD
+
 /*
 function plotResultExtern(nbPeopleByArea,dataSearchedPeople){
   var dataSearchedPeopleBySite=getExternPeople(dataSearchedPeople);
