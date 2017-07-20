@@ -37,33 +37,49 @@ RawBlameHistory
     text-indent: -9999px;
     cursor: pointer;
 }
-#home p {
-    background: url("../img/home_final.png") 0px 0px;
-    background-size: 40px 40px;
+#back-to-home #home {
+    margin-right :5px;
+    margin-left :5px;
+    width :50px;
+    border-right: 2px black solid
 }
-/*
-#location p {
-    background: url("../img/loc01.png") 0px 0px;
-    background-size: 30px 40px;
-    background-repeat: no-repeat;
-}*/
-#admin p {
-    background: url("../img/lock-open.png") 0px 0px;
-    background-size: 35px 40px;
-    background-repeat: no-repeat;
+#back-to-home #admin {
+    margin-right :5px;
+    margin-left :5px;
+    width :50px;
+    border-right: 2px black solid
 }
-#configurations p {
-    background: url("../img/config2.png") 0px 0px;
-    background-size: 35px 40px;
-    background-repeat: no-repeat;
+#back-to-home #configurations {
+    margin-right :5px;
+    margin-left :5px;
+    width :50px;
+    border-right: 2px black solid
 }
 #personal{
-    color: white;
-    width: 300px;
-    height: 40px;
     position: absolute;
     top: 10px;
     right: 10px;
+    display :inline;
+}
+#personal p{
+    display :inline;
+}
+#back-to-home{
+
+    display :inline;
+}
+#title{
+    position:relative;
+    right:200px;
+    display :inline;
+}
+
+#klee{
+    font-weight: bold;
+        display:inline;
+}
+#office{
+    display:inline;
 }
 .modify p {
     background: url("../img/eye.png") 0px 0px;
@@ -95,7 +111,7 @@ RawBlameHistory
 }
 #location, #admin, #configurations, #add, .inline{
     display: inline-block;
-    margin-left:20px;
+
 }
 #add-title ,#noplace-toexcel{
     
@@ -109,9 +125,8 @@ RawBlameHistory
     cursor :pointer;
 
 }
-#title {
-    padding-bottom: 10px;
-}
+
+
 
 #navigation-bar {
     position: relative;
@@ -198,39 +213,39 @@ RawBlameHistory
     margin-left: 25px;
 }
 #N0 a, .N0{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(79, 93, 106);
 }
 #N1 a, .N1{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(34, 86, 134);
 }
 #N2 a, .N2{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(85, 151, 211);
 }
 #N3 a, .N3{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(145, 188, 277);
 }
 #N4 a, .N4{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(191, 216, 239);
 }
 #O1 a, .O1{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(204, 31, 18);
 }
 #O2 a, .O2{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(240, 5, 10);
 }
 #O3 a, .O3{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(243, 87, 87);
 }
 #O4 a, .O4{
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     color: rgb(251, 158, 151);
 }
 /*#N4-personnes, #O4-personnes, #N3-personnes, #O3-personnes, #N2-personnes, #O2-personnes, #N1-personnes, #N0-personnes*/.result{
@@ -373,7 +388,7 @@ RawBlameHistory
     padding-top :20px;
     padding-left:20px;
     padding-right:20px;
-    font-size : 18px;
+    font-size : 15px;
     text-align: center;
     vertical-align: middle;
     color :black;
@@ -387,7 +402,7 @@ RawBlameHistory
     padding-top :20px;
     padding-left:20px;
     padding-right:20px;
-    font-size : 22px;
+    font-size : 20px;
 }
 
 #navigation .list_etage:hover{
@@ -411,7 +426,7 @@ RawBlameHistory
     border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;
-    background-color: #c2d1f0;
+    background-color: white;
     line-height: 150%;
 }
 #text-default{
@@ -444,7 +459,7 @@ RawBlameHistory
 #map-show .map {
     position: relative;
     width: 900px;
-    height: 550px;
+    height: 450px;
 }
 #legend {
     width: 132px;
@@ -459,6 +474,9 @@ RawBlameHistory
 }
 #map-show #legend svg {
     display: inline;
+}
+.map svg{
+    width:100%;
 }
 #map-show #legend p {
     position: absolute;
@@ -872,7 +890,6 @@ input[readonly] {
 .title {
     padding: 5px;
     font-weight: bold;
-    color: #297aa3;
     margin-bottom: 25px;
     vertical-align: middle;
 }
