@@ -26,7 +26,7 @@
 
 <body>
 <div id="wrapper">
-    <div id="info-bar">
+    <div class="info-bar">
         <div id="back-to-home">
             <div id="home">
                 <a href="/"><img id="home-label" src="/img/home.png" width="40px" height="40px" title="Home"/></a>
@@ -36,16 +36,19 @@
             </div>
             <div id="admin">
                 <a href="/admin"><img id="admin-label" src="/img/admin.png" width="40px" height="40px" title="Page administrateurs"/></a>
-            </div>
+            </div>   
         </div>
-        <div id="title">
-            <h1><p id="klee">KLEE </p><p id="office">OFFICE</p></h1>
+        <!-- title -->
+        <div class="title">
+                <div id="klee"><b>KLEE</b> OFFICE</div>
         </div>
         <div id="personal">
             <p id="personal-firstname"><%- myFirstName %></p>
             <p id="personal-lastname"><%- myLastName %></p>
-            <p id="personal-site"></p>
+            <!-- <p id="personal-site"></p> -->
             <p id="personal-desk"></p>
+            <p id="maj-button">METTRE À JOUR</p>
+            <img id="maj-button-background" src="/img/rectangle-arrondi-1-copie.png" width="110px" height="25px"/>
         </div>
     </div>
     <!-- /#info-bar -->
@@ -138,9 +141,9 @@
                 </div>             
             </div>
             
-            <div class="info-bar">
-                <div id="title-default"></div>
-                <br/>
+            <div class="info-recherche">
+                <!-- <div id="title-default"></div>
+                <br/> -->
                 <div id="text-default"></div>
                 <br/>
                 <button id="button-localization" name="Mettre à jour mon bureau">Mettre à jour mon bureau</button>
