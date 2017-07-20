@@ -26,7 +26,7 @@ ad.authenticate(username, password, function(err, auth) {
 	}
 });
 
-ad.findUsers(opts, function(err, users) {
+/*ad.findUsers(opts, function(err, users) {
 	if (err) {
 		console.log('ERROR: ' + JSON.stringify(err));
 		return;
@@ -36,7 +36,17 @@ ad.findUsers(opts, function(err, users) {
 	else {
 		console.log('findUsers: '+JSON.stringify(users));
 	}
-});
+});*/
+
+/*ad.findUser(cn, function(err, user) {
+  if (err) {
+    console.log('ERROR: ' +JSON.stringify(err));
+    return;
+  }
+ 
+  if (! user) console.log('User: ' + sAMAccountName + ' not found.');
+  else console.log(JSON.stringify(user));
+});*/
 
 
 

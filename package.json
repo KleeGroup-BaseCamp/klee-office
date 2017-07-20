@@ -24,6 +24,7 @@
   "homepage": "https://github.com/KleeGroup/local-map#readme",
   "dependencies": {
     "activedirectory": "^0.7.2",
+    "async": "^2.5.0",
     "babel-eslint": "^5.0.0",
     "bluebird": "^3.3.1",
     "body-parser": "^1.15.0",

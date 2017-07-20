@@ -46,6 +46,7 @@ var mapControl = {
 
 				//color of current map on the navigation menu
 				d3.selectAll(".list_etage").style("font-weight","normal");
+				d3.selectAll(".siteResult").style("font-weight","normal");
 				d3.select("#"+mapName+"_withResult").style("font-weight","bold");
 				d3.select("#"+mapName+"_withoutResult").style("font-weight","bold");
 				d3.select(".tooltip_ext_map").style("visibility","hidden").style("padding","0px");

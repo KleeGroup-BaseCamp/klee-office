@@ -167,44 +167,68 @@
 		$('<h1 class="O4">Etage O4</h1>').prependTo($('#map-name'));
 	});
 	issy.addEventListener("click", function () {
+		d3.selectAll(".site").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#Issy-les-Moulineaux").style("font-weight","bold");
 		mapControl.eraseMap();
 		if (mapControl.existMap) {
-			d3.select(".map").select("svg").remove();	
+			d3.select(".map").select("svg").remove();
+			mapControl.existMap = false;	
 		}
 		$('<h1 class="issy">Pas de plan disponible</h1>').prependTo($('#map-name'));
 	});
 	lemans.addEventListener("click", function () {
+		d3.selectAll(".site").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#le_mans").style("font-weight","bold");
 		mapControl.eraseMap();
 		if (mapControl.existMap) {
-			d3.select(".map").select("svg").remove();	
+			d3.select(".map").select("svg").remove();
+			mapControl.existMap = false;	
 		}
 		$('<h1 class="lemans">Pas de plan disponible</h1>').prependTo($('#map-name'));
 	});
 	lyon.addEventListener("click", function () {
+		d3.selectAll(".site").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#Lyon").style("font-weight","bold");
 		mapControl.eraseMap();
 		if (mapControl.existMap) {
-			d3.select(".map").select("svg").remove();	
+			d3.select(".map").select("svg").remove();
+			mapControl.existMap = false;	
 		}
 		$('<h1 class="lyon">Pas de plan disponible</h1>').prependTo($('#map-name'));
 	});
 	bourgoin.addEventListener("click", function () {
+		d3.selectAll(".site").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#Bourgoin-Jailleux").style("font-weight","bold");
 		mapControl.eraseMap();
 		if (mapControl.existMap) {
-			d3.select(".map").select("svg").remove();	
+			d3.select(".map").select("svg").remove();
+			mapControl.existMap = false;	
 		}
 		$('<h1 class="bourgoin">Pas de plan disponible</h1>').prependTo($('#map-name'));
 	});
 	montpellier.addEventListener("click", function () {
+		d3.selectAll(".site").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#Montpellier").style("font-weight","bold");
 		mapControl.eraseMap();
 		if (mapControl.existMap) {
-			d3.select(".map").select("svg").remove();	
+			d3.select(".map").select("svg").remove();
+			mapControl.existMap = false;	
 		}
 		$('<h1 class="montpellier">Pas de plan disponible</h1>').prependTo($('#map-name'));
 	});
 	client.addEventListener("click", function () {
+		d3.selectAll(".site").style("font-weight","normal");
+        d3.selectAll(".list_etage").style("font-weight","normal");
+        d3.select("#sur_site_client").style("font-weight","bold");
 		mapControl.eraseMap();
 		if (mapControl.existMap) {
-			d3.select(".map").select("svg").remove();	
+			d3.select(".map").select("svg").remove();
+			mapControl.existMap = false;	
 		}
 		$('<h1 class="client">Pas de plan disponible</h1>').prependTo($('#map-name'));
 	});
