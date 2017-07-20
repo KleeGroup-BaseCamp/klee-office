@@ -79,6 +79,12 @@ RawBlameHistory
     top: -5%;
     left: 107%;
 }
+#maj-button-background2{
+    position: absolute;
+    top: 86%;
+    right: 69.2%;
+    z-index: -1;
+}
 #back-to-home{
 
     display :inline;
@@ -449,7 +455,7 @@ RawBlameHistory
     width :1037px;
     position :relative;
     height:58px;
-    margin-left :220px;
+    margin-left :400px;
     z-index: 0;
     /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
@@ -457,12 +463,17 @@ RawBlameHistory
     background-color: white;
     line-height: 150%;
 }
+#button-localization{
+    margin-left: 21%;
+    color: white;
+    font-size: 80%;
+}
 .info-bar{
     height: 58px;
     background-color: white;
 }
 #text-default{
-    font-size:16px;
+    font-size:22px;
 }
 #title-default{
     font-size : 20px;
@@ -470,6 +481,14 @@ RawBlameHistory
 }
 
 #map-show #map-name{
+    padding : 10px;
+    text-align :center;
+    height :50px
+}
+
+#map-name{
+    position: absolute;
+    right: 47%;
     padding : 10px;
     text-align :center;
     height :50px
@@ -492,14 +511,25 @@ RawBlameHistory
     position: relative;
     width: 900px;
     height: 450px;
+    right: 8%;
 }
 #legend {
-    width: 132px;
+    width: 200px;
     vertical-align: middle;
     padding-left: 12px;
     /*border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;*/
     height: auto;
+    position: absolute;
+    left: 25%;
+    bottom: 20%;
+}
+#legend svg{
+    margin-left: 40px;
+}
+#legend p{
+    position: absolute;
+    left: 18.5%;
 }
 #map-show #legend h3 {
     padding-bottom: 20px;

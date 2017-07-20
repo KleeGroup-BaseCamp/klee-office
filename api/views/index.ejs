@@ -47,8 +47,10 @@
             <p id="personal-lastname"><%- myLastName %></p>
             <!-- <p id="personal-site"></p> -->
             <p id="personal-desk"></p>
-            <p id="maj-button">METTRE À JOUR</p>
-            <img id="maj-button-background" src="/img/rectangle-arrondi-1-copie.png" width="110px" height="25px"/>
+            <div class="desk-maj">
+                <p id="maj-button">METTRE À JOUR</p>
+                <img id="maj-button-background" src="/img/rectangle-arrondi-1-copie.png" width="110px" height="25px"/>
+            </div>
         </div>
     </div>
     <!-- /#info-bar -->
@@ -146,7 +148,10 @@
                 <br/> -->
                 <div id="text-default"></div>
                 <br/>
-                <button id="button-localization" name="Mettre à jour mon bureau">Mettre à jour mon bureau</button>
+                <div class="desk-maj">
+                    <div id="button-localization">METTRE À JOUR</div>
+                    <img id="maj-button-background2" src="/img/rectangle-arrondi-1-copie.png" width="110px" height="25px"/>
+                </div>
             </div>
             <!-- show mini-maps -->
             <!--div id="navigation-chart">
@@ -265,27 +270,23 @@
                                 <svg class="map"></svg>
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td id="legend">
                             <d id="etage">
                             </d>
-                            <h3>
-                                Légende
-                            </h3>
                             <svg width="30" height="15">
                                 <rect width="30" height="15" style="fill:#ff9900"></rect>
                             </svg>
-                            <p>
-                                Occupé
-                            </p>
-                            <br/>
                             <svg width="30" height="15">
                                 <rect width="30" height="15" style="fill:#99ff99"></rect>
                             </svg>
+                            <br/>
                             <p>
-                                Libre
+                                Occupé - - - Libre
                             </p>
                             <br/>
-                            <p id="zoom">Zoomer avec <br/>la molette</p>
+                            <p id="zoom">Zoomer avec la molette</p>
                             <br/>
                         </td>
                     </tr>

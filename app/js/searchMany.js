@@ -192,7 +192,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
           }
         }
     } 
-      d3.select("#button-localization").style("visibility","hidden").style("width","0px").style("height","0px");
+      d3.select(".desk-maj").style("visibility","hidden").style("width","0px").style("height","0px");
       d3.select("#title-default").html("MODE Recherche de personnes");
       d3.select("#text-default").html("Vous avez recherché "+getNumberOfSearchedPeople(dataSearchedPeople)+" personne(s)"
       +"<br/><button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
@@ -226,7 +226,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
     }
     else{
       //d3.select(".tooltip_ext_map").style("visibility","hidden").style("height","0px");
-      d3.select("#legend").style("visibility","visible").style("height","600px");
+      d3.select("#legend").style("visibility","visible");//.style("height","600px");
 		  d3.select("#whole-map").style("visibility","visible").style("height","600px");
       var area =first_area_not_empty;
       //if no map, show my map
@@ -288,7 +288,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
     console.log("T'es dans list_etage !!");
     d3.select(".tooltip_ext_map").style("visibility","hidden").style("height","0px").style("padding","0px");
 		d3.select("#whole-map").style("visibility","visible").style("height","600px");
-    d3.select("#legend").style("visibility","visible").style("height","600px");
+    d3.select("#legend").style("visibility","visible");//.style("height","600px");
     var area = this.id.split(/_/)[0]; //this.id="N3_withResult" --> area="N3"
     mapControl.eraseMap();
     //if no map, show my map
