@@ -32,13 +32,24 @@ const associate = (req, res) => {
         var ou=data[0].split(',')[1].split('=')[1];
         if(ou !== undefined && ou !== null && ou !== ""){
                     company = ou.toString();
-                }
+        }
         var dpt;
         if(d.department !== null && d.department !== undefined && d.department !== ""){
             dpt = d.department.toString();
+        }else {
+            dpt="Non renseigne-"+company
         }
         var peopleName = d.cn.toString();
         var nameParts = peopleName.split(" ");
+        var lastname='';
+        var firstname='';
+        for (var i=0;i<nameParts.length;i++){
+                    if (nameParts[i]==nameParts[i].toUpperCase()){
+                        lastname+=nameParts[i]+" "
+                    }else{firstname+=nameParts[i]+" "}
+        }
+        lastname = lastname.substring(0,lastname.length-1);
+        firstname = firstname.substring(0,firstname.length-1)
         var mail="";
         if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
             mail = d.mail.toString();
@@ -77,24 +88,15 @@ const associate = (req, res) => {
         //  Table BsusinessUnit : <fk> Company
         if(dpt !== null && dpt !== undefined && dpt !== ""
         && company !== undefined && company !== null && company !== "") {
-            models.sequelize.query('UPDATE \"BusinessUnit\" SET company_id = (' +
-                'SELECT com_id FROM \"Company\" WHERE name = :cpname' +
-                ') WHERE name = :buname ',
-                {replacements: {cpname: company, buname: dpt}, type: models.sequelize.QueryTypes.UPDATE}
-                
-            ).then(function (poles) {
-                    //console.log(poles)
-                });
             //Table Person : <fk> BusinessUnit
-            if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
-                && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                    if (dpt !== undefined && dpt !==null && dpt!==""){
+            if (firstname !== undefined && firstname !== null && firstname !== ""
+                && lastname !== undefined && lastname !== null && lastname !== ""){
                         models.sequelize.query('UPDATE \"Person\" SET '  +
-                                '\"businessUnit_id\" = (SELECT bus_id FROM \"BusinessUnit\" WHERE name = :polename) ' +
+                                '\"businessUnit_id\" = (SELECT bus_id FROM \"BusinessUnit\" JOIN \"Company\" ON \"Company\".com_id=\"BusinessUnit\".company_id WHERE \"BusinessUnit\".name = :polename AND \"Company\".name= :compname) ' +
                                 ' WHERE firstname = :firstname and lastname = :lastname',
-                                {replacements: {polename: dpt, firstname: nameParts[0], lastname: nameParts[1]},
+                                {replacements: {polename: dpt, compname: company, firstname: firstname, lastname: lastname},
                                 type: models.sequelize.QueryTypes.UPDATE})
-                    }
+                    
             }
         }
     });
