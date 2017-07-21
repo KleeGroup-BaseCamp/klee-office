@@ -217,6 +217,7 @@ RawBlameHistory
 #input {
     position: relative;
     /*top: 120%;*/
+    top: 65px;
     left: 500px;
     width: 550px;
     height: 60px;
@@ -739,8 +740,8 @@ input[readonly] {
     /*top: 138%;
     right: 420px;*/
     width: 40px;
-    margin: 0px;
-    left: 1000px;
+    margin: 10px;
+
     z-index: 20;
     cursor:  pointer;
 }
@@ -1025,11 +1026,11 @@ input[readonly] {
 /* style du bouton de recherche */
 #search-button {
    position: relative;
-   /*top: 130%;
-   right: 30%;*/
+   top: 80px;
+   /*right: 30%;*/
    left: 1000px;
    width: auto;
-   height: 85%;
+   height: 20%;
    z-index: 20;
 }
 #search-button:hover {
