@@ -33,8 +33,8 @@ const populate = (req, res) => {
      * insert the corresponding data in the database
      */
 
-    var companies = [];
-    var departments = [];
+    var company_dep = [];
+    var companies=[];
     var desks=[];
     var sites = ["La Boursidière","Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","sur site client"];
     // insert states and a new configuration "Validee"
@@ -84,7 +84,15 @@ const populate = (req, res) => {
                 }
                 var peopleName = d.cn.toString();
                 var nameParts = peopleName.split(" ");
-                var lastname = peopleName.substr(peopleName.indexOf(" ")+1);
+                var lastname='';
+                var firstname='';
+                for (var i=0;i<nameParts.length;i++){
+                    if (nameParts[i]==nameParts[i].toUpperCase()){
+                        lastname+=nameParts[i]+" "
+                    }else{firstname+=nameParts[i]+" "}
+                }
+                lastname = lastname.substring(0,lastname.length-1);
+                firstname = firstname.substring(0,firstname.length-1)
                 var mail="";
                 if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
                     mail = d.mail.toString();
@@ -127,21 +135,32 @@ const populate = (req, res) => {
                     }
                 }
                     
+                if  (dpt == null || dpt == undefined || dpt == ""){
+                        dpt="Non renseigne-"+company
+                } 
                 if(companies.indexOf(company) < 0 && company !== null && company !== undefined && company !== ""){
-                    companies.push(company);
+                    companies.push(company)
                 }
-                if(departments.indexOf(dpt) < 0 && dpt !== null && dpt !== undefined && dpt !== ""){
-                    departments.push(dpt);
+                if (company_dep.indexOf(company) < 0){
+                    company_dep.push(company);
+                    company_dep.push([dpt])
+                }
+                else{
+                    var ind=company_dep.indexOf(company)
+                    if (company_dep[ind+1].indexOf(dpt) < 0){
+                        company_dep[ind+1].push(dpt)
+                    }
+
                 }
 
-                if (nameParts[0] !== undefined && nameParts[0] !== null && nameParts[0] !== ""
-                && nameParts[1] !== undefined && nameParts[1] !== null && nameParts[1] !== ""){
-                    var pers = Person.build({firstname: nameParts[0], lastname: lastname, mail: mail,dateUpdate : Date.now()});
+                if (firstname !== undefined && firstname !== null && firstname !== ""
+                && lastname !== undefined && lastname !== null && lastname !== ""){
+                    var pers = Person.build({firstname: firstname, lastname: lastname, mail: mail,dateUpdate : Date.now()});
                     pers.save()
                         .error(function (err) {
                             console.log(err + " ---------" + elem);
                         }).then(function(newPerson){
-                            //console.log(nameParts[0] + nameParts[1]);
+                            //console.log(firstname + lastname);
                             var perId = newPerson.dataValues.per_id;
                             var date=new Date();
                             // create the desk and the initial moveline
@@ -185,29 +204,31 @@ const populate = (req, res) => {
                                 })
                         })
                 }
+                
         });
-
-        companies.forEach(function(elem, index){
-            var comp = Company.build({name : elem});
-            comp.save()
-                .error(function (err) {
-                    console.log(err + " ---------" + elem);
-                });
-        });
-        departments.forEach(function(elem, index){
-            var dpt = BusinessUnit.build({name : elem});
-            dpt.save()
-                .error(function (err) {
-                    console.log(err + " ---------" + elem);
-                });
-        });
-
-
-
+       
     });
 
     // do insert THEN updates
     doInserts.then(function(results){
+        console.log("after all the inserts, do the inserts2.");
+    });
+    var doInserts2 = new Promise(function(callback){
+    //console.log(companies);
+    //console.log(company_dep[1])
+    var company, ind
+        for (var i=0;i<company_dep.length;i=i+2){
+            company=company_dep[i]
+            Company.create({name : company})
+            .then(function(comp){
+                ind=company_dep.indexOf(comp.name)+1;
+                for (var j=0;j<company_dep[ind].length;j++){
+                   BusinessUnit.create({name:company_dep[ind][j],company_id:comp.com_id})          
+                }
+            })
+        } 
+    })
+    doInserts2.then(function(results){
         console.log("after all the inserts, do the updates.");
     });
 
