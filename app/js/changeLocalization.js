@@ -16,6 +16,8 @@ function changeLocalization() {
 
     var newSite;
     d3.select(".desk-maj").style("visibility","hidden").style("width","0px").style("height","0px");
+    d3.select("#button-localization").style("visibility","hidden").style("width","0px").style("height","0px");
+    d3.select("#maj-button-background2").style("visibility","hidden").style("width","0px").style("height","0px");
     d3.select("#title-default").html("MODE Changement de bureau");
     d3.select("#text-default").html('<p>Veuillez choisir le site ou l\'étage</p><br/>');
     d3.selectAll(".siteLocation").on("click",function() {chooseSite()});

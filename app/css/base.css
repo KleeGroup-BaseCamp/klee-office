@@ -120,7 +120,8 @@ a img {
     box-sizing: border-box;
 }
 body {
-    background-color: #297aa3;
+    /*background-color: #297aa3;*/
+    background-color:white;
     color: #505050;
     font-family: "Open Sans", sans-serif;
     font-weight: 400;
@@ -156,6 +157,7 @@ a:hover {
 #main {
     background-color: #fff;
     padding: 0px 0px;
+    margin-top: 7%;
 }
 .container {
     width: 100%;
@@ -171,7 +173,7 @@ a:hover {
 \* ------------------------------------------------------------ */
 #info-bar {
     background-color: white;
-    font-family: Georgia;
+    font-family: Arial;
     color :black;
 }
 span.all-tutorials,
@@ -270,7 +272,8 @@ footer span a {
 * Submit buttons
 */
 .submit{
-    background-color: #246b8f;
+    /*background-color: #246b8f;*/
+    background-color:white;
     width: 100px;
     height: 38px;
     border-radius: 6px;
@@ -298,3 +301,25 @@ footer span a {
     cursor: pointer;
 }
 
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:  black;
+    font-size: 22px;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    black;
+   font-size: 22px;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    black;
+   font-size: 22px;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    black;
+   font-size: 22px;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+   color:    black;
+   font-size: 22px;
+}
