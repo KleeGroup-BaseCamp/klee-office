@@ -37,8 +37,13 @@ function displayMyData(){
             d3.select("#personal-site").html(" Site non défini");
             d3.select("#personal-desk").html("Bureau non défini");
         }else{
-        d3.select("#personal-site").html(myData[3]);
+            if (myData[2]=="externe"){
+                d3.select("#personal-desk").html(myData[3]);
+            }else if (myData[2]=="aucun"){
+                d3.select("#personal-desk").html("Aucun bureau défini");
+            }else{
             d3.select("#personal-desk").html(myData[2]);
+            }
         }
 };
 
