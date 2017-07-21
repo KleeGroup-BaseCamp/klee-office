@@ -140,11 +140,11 @@ h6 {
 }
 a {
     text-decoration: none;
-    color: #3296c8;
+    color: black;
 }
-a:hover {
+/*a:hover {
     color: #23688b
-}
+}*/
 /* ------------------------------------------------------------ *\
 |* ------------------------------------------------------------ *|
 |* Template
@@ -157,14 +157,13 @@ a:hover {
 #main {
     background-color: #fff;
     padding: 0px 0px;
-    margin-top: 7%;
 }
 .container {
     width: 100%;
     max-width: 1200px;
     min-width: 520px;
-    margin: 0 auto;
-    padding: 0 0px;
+    /*margin: 0 auto;
+    padding: 0 0px;*/
 }
 /* ------------------------------------------------------------ *\
 |* ------------------------------------------------------------ *|
