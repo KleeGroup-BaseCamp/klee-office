@@ -15,11 +15,10 @@ function changeLocalization() {
     d3.select("#menu-withresult").style("display", "none");
 
     var newSite;
-    d3.select(".desk-maj").style("visibility","hidden").style("width","0px").style("height","0px");
-    d3.select("#button-localization").style("visibility","hidden").style("width","0px").style("height","0px");
-    d3.select("#maj-button-background2").style("visibility","hidden").style("width","0px").style("height","0px");
+    d3.select(".desk-maj").style("visibility","hidden");
+    d3.select("#button-localization").style("visibility","hidden");
     d3.select("#title-default").html("MODE Changement de bureau");
-    d3.select("#text-default").html('<p>Veuillez choisir le site ou l\'étage</p><br/>');
+    d3.select("#text-default").html('<p>Veuillez choisir le site ou l\'étage dans le menu</p><br/>');
     d3.selectAll(".siteLocation").on("click",function() {chooseSite()});
     d3.selectAll(".list_etage").on("click",function() {chooseDesk()});
     function chooseSite() {
@@ -107,7 +106,7 @@ function validateMove(newSite,newDesk){
     }
     else{
         d3.select("#text-default").html("Vous avez validé un nouvel emplacement"+
-            "<br/>Votre nouveau site est "+newSite)}
+            "<br/>Votre nouveau site est "+newSite+'<br/><button id=\"cancelMove\"><a href=\"http://localhost:3000/\">Retour au menu principal</a></button>')}
     var data={"firstname":myData[0],"lastname":myData[1],"desk-name":newDesk,"site-name":newSite};
     console.log(data)
     d3.json(server +"myLocalization", function(){

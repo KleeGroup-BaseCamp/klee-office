@@ -68,18 +68,19 @@ RawBlameHistory
 #maj-button{
     color:white;
     z-index: 200;
-    position: absolute;
-    top: 15%;
-    left: 113.5%;
+  /*  position: absolute;
+    left: 113.5%;*/
     font-size: 75%;
     width: 80px;
 }
 #maj-button-background{
-    position: relative;
-    top: -20px;
-    right: 15px;
-    color:white;
-    /*z-index: -1;*/
+    background: url("/img/rectangle-arrondi-1-copie.png");
+    background-repeat: no-repeat;
+    background-size :cover;
+    width: 110px;
+    height:25px;
+    z-index: -1;
+    right:10px;
 
 }
 #maj-button-background2{
@@ -489,6 +490,7 @@ RawBlameHistory
     height:90px;
     margin-left :220px;
     z-index: 0;
+    width:100%;
    
     /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
