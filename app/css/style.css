@@ -125,11 +125,15 @@ RawBlameHistory
         position: absolute;
         left: 44%;
         top: 2%;
-        width: 300px;
+        width: 190px;
         height: 20px;
         font-size: 28px;
         font-weight: 300;
         line-height: 0.71;
+}
+#klee:hover{
+    cursor: pointer;
+    transform: scale(1.05);
 }
 .klee-title{
     margin-left: 35%; 
@@ -184,8 +188,8 @@ RawBlameHistory
 
 #navigation-bar {
     position: relative;
-    height: 60px;
-    padding-left: 60px;
+    height: 220px;
+    /*padding-left: 60px;*/
 }
 #search {
     position: relative;
@@ -211,10 +215,10 @@ RawBlameHistory
     text-indent: -9999px;
 }
 #input {
-    position: absolute;
-    top: 120%;
-    left: 250px;
-    width: 500px;
+    position: relative;
+    /*top: 120%;*/
+    left: 500px;
+    width: 550px;
     height: 60px;
     z-index: 5;
     border: none;
@@ -224,13 +228,12 @@ RawBlameHistory
 #input input {
     opacity: 1;
     display: block;
-    position: absolute;
+    position: relative;
     top: 0;
-    left: 0px;
     width: 1100px;
     height: 100%;
-    margin: 0;
-    padding: 0 10px;
+    /*margin: 0;
+    padding: 0 10px;*/
     border: none;
     background-color: rgb(255, 230, 0);
     color: black;
@@ -439,7 +442,7 @@ RawBlameHistory
     width: 220px;
     height : 762px;
     background-color: rgb(242, 242, 242);
-    left: 0%;
+    float: left;
 }
 #navigation #etages_withResult, #etages_withoutResult, #etages_location{
     padding-top :20px;
@@ -475,10 +478,9 @@ RawBlameHistory
 
 .info-recherche{
     padding : 10px;
-    width :1037px;
     position :relative;
-    height:58px;
-    margin-left :20%;
+    height:90px;
+    margin-left :220px;
     z-index: 0;
     /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
@@ -492,7 +494,7 @@ RawBlameHistory
 }
 #text-default{
     font-size:22px;
-    margin-right: 10%;
+    text-align: center;
     /*margin-top: 1%;*/
 }
 #title-default{
@@ -535,7 +537,6 @@ RawBlameHistory
     position: relative;
     width: 900px;
     height: 450px;
-    right: 8%;
 }
 #legend {
     width: 200px;
@@ -734,16 +735,19 @@ input[readonly] {
 }
 
 #cross-delete{
-    position: absolute;
-    top: 138%;
-    right: 420px;
+    position: relative;
+    /*top: 138%;
+    right: 420px;*/
+    width: 40px;
+    margin: 0px;
+    left: 1000px;
     z-index: 20;
     cursor:  pointer;
 }
 
-#cross-delete:hover{
+/*#cross-delete:hover{
     transform: scale(1.1);
-}
+}*/
 
 .admin-list td {
     text-align: center;
@@ -1020,21 +1024,38 @@ input[readonly] {
 }
 /* style du bouton de recherche */
 #search-button {
-   position: absolute;
-   top: 130%;
-   right: 30%;
+   position: relative;
+   /*top: 130%;
+   right: 30%;*/
+   left: 1000px;
    width: auto;
    height: 85%;
+   z-index: 20;
 }
 #search-button:hover {
     cursor: pointer;
     transform: scale(1.05);
 }
 #left-photo{
-    position:absolute;
-    width: 35%;
+    position:relative;
+    width: 60%;
     height: auto;
-    right: 80%;
+    /*right: 100%;
+    bottom: 1px;*/
+    /*right: 35%;
+    top: -50px;*/
+    z-index: 20;
+   float: left;
+}
+#right-photo{
+    position:relative;
+    width: 37%;
+    height: auto;
+    /*bottom: 480%;
+    left: 91%;*/
+    float: right;
+    
+    z-index: 20;
 }
 
 /* table admin page*/
