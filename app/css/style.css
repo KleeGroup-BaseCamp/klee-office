@@ -487,11 +487,7 @@ RawBlameHistory
     padding : 10px;
     position :relative;
     height:90px;
-<<<<<<< HEAD
-    margin-left :10%;
-=======
     margin-left :220px;
->>>>>>> 2f4fa0f53d5c6816425c59f7a4e88daebd96e8c8
     z-index: 0;
    
     /*border-left: 2px solid #297aa3;
@@ -506,11 +502,7 @@ RawBlameHistory
 }
 #text-default{
     font-size:22px;
-<<<<<<< HEAD
-    /*margin-right: 10%;*/
-=======
     text-align: center;
->>>>>>> 2f4fa0f53d5c6816425c59f7a4e88daebd96e8c8
     /*margin-top: 1%;*/
      text-align:center;
 }
