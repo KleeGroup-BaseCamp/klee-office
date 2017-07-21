@@ -5,8 +5,8 @@
 var	server= "http://localhost:3000/";
 var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
-
-document.getElementById("button-localization").addEventListener("click",changeLocalization);
+for (var i =0; i < document.getElementsByClassName('desk-maj').length ; i++ ){
+document.getElementsByClassName('desk-maj')[i].addEventListener("click",changeLocalization);}
 
 //First user need to choose the site
 function changeLocalization() {
@@ -15,7 +15,9 @@ function changeLocalization() {
     d3.select("#menu-withresult").style("display", "none");
 
     var newSite;
+    d3.select(".desk-maj").style("visibility","hidden").style("width","0px").style("height","0px");
     d3.select("#button-localization").style("visibility","hidden").style("width","0px").style("height","0px");
+    d3.select("#maj-button-background2").style("visibility","hidden").style("width","0px").style("height","0px");
     d3.select("#title-default").html("MODE Changement de bureau");
     d3.select("#text-default").html('<p>Veuillez choisir le site ou l\'étage</p><br/>');
     d3.selectAll(".siteLocation").on("click",function() {chooseSite()});

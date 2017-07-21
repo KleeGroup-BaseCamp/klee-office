@@ -1,4 +1,4 @@
-Skip to content
+/*Skip to content
 This repository
 Search
 Pull requests
@@ -16,7 +16,7 @@ da7ae66  5 hours ago
 @MarjorieJ MarjorieJ Add control account, control access to pages (admin, validators)
 3 contributors @ZekunZh @mpsalvi @MarjorieJ
 RawBlameHistory     
-845 lines (796 sloc)  16.1 KB
+845 lines (796 sloc)  16.1 KB*/
 /* ------------------------------------------------------------ *\
 |* ------------------------------------------------------------ *|
 |* Map, Autocomplete, Nav bar, search, and nav
@@ -26,7 +26,7 @@ RawBlameHistory
     width: 60px;
     height: 60px;
     padding-top: 10px;
-    padding-left: 10px;
+    padding-left: 0px;
     position: relative;
     z-index: 20;
 }
@@ -57,29 +57,83 @@ RawBlameHistory
 }
 #personal{
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 21px;
+    right: 8%;
     display :inline;
+     z-index: 200;
 }
 #personal p{
     display :inline;
+}
+#maj-button{
+    color:white;
+    z-index: 200;
+    position: absolute;
+    top: 15%;
+    left: 113.5%;
+    font-size: 75%;
+    width: 80px;
+}
+#maj-button-background{
+    position: relative;
+    top: -20px;
+    right: 15px;
+    z-index: -1;
+
+}
+#button-localization{
+    position: absolute;
+    /*bottom: 0.2%;*/
+    margin-left: 27%;
+    color: white;
+    font-size: 80%;
+}
+#maj-button-background2{
+    position: relative;
+    /*top: 86%;*/
+    right: 49%; /*69.2%;*/
+    z-index: -1;
+}
+#maj-button-background:hover, #maj-button:hover{
+    cursor: pointer;
+    text-decoration:underline;
+    
+}
+#button-localization:hover{
+    cursor: pointer;
+    text-decoration:underline;
+}
+.desk-maj{
+    margin-bottom: 10%;
 }
 #back-to-home{
 
     display :inline;
 }
-#title{
-    position:relative;
+.title{
+   /* position:relative;
     right:200px;
+    
+    z-index: 2000;*/
     display :inline;
 }
 
 #klee{
     font-weight: bold;
-        display:inline;
+        /*display:inline;*/
+        font-family: Arial;
+        position: absolute;
+        left: 44%;
+        top: 2%;
+        width: 300px;
+        height: 20px;
+        font-size: 28px;
+        font-weight: 300;
+        line-height: 0.71;
 }
-#office{
-    display:inline;
+.klee-title{
+    margin-left: 35%; 
+    display :inline;
 }
 .modify p {
     background: url("../img/eye.png") 0px 0px;
@@ -158,11 +212,13 @@ RawBlameHistory
 }
 #input {
     position: absolute;
-    top: 0;
-    left: 60px;
-    width: 1100px;
+    top: 120%;
+    left: 250px;
+    width: 500px;
     height: 60px;
     z-index: 5;
+    border: none;
+    border-bottom: 1px solid black;
     overflow: hidden;
 }
 #input input {
@@ -176,7 +232,7 @@ RawBlameHistory
     margin: 0;
     padding: 0 10px;
     border: none;
-    background-color: white;
+    background-color: rgb(255, 230, 0);
     color: black;
     font-size: 18px;
     -webkit-backface-visibility: none;
@@ -334,9 +390,9 @@ RawBlameHistory
 
 .tooltip_ext_map{
     position :relative;
-    border-left: 2px solid #297aa3;
+   /* border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
-    border-bottom: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;*/
     width : 1037px;
     margin:0px;
 }
@@ -377,12 +433,13 @@ RawBlameHistory
     z-index:0;
     position : absolute;
     margin-left :0px;
-    border-left : 5px solid #297aa3;
+   /* border-left : 5px solid #297aa3;
     border-right : 5px solid #297aa3;
-    border-bottom : 5px solid #297aa3;
+    border-bottom : 5px solid #297aa3;*/
     width: 220px;
-    height : 750px;
-    background-color: #add6eb;;
+    height : 762px;
+    background-color: rgb(242, 242, 242);
+    left: 0%;
 }
 #navigation #etages_withResult, #etages_withoutResult, #etages_location{
     padding-top :20px;
@@ -416,21 +473,27 @@ RawBlameHistory
     font-style :italic;
 }
 
-.info-bar{
+.info-recherche{
     padding : 10px;
     width :1037px;
     position :relative;
-    height:150px;
-    margin-left :220px;
+    height:58px;
+    margin-left :20%;
     z-index: 0;
-    border-left: 2px solid #297aa3;
+    /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
-    border-bottom: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;*/
     background-color: white;
     line-height: 150%;
 }
+.info-bar{
+    height: 58px;
+    background-color: white;
+}
 #text-default{
-    font-size:16px;
+    font-size:22px;
+    margin-right: 10%;
+    /*margin-top: 1%;*/
 }
 #title-default{
     font-size : 20px;
@@ -443,6 +506,18 @@ RawBlameHistory
     height :50px
 }
 
+/*#map-name{
+    position: absolute;
+    right: 47%;
+    padding : 10px;
+    text-align :center;
+    height :50px
+}*/
+
+#map-name h{
+    position: relative;
+}
+
 #map-show {
     position : relative;
     margin-left :220px;
@@ -450,9 +525,9 @@ RawBlameHistory
 }
 #map-show #whole-map {
     position :relative;
-    border-left: 2px solid #297aa3;
+    /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
-    border-bottom: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;*/
     height:600px;
 
 }
@@ -460,14 +535,25 @@ RawBlameHistory
     position: relative;
     width: 900px;
     height: 450px;
+    right: 8%;
 }
 #legend {
-    width: 132px;
+    width: 200px;
     vertical-align: middle;
     padding-left: 12px;
-    border-right: 2px solid #297aa3;
-    border-bottom: 2px solid #297aa3;
+    /*border-right: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;*/
     height: auto;
+    position: absolute;
+    left: 25%;
+    bottom: 20%;
+}
+#legend svg{
+    margin-left: 40px;
+}
+#legend p{
+    position: absolute;
+    left: 18.5%;
 }
 #map-show #legend h3 {
     padding-bottom: 20px;
@@ -589,17 +675,17 @@ input[readonly] {
     width: 100%;
     height: 500px;
 }
-.right-side #map-show #whole-map {
+/*.right-side #map-show #whole-map {
     border: 2px solid #297aa3;
-}
+}*/
 .right-side #map-show {
     visibility: hidden;
 }
-.right-side #legend {
+/*.right-side #legend {
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;
     border-top: 2px solid #297aa3;
-}
+}*/
 
 .container #action-title{
     padding-top: 22px;
@@ -649,8 +735,8 @@ input[readonly] {
 
 #cross-delete{
     position: absolute;
-    top: 10px;
-    right: 20px;
+    top: 138%;
+    right: 420px;
     z-index: 20;
     cursor:  pointer;
 }
@@ -935,9 +1021,20 @@ input[readonly] {
 /* style du bouton de recherche */
 #search-button {
    position: absolute;
-   top: 15px;
-   right: -100px;
-   width: 100px;
+   top: 130%;
+   right: 30%;
+   width: auto;
+   height: 85%;
+}
+#search-button:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+}
+#left-photo{
+    position:absolute;
+    width: 35%;
+    height: auto;
+    right: 80%;
 }
 
 /* table admin page*/
@@ -1003,5 +1100,5 @@ input[readonly] {
 /* * html .ui-autocomplete {
     height: 100px;
   }*/
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
+/*Contact GitHub API Training Shop Blog About
+© 2017 GitHub, Inc. Terms Privacy Security Status Help*/

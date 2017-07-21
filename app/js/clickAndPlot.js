@@ -36,7 +36,7 @@
 			mapControl.mapName = "N0";
 			mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
 		}
-		$('<h1 class="N0">RDC (N0)</h1>').prependTo($('#map-name'));
+		//$('<h1 class="N0">RDC (N0)</h1>').prependTo($('#map-name'));
 	});
 	N1.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -52,7 +52,7 @@
 			mapControl.mapName = "N1";
 			mapControl.mapPlot(myData,mapControl.mapName,false,function() {});
 		}
-		$('<h1 class="N1">Etage N1</h1>').prependTo($('#map-name'));
+		//$('<h1 class="N1">Etage N1</h1>').prependTo($('#map-name'));
 	});
 	N2.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -68,7 +68,7 @@
 			mapControl.mapName = "N2";
 			mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
 		}
-		$('<h1 class="N2">Etage N2</h1>').prependTo($('#map-name'));
+		//$('<h1 class="N2">Etage N2</h1>').prependTo($('#map-name'));
 	});
 	N3.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -84,7 +84,7 @@
 			mapControl.mapName = "N3";
 			mapControl.mapPlot(myData,mapControl.mapName,false,function() {});
 		}
-		$('<h1 class="N3">Etage N3</h1>').prependTo($('#map-name'));
+		//$('<h1 class="N3">Etage N3</h1>').prependTo($('#map-name'));
 	});
 	N4.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -100,7 +100,7 @@
 			mapControl.mapName = "N4";
 			mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
 		}
-		$('<h1 class="N4">Etage N4</h1>').prependTo($('#map-name'));
+		//$('<h1 class="N4">Etage N4</h1>').prependTo($('#map-name'));
 	});
 	O1.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -116,7 +116,7 @@
 			mapControl.mapName = "O1";
 			mapControl.mapPlot(myData,mapControl.mapName,false,  function() {});
 		}
-		$('<h1 class="O1">Etage O1</h1>').prependTo($('#map-name'));
+		//$('<h1 class="O1">Etage O1</h1>').prependTo($('#map-name'));
 	});
 	O2.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -132,7 +132,7 @@
 			mapControl.mapName = "O2";
 			mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
 		}
-		$('<h1 class="O2">Etage O2</h1>').prependTo($('#map-name'));
+		//$('<h1 class="O2">Etage O2</h1>').prependTo($('#map-name'));
 	});
 	O3.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -148,7 +148,7 @@
 			mapControl.mapName = "O3";
 			mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
 		}
-		$('<h1 class="O3">Etage O3</h1>').prependTo($('#map-name'));
+		//$('<h1 class="O3">Etage O3</h1>').prependTo($('#map-name'));
 	});
 	O4.addEventListener("click", function () {
 		mapControl.eraseMap();
@@ -164,7 +164,7 @@
 			mapControl.mapName = "O4";
 			mapControl.mapPlot(myData,mapControl.mapName,false,function() {});
 		}
-		$('<h1 class="O4">Etage O4</h1>').prependTo($('#map-name'));
+		//$('<h1 class="O4">Etage O4</h1>').prependTo($('#map-name'));
 	});
 	issy.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");

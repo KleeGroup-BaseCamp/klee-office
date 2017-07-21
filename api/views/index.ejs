@@ -26,7 +26,7 @@
 
 <body>
 <div id="wrapper">
-    <div id="info-bar">
+    <div class="info-bar">
         <div id="back-to-home">
             <div id="home">
                 <a href="/"><img id="home-label" src="/img/home.png" width="40px" height="40px" title="Home"/></a>
@@ -36,31 +36,37 @@
             </div>
             <div id="admin">
                 <a href="/admin"><img id="admin-label" src="/img/admin.png" width="40px" height="40px" title="Page administrateurs"/></a>
-            </div>
+            </div>   
         </div>
-        <div id="title">
-            <h1><p id="klee">KLEE </p><p id="office">OFFICE</p></h1>
+        <!-- title -->
+        <div class="title">
+                <div id="klee"><b>KLEE</b> OFFICE</div>
         </div>
         <div id="personal">
             <p id="personal-firstname"><%- myFirstName %></p>
             <p id="personal-lastname"><%- myLastName %></p>
-            <p id="personal-site"></p>
+            <!-- <p id="personal-site"></p> -->
             <p id="personal-desk"></p>
+            <div class="desk-maj">
+                <p id="maj-button">METTRE À JOUR<img id="maj-button-background" src="/img/rectangle-arrondi-1-copie.png" width="110px" height="25px"/></p>
+                
+            </div>
         </div>
     </div>
     <!-- /#info-bar -->
     <header>
         <div id="navigation-bar" class="container">
             <form id="search" onsubmit="return false">
-                <div id="label">
+                <!-- <div id="label">
                     <label for="search-terms" id="search-label">search</label>
-                </div>
+                </div> -->
                 <div id="input">
-                    <input type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue...">
+                    <input type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue">
                 </div>
             </form>
             <!-- Bouton "Rechercher" -->
-            <button id="search-button">Search</button>
+            <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
+            <img id="search-button" src="../img/forma-1.png">
             <div id="cross-delete">
                  <a href="/"><img src="../img/crossDelete.png" width="40" height="40"></a> 
             </div>
@@ -138,12 +144,15 @@
                 </div>             
             </div>
             
-            <div class="info-bar">
-                <div id="title-default"></div>
-                <br/>
+            <div class="info-recherche">
+                <!-- <div id="title-default"></div>
+                <br/> -->
                 <div id="text-default"></div>
                 <br/>
-                <button id="button-localization" name="Mettre à jour mon bureau">Mettre à jour mon bureau</button>
+                <div class="desk-maj">
+                    <div id="button-localization">METTRE À JOUR<img id="maj-button-background2" src="/img/rectangle-arrondi-1-copie.png" width="110px" height="25px"/></div>
+                    <!-- <img id="maj-button-background2" src="/img/rectangle-arrondi-1-copie.png" width="110px" height="25px"/> -->
+                </div>
             </div>
             <!-- show mini-maps -->
             <!--div id="navigation-chart">
@@ -256,33 +265,29 @@
                         <div class="tooltip_ext_map"></div>
                         <td>
                             <div id="whole-map">
-                                <div id="map-name"></div>
+                               <!-- <div id="map-name"></div> -->
                                 
                                 <div class ="tooltip_map"></div>
                                 <svg class="map"></svg>
                             </div>
                         </td>
+                    </tr>
+                    <tr>
                         <td id="legend">
                             <d id="etage">
                             </d>
-                            <h3>
-                                Légende
-                            </h3>
                             <svg width="30" height="15">
                                 <rect width="30" height="15" style="fill:#ff9900"></rect>
                             </svg>
-                            <p>
-                                Occupé
-                            </p>
-                            <br/>
                             <svg width="30" height="15">
                                 <rect width="30" height="15" style="fill:#99ff99"></rect>
                             </svg>
+                            <br/>
                             <p>
-                                Libre
+                                Occupé<FONT color="white"> - - -</FONT>Libre
                             </p>
                             <br/>
-                            <p id="zoom">Zoomer avec <br/>la molette</p>
+                            <p id="zoom">Zoomer avec la molette</p>
                             <br/>
                         </td>
                     </tr>

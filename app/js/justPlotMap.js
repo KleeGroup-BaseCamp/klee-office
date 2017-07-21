@@ -33,18 +33,18 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
             if (myData[2]=="aucun"){
                 desk="none";
                 mapName="N0"; //default value
-                d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site La Boursidière mais vous n'avez pas d'emplacement. Veuillez mettre à jour votre bureau");
+                d3.select("#text-default").html(/*"<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">*/"Vous êtes sur le site La Boursidière mais vous n'avez pas d'emplacement. Veuillez mettre à jour votre bureau");
             }
             else{
                 desk=myData[2];
                 mapName=desk.split(/-/)[0];
-                d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site La Boursidière étage "+mapName+" !");
+                d3.select("#text-default").html(/*"<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">*/"Vous êtes ici : La Boursidière - Etage "+myData[2]+"");
             }
         }
         else if (myData[3]=="aucun"){
             desk="none";
             mapName="N0"; //default value
-            d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous n'avez pas de position. Veuillez mettre à jour votre bureau");
+            d3.select("#text-default").html(/*"<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">*/"Vous n'avez pas de position. Veuillez mettre à jour votre bureau");
         }
         else {
             desk="none";
@@ -61,7 +61,7 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
 			d3.select(".map").select("svg").remove();
 			mapControl.mapName = mapName;}
 			
-        $('<h1 class='+mapName+'>Etage '+mapName+'</h1>').appendTo($('#map-name'));
+        //$('<h1 class='+mapName+'>Etage '+mapName+'</h1>').appendTo($('#map-name'));
         d3.select("#navigation-chart")
 					.style("visibility", "hidden")
 					.style("width", "0")
