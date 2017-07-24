@@ -3,6 +3,7 @@
 'use strict';
 // global variables
 var	server= "http://localhost:3000/";
+//var	server= "http://local-map/";
 var people = [];            //contains data about every person
 var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe"];
 var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","Sur site client"];
