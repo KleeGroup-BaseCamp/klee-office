@@ -42,14 +42,15 @@
         <div class="title">
                 <a href="/"><div id="klee"><b>KLEE</b> OFFICE</div></a>
         </div>
-        <div id="personal">
-            <p id="personal-firstname"><%- myFirstName %></p>
-            <p id="personal-lastname"><%- myLastName %></p>
+        <table id="personal">
+            <thead><tr>
+                <th id="personal-firstname"><%- myFirstName %></th>
+                <th id="personal-lastname"><%- myLastName %></th>
             <!-- <p id="personal-site"></p> -->
-            <p id="personal-desk"></p>
-            <div class="desk-maj" id="maj-button">
-                    <div id="maj-button-background">METTRE À JOUR</div>           
-            </div>
+                <th id="personal-desk"></th>
+                <th class="desk-maj" id="maj-button-background">METTRE À JOUR</th>
+            </tr>
+            </table>
         </div>
 
     </div>
@@ -148,47 +149,37 @@
             <div class="info-recherche">
                 <!-- <div id="title-default"></div>
                 <br/> -->
-                <div id="text-default"></div>
-                <br/>
-                <div class="desk-maj" id="button-localization">
-                    <div id="maj-button-background2">METTRE À JOUR</div>
-                </div>
+                <p id="text-default"></p>
+                <p class="desk-maj" id="maj-button-background2">METTRE À JOUR</p>
             </div>
             <!-- show main maps-->
             <div id="map-show">
-                <table>
+                <div class="tooltip_ext_map"></div>
+                <div id="whole-map">
+                    <div class ="tooltip_map"></div>
+                    <svg class="map"></svg>
+                <table id="legend">
                     <tr>
-                        <div class="tooltip_ext_map"></div>
                         <td>
-                            <div id="whole-map">
-                               <!-- <div id="map-name"></div> -->
-                                
-                                <div class ="tooltip_map"></div>
-                                <svg class="map"></svg>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="legend">
-                            <d id="etage">
-                            </d>
                             <svg width="30" height="15">
                                 <rect width="30" height="15" style="fill:#ff9900"></rect>
                             </svg>
+                        </td>
+                        <td>
                             <svg width="30" height="15">
                                 <rect width="30" height="15" style="fill:#99ff99"></rect>
                             </svg>
-                            <br/>
-                            <p>
-                                Occupé<FONT color="white"> - - -</FONT>Libre
-                            </p>
-                            <br/>
-                            <p id="zoom">Zoomer avec la molette</p>
-                            <br/>
                         </td>
                     </tr>
+                    <tr>
+                        <td>Occupé</td>
+                        <td>Libre</td>
+                    </tr>
+                    <tr>
+                        <td id="zoom" colspan="2">Zoomer avec la molette </td>
+                    </tr>
                 </table>
-            <div/>
+            </div>
             <!-- show main departments or info about people -->
             <div class="tooltip"></div>
 

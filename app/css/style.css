@@ -62,8 +62,12 @@ RawBlameHistory
     display :inline;
      z-index: 200;
 }
-#personal p{
+/*
+#personal p,#personnal div{
     display :inline;
+}*/
+table #personal-desk {
+    padding-right:10px;
 }
 #maj-button{
     color:white;
@@ -71,49 +75,50 @@ RawBlameHistory
   /*  position: absolute;
     left: 113.5%;*/
     font-size: 75%;
-    width: 80px;
 }
 #maj-button-background{
     background: url("/img/rectangle-arrondi-1-copie.png");
     background-repeat: no-repeat;
-    background-size :cover;
-    width: 110px;
-    height:25px;
+    background-size :110px 25px;
     z-index: -1;
-    right:10px;
-
+    vertical-align: middle;
+    font-size: 75%;
+    color:white;
+    padding-top :5px;
+    padding-bottom :7px;
+    padding-right:15px;
+    padding-left:15px;
+    text-align:center;
+    display:inline;
 }
 #maj-button-background2{
     background: url("/img/rectangle-arrondi-1-copie.png");
     background-repeat: no-repeat;
-    background-size :cover;
-    width: 110px;
-    height:25px;
+    background-position: center;
+    background-size :110px 25px;;
     z-index: -1;
-   /* text-align:center;*/
+    padding-top :5px;
+    padding-bottom :7px;
+    padding-right:15px;
+    padding-left:15px;
+    color: white ;
+    font-size: 80%;
+    text-align:center;
 }
 
 #button-localization{
     position: relative;
     text-align:center;
     /*margin-left: 27%;*/
-    color: white ;
-    font-size: 80%;
+
     z-index: -1;
 }
-#maj-button-background:hover, #maj-button:hover{
+#maj-button-background:hover, #maj-button-background2:hover{
     cursor: pointer;
     text-decoration:underline;
     
 }
-#button-localization:hover{
-    cursor: pointer;
-    text-decoration:underline;
-}
-.desk-maj{
-     text-align:center;
-    /*margin-bottom:%;*/
-}
+
 #back-to-home{
 
     display :inline;
@@ -449,7 +454,7 @@ RawBlameHistory
     border-right : 5px solid #297aa3;
     border-bottom : 5px solid #297aa3;*/
     width: 220px;
-    height : 762px;
+    height : 747px;
     background-color: rgb(242, 242, 242);
     float: left;
 }
@@ -492,13 +497,14 @@ RawBlameHistory
     margin-left :220px;
     z-index: 0;
     width:100%;
-   
-    /*border-left: 2px solid #297aa3;
-    border-right: 2px solid #297aa3;
-    border-bottom: 2px solid #297aa3;*/
+    text-align: center;
     background-color: white;
     line-height: 150%;
 }
+.info-recherche p{
+    text-align: center;
+}
+
 .info-bar{
     height: 58px;
     background-color: white;
@@ -506,7 +512,7 @@ RawBlameHistory
 #text-default{
     font-size:22px;
     text-align: center;
-    /*margin-top: 1%;*/
+    margin-bottom: 20px;
      text-align:center;
 }
 #title-default{
@@ -542,7 +548,7 @@ RawBlameHistory
     /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;*/
-    height:600px;
+    height:550px;
 
 }
 #map-show .map {
@@ -550,54 +556,20 @@ RawBlameHistory
     width: 900px;
     height: 450px;
 }
+#whole-map {
+    text-align: center;
+}
 #legend {
-    width: 200px;
-    vertical-align: middle;
-    padding-left: 12px;
-    /*border-right: 2px solid #297aa3;
-    border-bottom: 2px solid #297aa3;*/
-    height: auto;
-    position: absolute;
-    left: 25%;
-    bottom: 20%;
-}
-#legend svg{
-    margin-left: 40px;
-}
-#legend p{
-    position: absolute;
-    left: 18.5%;
-}
-#map-show #legend h3 {
-    padding-bottom: 20px;
-}
-#map-show #legend svg {
-    display: inline;
-}
-.map svg{
-    width:100%;
-}
-#map-show #legend p {
-    position: absolute;
-    display: inline-block;
-    margin-left: 10px;
-}
-#map-show #legend #zoom {
-    padding-top: 15px;
-    position: absolute;
-    display: inline-block;
-    margin-left: 0px;
-}
-#map-show #legend #change_localization {
-    margin-top: 40px;
-    position: absolute;
-    display: inline-block;
-    margin-bottom: 15px;
+    text-align: center;
+    margin-left: 50px;
 }
 
-#map-show #legend #etage {
-    color : rgb(85, 151, 211);
-    font-size : 15px;
+#legend #zoom{
+    padding-top:5px;
+}
+
+.map svg{
+    width:100%;
 }
 
 .left-side {

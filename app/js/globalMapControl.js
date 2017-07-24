@@ -38,10 +38,10 @@ var mapControl = {
 					var myY = myTable.select("rect").attr("y")-40;					        		
         			myTable.append("image")
           		  		.attr("xlink:href", "./img/pin_home.png")
-           		 		.attr("width", "35")
-           		 		.attr("height", "60")
+           		 		.attr("width", "40")
+           		 		.attr("height", "75")
            		 		.attr("x", myX)
-           		 		.attr("y", myY);
+           		 		.attr("y", myY-5);
 				}
 
 				//color of current map on the navigation menu
