@@ -23,21 +23,21 @@
 </head>
 
 <body>
-<div id="wrapper">
-    <div id="info-bar">
+    <div class="info-bar">
         <div id="back-to-home">
-            <div id="home">
+            <!-- <div id="home">
                 <a href="/"><img id="home-label" src="/img/home.png" width="40px" height="40px" title="Home"/></a>
-            </div>
+            </div> -->
             <div id="configurations">
                 <a href="/configurations"><img id="configurations-label" src="/img/param2.png" width="40px" height="40px" title="Page validateurs"/></a>
             </div>
             <div id="admin">
                 <a href="/admin"><img id="admin-label" src="/img/admin.png" width="40px" height="40px" title="Page administrateurs"/></a>
-            </div>
+            </div>   
         </div>
-        <div id="title">
-            <h1><p id="klee">KLEE </p><p id="office">OFFICE</p></h1>
+        <!-- title -->
+        <div class="title">
+                <a href="/"><div id="klee"><b>KLEE</b> OFFICE</div></a>
         </div>
         <table id="personal">
             <thead><tr>
@@ -45,9 +45,10 @@
                 <th id="personal-lastname"><%- myLastName %></th>
             <!-- <p id="personal-site"></p> -->
                 <th id="personal-desk"></th>
+                <th class="desk-maj" id="maj-button-background">METTRE À JOUR</th>
             </tr>
             </table>
-    </div>
+        </div>
 
     </div>
     <!-- /#info-bar -->
@@ -58,7 +59,7 @@
             <p class="flash-err"><%- message %></p>
             <% } %>
         </div>
-        <div id="navigation-bar" class="container">
+        <div id="admin-bar" class="container">
             <h2 id="action-title" class="center">Administration</h2>
         </div>
         <div id="error-admin"></div>
