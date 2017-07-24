@@ -288,7 +288,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
           }       
         });
       }
-      $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#map-name'));  
+      $('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));  
     }
 }
 
@@ -354,7 +354,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
         }       
       });
     }
-    $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#map-name'));  
+    $('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));   
   })
   $('.siteResult').click(function(){
       d3.select("#whole-map").style("visibility","hidden").style("height","0px");
