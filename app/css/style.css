@@ -230,8 +230,8 @@ table #personal-desk {
 #input {
     position: relative;
     /*top: 120%;*/
-    top: 65px;
-    left: 500px;
+    /*top: 65px;*/
+    left: 300px;
     width: 550px;
     height: 60px;
     z-index: 5;
@@ -1009,11 +1009,10 @@ input[readonly] {
 /* style du bouton de recherche */
 #search-button {
    position: relative;
-   top: 80px;
-   /*right: 30%;*/
-   left: 1000px;
+   top: 100px;
+   left: 800px;
    width: auto;
-   height: 20%;
+   height: 100%;
    z-index: 20;
 }
 #search-button:hover {
@@ -1022,24 +1021,24 @@ input[readonly] {
 }
 #left-photo{
     position:relative;
-    width: 60%;
+    width: 100%;
     height: auto;
-    /*right: 100%;
-    bottom: 1px;*/
+    bottom: 40px;
+    left: 50px;
     /*right: 35%;
     top: -50px;*/
-    z-index: 20;
-   float: left;
+    z-index: 1;
+   /*float: left;*/
 }
 #right-photo{
     position:relative;
-    width: 37%;
+    width: 100%;
     height: auto;
-    /*bottom: 480%;
-    left: 91%;*/
-    float: right;
+    bottom: 25px;
+    left: 200%;
+    /*float: right;*/
     
-    z-index: 20;
+    z-index: 1;
 }
 
 /* table admin page*/
