@@ -204,6 +204,11 @@ table #personal-desk {
     height: 220px;
     /*padding-left: 60px;*/
 }
+
+#admin-bar, #conf-bar{
+    height:auto;
+    margin-bottom:15px;
+}
 #search {
     position: relative;
     float: left;
@@ -424,7 +429,13 @@ table #personal-desk {
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;*/
     width : 1037px;
-    margin:0px;
+    font-size:15px;
+}
+#remove-search{
+    font-weight: bold;
+    color:red;
+    font-size:15px;
+    z-index: -1;
 }
 
 #message {
@@ -569,7 +580,7 @@ table #personal-desk {
 }
 #legend {
     text-align: center;
-    margin-left: 45%;
+    margin-left: 43%;
 }
 
 #legend #zoom{

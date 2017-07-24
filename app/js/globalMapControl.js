@@ -31,6 +31,7 @@ var mapControl = {
 				map = d3.select(".map");
 				map.node().appendChild(svgNode);
 
+				d3.select("#legend").style("display","");
 				//to load pin on own position
 				if (mapName===myMap){
 					var myTable = d3.selectAll("#tables").select("#"+myDesk);
