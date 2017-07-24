@@ -56,18 +56,31 @@
     <!-- /#info-bar -->
     <header>
         <div id="navigation-bar" class="container">
-            <form id="search" onsubmit="return false">
-                <!-- <div id="label">
-                    <label for="search-terms" id="search-label">search</label>
-                </div> -->
-                <div id="input">
-                    <input type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue">
-                </div>
-            </form>
-            <!-- Bouton "Rechercher" -->
-            <!-- <div id="left-photo"><img src="../img/objet-dynamique-vectoriel-1.png"></div>
-            <div  id="right-photo"><img src="../img/calque-7.png"></div> -->
-            <img id="search-button" src="../img/forma-1.png">
+           <table>
+               <tr>
+                   <td>
+                        <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
+                    </td>
+                    <td>
+                    <form id="search" onsubmit="return false">
+                            <!-- <div id="label">
+                                <label for="search-terms" id="search-label">search</label>
+                            </div> -->
+                            <div id="input">
+                                <input type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue">
+                            </div>
+                        </form>
+                   </td>
+                    <td>
+                        <img id="search-button" src="../img/forma-1.png">
+                    </td>
+                    <td>
+                        <img id="right-photo" src="../img/calque-7.png">
+                    </td>
+                    
+                </tr>
+            </table>
+
             <!-- <div id="cross-delete">
                  <a href="/"><img src="../img/crossDelete.png" width="40" height="40"></a> 
             </div> -->
@@ -84,6 +97,7 @@
         <div class="container">
             <div id="navigation">
                 <div id="menu-withoutresult">
+                    <br/>
                     <h3 id="boursidiere" class="site">La Boursidière</h3>
                     <ul id="etages_withoutResult">
                         <li class="list_etage" id ="N0_withoutResult">Etage N0</li>
