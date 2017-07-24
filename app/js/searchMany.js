@@ -195,6 +195,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
       d3.select(".desk-maj").style("visibility","hidden").style("width","0px").style("height","0px");
       d3.select("#title-default").html("MODE Recherche de personnes");
       d3.select("#text-default").html("Vous avez recherché "+getNumberOfSearchedPeople(dataSearchedPeople)+" personne(s)"
+      //d3.select("#text-default").html(dataSearchedPeople[2]+" - Etage "+area
       +"<br/><button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
       plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty);
       plotResultClick(nbPeopleByArea, dataSearchedPeople);
@@ -274,7 +275,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
           }       
         });
       }
-      $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#map-name'));  
+      $('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));  
     }
 }
 
@@ -341,7 +342,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
         }       
       });
     }
-    $('<h1 class='+area+'> Etage <br/>'+area+'</h1>').prependTo($('#map-name'));  
+    $('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));   
   })
   $('.siteResult').click(function(){
     console.log("T'es dans .ext !!");

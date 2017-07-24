@@ -287,39 +287,51 @@ table #personal-desk {
 }
 #N0 a, .N0{
     padding-bottom: 10px;
+    width: auto;
+    height: 50%;
     color: rgb(79, 93, 106);
+    font-size:22px;
 }
 #N1 a, .N1{
     padding-bottom: 10px;
     color: rgb(34, 86, 134);
+    font-size:22px;
 }
 #N2 a, .N2{
     padding-bottom: 10px;
     color: rgb(85, 151, 211);
+    font-size:22px;
 }
 #N3 a, .N3{
     padding-bottom: 10px;
     color: rgb(145, 188, 277);
+    font-size:22px;
 }
 #N4 a, .N4{
     padding-bottom: 10px;
     color: rgb(191, 216, 239);
+    font-size:22px;
+    
 }
 #O1 a, .O1{
     padding-bottom: 10px;
     color: rgb(204, 31, 18);
+    font-size:22px;
 }
 #O2 a, .O2{
     padding-bottom: 10px;
     color: rgb(240, 5, 10);
+    font-size:22px;
 }
 #O3 a, .O3{
     padding-bottom: 10px;
     color: rgb(243, 87, 87);
+    font-size:22px;
 }
 #O4 a, .O4{
     padding-bottom: 10px;
     color: rgb(251, 158, 151);
+    font-size:22px;
 }
 /*#N4-personnes, #O4-personnes, #N3-personnes, #O3-personnes, #N2-personnes, #O2-personnes, #N1-personnes, #N0-personnes*/.result{
     /*padding-bottom: 20px;*/
@@ -520,18 +532,13 @@ table #personal-desk {
     font-weight: bold;
 }
 
-#map-show #map-name{
-    padding : 10px;
-    text-align :center;
-    height :50px
-}
-
 /*#map-name{
     position: absolute;
     right: 47%;
     padding : 10px;
     text-align :center;
     height :50px
+    visibility: hidden;
 }*/
 
 #map-name h{
@@ -561,7 +568,7 @@ table #personal-desk {
 }
 #legend {
     text-align: center;
-    margin-left: 50px;
+    margin-left: 45%;
 }
 
 #legend #zoom{
