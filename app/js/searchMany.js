@@ -194,7 +194,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
         }
     } 
       d3.selectAll(".desk-maj").style("display","none");
-      $("<button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>").appendTo("#text-default");
+      $("#text-default").html("<button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
       plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty);
       plotResultClick(nbPeopleByArea, dataSearchedPeople);
   };    
