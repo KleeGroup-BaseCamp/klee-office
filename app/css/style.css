@@ -242,6 +242,9 @@ table #personal-desk {
     border-bottom: 1px solid black;
     overflow: hidden;
 }*/
+.bandeau-recherche{
+    display: inline-block;
+}
 #input input {
     opacity: 1;
     display: block;
@@ -1028,7 +1031,6 @@ input[readonly] {
 /* style du bouton de recherche */
 #search-button {
    position: relative;
-   top: 100px;
    left: 800px;
    width: auto;
    height: 100%;
@@ -1056,6 +1058,25 @@ input[readonly] {
     /*float: right;*/
     
     z-index: 1;
+}
+@supports (-webkit-appearance:none) {
+    .bandeau-recherche {
+        top: 125px;
+    }
+} 
+@supports (-ms-ime-align:auto) {
+  .bandeau-recherche {
+        top: 0;
+    }
+} /*
+.bandeau-recherche:not(*:root) {
+    bottom: 125px;
+    
+}*/
+#removeSearch{
+    height: auto;
+    width: 20%;
+    font-size: 80%;
 }
 
 /* table admin page*/

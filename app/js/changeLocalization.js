@@ -20,6 +20,7 @@ function changeLocalization() {
     d3.select("#text-default").html('<p>Veuillez choisir le site ou l\'étage dans le menu</p><br/><button id=\"cancelMove\"><a href=\"http://localhost:3000/\">Annuler</a></button>');
     d3.selectAll(".siteLocation").on("click",function() {chooseSite()});
     d3.selectAll(".list_etage").on("click",function() {chooseDesk()});
+    validateDesk();
     function chooseSite() {
         var mySite=d3.event.target.id.split(/_/)[0];
         if (mySite=="boursidiere"){
@@ -51,7 +52,7 @@ function changeLocalization() {
 			mapControl.mapName = myMap;
 			mapControl.mapPlot(myData,mapControl.mapName,true, function() {validateDesk()});
 		}
-		$('<h1 class="'+myMap+'">Etage '+myMap+'</h1>').prependTo($('#map-name'));
+		//$('<h1 class="'+myMap+'">Etage '+myMap+'</h1>').prependTo($('#map-name'));
     }
 }
 function validateDesk(){
