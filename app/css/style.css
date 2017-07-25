@@ -95,7 +95,7 @@ table #personal-desk {
     background: url("/img/rectangle-arrondi-1-copie.png");
     background-repeat: no-repeat;
     background-position: center;
-    background-size :110px 25px;;
+    background-size :110px 25px;
     z-index: -1;
     padding-top :5px;
     padding-bottom :7px;

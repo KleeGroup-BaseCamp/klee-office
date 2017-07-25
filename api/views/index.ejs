@@ -64,7 +64,7 @@
                     <td id="search-bar">
                         <form id="search" onsubmit="return false">
                             <div id="input">
-                                <input class="bandeau-recherche" type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue">
+                                <input class="bandeau-recherche" type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue" onkeypress= "if (event.keyCode == 13) plotNumberOfPeople(nbPeopleByArea,dataSearchedPeople);">
                             </div> 
                         </form>
                         <img class="bandeau-recherche" id="search-button" src="../img/forma-1.png">

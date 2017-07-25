@@ -115,7 +115,7 @@ $(function(){
           })
            // .on : don't navigate away from the field on tab when selecting an item
           .on( "keydown", function( event ) {
-            console.log("Type de $ : " + typeof $.ui.keyCode.TAB);
+            //console.log("Type de $ : " + typeof $.ui.keyCode.TAB);
             if ( event.keyCode === Number($.ui.keyCode.TAB) && $( this ).autocomplete( "instance" ).menu.active ) {
               event.preventDefault();
             }
@@ -156,16 +156,18 @@ $(function(){
 
        });
       console.log("Data envoyé : " + dataSearchedPeople);
-      plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople);
+      var click= document.getElementById("search-button");
+  
+      click.onclick = function(){plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople);}
 });
 
 
 
  // ----Function plotNumberOfPeople : shows the number of searched people group by maps on the navigation menu
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
-  var click= document.getElementById("search-button");
+  //var click= document.getElementById("search-button");
   
-  click.onclick = function(){
+ // click.onclick = function(){
     console.log("plotNumberOfPeople : " + dataSearchedPeople);
     d3.select("#menu-withoutresult").style("display", "none");
     d3.select("#menu-newlocation").style("display", "none");
@@ -206,7 +208,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
       $("#text-default").html("<button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
       plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty);
       plotResultClick(nbPeopleByArea, dataSearchedPeople);
-  };    
+ // };    
 };
 
 function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
