@@ -107,9 +107,16 @@ $(function(){
 
       // call search-terms : launched when user click on search button
        $('#search-terms')
+          .keyup(function() {
+              if (!this.value) {
+                  dataSearchedPeople.length=0;
+                  console.log("Empty Search ? : " + dataSearchedPeople);
+              }
+          })
            // .on : don't navigate away from the field on tab when selecting an item
           .on( "keydown", function( event ) {
-            if ( event.keyCode === $.ui.keyCode.TAB && $( this ).autocomplete( "instance" ).menu.active ) {
+            //console.log("Type de $ : " + typeof $.ui.keyCode.TAB);
+            if ( event.keyCode === Number($.ui.keyCode.TAB) && $( this ).autocomplete( "instance" ).menu.active ) {
               event.preventDefault();
             }
           })
@@ -142,22 +149,26 @@ $(function(){
                 else{ 
                 dataSearchedPeople.push([people[indice].value,people[indice].data.deskname,people[indice].data.site,people[indice].data.mail]);}
               }
-              console.log(dataSearchedPeople)
+              console.log("Autocomplete contenu : " + dataSearchedPeople);
               return false;
             }
           });
 
        });
-
-      plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople);
+      console.log("Data envoyé : " + dataSearchedPeople);
+      var click= document.getElementById("search-button");
+  
+      click.onclick = function(){plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople);}
 });
 
 
 
  // ----Function plotNumberOfPeople : shows the number of searched people group by maps on the navigation menu
 function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
-  var click= document.getElementById("search-button");
-  click.onclick = function(){
+  //var click= document.getElementById("search-button");
+  
+ // click.onclick = function(){
+    console.log("plotNumberOfPeople : " + dataSearchedPeople);
     d3.select("#menu-withoutresult").style("display", "none");
     d3.select("#menu-newlocation").style("display", "none");
     d3.select("#menu-withresult").style("display", "");
@@ -197,7 +208,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
       $("#text-default").html("<button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
       plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty);
       plotResultClick(nbPeopleByArea, dataSearchedPeople);
-  };    
+ // };    
 };
 
 function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
@@ -289,7 +300,7 @@ function plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty){
           }       
         });
       }
-      $('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));  
+      //$('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));  
     }
 }
 
@@ -355,7 +366,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
         }       
       });
     }
-    $('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));   
+    //$('<h1 class='+area+'>La Boursidière - Etage '+area+'</h1>').prependTo($('#text-default'));   
   })
   $('.siteResult').click(function(){
       d3.select("#whole-map").style("visibility","hidden").style("height","0px");
