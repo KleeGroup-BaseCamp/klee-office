@@ -251,7 +251,7 @@ table #personal-desk {
     opacity: 1;
     display: block;
     position: relative;
-    left: 300px;
+    left: 275px;
     width: 550px;
     height: 100%;
     /*margin: 0;
@@ -527,7 +527,8 @@ table #personal-desk {
     z-index: 0;
     width:100%;
     text-align: center;
-    background-color: white;
+    bottom: 80%;
+    /*background-color: white;*/
     line-height: 150%;
 }
 .info-recherche p{
@@ -1073,12 +1074,12 @@ input[readonly] {
 }
 @supports (-webkit-appearance:none) {
     .bandeau-recherche {
-        top: 125px;
+        top: 50px;
     }
 } 
 @supports (-ms-ime-align:auto) {
   .bandeau-recherche {
-        top: 0;
+        bottom: 150px;
     }
 } /*
 .bandeau-recherche:not(*:root) {
