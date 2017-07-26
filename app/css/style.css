@@ -251,7 +251,7 @@ table #personal-desk {
     opacity: 1;
     display: block;
     position: relative;
-    left: 300px;
+    left: 275px;
     width: 550px;
     height: 100%;
     /*margin: 0;
@@ -430,6 +430,7 @@ table #personal-desk {
 
 .tooltip_ext_map{
     position :relative;
+    text-align: center;
    /* border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;*/
@@ -534,7 +535,8 @@ table #personal-desk {
     z-index: 0;
     width:100%;
     text-align: center;
-    background-color: white;
+    bottom: 80%;
+    /*background-color: white;*/
     line-height: 150%;
 }
 .info-recherche p{
@@ -556,14 +558,23 @@ table #personal-desk {
     font-weight: bold;
 }
 
-/*#map-name{
-    position: absolute;
+#map-name{
+    /*position: absolute;
     right: 47%;
     padding : 10px;
     text-align :center;
     height :50px
-    visibility: hidden;
-}*/
+    visibility: hidden;*/
+    margin-top:40px;
+}
+
+#noplan{
+    margin-top:70px;
+    font-size:20px;
+}
+#noplan-logo{
+    margin:50px;
+}
 
 #map-name h{
     position: relative;
@@ -585,7 +596,7 @@ table #personal-desk {
 }
 #map-info{
     margin-left: 5%;
-    width:1250px;
+    width:1300px;
 }
 #map-show .map {
     position: relative;
@@ -597,7 +608,7 @@ table #personal-desk {
 }
 #legend {
     text-align: center;
-    margin-left:30px;
+    margin-left:50px;
 }
 #td-legend{
     vertical-align: middle;
@@ -1078,12 +1089,12 @@ input[readonly] {
 }
 @supports (-webkit-appearance:none) {
     .bandeau-recherche {
-        top: 125px;
+        top: 50px;
     }
 } 
 @supports (-ms-ime-align:auto) {
   .bandeau-recherche {
-        top: 0;
+        bottom: 150px;
     }
 } /*
 .bandeau-recherche:not(*:root) {

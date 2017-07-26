@@ -22,7 +22,7 @@ base_dn = BaseDN
 base_dn_desactives=BaseDNDesactives
 
 server = Server(Serv, get_info=ALL)
-con=Connection(server, user=BaseDN+'\\'+User, password=Password,authentication = NTLM ,return_empty_attributes=True)
+con=Connection(server, user=BaseDN+'\\'+User, password=Password,authentication = NTLM, ,return_empty_attributes=True)
 attributes_des=['cn','mail']
 attributes=['cn','mail','department','physicalDeliveryOfficeName']
 

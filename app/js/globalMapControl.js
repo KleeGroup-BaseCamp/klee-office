@@ -30,7 +30,14 @@ var mapControl = {
 				svgNode = documentFragment.getElementsByTagName("svg")[0];
 				map = d3.select(".map");
 				map.node().appendChild(svgNode);
-
+				$.each(mapControl.listMaps, function(i, name){
+					// erase floor title of the legend
+					if(document.getElementsByClassName(name).length >0
+					&& document.getElementsByClassName(name) !== null
+					&& document.getElementsByClassName(name) !== undefined){
+						document.getElementsByClassName(name)[0].remove();
+						}
+				});
 				d3.select("#legend").style("display","");
 				$('<h1 class="'+mapName+'">Etage '+mapName+'</h1>').prependTo($('#map-name'));
 
@@ -49,9 +56,11 @@ var mapControl = {
 
 				//color of current map on the navigation menu
 				d3.selectAll(".list_etage").style("font-weight","normal");
-				d3.selectAll(".siteResult").style("font-weight","normal");
+				d3.selectAll(".site").style("font-weight","normal");
+				//d3.selectAll("#menu-newlocation").style("font-weight","normal");
 				d3.select("#"+mapName+"_withResult").style("font-weight","bold");
 				d3.select("#"+mapName+"_withoutResult").style("font-weight","bold");
+				d3.select("#"+mapName+"_location").style("font-weight","bold");
 				d3.select(".tooltip_ext_map").style("visibility","hidden").style("padding","0px");
 
 				// mark all tables as available
@@ -497,14 +506,7 @@ var mapControl = {
 			.style("width", "0px")
 			.style("height", "0px");
 
-		$.each(mapControl.listMaps, function(i, name){
-			// erase floor title of the legend
-			if(document.getElementsByClassName(name).length >0
-				&& document.getElementsByClassName(name) !== null
-				&& document.getElementsByClassName(name) !== undefined){
-				document.getElementsByClassName(name)[0].remove();
-			}
-		});
+
 		d3.select("#map-show")
 			.style("visibility", "visible")
 			.style("width", "100%")

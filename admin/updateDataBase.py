@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import psycopg2
 import json # jsonfy search result
@@ -9,7 +10,8 @@ import datetime,time
 import re
 
 os.system('python getActiveDirectory.py')
-path="/home/dev/local-map/api/data/"
+path="/Users/mjulio/local-map/api/data/"
+#"/home/dev/local-map/api/data/"
 area_accepted=['N0','N1','N2','N3','N4','O1','O2','O3','O4']
 
 #
@@ -86,7 +88,7 @@ for elem in aSupprimer:
 #
 
 # read file containing current employees
-utilisateursCourants = open(path+"KLeeGroup.json", 'r')
+utilisateursCourants = open(path+"KleeGroup.json", 'r')
 jsonData = json.load(utilisateursCourants)
 utilisateursCourants.close();
 
@@ -131,7 +133,7 @@ for x in jsonData:
 	    site="sur site client";
 	    desk="externe";
 	else :
-	    site="La Boursidière";
+	    site="La BoursidiÃ¨re";
 	    #check desk is the correct form
 	    if len(location.split(' : '))==2:
 		if re.match(regex,location.split(' : ')[1])!=None: 
@@ -141,7 +143,7 @@ for x in jsonData:
 
 	company=x[0].split(',')[1].split('=')[1].encode('utf-8')
 	dpt=x[1]['department'][0].encode('utf-8')
-	if dpt=='':
+	if dpt=="":
 	    dpt='Non renseigne-'+company
 	if firstname!='' and lastname!='' and company!='':
 

@@ -23,7 +23,6 @@
 	//-------------------------------
 
 	N0.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapN0
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N0";
@@ -39,7 +38,6 @@
 		//$('<h1 class="N0">RDC (N0)</h1>').prependTo($('#map-name'));
 	});
 	N1.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapN1
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N1";
@@ -55,7 +53,6 @@
 		//$('<h1 class="N1">Etage N1</h1>').prependTo($('#map-name'));
 	});
 	N2.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapN2
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N2";
@@ -71,7 +68,6 @@
 		//$('<h1 class="N2">Etage N2</h1>').prependTo($('#map-name'));
 	});
 	N3.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapN3
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N3";
@@ -87,7 +83,6 @@
 		//$('<h1 class="N3">Etage N3</h1>').prependTo($('#map-name'));
 	});
 	N4.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapN4
 		if (!mapControl.existMap) {
 			mapControl.mapName = "N4";
@@ -103,7 +98,6 @@
 		//$('<h1 class="N4">Etage N4</h1>').prependTo($('#map-name'));
 	});
 	O1.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapO1
 		if (!mapControl.existMap) {
 			mapControl.mapName = "O1";
@@ -119,7 +113,6 @@
 		//$('<h1 class="O1">Etage O1</h1>').prependTo($('#map-name'));
 	});
 	O2.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapO2
 		if (!mapControl.existMap) {
 			mapControl.mapName = "O2";
@@ -135,7 +128,6 @@
 		//$('<h1 class="O2">Etage O2</h1>').prependTo($('#map-name'));
 	});
 	O3.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapO3
 		if (!mapControl.existMap) {
 			mapControl.mapName = "O3";
@@ -151,7 +143,6 @@
 		//$('<h1 class="O3">Etage O3</h1>').prependTo($('#map-name'));
 	});
 	O4.addEventListener("click", function () {
-		mapControl.eraseMap();
 		// if no map, show mapO4
 		if (!mapControl.existMap) {
 			mapControl.mapName = "O4";
@@ -177,20 +168,20 @@
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('<p class="issy">Pas de plan disponible</p>').prependTo($('.tooltip_ext_map'));
+		$('<p id="noplan" class="issy">Pas de plan disponible pour ce site</p> ').prependTo($('.tooltip_ext_map'));
 	});
 	lemans.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
         d3.selectAll(".list_etage").style("font-weight","normal");
         d3.select("#le_mans").style("font-weight","bold");
 		d3.select("#legend").style("display","none");
-		d3.select(".ooltip_ext_map").style("visibility","visible")
+		d3.select(".tooltip_ext_map").style("visibility","visible")
 		mapControl.eraseMap();
 		if (mapControl.existMap) {
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('<p class="lemans">Pas de plan disponible</p>').prependTo($('.tooltip_ext_map'));
+		$('<p id="noplan" class="lemans">Pas de plan disponible pour ce site<br/><img id="noplan-logo" src="/img/logo.png" width=600px /></p> ').prependTo($('.tooltip_ext_map'));
 	});
 	lyon.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -203,7 +194,7 @@
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('<p class="lyon">Pas de plan disponible</p>').prependTo($('.tooltip_ext_map'));
+		$('<p id="noplan" class="lyon">Pas de plan disponible pour ce site<br/><img id="noplan-logo" src="/img/logo.png" width=600px /></p> ').prependTo($('.tooltip_ext_map'));
 	});
 	bourgoin.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -216,7 +207,7 @@
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('<p class="bourgoin">Pas de plan disponible</p>').prependTo($('.tooltip_ext_map'));
+		$('<p id="noplan" class="bourgoin">Pas de plan disponible pour ce site<br/><img id="noplan-logo" src="/img/logo.png" width=600px /></p> ').prependTo($('.tooltip_ext_map'));
 	});
 	montpellier.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -229,7 +220,7 @@
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('<p class="montpellier">Pas de plan disponible</p>').prependTo($('.tooltip_ext_map'));
+		$('<p id="noplan" class="montpellier">Pas de plan disponible pour ce site<br/><img id="noplan-logo" src="/img/logo.png" width=600px /></p> ').prependTo($('.tooltip_ext_map'));
 	});
 	client.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -243,7 +234,7 @@
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('<p class="client">Pas de plan disponible</p>').prependTo($('.tooltip_ext_map'));
+		$('<p id="noplan" class="client">Pas de plan disponible pour ce site<br/><img id="noplan-logo" src="/img/logo.png" width=600px /></p> ').prependTo($('.tooltip_ext_map'));
 	});
 }());
 
