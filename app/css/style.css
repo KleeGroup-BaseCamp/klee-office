@@ -234,18 +234,9 @@ table #personal-desk {
     color: rgba(0, 0, 0, 0);
     text-indent: -9999px;
 }
-/*#input {
-    position: relative;
-    left: 300px;
-    width: 550px;
-    height: 60px;
-    z-index: 5;
-    border: none;
-    border-bottom: 1px solid black;
-    overflow: hidden;
-}*/
 .bandeau-recherche{
     display: inline-block;
+    bottom: 75px;
 }
 #input input {
     opacity: 1;
@@ -1079,13 +1070,9 @@ input[readonly] {
 } 
 @supports (-ms-ime-align:auto) {
   .bandeau-recherche {
-        bottom: 150px;
+        top: -75px;
     }
-} /*
-.bandeau-recherche:not(*:root) {
-    bottom: 125px;
-    
-}*/
+} 
 #removeSearch{
     height: auto;
     width: 20%;
