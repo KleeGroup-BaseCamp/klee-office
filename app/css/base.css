@@ -196,6 +196,7 @@ span.back-to-tutorial {
 header {
     padding-top: 10px;
     padding-bottom: 10px;
+    background-color: rgb(255,230,0);
 }
 #title {
     text-align: center;
@@ -221,10 +222,10 @@ footer {
     text-align: center;
 }
 footer span {
-    color: #fff
+    color: #fff;
 }
 footer span a {
-    color: #81c0df
+    color: #81c0df;
 }
 /* ------------------------------------------------------------ *\
 |* ------------------------------------------------------------ *|
