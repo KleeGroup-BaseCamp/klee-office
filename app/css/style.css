@@ -483,7 +483,7 @@ table #personal-desk {
     border-right : 5px solid #297aa3;
     border-bottom : 5px solid #297aa3;*/
     width: 220px;
-    height : 747px;
+    height : 620px;
     background-color: rgb(242, 242, 242);
     float: left;
 }
@@ -505,7 +505,7 @@ table #personal-desk {
     padding-top :20px;
     padding-left:20px;
     padding-right:20px;
-    font-size : 20px;
+    font-size : 18px;
 }
 
 #navigation .list_etage:hover{
@@ -518,7 +518,14 @@ table #personal-desk {
     font-size :15px;
     font-style :italic;
 }
-
+#navigation a{
+    text-align: center;
+    padding-left:5px;
+    position: relative;
+    bottom: -10px;
+    color:  #99ceff;
+    font-size: 12px;
+}
 .info-recherche{
     padding : 10px;
     position :relative;
@@ -572,31 +579,29 @@ table #personal-desk {
     /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;*/
-    height:400px;
+    height:450px;
     /*margin-left: 10%;*/
 
 }
 #map-info{
-    margin-left: 12%;
+    margin-left: 5%;
+    width:1250px;
 }
 #map-show .map {
     position: relative;
-    width: 900px;
-    height: 370px;
+    width: 1100px;
+    height: 450px;
 }
 #whole-map {
     text-align: center;
 }
 #legend {
     text-align: center;
-    /*margin-left: 43%;*/
+    margin-left:30px;
 }
 #td-legend{
-vertical-align: middle;
+    vertical-align: middle;
 }
-/*.map-info{
-    display: inline-block;
-}*/
 
 #legend #zoom{
     padding-top:5px;
