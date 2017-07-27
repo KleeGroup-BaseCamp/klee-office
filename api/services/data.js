@@ -32,7 +32,12 @@ const populate = (req, res) => {
      * for each data in the dataset
      * insert the corresponding data in the database
      */
-
+    var area=['N0','N1','N2','N3','N4','O1','O2','O3','O4']
+    var regex='^(';
+    for (var i=0;i<area.length;i++){
+        regex+=area[i]+'|'
+    }
+    regex=regex.substring(0,regex.length-1)+')-[A-Z]-[0-9][0-9]'
     var company_dep = [];
     var companies=[];
     var desks=[];
@@ -100,9 +105,40 @@ const populate = (req, res) => {
                 // ex location ="La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"]
                 
                 var desk="aucun";
-                var site="aucun";
+                var site="La Boursidière";
                 var desk_building=null;
                 var desk_floor=null;
+                /*if (d.physicalDeliveryOfficeName) {
+                    var location=d.physicalDeliveryOfficeName[0];
+                    if(location.search("issy")!=-1 || location.search("Issy")!=-1){
+                        site="Issy-les-Moulineaux";
+                        desk="externe";
+                    }else if(location.search("mans")!=-1 || location.search("Mans")!=-1){
+                        site="Le Mans";
+                        desk="externe";
+                    }else if(location.search("lyon")!=-1 || location.search("Lyon")!=-1){
+                        site="Lyon";
+                        desk="externe";
+                    }else if(location.search("bourgoin")!=-1 || location.search("Bourgoin")!=-1){
+                        site="Bourgoin-Jailleux";
+                        desk="externe";
+                    }else if(location.search("montpellier")!=-1 || location.search("Montpellier")!=-1){
+                        site="Montpellier";
+                        desk="externe";
+                    }else if(location.search("client")!=-1 || location.search("Client")!=-1){
+                        site="sur site client";
+                        desk="externe";
+                    }else{ 
+                        site="La Boursidière";
+                         //check desk is the correct form
+                        if (location.split(/\s+:\s+/)[1].match(regex)!=null){ // XX-X-XX
+                            desk=location.split(/\s+:\s+/)[1];
+                            desks.push(desk);
+                            var desk_building=desk[0];
+                            var desk_floor=desk[1];
+                        }else {desk="aucun"}
+                    }
+                }*/
                 if (d.physicalDeliveryOfficeName) {
                     var location=d.physicalDeliveryOfficeName[0];
                     if (location.split(/\s+:\s+/)[0]=="La Boursidière"){ 
@@ -150,7 +186,6 @@ const populate = (req, res) => {
                     if (company_dep[ind+1].indexOf(dpt) < 0){
                         company_dep[ind+1].push(dpt)
                     }
-
                 }
 
                 if (firstname !== undefined && firstname !== null && firstname !== ""
