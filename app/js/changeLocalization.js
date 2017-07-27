@@ -38,7 +38,7 @@ function changeLocalization() {
     }
     function chooseDesk(){
         var etage = document.querySelector(d3.event.target.id);
-		mapControl.eraseMap();
+		//mapControl.eraseMap();
         var myMap=d3.event.target.id.split(/_/)[0];
 		// if no map, show mapN0
 		if (!mapControl.existMap) {
