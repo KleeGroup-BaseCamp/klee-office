@@ -5,10 +5,11 @@
 var	server= "http://localhost:3000/";
 //var	server= "http://local-map/";
 var people = [];            //contains data about every person
-var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe"];
+var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe","aucun"];
 var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","Sur site client"];
 var list_id={'Issy-les-Moulineaux':'Issy-les-Moulineaux_result','Le Mans':'le_mans_result','Lyon':'Lyon_result','Bourgoin-Jailleux':'Bourgoin-Jailleux_result','Montpellier':'Montpellier_result','Sur site client':'sur_site_client_result'}
 var nbPeopleByArea = {}  // list to count the number of searched people by office area
+var listPeopleWithoutOffice = [];
 
 var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 for (var i=0;i<list_area.length;i++){
@@ -71,6 +72,15 @@ function getExternPeople(dataSearchedPeople){
   for (var i=0;i<dataSearchedPeople.length;i++){
       if (dataSearchedPeople[i][1] === "externe"){
           res.push(dataSearchedPeople[i]);}
+    }
+    return res;
+}
+
+function getNoOfficePeople(dataSearchedPeople){
+  var res=[];
+  for (var i=0;i<dataSearchedPeople.length;i++){
+      if (dataSearchedPeople[i][1] === "aucun"){
+          res.push('<br/>'+dataSearchedPeople[i][0]);}
     }
     return res;
 }
@@ -156,7 +166,7 @@ $(function(){
           });
 
        });
-      console.log("Data envoyé : " + dataSearchedPeople);
+      //console.log("Data envoyé : " + dataSearchedPeople);
       var click= document.getElementById("search-button");
   
       click.onclick = function(){plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople);}
@@ -169,14 +179,16 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
   //var click= document.getElementById("search-button");
   
  // click.onclick = function(){
-    console.log("plotNumberOfPeople : " + dataSearchedPeople);
+    //console.log("plotNumberOfPeople : " + dataSearchedPeople);
     d3.select("#menu-withoutresult").style("display", "none");
     d3.select("#menu-newlocation").style("display", "none");
     d3.select("#menu-withresult").style("display", "");
+    listPeopleWithoutOffice=getNoOfficePeople(dataSearchedPeople);
 
     var first_element_searched="";
     for (var i=0;i<list_area.length;i++){
-        var area =list_area[i];        
+        var area =list_area[i];  
+        console.log("list area : " + list_area);      
         nbPeopleByArea[area]=getPeopleByArea(area,dataSearchedPeople).length;
         // if we have a searched person on this map
         if (nbPeopleByArea[area]>0){
@@ -198,20 +210,40 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
             }
           }
           else{
+              console.log("Là ya un result : " + area);
               d3.select("#"+area+"_withResult").text("Etage "+area+" ("+nbPeopleByArea[area]+")").style("color","red");
-              if (first_element_searched===""){first_element_searched=area}
+              if (first_element_searched===""){
+                first_element_searched=area;
+              console.log(first_element_searched)}
           }
         }
     } 
       d3.selectAll(".desk-maj").style("display","none");
       $("#text-default").html("<button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
+
+      if (listPeopleWithoutOffice.length>0){
+        $('<div class=noResultPeople><br/>Pas de bureau ('+listPeopleWithoutOffice.length+')<span class="noPlaceText">'+listPeopleWithoutOffice+'</div>').appendTo($('#text-default'));
+        /*$('#noResultPeople').on({
+          "click": function(){
+            $(this).tooltip({ items: "#tt", content: "Displaying on click"});
+            $(this).tooltip("open");
+          },
+          "mouseout": function() {      
+            $(this).tooltip("disable");   
+          }
+        })*/
+      }
+
       if (sitesExterne.indexOf(first_element_searched)!==-1){
         plotSite(first_element_searched)
       }
       else{
-        plotEtage(first_element_searched)
+        if(first_element_searched==="aucun"){
+          d3.select("#map-info").style("display","none");
+        }else{
+        plotEtage(first_element_searched);}      
+        
       }
-      //plotFirstMap(nbPeopleByArea,dataSearchedPeople,first_area_not_empty);
       plotResultClick(nbPeopleByArea, dataSearchedPeople);
  // };    
 };
