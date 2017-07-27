@@ -428,9 +428,23 @@ table #personal-desk {
     width : 1037px;
     font-size:15px;
 }
-#noResultPeople{
+.noResultPeople{
     font-size: 17px;
     cursor: pointer;
+}
+.noResultPeople .noPlaceText {
+    visibility: hidden;
+    width: auto;
+    height: auto;
+    background-color: lightgrey;
+    color: grey;
+    z-index: 20;
+    /*text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;*/
+}
+.noResultPeople:hover .noPlaceText {
+    visibility: visible;
 }
 #remove-search{
     font-weight: bold;
