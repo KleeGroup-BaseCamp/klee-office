@@ -8,6 +8,7 @@ var mapControl = {
 	listMaps:["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2", "O1","issy", "lemans", "lyon", "bourgoin", "montpellier", "client", ""],
 	mapPlot: function(myData, mapName, isSavingLocalization, callback) {
 		console.log("plot mapName :"+mapName);
+		//if(mapName !== ""){
 		// add svg map to html
 		var myDesk =myData[2];
 		if (myDesk!=="aucun" || myDesk!== "externe"){
@@ -188,7 +189,8 @@ var mapControl = {
 				
 				if (callback){callback();}
 		});
-	},
+	//}
+},
 
 // justPlotMap.js
 	smallMapPlot: function(name, callback) {

@@ -96,6 +96,27 @@ blockquote:after {
     content: '';
     content: none;
 }
+/*button{
+    background-color: white; 
+    border: none;
+    color: red;
+    padding: 20px 40px;
+    text-align: center;
+    width: 50px;
+    height: 25px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 6px;
+    border-radius: 50px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; 
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #4CAF50;
+    color: white;
+}*/
 del {
     text-decoration: line-through
 }
