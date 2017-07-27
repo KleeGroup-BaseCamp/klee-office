@@ -1,9 +1,10 @@
+#!/home/dev/anaconda2/bin/python
 # -*- coding: utf-8 -*-
 
 import json # jsonfy search result
 import sys 	# sys.exit()
 import ldap3 as ldap # ldap connection request
-from ldap3 import Server,Connection , NTLM, ALL, MODIFY_ADD, MODIFY_REPLACE
+from ldap3 import Server, Connection, NTLM, ALL, MODIFY_ADD, MODIFY_REPLACE
 
 ######################################################
 with open('../config/config-ldap.json') as data_file:
@@ -32,7 +33,7 @@ else:
   try:
     results=con.search(search_base=base_dn, search_filter='(&(objectClass=person))' ,attributes=attributes)
     if results:
-      print(base_dn)
+      print(base_dn.encode('utf-8'))
       with open('../api/data/KleeGroup.json', 'w') as json_file:
 	text=[]
 	for x in con.entries:

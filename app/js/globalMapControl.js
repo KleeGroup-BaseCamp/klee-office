@@ -63,7 +63,7 @@ var mapControl = {
 				d3.select("#"+mapName+"_withoutResult").style("font-weight","bold");
 				d3.select("#"+mapName+"_location").style("font-weight","bold");
 				d3.select("#map-info").style("display","");
-				d3.select(".tooltip_ext_map").style("display","none")
+				d3.select(".map-extern").style("display","none")
 
 				// mark all tables as available
 				allTables = d3.select("#tables").selectAll("g");
@@ -94,7 +94,8 @@ var mapControl = {
 				d3.json( server+"getInfoPerson", function(error, data) {
 					var dataset = data,
 						table,
-						tooltip = d3.select(".tooltip_map");
+						tooltip_desk = d3.select(".tooltip_map_desk"),
+						tooltip_desk_empty= d3.select(".tooltip_map_desk_empty");
 
 
 					$.each(dataset, function(i, data){
@@ -123,17 +124,21 @@ var mapControl = {
 									if (isSavingLocalization==false){
 										// mouse click on the button will give more info
 										$("#" + data.deskname).click( function(event) {
+											tooltip_desk_empty.transition()
+												.duration(1)
+												.style("opacity", 0)
+												.style("z-index", -1);
 											var xPosition = event.pageX,
-											yPosition = event.pagetY;
+											yPosition = event.pageY;
 											// get scroll pixels to correct tooltip's yPostion
-											//yPosition += $(window).scrollTop();
-
-											tooltip.html(fullName + "<br/>"+ data.mail + "<br/>" + data.deskname)
+											yPosition += $(window).scrollTop();
+											console.log(d3.select('#'+data.deskname)[0][0].childNodes[0].x)
+											tooltip_desk.html(fullName + "<br/>"+ data.mail + "<br/>" + data.deskname)
 												.style("position","absolute")
-												.style("left", (xPosition)-250 + "px")
-												.style("top", (yPosition) + "px")
+												.style("left",xPosition-250+ "px") //d3.select('#'+data.deskname)[0][0].childNodes[0].x.animVal.valueAsString
+												.style("top",yPosition-300 + "px")
 												.style("height", "57px");
-											tooltip.transition()
+											tooltip_desk.transition()
 												.duration(200)
 												.style("opacity", .9)
 												.style("z-index", 20);
@@ -142,12 +147,12 @@ var mapControl = {
 										});
 									
 										// click the tooltip won't let it disappear
-										$(".tooltip").click(function(event) {
+										$(".tooltip_map_desk").click(function(event) {
 											event.stopPropagation();
 										})
 										// click elsewhere will make tooltip disappear
 										$("html").click(function () {
-											tooltip.transition()
+											tooltip_desk.transition()
 												.duration(500)
 												.style("opacity", 0)
 												.style("z-index", -1);
@@ -157,19 +162,33 @@ var mapControl = {
 											.selectAll(".available")
 											.style("cursor", "pointer")
 											.on("click", function(){
+												tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
 												console.log("Bureau : " + d3.event.target.parentNode.id);
 												var xPosition = event.clientX,
 													yPosition = event.clientY;
 												// get scroll pixels to correct tooltip's yPostion
-												//yPosition += $(window).scrollTop();
-												tooltip.html("Bureau " + d3.event.target.parentNode.id)
+												yPosition += $(window).scrollTop();
+												tooltip_desk_empty.html("Bureau " + d3.event.target.parentNode.id)
 													.style("position","absolute")
-													.style("left", (xPosition)-600 + "px")
-													.style("top", (yPosition)-400 + "px")
+													.style("left", xPosition-250+ "px")
+													.style("top",  yPosition-300+ "px")
 													.style("height", "20px");
-												tooltip.transition().duration(200).style("opacity", .9).style("z-index", 20);
+												tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
 												event.stopPropagation();	
-											});		
+											});								// click the tooltip won't let it disappear
+											$(".tooltip_map_desk_empty").click(function(event) {
+												event.stopPropagation();
+											})
+											// click elsewhere will make tooltip disappear
+											$("html").click(function () {
+												tooltip_desk_empty.transition()
+												.duration(500)
+												.style("opacity", 0)
+												.style("z-index", -1);
+											})
+
+
+												
 									}		
 							
 								}

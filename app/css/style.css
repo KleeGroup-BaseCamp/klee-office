@@ -405,7 +405,7 @@ table #personal-desk {
     cursor: text;
     z-index: 20;    
 }
-.tooltip_map {
+.tooltip_map_desk, .tooltip_map_desk_empty {
     opacity: 0;        
     text-align: center;   
     width: auto;
@@ -419,7 +419,7 @@ table #personal-desk {
     z-index: 20;    
 }
 
-.tooltip_ext_map{
+.map-extern{
     position :relative;
     text-align: center;
    /* border-left: 2px solid #297aa3;

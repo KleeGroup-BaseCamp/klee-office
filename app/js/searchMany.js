@@ -233,7 +233,7 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
 
 function plotEtage(etage){
     d3.select("#map-info").style("display","");
-		d3.select(".tooltip_ext_map").style("display","none")
+		d3.select(".map-extern").style("display","none")
 
     var area = etage.split(/_/)[0]; //this.id="N3_withResult" --> area="N3"
     //if no map, show my map
@@ -287,7 +287,7 @@ function plotEtage(etage){
 function plotSite(site){
   var site_id=list_id[site];
   d3.select("#map-info").style("display","none");
-	d3.select(".tooltip_ext_map").style("display","")
+	d3.select(".map-extern").style("display","")
 
   var dataSearchedPeopleBySite = [];
 
@@ -309,12 +309,12 @@ function plotSite(site){
         text_extern+=("<li>"+dataSearchedPeopleBySite[i][0]+"</li>");}
       }
       if (dataSearchedPeopleBySite.length === 0){
-        var tooltip_ext = d3.select(".tooltip_ext_map").html("Pas de résultat sur ce site ")
+        var tooltip_ext = d3.select(".map-extern").html("Pas de résultat sur ce site ")
       }
       else{
         text_extern+="</ul>"
         d3.select("#map-info").style("display","none");
-		    d3.select(".tooltip_ext_map").style("display","").html(text_extern)
+		    d3.select(".map-extern").style("display","").html(text_extern)
       }  
 }
 

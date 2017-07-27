@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/home/dev/anaconda2/bin/python
 # -*- coding: utf-8 -*-
 
 import psycopg2
@@ -9,9 +9,10 @@ import ldap3 as ldap # ldap connection request
 import datetime,time
 import re
 
-os.system('python getActiveDirectory.py')
-path="/Users/mjulio/local-map/api/data/"
-#"/home/dev/local-map/api/data/"
+#os.system('python getActiveDirectory.py')
+path="/home/dev/local-map/api/data/"
+#"/Users/mjulio/local-map/api/data/"
+
 area_accepted=['N0','N1','N2','N3','N4','O1','O2','O3','O4']
 
 #
@@ -104,7 +105,7 @@ for x in jsonData:
 	firstname=""
 	lastname=""
 	for n in names.split(' '):
-	    if n.isupper():
+	    if n.isupper() and n!='':
 		lastname=lastname+n+' '
 	    else:
 		firstname=firstname+n+' '
@@ -145,13 +146,13 @@ for x in jsonData:
 	dpt=x[1]['department'][0].encode('utf-8')
 	if dpt=="":
 	    dpt='Non renseigne-'+company
-	if firstname!='' and lastname!='' and company!='':
-
+	if firstname!='' and lastname!='' and company!='' and firstname.find('Standard')==-1:
 	    cur.execute('SELECT count(*) '+ 
 	            'FROM "Person" '+
 	            'WHERE firstname=\'%s\' AND lastname=\'%s\';'%(firstname,lastname))
-	    res=cur.fetchone()
+	    res=cur.fetchone()    
 	    if res[0]==0:
+		print(res)
 		aAjouter.append( {'firstname':firstname,'lastname':lastname,'mail':x[1]['mail'][0].encode('utf-8'),'dpt':dpt,'company':company,'desk':desk,'site':site,'loc':location})
 print(aAjouter)
 
@@ -190,9 +191,10 @@ for elem in aAjouter:
     sit_id=cur.fetchone()[0]    
     if elem['desk']!="aucun" and elem['desk']!="externe":
 	cur.execute("SELECT des_id FROM \"Desk\" WHERE name='%s';"%(elem['desk']))
-	if cur.fetchone():
-	    des_id=cur.fetchone()[0]
-	    cur.execute("UPDATE \"Desk\" SET person_id='%i' WHERE des_id='%i';"%(person_id,des_id))
+	res=cur.fetchone()
+	if res!=None:
+	    des_id=res[0]
+	    cur.execute("UPDATE \"Desk\" SET person_id='%i' WHERE des_id='%i';"%(per_id,des_id))
 	else:
 	    building=elem['desk'][0]
 	    floor=elem['desk'][1]

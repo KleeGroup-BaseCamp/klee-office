@@ -155,12 +155,12 @@
 
 		//hide the map form and siplay the tooltip for externe sites
 		d3.select("#map-info").style("display","none");
-		d3.select(".tooltip_ext_map").style("display","")
+		d3.select(".map-extern").style("display","")
 		if (mapControl.existMap) {
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('.tooltip_ext_map').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
+		$('.map-extern').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
 	});
 	lemans.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -168,12 +168,12 @@
         d3.select("#le_mans").style("font-weight","bold");
 
 		d3.select("#map-info").style("display","none");
-		d3.select(".tooltip_ext_map").style("display","")
+		d3.select(".map-extern").style("display","")
 		if (mapControl.existMap) {
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('.tooltip_ext_map').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
+		$('.map-extern').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
 	});
 	lyon.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -181,12 +181,12 @@
         d3.select("#Lyon").style("font-weight","bold");
 
 		d3.select("#map-info").style("display","none");
-		d3.select(".tooltip_ext_map").style("display","")
+		d3.select(".map-extern").style("display","")
 		if (mapControl.existMap) {
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('.tooltip_ext_map').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
+		$('.map-extern').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
 	});
 	bourgoin.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -194,12 +194,12 @@
         d3.select("#Bourgoin-Jailleux").style("font-weight","bold");
 
 		d3.select("#map-info").style("display","none");
-		d3.select(".tooltip_ext_map").style("display","")
+		d3.select(".map-extern").style("display","")
 		if (mapControl.existMap) {
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('.tooltip_ext_map').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
+		$('.map-extern').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
 	});
 	montpellier.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -207,12 +207,12 @@
         d3.select("#Montpellier").style("font-weight","bold");
 
 		d3.select("#map-info").style("display","none");
-		d3.select(".tooltip_ext_map").style("display","")
+		d3.select(".map-extern").style("display","")
 		if (mapControl.existMap) {
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('.tooltip_ext_map').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
+		$('.map-extern').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
 	});
 	client.addEventListener("click", function () {
 		d3.selectAll(".site").style("font-weight","normal");
@@ -220,12 +220,12 @@
         d3.select("#sur_site_client").style("font-weight","bold");
 
 		d3.select("#map-info").style("display","none");
-		d3.select(".tooltip_ext_map").style("display","")
+		d3.select(".map-extern").style("display","")
 		if (mapControl.existMap) {
 			d3.select(".map").select("svg").remove();
 			mapControl.existMap = false;	
 		}
-		$('.tooltip_ext_map').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
+		$('.map-extern').html('<p id="noplan">Pas de plan disponible pour ce site</p><img id="noplan-logo" src="/img/logo.png" width=600px />');
 	});
 }());
 
