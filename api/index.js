@@ -220,6 +220,7 @@ app.get('/associateData', dataAssociationServices.associate);
 app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
+app.get('/getOverOccupiedDesk/', localizationServices.getOverOccupiedDesk);
 
 app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getPersonByDesk/:name', localizationServices.getPersonByDesk);

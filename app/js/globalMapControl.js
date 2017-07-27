@@ -57,6 +57,7 @@ var mapControl = {
 				//color of current map on the navigation menu
 				d3.selectAll(".list_etage").style("font-weight","normal");
 				d3.selectAll(".site").style("font-weight","normal");
+				d3.selectAll(".siteResult").style("font-weight","normal");
 
 				d3.select("#"+mapName+"_withResult").style("font-weight","bold");
 				d3.select("#"+mapName+"_withoutResult").style("font-weight","bold");
@@ -122,15 +123,15 @@ var mapControl = {
 									if (isSavingLocalization==false){
 										// mouse click on the button will give more info
 										$("#" + data.deskname).click( function(event) {
-											var xPosition = event.clientX,
-											yPosition = event.clientY;
+											var xPosition = event.pageX,
+											yPosition = event.pagetY;
 											// get scroll pixels to correct tooltip's yPostion
-											yPosition += $(window).scrollTop();
+											//yPosition += $(window).scrollTop();
 
 											tooltip.html(fullName + "<br/>"+ data.mail + "<br/>" + data.deskname)
 												.style("position","absolute")
-												.style("left", (xPosition)-600 + "px")
-												.style("top", (yPosition)-400 + "px")
+												.style("left", (xPosition)-250 + "px")
+												.style("top", (yPosition) + "px")
 												.style("height", "57px");
 											tooltip.transition()
 												.duration(200)
@@ -160,7 +161,7 @@ var mapControl = {
 												var xPosition = event.clientX,
 													yPosition = event.clientY;
 												// get scroll pixels to correct tooltip's yPostion
-												yPosition += $(window).scrollTop();
+												//yPosition += $(window).scrollTop();
 												tooltip.html("Bureau " + d3.event.target.parentNode.id)
 													.style("position","absolute")
 													.style("left", (xPosition)-600 + "px")

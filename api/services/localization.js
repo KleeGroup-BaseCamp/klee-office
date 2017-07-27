@@ -38,6 +38,22 @@ const getCurrentDeskNamebyId = (req,res) => {
             res.json(desk);
         });
 }
+const getOverOccupiedDesk =(req,res) => {
+    models.sequelize.query('SELECT \"Desk\".name, \"Person\".firstname, \"Person\".lastname '+
+    'FROM \"Desk\" '+
+    'JOIN \"Person\" ON \"Desk\".person_id=\"Person\".per_id '+
+    'WHERE name IN ('+
+        'SELECT \"Desk\".name, COUNT(*) as count'+
+        'FROM \"Desk\" ' +
+        'WHERE \"Desk\".name<> :ext AND \"Desk\".name <> :none '+
+        'GROUP BY \"Desk\".name HAVING COUNT(*)>1) '+
+    'ORDER BY name',
+        { replacements: {ext:'externe',none:'aucun'}, type: models.sequelize.QueryTypes.SELECT}
+    ).then(function(desk){
+            console.log(desk)
+            res.json(desk);
+    });
+}
 
 const saveMyLocalization = (req, res) => {
     console.log('call of service to save my localization in DB');
@@ -231,5 +247,6 @@ module.exports = {
     getCurrentDeskName,
     getCurrentDeskNamebyId,
     getLastDeskUpdate,
-    getPersonByDesk
+    getPersonByDesk,
+    getOverOccupiedDesk
 }
