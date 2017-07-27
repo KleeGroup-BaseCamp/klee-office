@@ -159,34 +159,7 @@ var mapControl = {
 												.style("z-index", -1);
 										})
 								
-										var allTablees = d3.select("#tables")
-											.selectAll(".available")
-											.style("cursor", "pointer")
-											.on("click", function(){
-												tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
-												console.log("Bureau : " + d3.event.target.parentNode.id);
-												var xPosition = event.clientX,
-													yPosition = event.clientY;
-												// get scroll pixels to correct tooltip's yPostion
-												yPosition += $(window).scrollTop();
-												tooltip_desk_empty.html("Bureau " + d3.event.target.parentNode.id)
-													.style("position","absolute")
-													.style("left", xPosition-250+ "px")
-													.style("top",  yPosition-300+ "px")
-													.style("height", "20px");
-												tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
-												event.stopPropagation();	
-											});								// click the tooltip won't let it disappear
-											$(".tooltip_map_desk_empty").click(function(event) {
-												event.stopPropagation();
-											})
-											// click elsewhere will make tooltip disappear
-											$("html").click(function () {
-												tooltip_desk_empty.transition()
-												.duration(500)
-												.style("opacity", 0)
-												.style("z-index", -1);
-											})
+
 
 
 												
@@ -196,6 +169,34 @@ var mapControl = {
 							}
 					});
 
+				var allTablees = d3.select("#tables")
+					.selectAll(".available")
+					.style("cursor", "pointer")
+					.on("click", function(){
+						tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
+						console.log("Bureau : " + d3.event.target.parentNode.id);
+						var xPosition = event.clientX,
+							yPosition = event.clientY;
+						// get scroll pixels to correct tooltip's yPostion
+						yPosition += $(window).scrollTop();
+						tooltip_desk_empty.html("Bureau " + d3.event.target.parentNode.id)
+													.style("position","absolute")
+													.style("left", xPosition-250+ "px")
+													.style("top",  yPosition-300+ "px")
+													.style("height", "20px");
+						tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
+						event.stopPropagation();	
+					});								// click the tooltip won't let it disappear
+					$(".tooltip_map_desk_empty").click(function(event) {
+						event.stopPropagation();
+					})
+					// click elsewhere will make tooltip disappear
+					$("html").click(function () {
+						tooltip_desk_empty.transition()
+												.duration(500)
+												.style("opacity", 0)
+												.style("z-index", -1);
+					})
 					// show all available tables
 					allAvailables = d3.select("#tables").selectAll(".available");
 					allAvailables.selectAll("rect").attr("fill", "#99ff99");
