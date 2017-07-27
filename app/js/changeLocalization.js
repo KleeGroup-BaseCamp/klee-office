@@ -102,7 +102,7 @@ function validateSite(newSite){
 function validateMove(newSite,newDesk){
     if (newSite=="La Boursidière"){
         d3.select("#text-default").html("Vous avez validé un nouveau bureau sur le site La Boursidière"+
-            "<br/>Votre nouveau bureau est "+newDesk)
+            "<br/>Votre nouveau bureau est "+newDesk+'<br/><button id=\"backHome\"><a href=\"http://localhost:3000/\">Rafraîchir la page</a></button>')
     }
     else{
         d3.select("#text-default").html("Vous avez validé un nouvel emplacement"+
