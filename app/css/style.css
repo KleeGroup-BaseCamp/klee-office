@@ -971,22 +971,20 @@ input[readonly] {
 #left #input {
     left: 30px;
 }
-#plot-noplace{
+#plot-noplace, #plot-overDesk{
     z-index: 20;
 }
-#list-noplace{
+#list-noplace, #list-overDesk{
     z-index: 300;
     overflow: scroll;
     padding : 5px;
     background-color: white;
-    width :100%;
-    
-
+    width :100%;    
 }
-#plot-noplace,#plot-config{
+#plot-noplace,#plot-config, #plot-overDesk{
     margin-bottom:10px;
 }
-#noplace-block, #conf-block{
+#noplace-block, #conf-block, #overDesk-block{
     margin-bottom:20px;
 }
 

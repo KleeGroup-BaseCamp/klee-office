@@ -43,7 +43,7 @@ const getOverOccupiedDesk =(req,res) => {
     'FROM \"Desk\" '+
     'JOIN \"Person\" ON \"Desk\".person_id=\"Person\".per_id '+
     'WHERE name IN ('+
-        'SELECT \"Desk\".name, COUNT(*) as count'+
+        'SELECT \"Desk\".name '+
         'FROM \"Desk\" ' +
         'WHERE \"Desk\".name<> :ext AND \"Desk\".name <> :none '+
         'GROUP BY \"Desk\".name HAVING COUNT(*)>1) '+
