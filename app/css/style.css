@@ -820,6 +820,8 @@ input[readonly] {
 #table-validators tr:nth-child(even){background-color: #f2f2f2}
 
 #table-validators{
+    position: relative;
+    left: 20%;
     border : 3px solid black;
 }
 
@@ -1093,6 +1095,25 @@ input[readonly] {
     /*float: right;*/
     
     z-index: 1;
+}
+#config-buttons{
+    position: relative;
+    left : 50%;
+    top: 50%;
+}
+#config-buttons button{
+    margin: 10px;
+    height: auto;
+    width: 20%;
+    font-size: 120%;
+    border-radius: 20px;
+    background-color:black; 
+    color: white;
+    border: none;
+}
+#config-buttons button:hover{
+    background-color:white; 
+    color: black;
 }
 @supports (-webkit-appearance:none) {
     .bandeau-recherche {
