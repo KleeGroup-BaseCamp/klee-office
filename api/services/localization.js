@@ -92,7 +92,6 @@ const saveMyLocalization = (req, res) => {
                     }
                 }
             }).then(function(){ 
-
                 Desk.findOrCreate({where: {name: newDesk}})
                 .then(function(to_desk){ 
                     var former_person=to_desk[0].dataValues.person_id; //if not null, someone was at this place. A new new desk in la boursidère must be created and moveline ejection must be created at the end
@@ -111,13 +110,12 @@ const saveMyLocalization = (req, res) => {
                             status_id: status.sta_id,
                             dateCreation: date,
                             creator_id: perId})
-                            .then(function (set) {  
-                                 
-                                if (to_desk.person_id !==null || to_desk.person_id !==undefined || to_desk.person_id !=="" ){
+                            .then(function (set) {                                   
+                                if (former_person !==null && former_person !==undefined && former_person !=="" ){
                                     models.sequelize.query('INSERT INTO "Desk"(name, "dateUpdate",site_id,person_id) VALUES '+
                                     '(:name , :dateupdate, (SELECT sit_id FROM "Site" WHERE name= :site) , :person_id);',
-                                    { replacements: {name:"aucun",dateupdate:new Date(),person_id:former_person, site:newSite}, type: models.sequelize.QueryTypes.INSERT})
-                                    MoveLine.create({dateCreation : new Date(), status :"ejection", person_id:former_person, fromDesk:to_desk[0].dataValues.des_id,toDesk:null, move_set_id:set.dataValues.set_id})
+                                    { replacements: {name:"aucun",dateupdate:new Date(),person_id:former_person, site: "La Boursidière"}, type: models.sequelize.QueryTypes.INSERT})
+                                    MoveLine.create({dateCreation : new Date(), status :"ejection", person_id:former_person, fromDesk:toDeskId,toDesk:null, move_set_id:set.dataValues.set_id})
                                 }
                                 // insert new move line
                                 MoveLine.create({
@@ -225,20 +223,6 @@ const getPersonByDesk = (req,res) =>{
         });
 }
 
-/*const getLastDeskUpdate = (req,res) =>{
-    models.sequelize.query('SELECT \"MoveLine\".\"dateCreation\" '+
-        'FROM \"MoveLine\" M1 '+
-        'WHERE NOT EXISTS ' +
-            '(SELECT 1 ' +
-            'FROM \"MoveLine\" M2 ' +
-            'WHERE M2.mov_id = M1.mov_id ' +
-            'AND M2.\"dateCreation\" > M2.\"dateCreation\" ',
-        { replacements: {}, type: models.sequelize.QueryTypes.SELECT}
-    ).then(function(updesk){
-            console.log(updesk);
-           res.json(updesk);
-        });
-}*/
 
 
 
@@ -246,7 +230,6 @@ module.exports = {
     saveMyLocalization,
     getCurrentDeskName,
     getCurrentDeskNamebyId,
-    getLastDeskUpdate,
     getPersonByDesk,
     getOverOccupiedDesk
 }

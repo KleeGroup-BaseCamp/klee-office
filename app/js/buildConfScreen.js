@@ -5,9 +5,7 @@
 (function(window) {
 
     //control access to the page
-    console.log("configurations-screen");
     var server="http://localhost:3000/";
-
     var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
     var level="none";
     var dep="";
@@ -82,46 +80,55 @@
         if(configurationsControl.isPopin !== true){
             $('<div id="popin-add">'+
                 '<h3>Cr&eacuteer une nouvelle configuration</h3>'+
-                '<img src="img/crossDelete.png" id="conf-cancel" width="25px">'+
                 '<br><br><br>'+
-                '<form action="/addNewConfiguration" method="post">'+
-                '<div class="inline left-labels">'+
-                '<label for="name">Nom (*) : </label><br /><br />'+
-                '<label for="creator">Auteur : </label><br /><br />'+
-                '<label for="dateCreation">Date : </label><br /><br />'+
-                '</div>'+ 
-                '<div class="inline">'+
-                '<input class="field" type="text" id="name" name="name" required/><br />'+
-                '<input class="disabled-field" type="text" id="creator" name="creator"  value="" readonly /><br />'+
-                '<input class="disabled-field" type="text" id="dateCreation" name="dateCreation" value="" readonly /><br />'+
-                '</div>'+
-                '<input class="submit" id="add-conf" type="submit" value="Valider"/>'+
-                '<input class="submit" id="conf-cancel" type="reset" value="Annuler"/>'+
+                '<form  id="formNewConfig">'+
+                    '<div class="inline left-labels">'+
+                        '<label for="name">Nom (*) : </label><br /><br />'+
+                        '<label for="creator">Auteur : </label><br /><br />'+
+                        '<label for="dateCreation">Date : </label><br /><br />'+
+                    '</div>'+ 
+                    '<div class="inline">'+
+                        '<input class="field" type="text" id="name" name="name" required/><br />'+
+                        '<input class="disabled-field" type="text" id="creator" name="creator"  value="" readonly /><br />'+
+                        '<input class="disabled-field" type="text" id="dateCreation" name="dateCreation" value="" readonly /><br />'+
+                    '</div>'+
+                    '<div id="popin-button">'+
+                        '<input class="submit" id="add-conf" type="submit" value="Valider"/>'+
+                        '<input class="submit" id="conf-cancel" type="reset" value="Annuler"/>'+
+                    '</div>'+
                 '</form>'+
-
-                '</div>').insertAfter($('.two-columns'));
+            '</div>').insertAfter($('.two-columns'));
         }
         configurationsControl.isPopin = true;
         var today = new Date().toLocaleDateString();
         d3.select("#dateCreation").attr("value", today);
         d3.select("#creator").attr("value",myData[0]+" "+myData[1]);
 
-        // remove popin
-        // click somewhere else will make popin disappear
         $("#popin-add").click(function (event) {
             event.stopPropagation();
-        });   
+        });
+        $("#conf-cancel").click(function () {
+            $('#popin-add').remove();
+            configurationsControl.isPopin = false;
+        }); 
+
+        $(document).on('submit', '#formNewConfig', function(){
+            var name = $('#name').val();
+            var creator = $('#creator').val();
+            $.ajax ({
+                url: 'addNewConfiguration',
+                type: "POST",
+                data: {name: name, creator: creator},
+                success: function(res) {
+                    console.log(res)
+                    window.location.href = server//+"modify"+data[0].set_id
+                }
+            });
+        })
+        
         jQuery('html,body').animate({scrollTop:0},0);
         event.stopPropagation();
     });
-    $("#add-conf").click(function () {
-        console.log("j'ai clické");
-        if(configurationsControl.isPopin === true){
-            $('#popin-add').remove();
-            configurationsControl.isPopin = false;
-        }
-        
-    });    
 
     $("html").click(function () {
         if(configurationsControl.isPopin === true){
@@ -129,13 +136,6 @@
             configurationsControl.isPopin = false;
         }
     });
-
-    $("#conf-cancel").click(function () {
-        if(configurationsControl.isPopin === true){
-            $('#popin-add').remove();
-            configurationsControl.isPopin = false;
-        }
-    }); 
 
     $("#noplace-toexcel").click(function () {
         window.open('data:application/vnd.ms-excel,' + encodeURIComponent("<table>"+$('#list-noplace').html()+"</table>"));

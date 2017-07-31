@@ -1,5 +1,7 @@
 // set all tables to their default colors
 'use strict';
+var server='http://localhost:3000/'
+var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
 $(function(){
     var people = [];
@@ -12,94 +14,46 @@ $(function(){
         people.push({value: element[1].cn[0], data: element[1]});
     }
 
-    $.getJSON('http://localhost:3000/people', function(data) {
+    $.getJSON(server+'people', function(data) {
         //data is the JSON file
         data.forEach(getName);
 
         // setup autocomplete function pulling from people[] array
-        $('#search-terms').autocomplete({
-        lookup: people,
-        onSelect: function (suggestion) {
-            var table,
-                splitID,
-                div,
-                mapName,
-                floorNumber,
-                mail,
-                legend;
-
-            // hide all : navigation chart & map-show
-            d3.select("#map-show")
-                .style("visibility", "hidden");
-
-            d3.select("#navigation-chart")
-                .style("visibility", "hidden")
-                .style("width", "0px")
-                .style("height", "0px");
+        $('#search-one-term')
+        .autocomplete({
+            lookup: people,
+            onSelect: function (suggestion) {
+                var table,
+                    mapName,
+                    site,
+                    desk;
 
             // suggestion.data example: 
             //      { "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }
             if (suggestion.data.physicalDeliveryOfficeName) {
-                // show office name in <div id="message">
-                div = d3.select("#main").select("#message");
-                // show message with class focus
-                div.attr("class", "focus");
-                div.select("#tableID")
-                    .text(suggestion.data.physicalDeliveryOfficeName[0]);
-
-                splitID = suggestion.data.physicalDeliveryOfficeName[0]
-                            .split(/\s+:\s+/);
-                // if standard table ID exists
-                if(splitID[1]){
-                    // set map-show as visible
-                    d3.select("#map-show")
-                        .style("visibility", "visible")
-                        .style("width", "100%")
-                        .style("height", "100%");
-                    mapName = splitID[1].split(/-/)[0];
-
-                    // add email
-                    mail = suggestion.data.mail[0];
-                    div.select("#mail")
-                        .text(mail);
-                    // add site info
-                    div.select("#site")
-                        .text(splitID[0]);
-                    // add building info
-                    if(mapName.charAt(0) === "N"){
-                        div.select("#building")
-                            .text("Normandie");
-                    }
-                    else if (mapName.charAt(0) === "O"){
-                        div.select("#building")
-                            .text("Orleans");
-                    }
-                    // add floor info 
-                    floorNumber = mapName.charAt(1);
-                    switch(floorNumber) {
-                        case "0":
-                            div.select("#floor")
-                                .text("Rdc");
-                            break;
-                        case "1":
-                            div.select("#floor")
-                                .text("1ère");
-                            break;
-                        default:
-                            div.select("#floor")
-                                .text("" + floorNumber + "ème");
-                            break;
-                    }
-
+                var location=suggestion.data.physicalDeliveryOfficeName[0]
+                console.log(suggestion.data.physicalDeliveryOfficeName)
+                if (location.split(' : ').length==2){
+                    site=location.split(' : ')[0];
+                    desk=location.split(' : ')[1];
+                    mapName=desk.substring(0,2);
+                }
+                else{
+                    site=location;
+                    desk="aucun";
+                    mapName="None";
+                }
+                d3.select("#text-conf").html(suggestion.data.cn+' est localisé '+location+'</br>Sélectionnez son nouvel emplacement')
+                
+                if (mapName!="None"){
                     // if no map showing on, plot the map with name "mapName", add pin to searched person's table
                     if(!mapControl.existMap) {
                         // erase all maps' overview
-                        mapControl.eraseMap();
-
+                       // mapControl.eraseMap();
                         mapControl.mapName = mapName;
-                        mapControl.mapPlot([],mapName, false, function() {
+                        mapControl.mapPlot(myData,mapName, false, function() {
                             table = d3.select("#tables")
-                                        .select("#" + splitID[1]);
+                                        .select("#" + desk);
                             table.append("image")
                                 .attr("xlink:href", "./img/pin_final.png")
                                 .attr("width", "30")
@@ -114,9 +68,9 @@ $(function(){
                         d3.select(".map").select("svg").remove();
                         mapControl.existMap = false;
                         mapControl.mapName = mapName;
-                        mapControl.mapPlot(mapName, false, function() {
+                        mapControl.mapPlot(myData,mapName, false, function() {
                             table = d3.select("#tables")
-                                        .select("#" + splitID[1]);
+                                        .select("#" + desk);
                             table.append("image")
                                 .attr("xlink:href", "./img/pin_final.png")
                                 .attr("width", "30")
@@ -127,9 +81,9 @@ $(function(){
                         mapControl.existMap = true;
                     }
 
-
+                }
                     // remove old legend and add new one
-                    legend = d3.select("#legend").select("h1");
+                    /*legend = d3.select("#legend").select("h1");
                     // if no legend
                     if(legend[0][0] == null) {
                         d3.select("#legend").insert("h1", ":first-child")
@@ -152,10 +106,10 @@ $(function(){
                     mail = suggestion.data.mail[0];
                     div.select("#mail")
                         .text(mail);
-                }
+                }*/
             }
             // physicalDeliveryOfficeName doesn't exist
-            else {
+            /*else {
                 // add email
                 mail = suggestion.data.mail[0];
                 div.select("#mail")
@@ -164,7 +118,7 @@ $(function(){
                 div = d3.select("#main").select("#message");
                 div.html("No office for this poor man !");
                 div.attr("class", "focus");
-            }
+            }*/
         }
         });
     });

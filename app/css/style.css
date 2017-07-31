@@ -211,7 +211,7 @@ table #personal-desk {
     height:auto;
     margin-bottom:15px;
 }
-#search {
+#search ,#search-conf{
     position: relative;
     float: left;
     width: 60px;
@@ -238,7 +238,7 @@ table #personal-desk {
     display: inline-block;
     bottom: 75px;
 }
-#input input {
+#input input, #input-conf input {
     opacity: 1;
     display: block;
     position: relative;
@@ -346,6 +346,11 @@ table #personal-desk {
 #Issy-les-Moulineaux:hover, #le_mans:hover, #Lyon:hover, #Bourgoin-Jailleux:hover, #Montpellier:hover, #sur_site_client:hover, 
 #Issy-les-Moulineaux_result:hover, #le_mans_result:hover, #Lyon_result:hover, #Bourgoin-Jailleux_result:hover, #Montpellier_result:hover, #sur_site_client_result:hover
 ,#Issy_location:hover, #Mans_location:hover, #Lyon_location:hover,#Bourgoin_location:hover, #Montpellier_location:hover, #Client_location:hover{
+    text-decoration:underline;
+    color : blue;
+    cursor :pointer;
+}
+#Issy_conf:hover, #Mans_conf:hover, #Lyon_conf:hover,#Bourgoin_conf:hover, #Montpellier_conf:hover, #client_conf:hover{
     text-decoration:underline;
     color : blue;
     cursor :pointer;
@@ -497,7 +502,7 @@ table #personal-desk {
     background-color: rgb(242, 242, 242);
     float: left;
 }
-#navigation #etages_withResult, #etages_withoutResult, #etages_location{
+#navigation #etages_withResult, #etages_withoutResult, #etages_location, #etages_conf{
     padding-top :20px;
     padding-left:20px;
     padding-right:20px;
@@ -511,7 +516,7 @@ table #personal-desk {
 #personal-firstname, #personal-lastname{
     padding-right:7px;
 }
-.site, .siteResult, .siteLocation{
+.site, .siteResult, .siteLocation, .site-conf{
     padding-top :20px;
     padding-left:20px;
     padding-right:20px;
@@ -567,7 +572,7 @@ table #personal-desk {
     font-weight: bold;
 }
 
-#map-name{
+#map-info #map-name{
     /*position: absolute;
     right: 47%;
     padding : 10px;
@@ -589,7 +594,7 @@ table #personal-desk {
     position: relative;
 }
 
-#map-show {
+#map-show{
     position : relative;
     margin-left :220px;
     z-index: 0;
@@ -920,7 +925,7 @@ input[readonly] {
   font-size: smaller;
 }
 #popin-add {
-    background-color: rgba(50,150,200,0.9);
+    background-color: grey;
     z-index: 50;
     position: absolute;
     left: 50%;
@@ -933,9 +938,22 @@ input[readonly] {
     padding-top: 50px;
     color: white;
 }
+
 #popin-add input {
     margin: 8px;
     z-index: 60;
+}
+#popin-add #popin-button{
+    text-align:center;
+}
+#popin-add #add-conf,#popin-add #conf-cancel{
+    height: auto;
+    font-size: 75%;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    display:inline;
 }
 .field, .disabled-field {
     color: #505050;
@@ -944,10 +962,7 @@ input[readonly] {
     vertical-align: top;
     margin-top: 11px;
 }
-#popin-add .submit{
-    margin: auto;
-    display: block;
-}
+
 
 .people-rect {
     display: inline-block;
@@ -1011,12 +1026,87 @@ input[readonly] {
     vertical-align: middle;
     padding-top: 5px;
 }
-.modif #left {
-    padding-left: 75px;
+#table-conf{
+    width:100%;
+    margin-left:220px;
 }
-.modif .left-side {
+#map-conf {
+    position : relative;
+    z-index: 0;
+    height:620px;
+}
+#map-conf #whole-map {
+    width:100%;
     height: 100%;
+    /*border-left: 2px solid #297aa3;
+    border-right: 2px solid #297aa3;
+    border-bottom: 2px solid #297aa3;*/
+
 }
+#map-conf #whole-map .map{
+    width: 90%;
+    height:75%;
+}
+#recap-conf{
+    min-height: 620px;
+    padding-top:25px;
+}
+#recap-conf table{
+    min-width: 300px;
+    margin:5px;
+}
+#recap-conf .delete-moveline{
+    background: url("/img/crossDelete.png");
+    background-repeat: no-repeat;
+    background-size :35px 35px;
+    background-position:center;
+    cursor:pointer;
+}
+
+#recap-conf h3{
+    font-size:20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding:7px;
+}
+#recap-conf p{
+    font-style: italic;
+    display:inline;
+}
+#recap-conf table th
+{
+    border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
+    border: 2px solid black;
+    padding:5px;
+}
+#recap-conf table tbody td
+{
+    border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
+    border: 1px solid black;
+    padding:5px;
+}
+#recap-conf button{
+    height: auto;
+    width: 8%;
+    font-size: 75%;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+}
+header #text-conf button{
+    height: auto;
+    width: 6%;
+    font-size: 75%;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+}
+header #text-conf button a{
+    color:white;
+}
+
 .left-side #left .rects{
     padding-left: 0px;
 }
@@ -1066,14 +1156,14 @@ input[readonly] {
     width: 15px;
 }
 /* style du bouton de recherche */
-#search-button {
+#search-button,#search-button-conf {
    position: relative;
    left: 800px;
    width: auto;
    height: 100%;
    z-index: 20;
 }
-#search-button:hover {
+#search-button:hover, #search-button-conf:hover {
     cursor: pointer;
     transform: scale(1.05);
 }

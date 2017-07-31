@@ -58,14 +58,12 @@ function changeLocalization() {
 function validateDesk(){
     //need to choose a new desk
     d3.select("#text-default").html("<br/>Veuillez cliquer sur un nouveau bureau<br/><button id=\"cancelMove\"><a href=\"http://localhost:3000/\">Annuler</a></button>");
-    console.log(d3.select("#tables").selectAll("g")[0]);
     
 	var allTables = d3.select("#tables").selectAll("g")
     allTables.style("cursor", "pointer")
     allTables.on("click", function(){
 			var newDesk = d3.event.target.parentNode.id;
             var newSite="La Boursidière";
-            console.log(newDesk)
             d3.json(server + "getPersonByDesk/"+newDesk, function(isDeskAvailable){
                     if (isDeskAvailable.length===0){
                         d3.select("#text-default").html("Vous avez choisi le bureau "+newDesk
