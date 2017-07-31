@@ -59,10 +59,13 @@ var mapControl = {
 				d3.selectAll(".list_etage").style("font-weight","normal");
 				d3.selectAll(".site").style("font-weight","normal");
 				d3.selectAll(".siteResult").style("font-weight","normal");
+				d3.selectAll(".siteLocation").style("font-weight","normal");
+				d3.selectAll(".site-conf").style("font-weight","normal");
 
 				d3.select("#"+mapName+"_withResult").style("font-weight","bold");
 				d3.select("#"+mapName+"_withoutResult").style("font-weight","bold");
 				d3.select("#"+mapName+"_location").style("font-weight","bold");
+				d3.select("#"+mapName+"_conf").style("font-weight","bold");
 				d3.select("#map-info").style("display","");
 				d3.select(".map-extern").style("display","none")
 
@@ -168,44 +171,42 @@ var mapControl = {
 								}
 							}
 					});
-
-				var allTablees = d3.select("#tables")
-					.selectAll(".available")
-					.style("cursor", "pointer")
-					.on("click", function(){
-						tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
-						console.log("Bureau : " + d3.event.target.parentNode.id);
-						var xPosition = event.clientX,
-							yPosition = event.clientY;
-						// get scroll pixels to correct tooltip's yPostion
-						yPosition += $(window).scrollTop();
-						tooltip_desk_empty.html("Bureau " + d3.event.target.parentNode.id)
+				if (isSavingLocalization==false){
+					var allTablees = d3.select("#tables")
+						.selectAll(".available")
+						.style("cursor", "pointer")
+						.on("click", function(){
+							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
+							console.log("Bureau : " + d3.event.target.parentNode.id);
+							var xPosition = event.clientX,
+								yPosition = event.clientY;
+							// get scroll pixels to correct tooltip's yPostion
+							yPosition += $(window).scrollTop();
+							tooltip_desk_empty.html("Bureau " + d3.event.target.parentNode.id)
 													.style("position","absolute")
 													.style("left", xPosition-250+ "px")
 													.style("top",  yPosition-300+ "px")
 													.style("height", "20px");
-						tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
-						event.stopPropagation();	
-					});								// click the tooltip won't let it disappear
-					$(".tooltip_map_desk_empty").click(function(event) {
-						event.stopPropagation();
-					})
-					// click elsewhere will make tooltip disappear
-					$("html").click(function () {
-						tooltip_desk_empty.transition()
+							tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
+							event.stopPropagation();	
+						});								// click the tooltip won't let it disappear
+						$(".tooltip_map_desk_empty").click(function(event) {
+							event.stopPropagation();
+						})
+						// click elsewhere will make tooltip disappear
+						$("html").click(function () {
+							tooltip_desk_empty.transition()
 												.duration(500)
 												.style("opacity", 0)
 												.style("z-index", -1);
-					})
-					// show all available tables
-					allAvailables = d3.select("#tables").selectAll(".available");
-					allAvailables.selectAll("rect").attr("fill", "#99ff99");
+						})
+						// show all available tables
 
-					/**
-					 * add event listener on click on table
-					 * to choose it as its new office
-					 */					
+				}
+				allAvailables = d3.select("#tables").selectAll(".available");
+				allAvailables.selectAll("rect").attr("fill", "#99ff99");			
 				});
+				
 			  
 				
 				if (callback){callback();}

@@ -240,12 +240,14 @@ app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetI
 app.delete('/deleteConfiguration/:id', confServices.deleteMoveSet);
 app.get('/getMovingsListByConfId/:id', confServices.getMoveLineListByMoveSetId);
 app.post('/addNewConfiguration', confServices.addNewMoveSet);
-app.post('/saveMovings', confServices.saveMoveLine);
+app.post('/addMoveLine', confServices.addMoveLine);
+app.delete('/deleteMoveline/:confId/:firstname/:lastname', confServices.deleteMoveLine);
 app.post('/validateConfiguration', confServices.validateMoveSet);
 app.get('/getAllConf', confServices.getAllMoveSet);
 app.get('/getConfByDep/:id', confServices.getMoveSetById);
-app.get('/reportConsistency/:id', confServices.reportConsistency);
-app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
+app.get('/getLastMoveSet/', confServices.getLastMoveSet);
+//app.get('/reportConsistency/:id', confServices.reportConsistency);
+//app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
 app.get('/getNoPlacePersonByBusUnit/:busid/:comid', confServices.getNoPlacePersonByBusUnit);
 app.get('/getNoPlacePersonByCompany/:comid', confServices.getNoPlacePersonByCompany);

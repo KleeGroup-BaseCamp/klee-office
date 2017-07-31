@@ -33,9 +33,14 @@ const associate = (req, res) => {
         if(ou !== undefined && ou !== null && ou !== ""){
                     company = ou.toString();
         }
+        console.log(d.department)
         var dpt;
-        if(d.department !== null && d.department !== undefined && d.department !== ""){
-            dpt = d.department.toString();
+        if(d.department){
+            if (d.department[0] !== null && d.department[0] !== undefined && d.department[0] !== ''){
+                dpt = d.department.toString();
+            }else {
+            dpt="Non renseigne-"+company
+            }
         }else {
             dpt="Non renseigne-"+company
         }
@@ -54,6 +59,9 @@ const associate = (req, res) => {
         if(d.mail !== null && d.mail !== undefined && d.mail !== "") {
             mail = d.mail.toString();
         } 
+        
+        console.log(dpt)
+        
         // ex "La Boursidiere : N3-A-01" => ["La Boursidiere", "N3-A-01"],, "KLEE Le Mans" => ["Le Mans","externe"]
                 var desk="aucun";
                 var site="aucun";

@@ -14,12 +14,12 @@ except:
 cur=con_db.cursor()
 cur.execute('SELECT firstname, lastname, "Desk".name, "Site".name,"Company".name '+ 
             'FROM "Person" '+
-            'JOIN "Desk" ON "Desk".person_id="Person".per_id '+
-            'JOIN "Site" ON "Site".sit_id="Desk".site_id '+
-            'JOIN "BusinessUnit" ON "BusinessUnit".bus_id="Person"."businessUnit_id" '+
-            'JOIN "Company" ON "Company".com_id="BusinessUnit".company_id;')
+            'LEFT JOIN "Desk" ON "Desk".person_id="Person".per_id '+
+            'LEFT JOIN "Site" ON "Site".sit_id="Desk".site_id '+
+            'LEFT JOIN "BusinessUnit" ON "BusinessUnit".bus_id="Person"."businessUnit_id" '+
+            'LEFT JOIN "Company" ON "Company".com_id="BusinessUnit".company_id;')
 res=cur.fetchall()
-print(res[0])
+print(len(res))
 
 ######################################################
 with open('../config/config-ldap.json') as data_file:
@@ -43,8 +43,9 @@ if con.bind():
     #for each person we have to check if the office name in the active directory is up-to-date with the database
     for i in range(0,len(res)):
         name=(res[i][0]+" "+res[i][1]).decode("utf-8")
-        print(name)
-        if res[i][3]=="La Boursidière":
+        if name.find("DEGENNE")!=-1:
+            print(name)
+        if res[i][3]=="La Boursidière" and res[i][2]!="aucun":
             officeName=("La Boursidière : "+res[i][2]).decode("utf-8")
         else:
             officeName=res[i][3].decode("utf-8")
@@ -58,7 +59,7 @@ if con.bind():
                 print("add new office")
                 # con.modify(base,{'physicalDeliveryOfficeName':[(MODIFY_ADD,[officeName])]})
             else:
-                if not con.entries[0].physicalDeliveryOfficeName==officeName:
+                if (officeName=="Issy-les-Moulineaux" and con.entries[0].physicalDeliveryOfficeName.value.find(officeName)==-1) or (officeName!="Issy-les-Moulineaux" and not con.entries[0].physicalDeliveryOfficeName==officeName):
                     print("change my office")
                     print(con.entries[0].physicalDeliveryOfficeName)
                     print(officeName)

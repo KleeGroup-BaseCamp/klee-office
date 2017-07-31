@@ -24,45 +24,61 @@
 
 <body>
 <div id="wrapper">
-    <div id="info-bar">
+    <div class="info-bar">
         <div id="back-to-home">
-            <div id="home">
-                <a href="/"><p id="home-label">search</p></a>
-            </div>
+            <!-- <div id="home">
+                <a href="/"><img id="home-label" src="/img/home.png" width="40px" height="40px" title="Home"/></a>
+            </div> -->
             <div id="configurations">
-                <a href="/configurations"><p id="configurations-label">configurations</p></a>
+                <a href="/configurations"><img id="configurations-label" src="/img/param2.png" width="40px" height="40px" title="Page validateurs"/></a>
             </div>
             <div id="admin">
-                <a href="/admin"><p id="admin-label">administration</p></a>
-            </div>
-            <div id="personal">
-                <table>
-                    <tr>
-                        <td id="personal-firstname"><%- myFirstName %></td>
-                        <td id="personal-lastname"><%- myLastName %></td>
-                        <td id="personal-site"></td>
-                        <td id="personal-desk"></td>
-                    </tr>
-                </table>
-            </div>
+                <a href="/admin"><img id="admin-label" src="/img/admin.png" width="40px" height="40px" title="Page administrateurs"/></a>
+            </div>   
         </div>
-        <div id="personal">
-                <table>
-                    <tr>
-                        <td id="personal-name"></td>
-                        <td>___</td>
-                        <td id="personal-desk"></td>
-                    </tr>
-                </table>
+        <!-- title -->
+        <div class="title">
+                <a href="/"><div id="klee"><b>KLEE</b> OFFICE</div></a>
         </div>
+        <table id="personal">
+            <thead><tr>
+                <th id="personal-firstname"><%- myFirstName %></th>
+                <th id="personal-lastname"><%- myLastName %></th>
+                <th id="personal-desk"></th>
+                <th class="desk-maj" id="maj-button-background">METTRE À JOUR</th>
+            </tr>
+            </table>
+        </div>
+
     </div>
     <!-- /#info-bar -->
     <header>
-        <div id="title" class="container">
-            <h1>Local Map</h1>
-            <h2>Klee Group</h2>
+         <div id="navigation-bar" class="container">
+           <table>
+               <tr>
+                   <td>
+                        <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
+                    </td>
+                    <td id="search-bar-conf">
+                        <form id="search-conf" onsubmit="return false">
+                            <div id="input-conf">
+                                <input class="bandeau-recherche" type="search" name="search-one-term" id="search-one-term" placeholder="Rechercher un collègue">
+                            </div> 
+                        </form>
+                        <img class="bandeau-recherche" id="search-button-conf" src="../img/forma-1.png">
+                   </td>
+                    <!-- <td>
+                        
+                    </td> -->
+                    <td>
+                        <img id="right-photo" src="../img/calque-7.png">
+                    </td>   
+                </tr>
+            </table> 
+            <div class="info-recherche">
+                <p id="text-conf"></p>
+            </div>
         </div>
-
     </header>
     <!-- /header -->
     <div id="main" class="">
@@ -71,114 +87,88 @@
             <p class="flash-err"><%- message %></p>
             <% } %>
         </div>
-        <div id="navigation-bar" class="container">
-        </div>
-        <div class="two-columns row modif">
-
-            <div class="left-side  col-md-6">
-                <h2 id="step-one">1/2 : Sélectionner des personnes</h2>
-                <br>
-                <div class="left-group">
-                    <div id="left" >
-                        <h3 class="block-title inline">Par nom</h3>
-                        <div class="inline block-search">
-                            <form id="search" onsubmit="return false">
-                                <div id="label">
-                                    <label for="search-terms" id="search-label">search</label>
-                                </div>
-                                <div id="input">
-                                    <input type="text" name="search-terms" id="validator-search" placeholder="Rechercher une personne...">
-                                </div>
-                            </form>
-                        </div>
-
-                        <br>
-                        <h3 class="block-title">Par pôle</h3>
-                        <div class="rects">
-                        </div>
-                        <h3 class="title">Personnes sélectionnées</h3>
-                        <div class="people">
-                        </div>
-                    </div>
+        <div id="navigation">
+                <div id="menu-withoutresult">
+                    <br/>
+                    <h3 id="boursidiere" class="site">La Boursidière</h3>
+                    <ul id="etages_withoutResult">
+                        <li class="list_etage" id ="N0_withoutResult">Etage N0</li>
+                        <li class="list_etage" id ="N1_withoutResult">Etage N1</li>
+                        <li class="list_etage" id ="N2_withoutResult">Etage N2</li>                  
+                        <li class="list_etage" id ="N3_withoutResult">Etage N3</li>                                         
+                        <li class="list_etage" id ="N4_withoutResult">Etage N4</li>                    
+                        <li class="list_etage" id ="O1_withoutResult">Etage O1</li>                                             
+                        <li class="list_etage" id ="O2_withoutResult">Etage O2</li>                    
+                        <li class="list_etage" id ="O3_withoutResult">Etage O3</li>                    
+                        <li class="list_etage" id ="O4_withoutResult">Etage O4</li>                   
+                    </ul>
+                    <h3 id="Issy-les-Moulineaux" class="site">Issy-les-Moulineaux</h3>
+                    <h3 id="le_mans" class="site">Le Mans</h3> 
+                    <h3 id="Lyon" class="site">Lyon</h3>
+                    <h3 id="Bourgoin-Jailleux" class="site">Bourgoin-Jailleux</h3>
+                    <h3 id="Montpellier" class="site">Montpellier</h3> 
+                    <h3 id="sur_site_client" class="site">Sur site client</h3>
                 </div>
-
-            </div>
-            <div class="right-side col-md-6">
-                <h2 id="step-two">2/2 : Sélectionner un étage</h2>
-                <br>
-                <div class="right-group">
-                    <table id="modify-conf">
-                        <tr>
-                            <td class="floor">
-                                <p id="N0"><a>N 0</a></p>
-                            </td>
-                            <td class="floor">
-                                <p id="N1"><a>N 1</a></p>
-                            </td>
-                            <td class="floor">
-                                <p id="N2"><a>N 2</a></p>
-                            </td>
-                            <td class="floor">
-                                <p id="N3"><a>N 3</a></p>
-                            </td>
-                            <td class="floor">
-                                <p id="N4"><a>N 4</a></p>
-                            </td>
-                            <td class="floor">
-                                <p id="O2"><a>O 2</a></p>
-                            </td>
-                            <td class="floor">
-                                <p id="O3"><a>O 3</a></p>
-                            </td>
-                            <td class="floor">
-                                <p id="O4"><a>O 4</a></p>
-                            </td>
-                        </tr>
-                    </table>
-                    <div id="map-show">
-                        <table>
+                <div id="menu-conf">
+                    <br/>
+                    <h3 id="boursidiere" class="site-conf">La Boursidière</h3>
+                    <ul id="etages_conf">
+                        <li class="list_etage" id ="N0_conf">Etage N0</li>
+                        <li class="list_etage" id ="N1_conf">Etage N1</li>
+                        <li class="list_etage" id ="N2_conf">Etage N2</li>                  
+                        <li class="list_etage" id ="N3_conf">Etage N3</li>                                         
+                        <li class="list_etage" id ="N4_conf">Etage N4</li>                    
+                        <li class="list_etage" id ="O1_conf">Etage O1</li>                                             
+                        <li class="list_etage" id ="O2_conf">Etage O2</li>                    
+                        <li class="list_etage" id ="O3_conf">Etage O3</li>                    
+                        <li class="list_etage" id ="O4_conf">Etage O4</li>                   
+                    </ul>
+                    <h3 id="Issy_conf" class="site-conf">Issy-les-Moulineaux</h3>
+                    <h3 id="Mans_conf" class="site-conf">Le Mans</h3> 
+                    <h3 id="Lyon_conf" class="site-conf">Lyon</h3>
+                    <h3 id="Bourgoin_conf" class="site-conf">Bourgoin-Jailleux</h3>
+                    <h3 id="Montpellier_conf" class="site-conf">Montpellier</h3> 
+                    <h3 id="client_conf" class="site-conf">Sur site client</h3>
+                </div>
+        </div>
+        <table id="table-conf">
+            <tr>
+                <td>
+                    <div id="map-conf">
+                    <div id="whole-map">
+                                <div id= "map-name"></div>
+                                <div class ="tooltip_map_desk_empty"></div>
+                                <div class ="tooltip_map_desk"></div>
+                                <svg class="map"></svg>
+                    </div>
+                    </div>
+                
+                </td>
+                <td>
+                    <div id="recap-conf">
+                    <h3>Mode configuration</h3>
+                    <p>Nombre de personnes à déplacer : </p><p id="nb-people-new-conf">0</p>
+                    <table id="table-to-fill">
+                        <thead>
                             <tr>
-                                <td>
-                                    <div id="whole-map"><svg class="map"></svg></div>
-                                </td>
-                                <td id="legend">
-                                    <h3>
-                                        Légende
-                                    </h3>
-                                    <svg width="30" height="15">
-                                        <rect width="30" height="15" style="fill:#ff9900" />
-                                    </svg>
-                                    <p>
-                                        Occupé
-                                    </p>
-                                    <br/>
-                                    <svg width="30" height="15">
-                                        <rect width="30" height="15" style="fill:#99ff99" />
-                                    </svg>
-                                    <p>
-                                        Libre
-                                    </p>
-                                    <br/>
-                                    <p id="zoom">Zoomer avec <br/>la molette</p>
-                                </td>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Bureau actuel</th>
+                                <th>Bureau cible</th>
+                                <th>Supprimer</th>
                             </tr>
-                        </table>
+                        </thead>
+                    </table>
+                    <button id="val-conf">Valider</button>
+                    <button id="can-conf">Annuler</button>
                     </div>
-                </div>
-                <div class="col-md-4 col-md-offset-4">
-                    <button class="submit" id="save-movings">Valider</button>
-                    <button class="cancel-button" id="cancel-movings">Annuler</button>
-                </div>
-            </div>
-
-            <div class="center invisible" id="val-form">
-                <br />
-                <p id="person"></p>
-            </div>
-        </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-
+</body>
 
 <!-- //////////////////////////////////////////////
 // js for plot map and search
@@ -188,10 +178,8 @@
 <script src="js/admin.js"></script>
 <script src="js/polyfill.js"></script>
 <script src="js/globalMapControl.js"></script>
-
-<script src="js/autocomplete.js"></script>
 <script type="text/javascript" src="js/buildModifyScreen.js"></script>
-<script type="text/javascript" src="js/modifyFloor.js"></script>
+<script type="text/javascript" src="js/clickAndPlot.js"></script>
 <script type="text/javascript" src="js/controlAccount.js"></script>
 
 </body>
