@@ -825,6 +825,8 @@ input[readonly] {
 #table-validators tr:nth-child(even){background-color: #f2f2f2}
 
 #table-validators{
+    position: relative;
+    left: 20%;
     border : 3px solid black;
 }
 
@@ -986,22 +988,20 @@ input[readonly] {
 #left #input {
     left: 30px;
 }
-#plot-noplace{
+#plot-noplace, #plot-overDesk{
     z-index: 20;
 }
-#list-noplace{
+#list-noplace, #list-overDesk{
     z-index: 300;
     overflow: scroll;
     padding : 5px;
     background-color: white;
-    width :100%;
-    
-
+    width :100%;    
 }
-#plot-noplace,#plot-config{
+#plot-noplace,#plot-config, #plot-overDesk{
     margin-bottom:10px;
 }
-#noplace-block, #conf-block{
+#noplace-block, #conf-block, #overDesk-block{
     margin-bottom:20px;
 }
 
@@ -1185,6 +1185,25 @@ header #text-conf button a{
     /*float: right;*/
     
     z-index: 1;
+}
+#config-buttons{
+    position: relative;
+    left : 50%;
+    top: 50%;
+}
+#config-buttons button{
+    margin: 10px;
+    height: auto;
+    width: 20%;
+    font-size: 120%;
+    border-radius: 20px;
+    background-color:black; 
+    color: white;
+    border: none;
+}
+#config-buttons button:hover{
+    background-color:white; 
+    color: black;
 }
 @supports (-webkit-appearance:none) {
     .bandeau-recherche {

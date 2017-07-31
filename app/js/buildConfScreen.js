@@ -19,13 +19,15 @@
             dep=isValidator[0].businessUnit_id;
             comp=isValidator[0].company;
             d3.select("#error-conf").style("display","none"); 
-            d3.select("#noplace-block").style("display","none");         
+            d3.select("#noplace-block").style("display","none"); 
+            d3.select("#overDesk-block").style("display","none");         
         }
         //give access to memebers of his company 
         else if (isValidator[0].isValidatorLvlTwo==true){
             level="2"; 
             d3.select("#error-conf").style("display","none");
             d3.select("#noplace-block").style("display","none");
+            d3.select("#overDesk-block").style("display","none");
             dep="all";
             comp=isValidator[0].company;
         }
@@ -34,7 +36,8 @@
             d3.select("#error-conf").style("height","auto").style("width","auto").html(" Vous n'avez les droits d'accès à cette page <br/><a href=\""+server+"\"><button class=\"back-index\">Revenir à la page d'accueil</button></a>");
         }
         configurationsControl.plotConfList(level,dep);
-        plotNoPlaceList(level,dep,comp)
+        plotNoPlaceList(level,dep,comp);
+        plotOverPeopleDesk();
     });
 
     function plotNoPlaceList(level,dep,comp){
@@ -60,6 +63,18 @@
             })     
         }
     }
+
+    function plotOverPeopleDesk(){
+            d3.json(server + "getOverOccupiedDesk/", function(person){
+                for (var i=0;i<person.length;i++){
+                         $("<tr><td>"+person[i].name + "</td><td>" + person[i].firstname + '</td><td>'+person[i].lastname+'</td></tr>').insertAfter($('.table-overDesk'));       
+                }  
+            });
+    }
+
+    
+
+
     // print popin to add a new configuration
     $("#add-title").click(function (event) {
         if(configurationsControl.isPopin !== true){
@@ -129,12 +144,20 @@
 
     $("#plot-noplace").click(function () {
         d3.select("#conf-block").style("display","none");
+        d3.select("#overDesk-block").style("display","none");
         d3.select("#noplace-block") .style("display","");
     });
 
 
     $("#plot-config").click(function () {
         d3.select("#conf-block").style("display","");
+        d3.select("#overDesk-block").style("display","none");
+        d3.select("#noplace-block").style("display","none");
+    });
+
+    $("#plot-overDesk").click(function () {
+        d3.select("#conf-block").style("display","none");
+        d3.select("#overDesk-block").style("display","");
         d3.select("#noplace-block").style("display","none");
     });
     

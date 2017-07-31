@@ -45,12 +45,12 @@ var mapControl = {
 				//to load pin on own position
 				if (mapName===myMap){
 					var myTable = d3.selectAll("#tables").select("#"+myDesk);
-        			var myX = myTable.select("rect").attr("x")-10;
-					var myY = myTable.select("rect").attr("y")-40;					        		
+        			var myX = myTable.select("rect").attr("x")-5;
+					var myY = myTable.select("rect").attr("y")-17;					        		
         			myTable.append("image")
           		  		.attr("xlink:href", "./img/pin_home.png")
-           		 		.attr("width", "40")
-           		 		.attr("height", "75")
+           		 		.attr("width", "23")
+           		 		.attr("height", "45")
            		 		.attr("x", myX)
            		 		.attr("y", myY-5);
 				}
@@ -90,8 +90,8 @@ var mapControl = {
 
 						wholeMap.on("dblclick.zoom", null);
 					});
-				var svg = d3.select("#whole-map")
-					.select("svg").call(zoom);
+				/*var svg = d3.select("#whole-map")
+					.select("svg").call(zoom);*/
 				
 			  
 				// for each people, search his table
