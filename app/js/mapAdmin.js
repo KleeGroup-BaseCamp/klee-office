@@ -1,4 +1,4 @@
-'use strict';
+//<![CDATA[
 
 var selectedElement = 0;
 var currentX = 0;
@@ -17,11 +17,13 @@ function selectElement(evt) {
     for(var i=0; i<currentMatrix.length; i++) {
         currentMatrix[i] = parseFloat(currentMatrix[i]);
      } 
+    selectedElement.setAttributeNS(null, "onmousemove", "moveElement(evt)"); 
     selectedElement.setAttributeNS(null, "onmouseout", "deselectElement(evt)");
     selectedElement.setAttributeNS(null, "onmouseup", "deselectElement(evt)");
 }
 
 function moveElement(evt){
+  console.log("moveElement");
   dx = evt.clientX - currentX;
   dy = evt.clientY - currentY;
   currentMatrix[4] += dx;
@@ -34,6 +36,10 @@ function moveElement(evt){
 }
 
 function deselectElement(evt){
+    console.log("deselectElement");
+    console.log("x = " + selectedElement.getAttribute("x"));
+    console.log("y = " + selectedElement.getAttribute("y"));
+    console.log("matrix = " + selectedElement.getAttribute("transform").split(/\(/)[1].split(/\s/));
   if(selectedElement != 0){
     selectedElement.removeAttributeNS(null, "onmousemove");
     selectedElement.removeAttributeNS(null, "onmouseout");
@@ -46,7 +52,7 @@ $("#mode-admin").click(function(){
     /*d3.select("#whole-map").select("svg").on("zoom",null)
         .scale(1)
         .translate([0,0]);*/
-    var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g");
+    var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("rect");
     desk.classed("draggable", true)
         .attr("cursor","move")
         .style("cursor","")
@@ -54,3 +60,5 @@ $("#mode-admin").click(function(){
         .attr("onmousedown","selectElement(evt)");
     
 });
+
+//]]>
