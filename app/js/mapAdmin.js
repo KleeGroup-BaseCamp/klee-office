@@ -36,11 +36,32 @@ function moveElement(evt){
 }
 
 function deselectElement(evt){
+    var valX = selectedElement.getAttribute("x");
+    var valY = selectedElement.getAttribute("y")
+    var dX = selectedElement.getAttribute("transform").split(/\(/)[1].split(/\s/)[4];
+    var dY = selectedElement.getAttribute("transform").split(/\(/)[1].split(/\s/)[5].split(/\)/)[0];
+    var parseX = new Number(dX);
+    var parseY = new Number(dY);
+    var parsevalX = new Number(valX);
+    var parsevalY = new Number(valY);
+    var newX = parsevalX + (parseX);
+    var newY = parsevalY + (parseY);
+    
     console.log("deselectElement");
-    console.log("x = " + selectedElement.getAttribute("x"));
-    console.log("y = " + selectedElement.getAttribute("y"));
-    console.log("matrix = " + selectedElement.getAttribute("transform").split(/\(/)[1].split(/\s/));
-  if(selectedElement != 0){
+    console.log(selectedElement);
+    console.log("ParseX : " + parseX);
+    console.log("ParseX : " + parseY);
+    console.log("x = " + valX);
+    console.log("y = " + valY);
+    console.log("matrix dX = " + dX);
+    console.log("matrix dY = " + dY);
+    console.log("newX = " + newX);
+    console.log("newY = " + newY);
+    
+  if(selectedElement != 0){ 
+    /*selectedElement.setAttribute("x",newX);  
+    selectedElement.setAttribute("x",newY);*/ 
+    /*d3.select(selectedElement).attr("x",newX).attr("y",newY);*/
     selectedElement.removeAttributeNS(null, "onmousemove");
     selectedElement.removeAttributeNS(null, "onmouseout");
     selectedElement.removeAttributeNS(null, "onmouseup");
@@ -59,6 +80,20 @@ $("#mode-admin").click(function(){
         .attr("transform","matrix(1 0 0 1 0 0)")
         .attr("onmousedown","selectElement(evt)");
     
+});
+
+$("#dl-button").click(function(){
+    d3.select("#whole-map").select("svg").selectAll("g").select("image").remove();
+    var svgData = document.getElementsByClassName("map")[0].outerHTML;
+    console.log(svgData);
+    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = "testmap.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 });
 
 //]]>

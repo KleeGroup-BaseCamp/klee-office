@@ -1096,22 +1096,22 @@ input[readonly] {
     
     z-index: 1;
 }
-#config-buttons{
+#config-buttons, #admin-buttons{
     position: relative;
     left : 50%;
     top: 50%;
 }
-#config-buttons button{
+#config-buttons button, #admin-buttons button{
     margin: 10px;
     height: auto;
-    width: 20%;
+    width: auto;
     font-size: 120%;
     border-radius: 20px;
     background-color:black; 
     color: white;
     border: none;
 }
-#config-buttons button:hover{
+#config-buttons button:hover, #admin-buttons button:hover{
     background-color:white; 
     color: black;
 }
