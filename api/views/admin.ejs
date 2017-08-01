@@ -143,27 +143,17 @@
                         </td>
                         <td id="td-legend">
                             <table id="legend">
-                                <tr>
-                                    <td>
-                                        <svg width="30" height="15">
-                                            <rect width="30" height="15" style="fill:#ff9900"></rect>
-                                        </svg>
-                                    </td>
-                                    <td>
-                                        <svg width="30" height="15">
-                                            <rect width="30" height="15" style="fill:#99ff99"></rect>
-                                        </svg>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Occupé</td>
-                                    <td>Libre</td>
-                                </tr>
                                <tr>
-                                   <td align="center"><button id="mode-admin">Mode Admin</button></td>
+                                   <td align="center"><button id="mode-admin">Mode Admin</button><button id="quit-admin">Terminer</button></td>
+                                </tr>
                                 <tr>
                                    <td align="center"><button id="dl-button">Télécharger</button></td>
                                 </tr>
+                                <tr>
+                                   <td align="center"><input id="upload-file" type="file" /></td>
+                                </tr>
+                                <tr>
+                                    <progress id="upload-progress"></progress>
                                 </tr>
                             </table>
                         </td>                        
