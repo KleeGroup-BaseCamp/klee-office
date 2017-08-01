@@ -12,6 +12,7 @@ var MoveLine = models.MoveLine;
 var Desk = models.Desk;
 var MoveSet = models.MoveSet;
 var MoveStatus = models.MoveStatus;
+var Site=models.Site;
 
 // libs
 var fs = require("fs");
@@ -20,23 +21,27 @@ var fs = require("fs");
  * List all move_set (configurations)
  */
 const getAllMoveSet = (req, res) => {
-    models.sequelize.query(
-        'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id ' +
+        models.sequelize.query(
+        'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id,set.\"dateUpdate\" as date ' +
         'FROM \"MoveSet\" as set ' +
-        'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id', { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
+        'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id '+
+        'ORDER BY date;'
+        , { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
             res.json(conf);
         });
 }
 
 const getMoveSetById = (req,res) => {
         models.sequelize.query(
-        'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id ' +
+        'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id,set.\"dateUpdate\" as date ' +
         'FROM \"MoveSet\" as set ' +
-        'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id'
-        , { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
+        'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id '+
+        'WHERE set_id= :id ;'
+        , { replacements : {id: req.params.confId}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
             res.json(conf);
         });
 }
+
 /**
  * get number of movings for a configuration
  */
@@ -213,12 +218,17 @@ const addNewMoveSet = (req, res) =>{
     }
     firstname=firstname.substring(0,firstname.length-1)
     lastname=lastname.substring(0,lastname.length-1)
-    models.sequelize.query(
-        'INSERT INTO \"MoveSet\"(name, creator,\"dateCreation\",\"dateUpdate\",status_id,creator_id) '+
-        'VALUES(:name, :creator, :date, :date, (SELECT sta_id FROM \"MoveStatus\" WHERE name = :status), (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname)) RETURNING set_id, name;'
-    ,{replacements:{name:req.body.name, creator:req.body.creator,date:new Date(),status:"Brouillon",firstname:firstname,lastname:lastname},type :models.sequelize.QueryTypes.INSERT})
-    .then(function(newset){
-        res.json(newset)
+    MoveStatus.findOne({where:{name:"Brouillon"}})
+    .then(function(status){
+        Person.findOne({where:{firstname:firstname,lastname:lastname}})
+        .then(function(creat){
+            MoveSet.create({name:req.body.name, creator:req.body.creator, dateUpdate :new Date(), status_id :status.dataValues.sta_id,creator_id:creat.dataValues.per_id})
+            .then(function(newset){
+                console.log('redirect')
+                console.log('/modify'+newset.dataValues.set_id)
+                res.redirect('/modify'+newset.dataValues.set_id);
+            })
+        })
     })
 }
 
@@ -233,16 +243,52 @@ const deleteMoveLine =(req,res) =>{
         'DELETE FROM \"MoveLine\" '+
         'WHERE move_set_id= :confId '+
         'AND person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname);'
-    ,{replacements:{confId:req.params.confId,firstname:req.params.firstname,lastname:req.params.lastname},type :models.sequelize.QueryTypes.DELETE})
+    ,{replacements:{confId:req.body.confId,firstname:req.body.firstname,lastname:req.body.lastname},type :models.sequelize.QueryTypes.DELETE})
+    res.redirect('/');
 }
 
 const addMoveLine =(req,res) =>{
-    var fromDesk=req.params.fromDesk,
-        toDesk=req.params.toDesk;
-    models.sequelize.query(
-        'INSERT INTO \"MoveLine\"(\"dateCreation\",status,move_set_id,person_id,fromDesk,toDesk) '+
-        'VALUES(:date,:sta,:confId, SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname, :fromDesk, :toDesk;'
-    ,{replacements:{date:new Date(),confId:req.params.confId,sta:"fromDesk:"+fromDesk+",toDesk:"+toDesk,firstname:req.params.firstname,lastname:req.params.lastname, fromDesk:null, toDesk:null},type :models.sequelize.QueryTypes.INSERT})
+    var confId=req.body.confid;
+    var fromLocation=req.body.fromdesk,
+        toLocation=req.body.todesk;
+    var fromDeskId=null,toDeskId=null;
+
+    var fromSite=fromLocation.split(' : ')[0],
+        fromDesk=fromLocation.split(' : ')[1];
+    var toSite=toLocation.split(' : ')[0],
+        toDesk=toLocation.split(' : ')[1];
+    console.log(fromSite,fromDesk,toSite,toDesk)
+    //find desks id
+    Person.findOne({where:{firstname:req.body.firstname,lastname:req.body.lastname}})
+    .then(function(person){
+        Desk.findOne({where:{person_id:person.dataValues.per_id,name:fromDesk}})
+            .then(function(from){
+                    fromDeskId=from.dataValues.des_id;
+            })
+        .then(function(){
+            Site.findOne({where:{name:toSite}})
+            .then(function(tosite){
+                if (toDesk!="aucun" && toDesk!="externe"){
+                    Desk.findOrCreate({where:{name:toDesk,site_id:tosite.dataValues.sit_id},default:{name:toDesk, building :toDesk[0],floor:toDesk[1],site_id:tosite.dataValues.sit_id}})
+                    .then(function(to){
+                        if (to!=undefined && to!=null && to!=''){
+                            toDeskId=to[0].dataValues.des_id;
+                            MoveLine.create({dateCreation:new Date(),status:"moveline brouillon", move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
+                        }   
+                    })
+                }else{
+                    Desk.create({name:toDesk, site_id:tosite.dataValues.sit_id})
+                    .then(function(to){
+                        if (to!=undefined && to!=null && to!=''){
+                            toDeskId=to.dataValues.des_id; 
+                            MoveLine.create({dateCreation:new Date(),status:"moveline brouillon", move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
+                        }
+                    })            
+                }
+            })
+        })   
+    })
+    res.redirect('/');
 }
 
 /**
@@ -305,16 +351,24 @@ const formerPersonByDeskId = (req,res) => {
  * people data
  * res : json containing all the data
  */
+const updateMoveSet =(req,res) =>{
+    models.sequelize.query(
+        'UPDATE \"MoveSet\" SET \"dateUpdate\"= :date '+
+        'WHERE set_id= :confId;'
+    ,{replacements:{confId:req.params.confId,date: new Date()},type :models.sequelize.QueryTypes.UPDATE})
+    res.redirect('/');
+}
+
 const getRecapOfMoveline = (req, res) => {
     models.sequelize.query(
         'SELECT sitedepart.name || :yt || depart.name as depart, sitearrivee.name || :yt || arrivee.name as arrivee, \"Person\".firstname, \"Person\".lastname ' +
         'from \"MoveLine\" ' +
         'join \"Person\" on \"Person\".per_id = \"MoveLine\".person_id ' +
-        'join \"Desk\" as depart on depart.des_id = \"MoveLine\".\"fromDesk\" ' +
-        'join \"Desk\" as arrivee on arrivee.des_id = \"MoveLine\".\"toDesk\" ' +
-        'JOIN \"Site\" as sitedepart ON  sitedepart.sit_id = depart.site_id '+
-        'JOIN \"Site\" as sitearrivee ON  sitearrivee.sit_id = depart.site_id '+
-        'where \"MoveLine\".move_set_id = :setid '
+        'LEFT JOIN \"Desk\" as depart on depart.des_id = \"MoveLine\".\"fromDesk\" ' +
+        'LEFT JOIN \"Desk\" as arrivee on arrivee.des_id = \"MoveLine\".\"toDesk\" ' +
+        'LEFT JOIN \"Site\" as sitedepart ON  sitedepart.sit_id = depart.site_id '+
+        'LEFT JOIN \"Site\" as sitearrivee ON  sitearrivee.sit_id = arrivee.site_id '+
+        'WHERE   \"MoveLine\".move_set_id = :setid '
         , { replacements: { yt: " : ", setid: req.params.id },
             type: models.sequelize.QueryTypes.SELECT
         })
@@ -372,5 +426,6 @@ module.exports = {
     //formerPersonByDeskId,
     getRecapOfMoveline,
     getNoPlacePersonByBusUnit,
-    getNoPlacePersonByCompany    
+    getNoPlacePersonByCompany,
+    updateMoveSet    
 }
