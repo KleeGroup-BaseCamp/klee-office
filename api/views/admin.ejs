@@ -55,7 +55,10 @@
     <header>
         <div id="navigation-bar" class="container">
 
-            
+            <div id="admin-buttons">   
+                <button id="plot-valid">Administration des validateurs</button>
+                 <button id="plot-plans">Administration des plans</button>
+            </div>
         </div>
     </header>
 
@@ -65,9 +68,9 @@
             <p class="flash-err"><%- message %></p>
             <% } %>
         </div>
-        <div id="admin-bar" class="container">
+        <!--div id="admin-bar" class="container">
             <h2 id="action-title" class="center">Administration</h2>
-        </div>
+        </div-->
         <div id="error-admin"></div>
         <div class="list-validators">
             <table id="table-validators">
@@ -92,7 +95,75 @@
                 </thead>
             </table>
         </div>
+
+        <!-- Affichage plans -->
+        <div id="plans-block">
+        <div>
+            <% if (message) { %>
+            <p class="flash-success"><%- message %></p>
+            <% } %>
+        </div>
+        <div class="container">
+            <div id="navigation">
+                <div id="menu-withoutresult">
+                    <br/>
+                    <h3 id="boursidiere" class="site">La Boursidière</h3>
+                    <ul id="etages_withoutResult">
+                        <li class="list_etage" id ="N0_withoutResult">Etage N0</li>
+                        <li class="list_etage" id ="N1_withoutResult">Etage N1</li>
+                        <li class="list_etage" id ="N2_withoutResult">Etage N2</li>                  
+                        <li class="list_etage" id ="N3_withoutResult">Etage N3</li>                                         
+                        <li class="list_etage" id ="N4_withoutResult">Etage N4</li>                    
+                        <li class="list_etage" id ="O1_withoutResult">Etage O1</li>                                             
+                        <li class="list_etage" id ="O2_withoutResult">Etage O2</li>                    
+                        <li class="list_etage" id ="O3_withoutResult">Etage O3</li>                    
+                        <li class="list_etage" id ="O4_withoutResult">Etage O4</li>                   
+                    </ul>
+                    <h3 id="Issy-les-Moulineaux" class="site">Issy-les-Moulineaux</h3>
+                    <h3 id="le_mans" class="site">Le Mans</h3> 
+                    <h3 id="Lyon" class="site">Lyon</h3>
+                    <h3 id="Bourgoin-Jailleux" class="site">Bourgoin-Jailleux</h3>
+                    <h3 id="Montpellier" class="site">Montpellier</h3> 
+                    <h3 id="sur_site_client" class="site">Sur site client</h3>
+                </div>
+                            
+            </div>
+            
+            <div id="map-show">
+                <div class="map-extern">
+                </div>
+                <table id="map-info">
+                    <tr>
+                        <td>
+                            <div id="whole-map">
+                                <div id= "map-name"></div>
+                                <div class ="tooltip_map_desk_empty"></div>
+                                <div class ="tooltip_map_desk"></div>
+                                <svg class="map"></svg>
+                        </td>
+                        <td id="td-legend">
+                            <table id="legend">
+                               <tr>
+                                   <td align="center"><button id="mode-admin">Mode Admin</button><button id="quit-admin">Terminer</button></td>
+                                </tr>
+                                <tr>
+                                   <td align="center"><button id="dl-button">Télécharger</button></td>
+                                </tr>
+                                <tr>
+                                   <td align="center"><input id="upload-file" type="file" /></td>
+                                </tr>
+                                <tr>
+                                    <progress id="upload-progress"></progress>
+                                </tr>
+                            </table>
+                        </td>                        
+                    </tr>  
+                </table>
+            </div>
     </div>
+    </div>
+    <!-- Affichage des plans -->
+
 </div>
 
 
@@ -106,6 +177,10 @@
 <!--script src="js/autocomplete.js"></script-->
 <script type="text/javascript" src="js/buildAdminScreen.js"></script>
 <script type="text/javascript" src="js/controlAccount.js"></script>
+<script src="js/globalMapControl.js"></script>
+<script type="text/javascript" src="js/justPlotMap.js"></script>
+<script type="text/javascript" src="js/clickAndPlot.js"></script>
+<script type="text/javascript" src="js/mapAdmin.js"></script>
 
 </body>
 </html>
