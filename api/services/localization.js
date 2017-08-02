@@ -9,6 +9,7 @@ var Desk = models.Desk;
 var MoveSet = models.MoveSet;
 var MoveLine = models.MoveLine;
 var MoveStatus = models.MoveStatus;
+var Site=models.Site;
 
 /**
  * get the current office of a person
@@ -112,10 +113,15 @@ const saveMyLocalization = (req, res) => {
                             creator_id: perId})
                             .then(function (set) {                                   
                                 if (former_person !==null && former_person !==undefined && former_person !=="" ){
-                                    models.sequelize.query('INSERT INTO "Desk"(name, "dateUpdate",site_id,person_id) VALUES '+
-                                    '(:name , :dateupdate, (SELECT sit_id FROM "Site" WHERE name= :site) , :person_id);',
-                                    { replacements: {name:"aucun",dateupdate:new Date(),person_id:former_person, site: "La Boursidière"}, type: models.sequelize.QueryTypes.INSERT})
-                                    MoveLine.create({dateCreation : new Date(), status :"ejection", person_id:former_person, fromDesk:toDeskId,toDesk:null, move_set_id:set.dataValues.set_id})
+                                    Site.findOne({where:{name:"La Boursidière"}})
+                                    .then(function(site){
+                                        console.log(site)
+                                        Desk.create({name:"aucun",dateUpdate:new Date(),site_id:site.dataValues.sit_id,person_id:former_person})
+                                        .then(function(des){
+                                            console.log(des);
+                                            MoveLine.create({dateCreation : new Date(), status :"ejection", move_set_id:set.dataValues.set_id, person_id:former_person, fromDesk:toDeskId, toDesk:des.des_id})
+                                        })
+                                    })
                                 }
                                 // insert new move line
                                 MoveLine.create({

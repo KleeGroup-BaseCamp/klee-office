@@ -115,15 +115,10 @@
         $(document).on('submit', '#formNewConfig', function(){
             var name = $('#name').val();
             var creator = $('#creator').val();
-            $.ajax ({
-                url: 'addNewConfiguration',
-                type: "POST",
-                data: {name: name, creator: creator},
-                success: function(res) {
-                    console.log(res)
-                    window.location.href = server//+"modify"+data[0].set_id
-                }
-            });
+            d3.json(server +"addNewConfiguration", function(){
+                console.log("save my new config !")})
+                .header("Content-Type","application/json")
+                .send("POST", JSON.stringify({'name': name, 'creator': creator}));  
         })
         
         jQuery('html,body').animate({scrollTop:0},0);

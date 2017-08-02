@@ -11,16 +11,17 @@ var configurationsControl = {
     isPopin: false,
     plotConfList: function (level,dep){
         console.log("level"+level+" dep"+dep)
-        d3.json(server + "getConfByDep/"+dep, function(dataset){
-            var dateCrea;
+        d3.json(server + "getAllConf/", function(dataset){
+            var dateCrea,link='configurations';
             dataset.forEach(function(data){
-                if(data.dateCreation !== null && data.dateCreation !== undefined && data.dateCreation !== ""){
-                    dateCrea = data.dateCreation.split(" ")[0];
+                if(data.date!== null && data.date !== undefined && data.date !== ""){
+                    dateCrea = data.date.split(" ")[0];
                 } else {
-                    dateCrea = data.dateCreation;
+                    dateCrea = data.date;
                 }
+
                 $('<tr>' +
-                    '<td class="action-one "><div class="modify"><a href="/modify' +  data.set_id + '" ><p id="modif-' + data.set_id + '"></p></a></div>' +
+                    '<td class="action-one "><div class="modify"><p id="modif-' + data.set_id + '"></p></div>' +
                     '</td>' +
                     '<td class="action-two "><div class="print"><p id="print-' + data.set_id + '"></p></div>' +
                     '</td>' +
@@ -42,6 +43,10 @@ var configurationsControl = {
                 d3.json(server + "getAllMovingsByConfIdCount/"+data.set_id, function(movings){
                     document.getElementById("conf-"+data.set_id).getElementsByTagName("p")[0].innerHTML = movings[0].count;
                 });
+                $("#modif-"+data.set_id).click(function(event) {
+                    console.log('yo')
+                    window.location.href='modify' + data.set_id;
+                });
 
                 // print button
                 $("#print-"+data.set_id).click(function(event) {
@@ -55,7 +60,6 @@ var configurationsControl = {
 
                 // delete button
                 $("#delete-"+data.set_id).click(function(event){
-                    console.log("plap");
                     event.stopPropagation();
                     $.ajax({
                         url: 'deleteConfiguration/'+data.set_id,

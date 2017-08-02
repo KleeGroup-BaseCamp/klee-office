@@ -555,6 +555,7 @@ table #personal-desk {
 }
 .info-recherche p{
     text-align: center;
+    font-size:18px;
 }
 
 .info-bar{
@@ -954,6 +955,11 @@ input[readonly] {
     color: white;
     border: none;
     display:inline;
+    position:relative;
+    margin:20px;
+}
+#add-title p{
+    margin-left:8px;
 }
 .field, .disabled-field {
     color: #505050;
@@ -1055,6 +1061,11 @@ input[readonly] {
     min-width: 300px;
     margin:5px;
 }
+#recap-conf table .new-row{
+    font-weight:bold;
+    font-style:italic;
+}
+
 #recap-conf .delete-moveline{
     background: url("/img/crossDelete.png");
     background-repeat: no-repeat;
@@ -1186,20 +1197,38 @@ header #text-conf button a{
     
     z-index: 1;
 }
-#config-buttons, #admin-buttons{
+.all-conf-block{
+    z-index:2;
+    position:relative;
+}
+#table-conf-list td{
+    z-index:1;
+}
+#table-conf-list #left-photo{
+    left:20px;
+    width:110%;
+}
+#table-conf-list #right-photo{
+    left:150%;
+    width:110%;
+}
+
+#config-buttons{
+    display: block;
     position: relative;
-    left : 50%;
-    top: 50%;
+    left: 375px;
+    top:-70px;
 }
 #config-buttons button, #admin-buttons button{
     margin: 10px;
     height: auto;
-    width: auto;
+    width: 380px;;
     font-size: 120%;
     border-radius: 20px;
     background-color:black; 
     color: white;
     border: none;
+    display:block;
 }
 #config-buttons button:hover, #admin-buttons button:hover{
     background-color:white; 

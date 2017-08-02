@@ -160,12 +160,7 @@ var mapControl = {
 												.duration(500)
 												.style("opacity", 0)
 												.style("z-index", -1);
-										})
-								
-
-
-
-												
+										})		
 									}		
 							
 								}

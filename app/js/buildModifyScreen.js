@@ -7,9 +7,10 @@
     //var server= "http://local-map/"
     var people = [];            //contains data about every person
     var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","Sur site client"];
-    var mapNames = ["N0", "N1", "N2", "N3", "N4", "O4", "O3", "O2","O1"];
     var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
     var newConfig=[];
+    var cpt_move=1;
+    var view_access=false;
     var configId=window.location.href.split('modify')[1]
     function fillMyData(myData,callback){
         d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(err, res){
@@ -49,8 +50,39 @@
         lastname=lastname.substring(0,lastname.length-1)
         return([firstname,lastname])
     }
-
+    function plotTable(){
+        cpt_move=1;
+        $('#table-to-fill > tbody').empty();
+        newConfig=[];
+        d3.json(server + "getRecapOfMovings/"+configId, function(movelines){
+            for (var i=0;i<movelines.length;i++){
+                var text='';
+                newConfig.push([movelines[i].firstname,movelines[i].lastname,movelines[i].depart,movelines[i].arrivee,"former-row",cpt_move])
+                if (view_access==true){
+                    text="<tr class=\"former-row\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>"
+                }else{
+                    text="<tr class=\"former-row\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td></tr>"
+                }
+                $(text).appendTo("#table-to-fill")
+                cpt_move+=1;
+            }
+            $("#nb-people-new-conf").html(newConfig.length) 
+        });
+    }
     function preparePlot() {
+        d3.json(server + "getConfById/"+configId, function(dataset){
+            console.log(dataset[0].state)
+            $("#conf-status").html(dataset[0].state)
+            if (dataset[0].state=="Brouillon"){
+                view_access=true;
+                d3.select("#recap-conf").selectAll('button').style('visibility','visible')
+                $("#text-conf").html("Veuillez rechercher la personne à déplacer")
+            }else{
+                d3.select("#recap-conf").selectAll('button').style('visibility','hidden')
+                $("#text-conf").html("Cette configuration n'est pas modifiable")
+                $('#table-to-fill th:nth-child(5)').hide();
+            }
+        })
         var mapName="N0";
         if(!mapControl.existMap) {
             // erase all maps' overview
@@ -66,29 +98,9 @@
             mapControl.mapPlot(myData,mapName, false, function() {});
             mapControl.existMap = true;
         }
-        $("#text-conf").html("Veuillez rechercher la personne à déplacer")
         d3.select("#menu-withoutresult").style("display","");
-        d3.select("#menu-conf").style("display","none");
-        d3.json(server + "getRecapOfMovings/"+configId, function(movelines){
-            console.log(movelines)
-            for (var i=0;i<movelines.length;i++){
-                newConfig.push([movelines[i].firstname,movelines[i].lastname,movelines[i].depart,movelines[i].arrivee])
-                $("<tr><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>").appendTo("#table-to-fill")
-            }  
-            $('.delete-moveline').click(function(event){
-                console.log(event.target.parentNode.childNodes)
-                console.log(configId)
-                $.ajax({
-                        url: "deleteMoveline/"+configId+'/'+event.target.parentNode.childNodes[1].innerText+'/'+event.target.parentNode.childNodes[0].innerText,
-                        type: 'DELETE',
-                        success: function(result) {
-                          window.location.href = server+"configurations/"+configId;
-                        }
-                });
-            })  
-        });
-                
-
+        d3.select("#menu-conf").style("display","none");               
+        plotTable();
     }
     preparePlot();
 
@@ -103,7 +115,7 @@
                     newsite=sitesExterne[i];
                 }
             }
-            validateSite(newsite);
+            validateSite(name,newsite);
         }
     }
     function chooseArea(name){
@@ -125,12 +137,10 @@
     function validateDesk(name){
         //need to choose a new desk
 	    var allTables = d3.select("#tables").selectAll("g")
-        console.log(allTables)
         allTables.style("cursor", "pointer")
         allTables.on("click", function(){
 			var newDesk = d3.event.target.parentNode.id;
             var newsite="La Boursidière";
-            console.log(newDesk)
             d3.json(server + "getPersonByDesk/"+newDesk, function(isDeskAvailable){
                     if (isDeskAvailable.length===0){
                         d3.select("#text-conf").html("Vous souhaitez déplacer "+name+" au bureau "+newDesk
@@ -152,7 +162,7 @@
         //document.getElementById("can-conf-move").addEventListener("click", function() {event.stopPropagation()})
         return
     }
-    function validateSite(newsite){ 
+    function validateSite(name,newsite){ 
         d3.select("#text-conf").html("Vous souhaitez déplacer "+name+" sur le site "+newsite
                             +"<br/>Voules-vous ajouter ce déplacement à la configuration ?</br>"+
                             "<button id=\"val-conf-move\" >Valider</button>"+
@@ -162,22 +172,27 @@
     function validateMove(name,site,desk){
         var firstname=getnames(name)[0];
         var lastname=getnames(name)[1];
+        console.log(name+'/'+site+'/'+desk)
         d3.json(server + "currentOfficeName/"+firstname+'/'+lastname, function(formerDesk){
             var formerLocation=''
             if (formerDesk[0].site!="La Boursidière"){
                 formerLocation=formerDesk[0].site
             }else {formerLocation=formerDesk[0].site+' : '+formerDesk[0].name}
-            newConfig.push([firstname,lastname,formerLocation,site+' : '+desk])
-            $("<tr><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>").appendTo("#table-to-fill")
-        });
-        d3.json(server + "getPersonByDesk/"+desk, function(isDeskAvailable){
-            if (isDeskAvailable.length!==0){
-                console.log(isDeskAvailable)
-                newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière  : "+desk,"La Boursidière  : aucun"])
-                $("<tr><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>").appendTo("#table-to-fill")
-            }
+            newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row",cpt_move])
+            $("<tr class=\"new-row\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>").appendTo("#table-to-fill")
             $("#nb-people-new-conf").html(newConfig.length)
         });
+        if (desk!=="externe" && desk!=="aucun"){
+            d3.json(server + "getPersonByDesk/"+desk, function(isDeskAvailable){
+                if (isDeskAvailable.length!==0){
+                    console.log(isDeskAvailable)
+                    newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière  : "+desk,"La Boursidière  : aucun","new-row",cpt_move])
+                    $("<tr class=\"new-row\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>").appendTo("#table-to-fill")   
+                    $("#nb-people-new-conf").html(newConfig.length)
+                }
+            });
+        }
+        cpt_move+=1;
         $("#text-conf").html("Veuillez rechercher la personne à déplacer")
     }
 
@@ -205,6 +220,7 @@
 
             // suggestion.data example: 
             //      { "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }
+            
             d3.select("#menu-withoutresult").style("display","none");
             d3.select("#menu-conf").style("display","");
             
@@ -221,8 +237,7 @@
                     desk="aucun";
                     mapName="None";
                 }
-                d3.select("#text-conf").html(suggestion.data.cn+' est localisé '+location+'</br>Sélectionnez son nouvel emplacement')
-                
+                               
                 if (mapName!="None"){
                     d3.selectAll(".site-conf").style("font-weight","normal");
                     d3.selectAll("#etages_conf").style("font-weight","normal");
@@ -263,19 +278,18 @@
                         });
                         mapControl.existMap = true;
                     }
-
                 }
-                else{validateDesk(suggestion.data.cn[0])
+                else{if (view_access==true){validateDesk(suggestion.data.cn[0])}
                 }
-
+                if (view_access==true){
+                d3.select("#text-conf").html(suggestion.data.cn+' est localisé '+location+'</br>Sélectionnez son nouvel emplacement')
                 d3.selectAll(".site-conf").on("click",function() {
                     chooseSite(suggestion.data.cn[0]);
                 });
                 d3.selectAll("#etages_conf").on("click",function() {
                     chooseArea(suggestion.data.cn[0])
-                });
-
-
+                }); 
+                }else{d3.select("#text-conf").html(suggestion.data.cn+' est localisé '+location)}
             }
  
         }
@@ -286,8 +300,42 @@
          window.location.href = server+"configurations";
     });
     $('#val-conf').click(function(event){
-        console.log('save the movelines')
+        console.log(newConfig)
+        for (var i=0;i<newConfig.length;i++){
+            if (newConfig[i][4]=="new-row"){
+                var data={confid:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],fromdesk:newConfig[i][2],todesk:newConfig[i][3]};
+                $.post(server +"addMoveLine",data,function(res,success){
+                    console.log('boum')
+
+                })
+            }
+        }
+        d3.select("#recap-conf").selectAll(".new-row").attr("class","former-row")
+        $.ajax({
+            url: "updateMoveSet/"+configId,
+                type: 'POST',
+                complete : function(res,stat){
+                        console.log('update dateUpdate moveset')
+                    }
+        });
+        
+        event.stopPropagation();
     })
+    $(document).on('click', '.delete-moveline', function(event){
+        console.log(event.target.parentNode)
+        console.log(configId)
+        if (event.target.parentNode.className=="former-row"){
+            var data={confId:configId,firstname:event.target.parentNode.childNodes[1].innerText,lastname:event.target.parentNode.childNodes[0].innerText}
+            d3.json(server +"deleteMoveline", function(){
+                console.log("save my new desk !")
+                plotTable()
+            })
+            .header("Content-Type","application/json")
+            .send("POST", JSON.stringify(data));  
+        }
+        
+    })
+ 
 
 
 }(window));
