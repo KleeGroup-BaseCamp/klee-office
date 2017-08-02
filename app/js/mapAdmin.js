@@ -133,7 +133,7 @@ fileInput.addEventListener('change', function() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open('POST', 'http://localhost:3000/'); //erreur !!
+    xhr.open('POST', 'http://localhost:3000/admin'); //erreur !!
 
     xhr.upload.addEventListener('progress', function(e) {
         progress.value = e.loaded;
