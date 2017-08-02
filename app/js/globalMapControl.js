@@ -136,7 +136,6 @@ var mapControl = {
 											yPosition = event.pageY;
 											// get scroll pixels to correct tooltip's yPostion
 											yPosition += $(window).scrollTop();
-											console.log(d3.select('#'+data.deskname)[0][0].childNodes[0].x)
 											tooltip_desk.html(fullName + "<br/>"+ data.mail + "<br/>" + data.deskname)
 												.style("position","absolute")
 												.style("left",xPosition-250+ "px") //d3.select('#'+data.deskname)[0][0].childNodes[0].x.animVal.valueAsString

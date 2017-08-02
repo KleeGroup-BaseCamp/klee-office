@@ -55,9 +55,37 @@ var configurationsControl = {
 
                 // validate button
                 $("#validate-"+data.set_id).click(function(event) {
-                    window.location.href = server+"consistency" + data.set_id;
-                });
+                    console.log('click')
+                    console.log(configurationsControl.isPopin)
+                    if(configurationsControl.isPopin !== true){
+                        $('<div id="popin-val">'+
+                            '<h3>Voulez-vous confirmer la configuration suivante ?</h3>'+
+                            '<br><br><br>'+
+                            '<div id="popin-button">'+
+                                '<button class="submit" id="valider-conf" type="submit">Valider</button>'+
+                                '<button class="submit" id="valider-cancel" type="reset">Annuler</button>'+
+                            '</div>'+
+                        '</div>').insertAfter($('.two-columns'));
+                    }
+                    configurationsControl.isPopin = true;
+                    var today = new Date().toLocaleDateString();
+                    
+                    $("#popin-val").click(function (event) {
+                        event.stopPropagation();
+                    });
+                    $("#valider-conf").click(function () {
+                        $('#popin-val').remove();
+                        configurationsControl.isPopin = false;
+                    }); 
 
+                });
+                
+                $("html").click(function () {
+                    if(configurationsControl.isPopin === true){
+                        $('#popin-val').remove();
+                        configurationsControl.isPopin = false;
+                    }
+                });
                 // delete button
                 $("#delete-"+data.set_id).click(function(event){
                     event.stopPropagation();

@@ -240,6 +240,15 @@ const getLastMoveSet =(req,res) =>{
 
 const deleteMoveLine =(req,res) =>{
     models.sequelize.query(
+        'DELETE FROM \"Desk\" '+
+        'WHERE des_id IN (SELECT des_id FROM \"Desk\" '+
+        'JOIN \"MoveLine\" ON \"MoveLine\".\"toDesk\"=\"Desk\".des_id '+
+        'WHERE (\"Desk\".name= :auc OR \"Desk\".name= :ext) '+
+        'AND \"MoveLine\".move_set_id= :confId '+
+        'AND \"MoveLine\".person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname));'
+    ,{replacements:{confId:req.body.confId,firstname:req.body.firstname,lastname:req.body.lastname, auc:"aucun",ext:"externe"},type :models.sequelize.QueryTypes.DELETE})
+
+    models.sequelize.query(
         'DELETE FROM \"MoveLine\" '+
         'WHERE move_set_id= :confId '+
         'AND person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname);'
@@ -253,11 +262,10 @@ const addMoveLine =(req,res) =>{
         toLocation=req.body.todesk;
     var fromDeskId=null,toDeskId=null;
 
-    var fromSite=fromLocation.split(' : ')[0],
-        fromDesk=fromLocation.split(' : ')[1];
-    var toSite=toLocation.split(' : ')[0],
-        toDesk=toLocation.split(' : ')[1];
-    console.log(fromSite,fromDesk,toSite,toDesk)
+    var fromSite=fromLocation.split(/\s*:\s*/)[0],
+        fromDesk=fromLocation.split(/\s*:\s*/)[1];
+    var toSite=toLocation.split(/\s*:\s*/)[0],
+        toDesk=toLocation.split(/\s*:\s*/)[1];
     //find desks id
     Person.findOne({where:{firstname:req.body.firstname,lastname:req.body.lastname}})
     .then(function(person){
