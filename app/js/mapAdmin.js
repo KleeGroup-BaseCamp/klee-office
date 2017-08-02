@@ -3,6 +3,8 @@ var currentX = 0;
 var currentY = 0;
 var currentMatrix = 0;
 
+// --- function to select Desk Element ---- //
+
 function selectElement(evt) {
     console.log("selectElementEvt");
     selectedElement = evt.target;
@@ -20,6 +22,8 @@ function selectElement(evt) {
     selectedElement.setAttributeNS(null, "onmouseup", "deselectElement(evt)");
 }
 
+// --- function to move Desk Element ---- //
+
 function moveElement(evt){
   console.log("moveElement");
   dx = evt.clientX - currentX;
@@ -32,6 +36,8 @@ function moveElement(evt){
   currentX = evt.clientX;
   currentY = evt.clientY;
 }
+
+// --- function to deselect Desk Element ---- //
 
 function deselectElement(evt){
     var valX = selectedElement.getAttribute("x");
@@ -57,15 +63,14 @@ function deselectElement(evt){
     console.log("newY = " + newY);
     
   if(selectedElement != 0){ 
-    /*selectedElement.setAttribute("x",newX);  
-    selectedElement.setAttribute("x",newY); */
-    /*d3.select(selectedElement).attr("x",newX).attr("y",newY);*/
     selectedElement.removeAttributeNS(null, "onmousemove");
     selectedElement.removeAttributeNS(null, "onmouseout");
     selectedElement.removeAttributeNS(null, "onmouseup");
     selectedElement = 0;
   }
 }
+
+// --------- Enter to admin mode : Start changes to SVG map ------- //
 
 $("#mode-admin").click(function(){
     /*d3.select("#whole-map").select("svg").on("zoom",null)
@@ -81,6 +86,8 @@ $("#mode-admin").click(function(){
     
     
 });
+
+// ------ Leave Admin Mode :  Keep changes to SVG map ------ //
 
 $("#quit-admin").click(function(){
     console.log("gohan");
@@ -110,9 +117,12 @@ $("#quit-admin").click(function(){
     }
 });
 
+// ------ Download SVG map --------- //
+
 $("#dl-button").click(function(){
     d3.select("#whole-map").select("svg").selectAll("g").select("image").remove();
-    var svgData = document.getElementsByClassName("map")[0].outerHTML;
+    var svg1 = document.getElementsByTagName('svg')[1];
+    var svgData = svg1.outerHTML;
     console.log(svgData);
     var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
     var svgUrl = URL.createObjectURL(svgBlob);
@@ -125,8 +135,9 @@ $("#dl-button").click(function(){
     document.body.removeChild(downloadLink);
 });
 
+// -------- Upload SVG file ------- //
 
-var fileInput = document.querySelector('#upload-file'),
+/*var fileInput = document.querySelector('#upload-file'),
     progress = document.querySelector('#upload-progress');
 
 fileInput.addEventListener('change', function() {
@@ -149,6 +160,47 @@ fileInput.addEventListener('change', function() {
 
     xhr.send(form);
 
-}, false);
+}, false);*/
 
-    
+// ------ Add new desk on map ------- //
+
+$("#add-desk").click(function(){
+
+    var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
+    console.log(svg1);
+    var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+    $('<input id="add-desk-name" placeholder="Nom du bureau" onkeypress="if (event.keyCode == 13) alert("vegeta");">').prependTo($('#td-legend')); //à changer pour un mettre un input qui récupère l'id du nouveau bureau
+    newElement1.setAttribute("id","goten"); //modifier l'id pour pas que ce soit le même à chaque ajout
+    newElement1.setAttribute("class","available");
+    svg1.appendChild(newElement1);
+    if (newElement1){
+        var svg2 = document.getElementsByTagName('svg')[1].getElementById("goten");
+        var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+        newElement2.setAttribute("fill","#99ff99"); //Set path's data
+        newElement2.setAttribute("fill-opacity","0.66");
+        newElement2.setAttribute("cursor","pointer");
+        newElement2.setAttribute("width","12.776915");
+        newElement2.setAttribute("height","25.906563");
+        newElement2.setAttribute("x","930");
+        newElement2.setAttribute("y","375");
+        newElement2.setAttribute("stroke","black");
+        //newElement2.setAttribute("strokeWidth","5px");
+        svg2.appendChild(newElement2);}   
+});   
+
+// ------- Remove desk on map ------ //
+
+$("#rm-desk").click(function(){   
+
+    var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll(".available").selectAll("rect");
+    desk.classed("removable", true)
+        .attr("cursor","pointer")
+        .attr("onmousedown","removeElement(evt)");  
+});
+
+// ---- function to remove desk ----- //
+
+function removeElement(evt){
+    selectedElement = evt.target;
+    selectedElement.remove();
+}

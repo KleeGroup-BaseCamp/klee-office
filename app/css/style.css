@@ -624,10 +624,24 @@ table #personal-desk {
 #legend {
     text-align: center;
     margin-left:50px;
+        border: solid;
 }
+#legend td img {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;;
+}
+#legend td{
+    padding: 5px;
+}
+/*#add-desk {
+    width: 20px;
+    height: 20px;;
+}*/
 #td-legend{
     vertical-align: middle;
 }
+
 
 #legend #zoom{
     padding-top:5px;
