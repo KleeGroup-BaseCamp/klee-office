@@ -44,7 +44,6 @@ var configurationsControl = {
                     document.getElementById("conf-"+data.set_id).getElementsByTagName("p")[0].innerHTML = movings[0].count;
                 });
                 $("#modif-"+data.set_id).click(function(event) {
-                    console.log('yo')
                     window.location.href='modify' + data.set_id;
                 });
 
@@ -55,9 +54,92 @@ var configurationsControl = {
 
                 // validate button
                 $("#validate-"+data.set_id).click(function(event) {
-                    window.location.href = server+"consistency" + data.set_id;
-                });
+                    
+                    if(configurationsControl.isPopin !== true){
+                        if (data.state=="Brouillon"){
+                            $('<div id="popin-val">'+
+                            '<h3>Voulez-vous confirmer la configuration numéro '+data.set_id+'?</h3>'+
+                            '<p id="description-conf" >'+
+                                'Nom : '+data.name+'</br>'+
+                                'Créateur : '+data.creator+'</br>'+
+                                'Date de dernière mise à jour : '+new Date(data.date).toDateString()+
+                            '</p>'+
+                            '<div id="myrecap">'+
+                            '<table id="table-recap-conf"><thead>'+
+                                '<tr>'+
+                                    '<th>Nom</th>'+
+                                    '<th>Prénom</th>'+
+                                    '<th>Bureau actuel</th>'+
+                                    '<th>Bureau cible</th>'+
+                                '</tr>'+
+                            '</thead></table>'+
+                            '</div>'+
+                            '<div id="popin-button">'+
+                                '<button id="valider-conf" >Valider</button>'+
+                                '<button id="cancel-val">Annuler</button>'+
+                            '</div>'+
+                            '</div>').insertAfter($('.two-columns'));
+                            $("#valider-conf").click(function () {
+                                $('#popin-val').remove();
+                                configurationsControl.isPopin = false;
+                                $.ajax({
+                                    url: 'validateConfiguration',
+                                    type: 'POST',
+                                    data:{setid:data.set_id},
+                                    success: function(result) {
+                                        window.location.href = server+"configurations";
+                                    }
+                                });
+                            });
+                        }else{
+                            $('<div id="popin-val">'+
+                            '<h3>La configuration numéro '+data.set_id+' est déjà validée</h3>'+
+                            '<p id="description-conf" >'+
+                                'Nom : '+data.name+'</br>'+
+                                'Créateur : '+data.creator+'</br>'+
+                                'Date de dernière mise à jour : '+new Date(data.date).toDateString()+
+                            '</p>'+
+                            '<div id="myrecap">'+
+                            '<table id="table-recap-conf"><thead>'+
+                                '<tr>'+
+                                    '<th>Nom</th>'+
+                                    '<th>Prénom</th>'+
+                                    '<th>Bureau actuel</th>'+
+                                    '<th>Bureau cible</th>'+
+                                '</tr>'+
+                            '</thead></table>'+
+                            '</div>'+
+                            '<div id="popin-button">'+
+                                '<button id="cancel-val" >Annuler</button>'+
+                            '</div>'+
+                            '</div>').insertAfter($('.two-columns'));
+                        }
+                    
+                        d3.json(server + "getRecapOfMovings/"+data.set_id, function(movelines){
+                            for (var i=0;i<movelines.length;i++){
+                                $("<tr><td>"+movelines[i].lastname+"</td><td>"+movelines[i].firstname+"</td><td>"+movelines[i].depart+"</td><td>"+movelines[i].arrivee+"</td></tr>").appendTo("#table-recap-conf")
+                            }
+                        });
 
+                        configurationsControl.isPopin = true;
+                    
+                        $("#popin-val").click(function (event) {
+                            event.stopPropagation();
+                        });
+                        $("#cancel-val").click(function () {
+                            $('#popin-val').remove();
+                            configurationsControl.isPopin = false;
+                        }); 
+ 
+                    }
+                });
+                
+                $("html").click(function () {
+                    if(configurationsControl.isPopin === true){
+                        $('#popin-val').remove();
+                        configurationsControl.isPopin = false;
+                    }
+                });
                 // delete button
                 $("#delete-"+data.set_id).click(function(event){
                     event.stopPropagation();
