@@ -33,9 +33,8 @@
             callback();
         })
     }
-    fillMyData(myData,function(){
-        
-    });
+    fillMyData(myData,function(){});
+
     /** function getnames : to split a name into firstname and lastname
      * ex: 'Jacques DE MONTMIRAL' -> ['Jacques','DE MONTMIRAL']
      */
@@ -91,7 +90,6 @@
                 $("#text-conf").html("Cette configuration n'est pas modifiable")
                 $('#table-to-fill th:nth-child(5)').hide();
             }
-            console.log('plot')
             plotTable();
         })
         //display a map (mine by default or N0 if none)
@@ -103,18 +101,17 @@
         if(!mapControl.existMap) {
             // erase all maps' overview
             mapControl.mapName = mapName;
-            mapControl.mapPlot(myData,mapName, false, function() {});
+            mapControl.confmapPlot(myData,mapName,configId, false, function() {});
             mapControl.existMap = true;
         }
         else {
             d3.select(".map").select("svg").remove();
             mapControl.existMap = false;
             mapControl.mapName = mapName;
-            mapControl.mapPlot(myData,mapName, false, function() {});
+            mapControl.confmapPlot(myData,mapName,config, false, function() {});
             mapControl.existMap = true;
         }
-        console
-        d3.select("#menu-withoutresult").style("display",""); //menu to display map 
+        d3.select("#menu-plot-conf").style("display",""); //menu to display map 
         d3.select("#menu-conf").style("display","none");   //menu to choose a new localisation                    
     }
     preparePlot();
@@ -153,16 +150,11 @@
                     }
                 }
 
-                d3.select("#menu-withoutresult").style("display","none");
+                d3.select("#menu-plot-conf").style("display","none");
                 d3.select("#menu-conf").style("display","");
                                 
                 if (suggestion.data.deskname){
-
                     // find information on the researched person
-                    //var location=suggestion.data.physicalDeliveryOfficeName[0]
-                    //if (location.split(/\s*:\s*/).length==2){
-                    //    site=location.split(/\s*:\s*/)[0];
-                    //    desk=location.split(/\s*:\s*/)[1];
                     desk=suggestion.data.deskname;
                     site=suggestion.data.site;
                     var location=site+' : '+desk;
@@ -180,7 +172,7 @@
                         // if no map showing on, plot the map with name "mapName", add pin to searched person's table
                         if(!mapControl.existMap) {
                             mapControl.mapName = mapName;
-                            mapControl.mapPlot(myData,mapName, true, function() {
+                            mapControl.confmapPlot(myData,mapName, configId, true, function() {
                                 if (desk!="aucun" && desk!="externe"){
                                 table = d3.select("#tables")
                                         .select("#" + desk);
@@ -203,7 +195,7 @@
                             d3.select(".map").select("svg").remove();
                             mapControl.existMap = false;
                             mapControl.mapName = mapName;
-                            mapControl.mapPlot(myData,mapName, true, function() {
+                            mapControl.confmapPlot(myData,mapName,configId, true, function() {
                                 if (desk!="aucun" && desk!="externe"){
                                 table = d3.select("#tables")
                                         .select("#" + desk);
@@ -248,14 +240,14 @@
 
 		                    if (!mapControl.existMap) {
 			                    mapControl.mapName = myMap;
-			                    mapControl.mapPlot(myData,mapControl.mapName,true, function() {validateDesk(name)});
+			                    mapControl.confmapPlot(myData,mapControl.mapName,configId, true, function() {validateDesk(name)});
 			                    mapControl.existMap = true;
 		                    }
 		                    // if other map, delete and show myMap
 		                    else if (mapControl.mapName !== myMap) {
 			                    d3.select(".map").select("svg").remove();
 			                    mapControl.mapName = myMap;
-			                    mapControl.mapPlot(myData,mapControl.mapName,true, function() {validateDesk(name)});
+			                    mapControl.confmapPlot(myData,mapControl.mapName,configId,true, function() {validateDesk(name)});
 		                    }
                         }); 
                     }else if(view_access==false){
@@ -373,7 +365,7 @@
                         d3.select("#text-conf").html("Vous souhaitez déplacer "+name+" au bureau "+newDesk
                             +"<br/>Voules-vous ajouter ce déplacement à la configuration ?"+
                             "<button id=\"val-conf-move\" >Valider</button>"+
-                            "<button id=\"can-conf-move\"><a href='"+server+"'>Annuler</a></button>");
+                            "<button id=\"can-conf-move\"><a href='"+server+"modify"+configId+"'>Annuler</a></button>");
                         document.getElementById("val-conf-move").onclick = function() {validateMove(name,newsite,newDesk)};
                     }
                     //the desk on which I have clicked is occupied
@@ -382,7 +374,7 @@
                             +" qui déjà occupé par "+isDeskAvailable[0].firstname+" "+isDeskAvailable[0].lastname
                             +"<br/>Voulez-vous déplacer "+name+" à ce bureau ?"+
                             "<button id=\"val-conf-move\" >Valider</button>"+
-                            "<button id=\"can-conf-move\"><a href='"+server+"'>Annuler</a></button>");
+                            "<button id=\"can-conf-move\"><a href='"+server+"modify"+configId+"'>Annuler</a></button>");
                         document.getElementById("val-conf-move").onclick = function() {validateMove(name,newsite,newDesk)};
                     }
             });
@@ -396,7 +388,7 @@
         d3.select("#text-conf").html("Vous souhaitez déplacer "+name+" sur le site "+newsite
                             +"<br/>Voules-vous ajouter ce déplacement à la configuration ?</br>"+
                             "<button id=\"val-conf-move\" >Valider</button>"+
-                            "<button id=\"can-conf-move\"><a href=\""+server+"\">Annuler</a></button>");
+                            "<button id=\"can-conf-move\"><a href='"+server+"modify"+configId+"'>Annuler</a></button>");
         document.getElementById("val-conf-move").onclick = function() {validateMove(name,newsite,"externe")};
     }
 

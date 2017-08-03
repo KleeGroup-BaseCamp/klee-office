@@ -237,7 +237,7 @@ app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
 
 app.get('/getAllMovingsByConfIdCount/:id', confServices.countAllMoveLineByMoveSetId);
 app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetId);
-app.delete('/deleteConfiguration/:id', confServices.deleteMoveSet);
+app.delete('/deleteConfiguration/:setid', confServices.deleteMoveSet);
 app.get('/getMovingsListByConfId/:id', confServices.getMoveLineListByMoveSetId);
 app.post('/addNewConfiguration', confServices.addNewMoveSet);
 app.post('/updateMoveSet/:confId', confServices.updateMoveSet);

@@ -79,16 +79,27 @@ const getPeopleMoveLineByMoveSetId = (req, res) => {
 /**
  * delete a configuration and every related moving
  */
-const deleteMoveSet = (req, res) => {
-    console.log(req.params)
-    MoveLine.destroy({
-        where: {
-            move_set_id: req.params.id
-        }
-    }).then(function () {
+const deleteMoveSet = (req, res) => { ///req : setid
+    MoveLine.findAll({where:{move_set_id: req.params.setid}})
+    .then(function(movelines){
+        console.log(movelines);
+        movelines.forEach(function(data,index){
+            Desk.findOne({where:{des_id:data.toDesk}})
+            .then(function(todesk){
+                console.log(todesk)
+                if (todesk.name=="aucun" || todesk.name=="externe"){
+                    todesk.destroy()
+                }
+            })
+            .then(function(){
+                MoveLine.destroy({where:{mov_id:data.mov_id}})
+            })
+        });
+    })
+    .then(function () {
         MoveSet.destroy({
             where: {
-                set_id: req.params.id
+                set_id: req.params.setid
             }
         });
     }).then(function () {
@@ -102,40 +113,39 @@ const deleteMoveSet = (req, res) => {
  * if consistent (checked before service call)
  */
 const validateMoveSet = (req, res) => {
-    console.log(req.body);
-
     // change status from current validated conf to draft
     models.sequelize.query(
         'UPDATE \"MoveSet\" ' +
-        'SET status_id = (SELECT sta_id FROM \"MoveStatus\" WHERE name = "Brouillon" ), ' +
-        'dateUpdate = date'+
-        'WHERE StateStaId = (SELECT sta_id FROM \"MoveStatus\" WHERE name = "Validee" ) '
-        , { replacements: { date:Date.now()},
-            type: models.sequelize.QueryTypes.SELECT
-        })
-        .then(function (configuration) {
-            MoveLine.update(
-                {
-                    fromDesk: null
-                }, {
-                    where: {
-                        move_set_id: req.body.id
-                    }
-                }
-            ).then(function(moveline){
-                    console.log(moveline);
-                    models.sequelize.query(
-                        'UPDATE \"MoveSet\" ' +
-                        'SET status_id = (SELECT sta_id FROM \"MoveStatus\" WHERE name = "Validee" ) ' +
-                        'WHERE con_id = :id '
-                        , { replacements: {id: req.body.id},
-                            type: models.sequelize.QueryTypes.SELECT
-                        }).then(function(conf){
-                            console.log(conf);
-                            res.json("success");
-                        });
+        'SET status_id = (SELECT sta_id FROM \"MoveStatus\" WHERE name = :sta ), ' +
+        '\"dateUpdate\" = :date '+
+        'WHERE set_id = :setid;'
+        , { replacements: { date:new Date(),setid :req.body.setid, sta: "Validee"},
+            type: models.sequelize.QueryTypes.UPDATE
+    })
+    .then(function (configuration) {
+            MoveLine.findAll({where:{move_set_id: req.body.setid}})
+            .then(function(movelines){
+                movelines.forEach(function(data,index){
+                    Desk.findOne({where:{des_id:data.fromDesk}})
+                    .then(function(fromdesk){
+                        if (fromdesk.name=="aucun" || fromdesk.name=="externe"){
+                            fromdesk.destroy()
+                        }else{
+                            fromdesk.update({person_id :null})
+                        }
+                    })
+                    Desk.findOne({where:{des_id:data.toDesk}})
+                    .then(function(todesk){
+                        todesk.update({person_id :data.person_id})
+                    })
+                    MoveLine.update({status:"moveline validé"},{where:{mov_id: data.mov_id}})
                 });
-        });
+            });
+    }).then(function () {
+        console.log("OK !");
+        req.flash('success', 'La configuration a ete validee.');
+        res.json("success");
+    });
 
 }
 
