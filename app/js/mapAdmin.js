@@ -80,6 +80,7 @@ $("#mode-admin").click(function(){
     desk.classed("draggable", true)
         .attr("cursor","move")
         .style("cursor","")
+        .attr("stroke","#ff00ff")
         .attr("transform","matrix(1 0 0 1 0 0)")
         .attr("onmousedown","selectElement(evt)");
 
@@ -112,6 +113,7 @@ $("#quit-admin").click(function(){
         desk2.setAttribute("class", "");
         desk2.setAttribute("cursor","pointer");
         desk2.setAttribute("onmousedown", "");
+        desk2.setAttribute("stroke", "black");
         desk2.setAttribute("x",newX);
         desk2.setAttribute("y",newY);
     }
@@ -164,29 +166,153 @@ fileInput.addEventListener('change', function() {
 
 // ------ Add new desk on map ------- //
 
-$("#add-desk").click(function(){
+$("#add-desk-vertical").click(function(){
+    console.log(d3.select("#map-name h1")[0][0].className);
+    var yajirobe = d3.select("#tables").select("#N4-P-09");
+        console.log(yajirobe);
+    
+        plot_nameConsole();
 
-    var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
-    console.log(svg1);
-    var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-    $('<input id="add-desk-name" placeholder="Nom du bureau" onkeypress="if (event.keyCode == 13) alert("vegeta");">').prependTo($('#td-legend')); //à changer pour un mettre un input qui récupère l'id du nouveau bureau
-    newElement1.setAttribute("id","goten"); //modifier l'id pour pas que ce soit le même à chaque ajout
-    newElement1.setAttribute("class","available");
-    svg1.appendChild(newElement1);
-    if (newElement1){
-        var svg2 = document.getElementsByTagName('svg')[1].getElementById("goten");
-        var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
-        newElement2.setAttribute("fill","#99ff99"); //Set path's data
-        newElement2.setAttribute("fill-opacity","0.66");
-        newElement2.setAttribute("cursor","pointer");
-        newElement2.setAttribute("width","12.776915");
-        newElement2.setAttribute("height","25.906563");
-        newElement2.setAttribute("x","930");
-        newElement2.setAttribute("y","375");
-        newElement2.setAttribute("stroke","black");
-        //newElement2.setAttribute("strokeWidth","5px");
-        svg2.appendChild(newElement2);}   
+    $("#add-office").click(function(){
+            var floorName = $('#floor').val();
+            var zoneName = $('#zone').val();
+            var numeroName = $('#numero').val(); 
+            var expZone = /[A-Z]/;
+            var expNumero = /[0-9][0-9]/;
+            var deskName = floorName+"-"+zoneName+"-"+numeroName;
+
+            if ((zoneName.match(expZone)) || (numeroName.match(expNumero))){
+                if ((zoneName === zoneName.match(expZone)[0]) && (numeroName === numeroName.match(expNumero)[0])){
+                    console.log("Bien Ouej :)");
+                    console.log(zoneName.match(expZone));
+                    console.log(numeroName.match(expNumero));
+                    console.log(d3.select("#tables").select("#"+deskName)[0][0]);
+                    if(d3.select("#tables").select("#"+deskName)[0][0] === null){
+                    
+                        $("#newDesk-add").remove();
+                        var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
+                        console.log(svg1);
+                        var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+                        newElement1.setAttribute("id",deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
+                        newElement1.setAttribute("class","available");
+                        newElement1.setAttribute("cursor","pointer");
+                        svg1.appendChild(newElement1);
+                        
+                        var svg2 = document.getElementsByTagName('svg')[1].getElementById(deskName);
+                        var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+                        newElement2.setAttribute("fill","#99ff99"); //Set path's data
+                        newElement2.setAttribute("fill-opacity","0.66");
+                        newElement2.setAttribute("cursor","pointer");
+                        newElement2.setAttribute("width","12.776915");
+                        newElement2.setAttribute("height","25.906563");
+                        newElement2.setAttribute("x","930");
+                        newElement2.setAttribute("y","375");
+                        newElement2.setAttribute("stroke","black");
+                        //newElement2.setAttribute("strokeWidth","5px");
+                        svg2.appendChild(newElement2);
+                    }else{
+                        console.log("Pas bien Ouej :(");
+                        console.log(zoneName.match(expZone));
+                        console.log(numeroName.match(expNumero));
+                        d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
+                    }
+                }
+            }else{
+                console.log("Pas bien Ouej :(");
+                console.log(zoneName.match(expZone));
+                console.log(numeroName.match(expNumero));
+                d3.select("#wrong-exp").style("visibility", "visible").html("Nom invalide");
+            }     
+    })    
+});  
+
+$("#add-desk-horizontal").click(function(){
+    console.log(d3.select("#map-name h1")[0][0].className);
+    var yajirobe = d3.select("#tables").select("#N4-P-09");
+        console.log(yajirobe);
+    
+        plot_nameConsole();
+
+    $("#add-office").click(function(){
+            var floorName = $('#floor').val();
+            var zoneName = $('#zone').val();
+            var numeroName = $('#numero').val(); 
+            var expZone = /[A-Z]/;
+            var expNumero = /[0-9][0-9]/;
+            var deskName = floorName+"-"+zoneName+"-"+numeroName;
+
+            if ((zoneName.match(expZone)) || (numeroName.match(expNumero))){
+                if ((zoneName === zoneName.match(expZone)[0]) && (numeroName === numeroName.match(expNumero)[0])){
+                    console.log("Bien Ouej :)");
+                    console.log(zoneName.match(expZone));
+                    console.log(numeroName.match(expNumero));
+                    console.log(d3.select("#tables").select("#"+deskName)[0][0]);
+                    if(d3.select("#tables").select("#"+deskName)[0][0] === null){
+                    
+                        $("#newDesk-add").remove();
+                        var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
+                        console.log(svg1);
+                        var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+                        newElement1.setAttribute("id",deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
+                        newElement1.setAttribute("class","available");
+                        newElement1.setAttribute("cursor","pointer");
+                        svg1.appendChild(newElement1);
+                        
+                        var svg2 = document.getElementsByTagName('svg')[1].getElementById(deskName);
+                        var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+                        newElement2.setAttribute("fill","#99ff99"); //Set path's data
+                        newElement2.setAttribute("fill-opacity","0.66");
+                        newElement2.setAttribute("cursor","pointer");
+                        newElement2.setAttribute("width","25.695963");
+                        newElement2.setAttribute("height","12.644253");
+                        newElement2.setAttribute("x","930");
+                        newElement2.setAttribute("y","375");
+                        newElement2.setAttribute("stroke","black");
+                        //newElement2.setAttribute("strokeWidth","5px");
+                        svg2.appendChild(newElement2);
+                    }else{
+                        console.log("Pas bien Ouej :(");
+                        console.log(zoneName.match(expZone));
+                        console.log(numeroName.match(expNumero));
+                        d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
+                    }
+                }
+            }else{
+                console.log("Pas bien Ouej :(");
+                console.log(zoneName.match(expZone));
+                console.log(numeroName.match(expNumero));
+                d3.select("#wrong-exp").style("visibility", "visible").html("Nom invalide");
+            }     
+    })    
 });   
+
+// ----- function to plot "Enter name of new desk" ------- //
+
+function plot_nameConsole(){
+    $('<div id="newDesk-add">'+
+                '<h3>Ajouter un nouveau bureau</h3>'+
+                '<br><br><br>'+
+                    '<div class="inline left-labels">'+
+                        '<label for="floor-name">Etage (*) : </label><br /><br />'+
+                        '<label for="zone-name">Zone : </label><br /><br />'+
+                        '<label for="numero-name">Numéro : </label><br /><br />'+
+                    '</div>'+ 
+                    '<div class="inline">'+
+                        '<input class="field" type="text" id="floor" name="etage" value="'+d3.select("#map-name h1")[0][0].className+'" readonly/><br />'+
+                        '<input class="field" type="text" id="zone" name="zone" placeholder="A-Z" required/><br />'+
+                        '<input class="field" type="text" id="numero" name="numero" placeholder="00-99" required/><br />'+
+                    '</div>'+
+                    '<div id="newDesk-button">'+
+                        '<button id="add-office">Valider</button>'+
+                        '<button id="office-cancel">Annuler</button><br/>'+
+                        '<p id="wrong-exp">Nom invalide</p>'+
+                    '</div>'+
+            '</div>').insertAfter($('#navigation-bar'));
+    
+    $("#office-cancel").click(function(){
+        $("#newDesk-add").remove();
+    });
+}
 
 // ------- Remove desk on map ------ //
 
@@ -195,6 +321,7 @@ $("#rm-desk").click(function(){
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll(".available").selectAll("rect");
     desk.classed("removable", true)
         .attr("cursor","pointer")
+        .attr("stroke","red")
         .attr("onmousedown","removeElement(evt)");  
 });
 
