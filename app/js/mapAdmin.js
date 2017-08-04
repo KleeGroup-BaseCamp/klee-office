@@ -97,25 +97,36 @@ $("#quit-admin").click(function(){
     var desk2, valX, valY, dX, dY, parseX, parsevalY, newX, newY;
     for(i=0;i<desk.length;i++){
         desk2 = desk[i][0];
-        valX = desk2.getAttribute("x");
-        valY = desk2.getAttribute("y")
-        dX = desk2.getAttribute("transform").split(/\(/)[1].split(/\s/)[4];
-        dY = desk2.getAttribute("transform").split(/\(/)[1].split(/\s/)[5].split(/\)/)[0];
-        parseX = new Number(dX);
-        parseY = new Number(dY);
-        parsevalX = new Number(valX);
-        parsevalY = new Number(valY);
-        newX = parsevalX + (parseX);
-        newY = parsevalY + (parseY);
+        console.log(desk2);
+        if (desk2 !== undefined){
+            if (desk2.getAttribute("transform")){
+                if (desk2.getAttribute("transform") !== ""){
+                    valX = desk2.getAttribute("x");
+                    valY = desk2.getAttribute("y");
+                    dX = desk2.getAttribute("transform").split(/\(/)[1].split(/\s/)[4];
+                    dY = desk2.getAttribute("transform").split(/\(/)[1].split(/\s/)[5].split(/\)/)[0];
+                    parseX = new Number(dX);
+                    parseY = new Number(dY);
+                    parsevalX = new Number(valX);
+                    parsevalY = new Number(valY);
+                    newX = parsevalX + (parseX);
+                    newY = parsevalY + (parseY);
+                    desk2.setAttribute("x",newX);
+                    desk2.setAttribute("y",newY);
+                    
+                }
+            }
+            desk2.setAttribute("transform", "");
+            desk2.setAttribute("class", "");
+            desk2.setAttribute("cursor","pointer");
+            desk2.setAttribute("onmousedown", "");
+            desk2.setAttribute("stroke", "black");
+        }
 
         // à tester avec removeAttribute()
-        desk2.setAttribute("transform", "");
-        desk2.setAttribute("class", "");
-        desk2.setAttribute("cursor","pointer");
-        desk2.setAttribute("onmousedown", "");
-        desk2.setAttribute("stroke", "black");
-        desk2.setAttribute("x",newX);
-        desk2.setAttribute("y",newY);
+        //desk2.removeAttribute("transform");
+        
+        
     }
 });
 
@@ -167,11 +178,7 @@ fileInput.addEventListener('change', function() {
 // ------ Add new desk on map ------- //
 
 $("#add-desk-vertical").click(function(){
-    console.log(d3.select("#map-name h1")[0][0].className);
-    var yajirobe = d3.select("#tables").select("#N4-P-09");
-        console.log(yajirobe);
-    
-        plot_nameConsole();
+    plot_nameConsole();
 
     $("#add-office").click(function(){
             var floorName = $('#floor').val();
@@ -183,15 +190,10 @@ $("#add-desk-vertical").click(function(){
 
             if ((zoneName.match(expZone)) || (numeroName.match(expNumero))){
                 if ((zoneName === zoneName.match(expZone)[0]) && (numeroName === numeroName.match(expNumero)[0])){
-                    console.log("Bien Ouej :)");
-                    console.log(zoneName.match(expZone));
-                    console.log(numeroName.match(expNumero));
-                    console.log(d3.select("#tables").select("#"+deskName)[0][0]);
                     if(d3.select("#tables").select("#"+deskName)[0][0] === null){
                     
                         $("#newDesk-add").remove();
                         var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
-                        console.log(svg1);
                         var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
                         newElement1.setAttribute("id",deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
                         newElement1.setAttribute("class","available");
@@ -211,27 +213,17 @@ $("#add-desk-vertical").click(function(){
                         //newElement2.setAttribute("strokeWidth","5px");
                         svg2.appendChild(newElement2);
                     }else{
-                        console.log("Pas bien Ouej :(");
-                        console.log(zoneName.match(expZone));
-                        console.log(numeroName.match(expNumero));
                         d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
                     }
                 }
             }else{
-                console.log("Pas bien Ouej :(");
-                console.log(zoneName.match(expZone));
-                console.log(numeroName.match(expNumero));
                 d3.select("#wrong-exp").style("visibility", "visible").html("Nom invalide");
             }     
     })    
 });  
 
 $("#add-desk-horizontal").click(function(){
-    console.log(d3.select("#map-name h1")[0][0].className);
-    var yajirobe = d3.select("#tables").select("#N4-P-09");
-        console.log(yajirobe);
-    
-        plot_nameConsole();
+    plot_nameConsole();
 
     $("#add-office").click(function(){
             var floorName = $('#floor').val();
@@ -243,15 +235,10 @@ $("#add-desk-horizontal").click(function(){
 
             if ((zoneName.match(expZone)) || (numeroName.match(expNumero))){
                 if ((zoneName === zoneName.match(expZone)[0]) && (numeroName === numeroName.match(expNumero)[0])){
-                    console.log("Bien Ouej :)");
-                    console.log(zoneName.match(expZone));
-                    console.log(numeroName.match(expNumero));
-                    console.log(d3.select("#tables").select("#"+deskName)[0][0]);
                     if(d3.select("#tables").select("#"+deskName)[0][0] === null){
                     
                         $("#newDesk-add").remove();
                         var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
-                        console.log(svg1);
                         var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
                         newElement1.setAttribute("id",deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
                         newElement1.setAttribute("class","available");
@@ -271,16 +258,10 @@ $("#add-desk-horizontal").click(function(){
                         //newElement2.setAttribute("strokeWidth","5px");
                         svg2.appendChild(newElement2);
                     }else{
-                        console.log("Pas bien Ouej :(");
-                        console.log(zoneName.match(expZone));
-                        console.log(numeroName.match(expNumero));
                         d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
                     }
                 }
             }else{
-                console.log("Pas bien Ouej :(");
-                console.log(zoneName.match(expZone));
-                console.log(numeroName.match(expNumero));
                 d3.select("#wrong-exp").style("visibility", "visible").html("Nom invalide");
             }     
     })    
@@ -319,8 +300,7 @@ function plot_nameConsole(){
 $("#rm-desk").click(function(){   
 
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll(".available").selectAll("rect");
-    desk.classed("removable", true)
-        .attr("cursor","pointer")
+    desk.attr("cursor","pointer")
         .attr("stroke","red")
         .attr("onmousedown","removeElement(evt)");  
 });
@@ -331,3 +311,11 @@ function removeElement(evt){
     selectedElement = evt.target;
     selectedElement.remove();
 }
+
+$("#undo-map").click(function(){   
+		var mapName = d3.select("#map-name h1")[0][0].className;
+		d3.select(".map").select("svg").remove();
+		mapControl.mapName = mapName;
+		mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
+});
+
