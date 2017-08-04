@@ -159,13 +159,15 @@ app.post("/saml2/slsResponse", function(req, res){ //app.post ??
 });
  
 // views
+var firstname="Alain"
+var lastname="GOURLAY"
 //home
 app.get('/', function(req, res){
 	console.log(req.session);
 	console.log(req.sessionID);
 	res.render('index', { message: req.flash('success'),
-				myFirstName: "Alain",
-				myLastName: "GOURLAY"}) 
+				myFirstName: firstname,
+				myLastName: lastname}) 
 	//res.redirect('/login')
  });
 // employee localization
@@ -175,27 +177,27 @@ app.get('/', function(req, res){
 // admin screen
 app.get('/admin', function(req, res){
 	res.render('admin', { message: req.flash('success'),
-					myFirstName: "Alain",
-					myLastName: "GOURLAY" });
+					myFirstName: firstname,
+					myLastName: lastname });
 });
 // configurations screen
 app.get('/configurations', function(req, res){
 	res.render('conf-list', { message: req.flash('success'),
-				myFirstName: "Alain",
-				myLastName: "GOURLAY" });
+				myFirstName: firstname,
+				myLastName: lastname });
 });
 // work on a configuration
 app.get('/modify:id', function(req, res){
 	res.render('modify', { message: req.flash('success'),
-				myFirstName: "Alain",
-				myLastName: "GOURLAY" });
+				myFirstName: firstname,
+				myLastName: lastname });
 });
 // check consistency
-app.get('/consistency:id', function(req, res){
+/*app.get('/consistency:id', function(req, res){
 	res.render('consistency-list', { message: req.flash('success'),
 				myFirstName: "Alain",
 				myLastName: "GOURLAY" });
-});
+});*/
 
 // people
 // map
@@ -240,15 +242,17 @@ app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetI
 app.delete('/deleteConfiguration/:setid', confServices.deleteMoveSet);
 app.get('/getMovingsListByConfId/:id', confServices.getMoveLineListByMoveSetId);
 app.post('/addNewConfiguration', confServices.addNewMoveSet);
-app.post('/updateMoveSet/:confId', confServices.updateMoveSet);
+app.post('/updateDateMoveSet/:confId', confServices.updateDateMoveSet);
+app.get('/checkFromDeskMoveLine/:confId', confServices.checkFromDeskMoveline);
+//app.get('/checkToDeskMoveLine/:confId', confServices.checkToDeskMoveLine);
+app.post('/updateFromDeskMoveline', confServices.updateFromDeskMoveline);
+//app.post('/updateToDeskMoveline', confServices.updateToDeskMoveline);
 app.post('/addMoveLine', confServices.addMoveLine);
 app.post('/deleteMoveline', confServices.deleteMoveLine);
 app.post('/validateConfiguration', confServices.validateMoveSet);
 app.get('/getAllConf', confServices.getAllMoveSet);
 app.get('/getConfById/:confId', confServices.getMoveSetById);
 app.get('/getLastMoveSet/', confServices.getLastMoveSet);
-//app.get('/reportConsistency/:id', confServices.reportConsistency);
-//app.get('/formerPeopleByOffId/:id/:conid', confServices.formerPersonByDeskId);
 app.get('/getRecapOfMovings/:id', confServices.getRecapOfMoveline);
 app.get('/getNoPlacePersonByBusUnit/:busid/:comid', confServices.getNoPlacePersonByBusUnit);
 app.get('/getNoPlacePersonByCompany/:comid', confServices.getNoPlacePersonByCompany);
