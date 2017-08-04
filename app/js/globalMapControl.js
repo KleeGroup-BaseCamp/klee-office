@@ -418,9 +418,10 @@ var mapControl = {
 										.attr("cursor", "pointer");
 								}
 							}
-							d3.select("#tables").selectAll(".available").selectAll("rect").attr("fill", "#99ff99");	
+								
 					  });
 					callback();
+					d3.select("#tables").selectAll(".available").selectAll("rect").attr("fill", "#99ff99");
 				});
 				
 				

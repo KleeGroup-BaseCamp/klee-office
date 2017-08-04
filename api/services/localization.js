@@ -96,6 +96,7 @@ const saveMyLocalization = (req, res) => {
                 Desk.findOrCreate({where: {name: newDesk}})
                 .then(function(to_desk){ 
                     var former_person=to_desk[0].dataValues.person_id; //if not null, someone was at this place. A new new desk in la boursidère must be created and moveline ejection must be created at the end
+                    console.log('!!!!!!!!!!!!'+former_person)
                     toDeskId=to_desk[0].dataValues.des_id;
                     models.sequelize.query('UPDATE "Desk" '+
                             'SET floor= :fl , building= :build ,site_id= (SELECT sit_id FROM "Site" WHERE name= :site) , person_id= :perid '+

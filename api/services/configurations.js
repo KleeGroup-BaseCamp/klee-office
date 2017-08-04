@@ -309,73 +309,53 @@ const addMoveLine =(req,res) =>{
     res.redirect('/');
 }
 
-/**
- * return people, office name, office id
- * for the new people in the office with more than one assigned person
- */
-/*
-const reportConsistency = (req,res) => {
-    models.sequelize.query(
-        'select \"Person\".firstname, \"Person\".lastname, \"Desk\".name, \"Desk\".des_id from \"MoveLine\" '+
-        'join \"Person\" on \"Person\".per_id = \"MoveLine\".person_id '+
-        'join \"Desk\" on \"Desk\".des_id = \"MoveLine\".\"toDesk\" '+
-        'where \"toDesk\" in ( '+
-        'select \"toDesk\" '+
-        'from \"MoveLine\" '+
-        'where move_set_id = :setId '+
-        'group by \"toDesk\" '+
-        'having count(*) > 1 ) ' +
-        'and move_set_id = :setId ' +
-        'and (\"MoveLine\".\"fromDesk\" is not null or \"MoveLine\".\"fromDesk\" in (select des_id from \"Desk\" where name = :mt)) ' +
-        'order by \"Desk\".name'
-        , {
-            replacements: {setId: req.params.id, mt: "aucun"},
-            type: models.sequelize.QueryTypes.SELECT
-        })
-        .then(function (info) {
-            console.log(info);
-            res.json(info);
-        });
-}
-*/
-/*
-const formerPersonByDeskId = (req,res) => {
-    models.sequelize.query(
-
-        'select \"Person\".firstname, \"Person\".lastname, \"MoveLine\".\"fromDesk\" ' +
-        'from \"Person\" ' +
-        'join \"MoveLine\" on \"MoveLine\".person_id = \"Person\".per_id ' +
-        'where \"MoveLine\".\"fromDesk\" = :desid ' +
-        'and \"MoveLine\".move_set_id = :setid ' +
-        'union all ' +
-        'select \"Person\".firstname, \"Person\".lastname, \"MoveLine\".\"toDesk\" ' +
-        'from \"Person\" ' +
-        'join \"MoveLine\" on \"MoveLine\".person_id = \"Person\".per_id ' +
-        'where \"MoveLine\".\"toDesk\" = :desid and \"MoveLine\".\"fromDesk\" is null ' +
-        'and \"MoveLine\".move_set_id= :setid '
-        , {
-            replacements: {desid: req.params.id, setid: req.params.id},
-            type: models.sequelize.QueryTypes.SELECT
-        })
-        .then(function (info) {
-            console.log(info);
-            res.json(info);
-        });
-}*/
-
-/**
- * get informations about all the movings of a configuration
- * start and arrival of the moving
- * people data
- * res : json containing all the data
- */
-const updateMoveSet =(req,res) =>{
+const updateDateMoveSet =(req,res) =>{
     models.sequelize.query(
         'UPDATE \"MoveSet\" SET \"dateUpdate\"= :date '+
         'WHERE set_id= :confId;'
     ,{replacements:{confId:req.params.confId,date: new Date()},type :models.sequelize.QueryTypes.UPDATE})
     res.redirect('/');
 }
+
+const checkFromDeskMoveline = (req,res) =>{
+    var confid=req.params.confId;
+    models.sequelize.query(
+        'SELECT fromdesk.name as from, fromdesk.des_id as fromId, currentdesk.name as current, currentdesk.des_id as currentid, \"MoveLine\".mov_id as mov_id FROM \"MoveLine\" '+
+        'JOIN \"Desk\" as fromdesk ON fromdesk.des_id=\"MoveLine\".\"fromDesk\" '+
+        'JOIN \"Desk\" as currentdesk ON currentdesk.person_id=\"MoveLine\".person_id '+
+        'WHERE fromdesk.des_id<>currentdesk.des_id '+
+        'AND move_set_id= :setid ;',
+        {replacements:{setid: confid},type: models.sequelize.QueryTypes.SELECT})
+    .then(function(results){
+            res.json(results)
+            //console.log('ok!')
+    })
+}
+
+const updateFromDeskMoveline =(req,res) =>{
+    var currentid=req.body.currentid;
+    var mov_id=req.body.mov_id;
+    MoveLine.update({fromDesk:currentid},{where:{mov_id:mov_id}})
+}
+
+/*const checkToDeskMoveline = (req,res) =>{
+    var confid=req.params.confId;
+    var result=[];
+    models.sequelize.query(
+        'SELECT fromdesk.name as from, fromdesk.des_id as fromId, currentdesk.name as current, currentdesk.des_id as currentId, \"MoveLine\".mov_id as mov_id FROM \"MoveLine\" '+
+        'JOIN \"Desk\" as fromdesk ON fromdesk.des_id=\"MoveLine\".\"fromDesk\" '+
+        'JOIN \"Desk\" as currentdesk ON currentdesk.person_id=\"MoveLine\".person_id '+
+        'WHERE fromdesk.des_id<>currentdesk.des_id '+
+        'AND move_set_id= :setid ;',
+        {replacements:{setid: confid},type: models.sequelize.QueryTypes.SELECT})
+        .then(function(results){
+            res.json(results)
+            console.log('ok!')
+        })
+}
+const updateToDeskMoveline =(req,res) =>{
+
+}*/
 
 const getRecapOfMoveline = (req, res) => {
     models.sequelize.query(
@@ -440,10 +420,12 @@ module.exports = {
     getLastMoveSet,
     deleteMoveLine,
     addMoveLine,
-    //reportConsistency,
-    //formerPersonByDeskId,
     getRecapOfMoveline,
     getNoPlacePersonByBusUnit,
     getNoPlacePersonByCompany,
-    updateMoveSet    
+    checkFromDeskMoveline,
+    //checkToDeskMoveline,
+    updateFromDeskMoveline,
+    //updateToDeskMoveline,
+    updateDateMoveSet    
 }

@@ -59,6 +59,7 @@
      *  Only configurations which can be modified have a the button delete-moveline
      */
     function plotTable(){
+
         $('#table-to-fill > tbody').empty();
         newConfig=[];
         d3.json(server + "getRecapOfMovings/"+configId, function(movelines){
@@ -76,6 +77,27 @@
         });
     }
 
+    function updateMovelines(callback){
+        d3.json(server+'checkFromDeskMoveLine/'+configId,function(res){
+            if (res.length>0){
+                for (var i=0;i<res.length;i++){
+                    console.log({currentid:res[i].currentid, mov_id: res[i].mov_id})
+                    //update the moveline
+                    $.ajax({
+                        url: "updateFromDeskMoveline",
+                        type: 'POST',
+                        data:{currentid:res[i].currentid, mov_id: res[i].mov_id},
+                        success:function(){
+                            console.log('success')
+                        }
+                    });
+                    console.log('update !')
+                }
+            }
+        })
+        callback();
+}
+
 /** function preparePlot() : plot table ans buttons according to view_access and the map  */
     function preparePlot() {
         d3.json(server + "getConfById/"+configId, function(dataset){
@@ -90,7 +112,9 @@
                 $("#text-conf").html("Cette configuration n'est pas modifiable")
                 $('#table-to-fill th:nth-child(5)').hide();
             }
-            plotTable();
+            updateMovelines(function(){
+                plotTable();
+            })
         })
         //display a map (mine by default or N0 if none)
         var mapName;
@@ -285,7 +309,7 @@
         d3.select("#recap-conf").selectAll(".new-row").attr("class","former-row");
         //request post to update the dateUpdate column of MoveSet
         $.ajax({
-            url: "updateMoveSet/"+configId,
+            url: "updateDateMoveSet/"+configId,
             type: 'POST',
             complete : function(res,stat){
                 console.log('update dateUpdate moveset')
