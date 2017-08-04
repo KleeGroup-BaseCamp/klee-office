@@ -1,6 +1,7 @@
 // set all tables to their default colors
 'use strict';
 var server='http://localhost:3000/'
+//var	server = "http://local-map/";
 var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
 $(function(){

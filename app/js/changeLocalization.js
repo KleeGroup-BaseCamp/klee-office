@@ -3,6 +3,7 @@
 'use strict';
 // global variables
 var	server= "http://localhost:3000/";
+//var	server = "http://local-map/";
 var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
 for (var i =0; i < document.getElementsByClassName('desk-maj').length ; i++ ){

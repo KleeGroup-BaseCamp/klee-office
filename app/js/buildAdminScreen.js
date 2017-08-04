@@ -7,6 +7,7 @@
     //control access to the page - limited for administrators only
     console.log("admin-screen");
     var server="http://localhost:3000/";
+    //var	server = "http://local-map/";
     var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];
 
     d3.json(server + "getAdministrator/"+myData[0]+"/"+myData[1], function(res){

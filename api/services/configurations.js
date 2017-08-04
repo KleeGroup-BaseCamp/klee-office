@@ -25,8 +25,9 @@ const getAllMoveSet = (req, res) => {
         'SELECT set.name as name, set.set_id, set.creator, set.\"dateCreation\", sta.name as state, set.status_id,set.\"dateUpdate\" as date ' +
         'FROM \"MoveSet\" as set ' +
         'JOIN \"MoveStatus\" sta on set.status_id = sta.sta_id '+
+        'WHERE sta.name<> :sta '+
         'ORDER BY date;'
-        , { replacements : {}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
+        , { replacements : {sta:"Déplacement personnel"}, type: models.sequelize.QueryTypes.SELECT } ).then(function(conf){
             res.json(conf);
         });
 }
@@ -234,8 +235,6 @@ const addNewMoveSet = (req, res) =>{
         .then(function(creat){
             MoveSet.create({name:req.body.name, creator:req.body.creator, dateUpdate :new Date(), status_id :status.dataValues.sta_id,creator_id:creat.dataValues.per_id})
             .then(function(newset){
-                console.log('redirect')
-                console.log('/modify'+newset.dataValues.set_id)
                 res.redirect('/modify'+newset.dataValues.set_id);
             })
         })
@@ -291,7 +290,7 @@ const addMoveLine =(req,res) =>{
                     .then(function(to){
                         if (to!=undefined && to!=null && to!=''){
                             toDeskId=to[0].dataValues.des_id;
-                            MoveLine.create({dateCreation:new Date(),status:"moveline brouillon", move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
+                            MoveLine.create({dateCreation:new Date(),status:req.body.status, move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
                         }   
                     })
                 }else{
@@ -299,7 +298,7 @@ const addMoveLine =(req,res) =>{
                     .then(function(to){
                         if (to!=undefined && to!=null && to!=''){
                             toDeskId=to.dataValues.des_id; 
-                            MoveLine.create({dateCreation:new Date(),status:"moveline brouillon", move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
+                            MoveLine.create({dateCreation:new Date(),status:req.body.status, move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
                         }
                     })            
                 }
@@ -320,9 +319,10 @@ const updateDateMoveSet =(req,res) =>{
 const checkFromDeskMoveline = (req,res) =>{
     var confid=req.params.confId;
     models.sequelize.query(
-        'SELECT fromdesk.name as from, fromdesk.des_id as fromId, currentdesk.name as current, currentdesk.des_id as currentid, \"MoveLine\".mov_id as mov_id FROM \"MoveLine\" '+
+        'SELECT fromdesk.name as fromdesk, fromdesk.des_id as fromId, currentdesk.name as current, currentdesk.des_id as currentid, \"MoveLine\".mov_id as mov_id , \"Person\".firstname || \' \' || \"Person\".lastname as name FROM \"MoveLine\" '+
         'JOIN \"Desk\" as fromdesk ON fromdesk.des_id=\"MoveLine\".\"fromDesk\" '+
         'JOIN \"Desk\" as currentdesk ON currentdesk.person_id=\"MoveLine\".person_id '+
+        'JOIN \"Person\" ON \"Person\".per_id =\"MoveLine\".person_id '+
         'WHERE fromdesk.des_id<>currentdesk.des_id '+
         'AND move_set_id= :setid ;',
         {replacements:{setid: confid},type: models.sequelize.QueryTypes.SELECT})
@@ -332,34 +332,45 @@ const checkFromDeskMoveline = (req,res) =>{
     })
 }
 
-const updateFromDeskMoveline =(req,res) =>{
+/*const updateFromDeskMoveline =(req,res) =>{
     var currentid=req.body.currentid;
     var mov_id=req.body.mov_id;
     MoveLine.update({fromDesk:currentid},{where:{mov_id:mov_id}})
-}
+}*/
 
-/*const checkToDeskMoveline = (req,res) =>{
-    var confid=req.params.confId;
-    var result=[];
+const checkToDeskMoveline = (req,res) =>{
+    var setid=req.params.confId
     models.sequelize.query(
-        'SELECT fromdesk.name as from, fromdesk.des_id as fromId, currentdesk.name as current, currentdesk.des_id as currentId, \"MoveLine\".mov_id as mov_id FROM \"MoveLine\" '+
-        'JOIN \"Desk\" as fromdesk ON fromdesk.des_id=\"MoveLine\".\"fromDesk\" '+
-        'JOIN \"Desk\" as currentdesk ON currentdesk.person_id=\"MoveLine\".person_id '+
-        'WHERE fromdesk.des_id<>currentdesk.des_id '+
+        'SELECT mov_id, todesk.des_id, todesk.name as todesk, \"Person\".firstname || \' \' || \"Person\".lastname as name FROM \"MoveLine\" '+
+        'JOIN \"Desk\" as todesk ON todesk.des_id=\"MoveLine\".\"toDesk\" '+
+        'JOIN \"Person\" ON \"Person\".per_id =\"MoveLine\".person_id '+
+        'WHERE todesk.person_id <>COALESCE((SELECT person_id FROM \"MoveLine\" WHERE \"MoveLine\".\"fromDesk\"= 829 AND move_set_id= :setid LIMIT 1),0)'+
         'AND move_set_id= :setid ;',
-        {replacements:{setid: confid},type: models.sequelize.QueryTypes.SELECT})
+        {replacements:{setid: setid},type: models.sequelize.QueryTypes.SELECT})
         .then(function(results){
             res.json(results)
             console.log('ok!')
         })
 }
-const updateToDeskMoveline =(req,res) =>{
+const setInvalidMoveline = (req,res) =>{
+    MoveLine.update({status:"Brouillon invalide"},{where:{mov_id:req.params.movid}})
+    .then(function () {
+        res.redirect('/')
+    });
+}
 
-}*/
+const isConfValid = (req,res) =>{
+    models.sequelize.query(
+        'SELECT count(*) FROM \"MoveLine\" WHERE status= :sta AND move_set_id= :setid;',
+        {replacements:{setid:req.params.confId,sta:"Brouillon invalide"},type:models.sequelize.QueryTypes.SELECT}
+    ).then(function(result){
+        res.json(result)
+    })
+}
 
 const getRecapOfMoveline = (req, res) => {
     models.sequelize.query(
-        'SELECT sitedepart.name || :yt || depart.name as depart, sitearrivee.name || :yt || arrivee.name as arrivee, \"Person\".firstname, \"Person\".lastname ' +
+        'SELECT sitedepart.name || :yt || depart.name as depart, sitearrivee.name || :yt || arrivee.name as arrivee, \"Person\".firstname, \"Person\".lastname, status ' +
         'from \"MoveLine\" ' +
         'join \"Person\" on \"Person\".per_id = \"MoveLine\".person_id ' +
         'LEFT JOIN \"Desk\" as depart on depart.des_id = \"MoveLine\".\"fromDesk\" ' +
@@ -424,8 +435,8 @@ module.exports = {
     getNoPlacePersonByBusUnit,
     getNoPlacePersonByCompany,
     checkFromDeskMoveline,
-    //checkToDeskMoveline,
-    updateFromDeskMoveline,
-    //updateToDeskMoveline,
-    updateDateMoveSet    
+    checkToDeskMoveline,
+    updateDateMoveSet,
+    setInvalidMoveline,
+    isConfValid    
 }

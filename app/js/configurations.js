@@ -54,43 +54,78 @@ var configurationsControl = {
 
                 // validate button
                 $("#validate-"+data.set_id).click(function(event) {
-                    
+                    console.log(configurationsControl.isPopin)
+                    console.log(event.pageY)
                     if(configurationsControl.isPopin !== true){
                         if (data.state=="Brouillon"){
-                            $('<div id="popin-val">'+
-                            '<h3>Voulez-vous confirmer la configuration numéro '+data.set_id+'?</h3>'+
-                            '<p id="description-conf" >'+
-                                'Nom : '+data.name+'</br>'+
-                                'Créateur : '+data.creator+'</br>'+
-                                'Date de dernière mise à jour : '+new Date(data.date).toDateString()+
-                            '</p>'+
-                            '<div id="myrecap">'+
-                            '<table id="table-recap-conf"><thead>'+
-                                '<tr>'+
-                                    '<th>Nom</th>'+
-                                    '<th>Prénom</th>'+
-                                    '<th>Bureau actuel</th>'+
-                                    '<th>Bureau cible</th>'+
-                                '</tr>'+
-                            '</thead></table>'+
-                            '</div>'+
-                            '<div id="popin-button">'+
-                                '<button id="valider-conf" >Valider</button>'+
-                                '<button id="cancel-val">Annuler</button>'+
-                            '</div>'+
-                            '</div>').insertAfter($('.two-columns'));
-                            $("#valider-conf").click(function () {
-                                $('#popin-val').remove();
-                                configurationsControl.isPopin = false;
-                                $.ajax({
-                                    url: 'validateConfiguration',
-                                    type: 'POST',
-                                    data:{setid:data.set_id},
-                                    success: function(result) {
-                                        window.location.href = server+"configurations";
-                                    }
-                                });
-                            });
+                            d3.json(server + "isConfValid/"+data.set_id, function(countInvalid){
+                                if (countInvalid[0].count==0){
+                                  $('<div id="popin-val">'+
+                                    '<h3>Voulez-vous confirmer la configuration numéro '+data.set_id+'?</h3>'+
+                                    '<p id="description-conf" >'+
+                                        'Nom : '+data.name+'</br>'+
+                                        'Créateur : '+data.creator+'</br>'+
+                                        'Date de dernière mise à jour : '+new Date(data.date).toDateString()+
+                                    '</p>'+
+                                    '<div id="myrecap">'+
+                                    '<table id="table-recap-conf"><thead>'+
+                                        '<tr>'+
+                                            '<th>Nom</th>'+
+                                            '<th>Prénom</th>'+
+                                            '<th>Bureau actuel</th>'+
+                                            '<th>Bureau cible</th>'+
+                                        '</tr>'+
+                                    '</thead></table>'+
+                                    '</div>'+
+                                    '<div id="popin-button">'+
+                                        '<button id="valider-conf" >Valider</button>'+
+                                        '<button id="cancel-val">Annuler</button>'+
+                                    '</div>'+
+                                  '</div>').insertAfter($('.two-columns'));
+
+                                    $("#valider-conf").click(function () {
+                                        $('#popin-val').remove();
+                                        configurationsControl.isPopin = false;
+                                        $.ajax({
+                                            url: 'validateConfiguration',
+                                            type: 'POST',
+                                            data:{setid:data.set_id},
+                                            success: function(result) {
+                                                window.location.href = server+"configurations";
+                                            }
+                                        });
+                                    });
+                                }else{
+                                    $('<div id="popin-val">'+
+                                        '<h3>La configuration numéro '+data.set_id+' n\'est pas valide</h3>'+
+                                    '<p id="description-conf" >'+
+                                        'Nom : '+data.name+'</br>'+
+                                        'Créateur : '+data.creator+'</br>'+
+                                        'Date de dernière mise à jour : '+new Date(data.date).toDateString()+
+                                    '</p>'+
+                                    '<div id="myrecap">'+
+                                    '<table id="table-recap-conf"><thead>'+
+                                        '<tr>'+
+                                            '<th>Nom</th>'+
+                                            '<th>Prénom</th>'+
+                                            '<th>Bureau actuel</th>'+
+                                            '<th>Bureau cible</th>'+
+                                        '</tr>'+
+                                    '</thead></table>'+
+                                    '</div>'+
+                                    '<div id="popin-button">'+
+                                         '<p>Veuillez corriger les erreurs avant de valider</p></br>'+
+                                        '<button><a href='+server+'modify'+data.set_id+'>Modifier</a></button>'+
+                                        '<button id="cancel-val">Annuler</button>'+
+                                    '</div>'+
+                                  '</div>').insertAfter($('.two-columns'));
+                                }
+                                $("#popin-val").click(function (event) {event.stopPropagation(); });
+                                $("#cancel-val").click(function () {
+                                    $('#popin-val').remove();
+                                    configurationsControl.isPopin = false;
+                                }); 
+                            })
                         }else{
                             $('<div id="popin-val">'+
                             '<h3>La configuration numéro '+data.set_id+' est déjà validée</h3>'+
@@ -122,15 +157,15 @@ var configurationsControl = {
                         });
 
                         configurationsControl.isPopin = true;
-                    
-                        $("#popin-val").click(function (event) {
+                        d3.select("#popin-val").style("top",event.pageY-100+"px")
+                        $("#popin-val, .validate, #add-title").click(function (event) {
                             event.stopPropagation();
                         });
                         $("#cancel-val").click(function () {
                             $('#popin-val').remove();
                             configurationsControl.isPopin = false;
                         }); 
- 
+                        console.log(configurationsControl.isPopin)
                     }
                 });
                 

@@ -1,7 +1,8 @@
 /**
  * control the acces to configuration and administrators pages
  */
-var server="http://localhost:3000/";
+var	server= "http://localhost:3000/";
+//var	server= "http://local-map/";
 
 //Peronnal account
 
