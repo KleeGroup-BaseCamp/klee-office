@@ -626,14 +626,26 @@ table #personal-desk {
     margin-left:50px;
         border: solid;
 }
+#legend td #add-desk-horizontal{
+    cursor: pointer;
+    width: 40px;
+    height: 20px;
+    /*padding-top: 10px;*/
+}
+#legend td #add-desk-vertical{
+    cursor: pointer;
+    width: 20px;
+    height: 40px;
+}
+#legend td{
+    padding: 5px;
+}
 #legend td img {
     cursor: pointer;
     width: 40px;
     height: 40px;;
 }
-#legend td{
-    padding: 5px;
-}
+
 /*#add-desk {
     width: 20px;
     height: 20px;;
@@ -939,7 +951,8 @@ input[readonly] {
 .action {
   font-size: smaller;
 }
-#popin-add, #popin-val {
+
+#popin-add, #popin-val,  #newDesk-add {
     background-color: grey;
     z-index: 50;
     position: absolute;
@@ -954,14 +967,15 @@ input[readonly] {
     color: white;
 }
 
-#popin-add input {
+#popin-add input, #newDesk-add input {
     margin: 8px;
     z-index: 60;
 }
-#popin-add #popin-button,#popin-val button {
+
+#popin-add #popin-button, #newDesk-add #newDesk-button, #popin-val button{
     text-align:center;
 }
-#popin-add #add-conf,#popin-add #conf-cancel ,#popin-val button{
+#popin-add #add-conf,#popin-add #conf-cancel, #popin-val button, #newDesk-add #add-office, #newDesk-add #office-cancel{
     height: auto;
     font-size: 75%;
     border-radius: 20px;
@@ -997,6 +1011,12 @@ input[readonly] {
     padding:5px;
     border : 0.5px solid black;
 
+}
+#wrong-exp{
+    visibility: hidden;
+    color: #990000;
+    font-size: 20px;
+    font-weight: bold;
 }
 #add-title p{
     margin-left:8px;
