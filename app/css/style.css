@@ -646,6 +646,10 @@ table #personal-desk {
     height: 40px;;
 }
 
+#legend td #add-desk-horizontal:hover, #legend td #add-desk-vertical:hover, #legend td #rm-desk:hover, #legend td #mode-admin:hover, #legend td #quit-admin:hover, #legend td #dl-button:hover, #legend td #undo-map:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
 /*#add-desk {
     width: 20px;
     height: 20px;;
