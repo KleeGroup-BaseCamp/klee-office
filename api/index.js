@@ -159,8 +159,8 @@ app.post("/saml2/slsResponse", function(req, res){ //app.post ??
 });
  
 // views
-var firstname="Alain"
-var lastname="GOURLAY"
+var firstname="Marjorie"
+var lastname="JULIO"
 //home
 app.get('/', function(req, res){
 	console.log(req.session);
@@ -244,9 +244,9 @@ app.get('/getMovingsListByConfId/:id', confServices.getMoveLineListByMoveSetId);
 app.post('/addNewConfiguration', confServices.addNewMoveSet);
 app.post('/updateDateMoveSet/:confId', confServices.updateDateMoveSet);
 app.get('/checkFromDeskMoveLine/:confId', confServices.checkFromDeskMoveline);
-//app.get('/checkToDeskMoveLine/:confId', confServices.checkToDeskMoveLine);
-app.post('/updateFromDeskMoveline', confServices.updateFromDeskMoveline);
-//app.post('/updateToDeskMoveline', confServices.updateToDeskMoveline);
+app.get('/checkToDeskMoveLine/:confId', confServices.checkToDeskMoveline);
+app.post('/setInvalidMoveline/:movid', confServices.setInvalidMoveline);
+app.get('/isConfValid/:confId', confServices.isConfValid);
 app.post('/addMoveLine', confServices.addMoveLine);
 app.post('/deleteMoveline', confServices.deleteMoveLine);
 app.post('/validateConfiguration', confServices.validateMoveSet);

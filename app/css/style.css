@@ -158,21 +158,29 @@ table #personal-desk {
     background: url("../img/eye.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
+    background-position: center;
+    width:100%;
 }
 .print p {
     background: url("../img/print.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
+    background-position: center;
+    width:100%;
 }
 .validate p {
     background: url("../img/ckeck.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
+    background-position: center;
+    width:100%;
 }
 .delete p {
     background: url("../img/delete.png") 0px 0px;
     background-size: 30px;
     background-repeat: no-repeat;
+    background-position: center;
+    width:100%;
 }
 .remove p {
     background: url("../img/remove.png") 0px 0px;
@@ -945,7 +953,11 @@ input[readonly] {
 
 #conf-list td {
     vertical-align: middle;
+    /*text-align:center;*/
+    padding-right:10px;
+    padding-left:10px;
 }
+
 .conf .left-side {
     height: 100%;
 }
@@ -956,7 +968,7 @@ input[readonly] {
   font-size: smaller;
 }
 
-#popin-add, #popin-val,  #newDesk-add {
+#popin-add,   #newDesk-add{
     background-color: grey;
     z-index: 50;
     position: absolute;
@@ -970,7 +982,21 @@ input[readonly] {
     padding-top: 50px;
     color: white;
 }
-
+#popin-val{
+    background-color: grey;
+    z-index: 50;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 36%;
+    height: auto;
+    border-radius: 80px;
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom:40px;
+    color: white;
+}
 #popin-add input, #newDesk-add input {
     margin: 8px;
     z-index: 60;
@@ -979,7 +1005,7 @@ input[readonly] {
 #popin-add #popin-button, #newDesk-add #newDesk-button, #popin-val button{
     text-align:center;
 }
-#popin-add #add-conf,#popin-add #conf-cancel, #popin-val button, #newDesk-add #add-office, #newDesk-add #office-cancel{
+#popin-add #add-conf,#popin-add #conf-cancel, #popin-val button, #newDesk-add #add-office, #newDesk-add #office-cancel, #close-error{
     height: auto;
     font-size: 75%;
     border-radius: 20px;
@@ -998,7 +1024,14 @@ input[readonly] {
 #popin-val #myrecap{
     overflow:auto;
     margin :20px;
-    height:130px;
+    max-height:130px;
+}
+#popin-val a{
+    color:white;
+}
+#popin-val button, #popin-error button{
+    width:70px;
+    font-size:13px;
 }
 #popin-val #description-conf{
     font-size: 13px;
@@ -1097,7 +1130,6 @@ input[readonly] {
     padding-top: 5px;
 }
 #table-conf{
-    width:100%;
     margin-left:220px;
 }
 #table-conf #column-map:nth-child(1){
@@ -1139,6 +1171,10 @@ input[readonly] {
     font-weight:bold;
     font-style:italic;
 }
+#recap-conf table .invalid-row{
+    text-decoration: line-through;
+    font-style:italic;
+}
 
 #recap-conf .delete-moveline{
     background: url("/img/crossDelete.png");
@@ -1154,10 +1190,20 @@ input[readonly] {
     text-transform: uppercase;
     padding:7px;
 }
+#recap-conf h3 img{
+    visibility :hidden;
+    margin-left:5px;
+}
+#recap-conf h3 img:hover{
+    cursor: pointer;
+    transform:scale(1.05);
+
+}
 #recap-conf p{
     font-style: italic;
     display:inline;
 }
+
 #recap-conf table th
 {
     border-collapse: collapse; /* Les bordures du tableau seront collées (plus joli) */
@@ -1180,6 +1226,38 @@ input[readonly] {
     border: none;
     min-width:75px;
 }
+
+#popin-error{
+    padding-bottom:40px;
+    padding-top:40px;
+    padding-left:10px;
+    padding-right:10px;
+    background-color: grey;
+    z-index: 50;
+    position: absolute;
+    left: 35%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 37%;
+    height: auto;
+    border-radius: 80px;
+    text-align: center;
+    padding-top: 50px;
+    color: white;
+}
+#popin-error table{
+    margin:10px;
+    overflow:auto;
+}
+#popin-error table td,#popin-error table th {
+    border-collapse: collapse;
+    border: 1px solid black;
+    padding:5px;
+}
+#popin-error button{
+    width:75px;
+}
+
 header #text-conf button{
     height: auto;
     width: 6%;

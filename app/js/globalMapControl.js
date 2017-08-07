@@ -2,6 +2,7 @@
 // global variables
 
 var	server= "http://localhost:3000/";
+//var	server = "http://local-map/";
 var mapControl = {
 	existMap: false,
 	mapName: null,
@@ -293,7 +294,7 @@ var mapControl = {
 
 
 
-	confmapPlot: function(myData, mapName, confId, isSavingLocalization, callback) {
+	confmapPlot: function(myData, mapName, confId, isSavingLocalization,listnewmoves, callback) {
 		console.log("plot confmapName :"+mapName);
 		if(mapName !== "" ){
 		// add svg map to html

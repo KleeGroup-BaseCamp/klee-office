@@ -11,6 +11,7 @@
     var newConfig=[];
     var view_access=false; // true if the config can be modify, false otherwise
     var configId=window.location.href.split('modify')[1] //to get the id of my config
+    var movelinesInvalid=[[],[]];
 
     /**function fillMyData : to get my position (site+desk)**/
     function fillMyData(myData,callback){
@@ -65,9 +66,14 @@
         d3.json(server + "getRecapOfMovings/"+configId, function(movelines){
             for (var i=0;i<movelines.length;i++){
                 var text='';
+                console.log(movelines[i].status)
                 newConfig.push([movelines[i].firstname,movelines[i].lastname,movelines[i].depart,movelines[i].arrivee,"former-row"])
                 if (view_access==true){
+                    if (movelines[i].status=="Brouillon invalide"){
+                        text="<tr class=\"invalid-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>"
+                    }else{
                     text="<tr class=\"former-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>"
+                    }
                 }else{
                     text="<tr class=\"former-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td></tr>"
                 }
@@ -77,44 +83,60 @@
         });
     }
 
-    function updateMovelines(callback){
+    function checkMovelines(callback){
         d3.json(server+'checkFromDeskMoveLine/'+configId,function(res){
-            if (res.length>0){
-                for (var i=0;i<res.length;i++){
-                    console.log({currentid:res[i].currentid, mov_id: res[i].mov_id})
-                    //update the moveline
-                    $.ajax({
-                        url: "updateFromDeskMoveline",
-                        type: 'POST',
-                        data:{currentid:res[i].currentid, mov_id: res[i].mov_id},
-                        success:function(){
-                            console.log('success')
-                        }
-                    });
-                    console.log('update !')
-                }
+            if (res.length>0){;
+                d3.select("#recap-conf h3 img").style('visibility','visible')
             }
+            for (var i=0;i<res.length;i++){
+                //change status moveline to invalid
+                $.ajax({
+                    url: "setInvalidMoveline/"+res[i].mov_id,
+                    type: 'POST',
+                    success : function(res){}
+                });
+                console.log(res[i])
+                movelinesInvalid[0].push({name:res[i].name,desk:res[i].fromdesk})
+            }           
+        
+            d3.json(server+'checkToDeskMoveLine/'+configId,function(res){
+                if (res.length>0){;
+                    d3.select("#recap-conf h3 img").style('visibility','visible')
+                }
+                for (var i=0;i<res.length;i++){
+                    //change status moveline to invalid
+                    $.ajax({
+                        url: "setInvalidMoveline/"+res[i].mov_id,
+                        type: 'POST',
+                        success : function(res){console.log('update')}
+                    });
+                    movelinesInvalid[1].push({name:res[i].person,name:res[i].todesk})
+                }  
+            })
         })
         callback();
-}
+    }
 
 /** function preparePlot() : plot table ans buttons according to view_access and the map  */
     function preparePlot() {
+        d3.select('#popin-error').style('display','none')
         d3.json(server + "getConfById/"+configId, function(dataset){
             $("#conf-status").html(dataset[0].state)
             if (dataset[0].state=="Brouillon"){
                 view_access=true;
                 d3.select("#recap-conf").selectAll('button').style('visibility','visible')
                 $("#text-conf").html("Veuillez rechercher la personne à déplacer")
+                checkMovelines(function(){
+                    plotTable();
+                })
             }else{
                 view_acces=false;
                 d3.select("#recap-conf").selectAll('button').style('visibility','hidden')
                 $("#text-conf").html("Cette configuration n'est pas modifiable")
                 $('#table-to-fill th:nth-child(5)').hide();
-            }
-            updateMovelines(function(){
                 plotTable();
-            })
+            }
+
         })
         //display a map (mine by default or N0 if none)
         var mapName;
@@ -122,19 +144,8 @@
             myData[2].split(/-/)[1]
         }else{mapName='N0'}
 
-        if(!mapControl.existMap) {
-            // erase all maps' overview
-            mapControl.mapName = mapName;
-            mapControl.confmapPlot(myData,mapName,configId, false, function() {});
-            mapControl.existMap = true;
-        }
-        else {
-            d3.select(".map").select("svg").remove();
-            mapControl.existMap = false;
-            mapControl.mapName = mapName;
-            mapControl.confmapPlot(myData,mapName,config, false, function() {});
-            mapControl.existMap = true;
-        }
+        reloadMap(mapName);
+
         d3.select("#menu-plot-conf").style("display",""); //menu to display map 
         d3.select("#menu-conf").style("display","none");   //menu to choose a new localisation                    
     }
@@ -196,7 +207,7 @@
                         // if no map showing on, plot the map with name "mapName", add pin to searched person's table
                         if(!mapControl.existMap) {
                             mapControl.mapName = mapName;
-                            mapControl.confmapPlot(myData,mapName, configId, true, function() {
+                            mapControl.confmapPlot(myData,mapName, configId, true,newConfig, function() {
                                 if (desk!="aucun" && desk!="externe"){
                                 table = d3.select("#tables")
                                         .select("#" + desk);
@@ -219,7 +230,7 @@
                             d3.select(".map").select("svg").remove();
                             mapControl.existMap = false;
                             mapControl.mapName = mapName;
-                            mapControl.confmapPlot(myData,mapName,configId, true, function() {
+                            mapControl.confmapPlot(myData,mapName,configId, true, newConfig, function() {
                                 if (desk!="aucun" && desk!="externe"){
                                 table = d3.select("#tables")
                                         .select("#" + desk);
@@ -264,14 +275,14 @@
 
 		                    if (!mapControl.existMap) {
 			                    mapControl.mapName = myMap;
-			                    mapControl.confmapPlot(myData,mapControl.mapName,configId, true, function() {validateDesk(name)});
+			                    mapControl.confmapPlot(myData,mapControl.mapName,configId, true, newConfig,function() {validateDesk(name)});
 			                    mapControl.existMap = true;
 		                    }
 		                    // if other map, delete and show myMap
 		                    else if (mapControl.mapName !== myMap) {
 			                    d3.select(".map").select("svg").remove();
 			                    mapControl.mapName = myMap;
-			                    mapControl.confmapPlot(myData,mapControl.mapName,configId,true, function() {validateDesk(name)});
+			                    mapControl.confmapPlot(myData,mapControl.mapName,configId,true,newConfig,  function() {validateDesk(name)});
 		                    }
                         }); 
                     }else if(view_access==false){
@@ -294,29 +305,32 @@
 
     //event when click on 'enregistrer button' to create the new movelines for each unsaved row in table #table-to-fill
     $('#val-conf').click(function(event){
-        for (var i=0;i<newConfig.length;i++){
-            if (newConfig[i][4]=="new-row"){
-                newConfig[i][4]="former-row"
-                var data={confid:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],fromdesk:newConfig[i][2],todesk:newConfig[i][3],ind:i};
-                $.ajax({
-                    url: "addMoveLine",
-                    type: 'POST',
-                    data: data,
-                    success : function(res){}
-                });
+        function updateDataBase(callback){
+            for (var i=0;i<newConfig.length;i++){
+                if (newConfig[i][4]=="new-row"){
+                    newConfig[i][4]="former-row"
+                    var data={confid:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],fromdesk:newConfig[i][2],todesk:newConfig[i][3],status:"Brouillon"};
+                    $.ajax({
+                        url: "addMoveLine",
+                        type: 'POST',
+                        data: data,
+                        success : function(res){}
+                    });
+                }
             }
+            d3.select("#recap-conf").selectAll(".new-row").attr("class","former-row");
+            //request post to update the dateUpdate column of MoveSet
+            $.ajax({
+                url: "updateDateMoveSet/"+configId,
+                type: 'POST',
+                complete : function(res,stat){console.log('update dateUpdate moveset')}
+            });
+            event.stopPropagation();
+            callback();
         }
-        d3.select("#recap-conf").selectAll(".new-row").attr("class","former-row");
-        //request post to update the dateUpdate column of MoveSet
-        $.ajax({
-            url: "updateDateMoveSet/"+configId,
-            type: 'POST',
-            complete : function(res,stat){
-                console.log('update dateUpdate moveset')
-            }
-        });
-        event.stopPropagation();
-
+        updateDataBase(function(){
+            reloadMap('');
+        })
     })
 
     //event when click on the cross to delete a moveline
@@ -350,7 +364,7 @@
         for (var i=0;i<list_to_delete.length;i++){
             console.log(list_to_delete[i])
             if (list_to_delete[i].state=="former-row"){
-                d3.json(server +"deleteMoveline", function(){})
+                d3.json(server +"deleteMoveline", function(){reloadMap('');})
                 .header("Content-Type","application/json")
                 .send("POST", JSON.stringify(list_to_delete[i])); 
             }
@@ -368,11 +382,8 @@
             $(text).appendTo("#table-to-fill")
             $("#nb-people-new-conf").html(newConfig.length) 
         }
-        
-        
-    
-    })
 
+    })
 
     /** function validateDesk : what to display when clicking on a desk on the current map */
     function validateDesk(name){
@@ -438,6 +449,59 @@
             });
         }
         $("#text-conf").html("Veuillez rechercher la personne à déplacer")
+    }
+    $('#display-error').click(function(){
+        $('<div id="popin-error"></div>').insertAfter('#table-conf')
+        d3.select('#popin-error').style('display','');
+        $("#popin-error").append('<div id="error-fromdesk"></div>'+
+                                    '<div id="error-todesk"></div>'+
+                                    '<div>'+
+                                        '<button id="close-error" >Fermer</button>'+
+                                    '</div>')
+        if (movelinesInvalid[0].length>0){
+            $('<h3> Erreur sur les bureaux actuels</h3> Les personnes suivantes ont changé de bureau. Veuillez les supprimer et les saisir à nouveau</p><table><thead><tr><td>Nom Prénom</td><td>Bureau actuel</td></tr></thead></table>').appendTo('#popin-error #error-fromdesk')
+            for (var i=0;i<movelinesInvalid[0].length;i++){
+                $('<tr><td>'+movelinesInvalid[0][i].name+'<td>'+movelinesInvalid[0][i].desk+'</td></tr>').appendTo('#popin-error #error-fromdesk table')
+            }
+        }
+        if (movelinesInvalid[1].length>0){
+            $('<h3> Erreur sur les bureaux cibles</h3><p> Ces bureaux ont changé d\'occupants. Veuillez les supprimer et les saisir à nouveau</p><table><thead><tr><td>Nom Prénom</td><td>Bureau cible</td></tr></thead></table>').appendTo('#popin-error #error-todesk')
+            for (var i=0;i<movelinesInvalid[1].length;i++){
+                $('<tr><td>'+movelinesInvalid[1][i].name+'<td>'+movelinesInvalid[1][i].todesk+'</td></tr>').appendTo('#popin-error #error-todesk table')
+            }
+        }
+        $('#close-error').click(function(){
+            d3.select('#popin-error').remove()
+        })
+    })
+
+    function reloadMap(mapName){
+        if (mapName==''){
+            var mapName=d3.select('#map-name h1').attr('class');
+        }
+            if (mapName){
+                if(!mapControl.existMap) {
+                    mapControl.mapName = mapName;
+                    mapControl.confmapPlot(myData,mapName, configId, false, newConfig, function() {});
+                    mapControl.existMap = true;
+                }
+                // if a map exists, erase it and replot one 
+                else {
+                    d3.select(".map").select("svg").remove();
+                    mapControl.existMap = false;
+                    mapControl.mapName = mapName;
+                    mapControl.confmapPlot(myData,mapName,configId, true,newConfig, function() {});
+                    mapControl.existMap = true;
+                }
+            }  
+            //add none saved people too
+            for (var i=0;i<newConfig.length;i++){
+                var location=newConfig[i];
+                if (location.split(/\s*:\s*/)[0]=="La Boursidière" && location.split(/\s*:\s*/)[1]!="aucun"){
+                    var desk=location.split(/\s*:\s*/)[1]
+
+                }
+            } 
     }
 
 }(window));
