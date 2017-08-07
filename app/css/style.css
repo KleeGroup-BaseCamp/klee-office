@@ -1294,6 +1294,11 @@ header #text-conf button a{
     left: 375px;
     top:-70px;
 }
+#admin-buttons{
+    position: relative;
+    left: 65%;
+    top: 40%;
+}
 #config-buttons button, #admin-buttons button{
     margin: 10px;
     height: auto;
