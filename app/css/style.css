@@ -632,7 +632,12 @@ table #personal-desk {
 #legend {
     text-align: center;
     margin-left:50px;
-        border: solid;
+    margin-top: 50px;
+    border: solid;
+}
+#legend thead{
+    background-color: lightgrey;
+    border: solid;
 }
 #legend td #add-desk-horizontal{
     cursor: pointer;
@@ -654,7 +659,7 @@ table #personal-desk {
     height: 40px;;
 }
 
-#legend td #add-desk-horizontal:hover, #legend td #add-desk-vertical:hover, #legend td #rm-desk:hover, #legend td #mode-admin:hover, #legend td #quit-admin:hover, #legend td #dl-button:hover, #legend td #undo-map:hover{
+#legend td #add-desk-horizontal:hover, #legend td #add-desk-vertical:hover, #legend td #rm-desk:hover, #legend td #mode-admin:hover, #legend td #quit-admin:hover, #legend td #dl-button:hover, #legend td #undo-map:hover, #legend td #uploadButton:hover{
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -671,9 +676,21 @@ table #personal-desk {
     padding-top:5px;
 }
 
-.map svg{
-    width:100%;
+#fileUpload input#importInput{
+    /*overflow: hidden;*/
+    margin-top: 20px;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    background-color: black;
 }
+#fileUpload input#importInput:hover{
+    color: black;
+    background-color: lightgrey;
+
+}
+
+.map svg{width:100%;}
 
 .left-side {
     float: left;

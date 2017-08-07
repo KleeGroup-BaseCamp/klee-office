@@ -150,11 +150,11 @@
                                 <tr>
                                     <td align="center"><img id="add-desk-vertical" src="/img/bureau_vertical.png"></td>
                                 </tr>
-                                <tr>
-                                    <td align="center"><img id="rm-desk" src="/img/minusDesk.png"></td>
-                                </tr>
                                <tr>
                                    <td align="center"><img id="mode-admin" src="/img/directionCross.png"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><img id="rm-desk" src="/img/delete.png"></td>
                                 </tr>
                                 <tr>
                                     <td align="center"><img id="quit-admin" src="/img/ckeck.png"></td>
@@ -163,15 +163,24 @@
                                    <td align="center"><img id="dl-button" src="/img/downloadMap.png"></td>
                                 </tr>
                                 <tr>
-                                   <td align="center"><img id="undo-map" src="/img/undoMap.png"></td>
-                                </tr>
-                                <!--tr>
-                                   <td align="center"><input id="upload-file" type="file" /></td>
+                                    <td> 
+                                        <div id="fileUpload">
+                                            <form ref='uploadForm' 
+                                                    id='uploadForm' 
+                                                    action='http://localhost:3000/upload' 
+                                                    method='post' 
+                                                    encType="multipart/form-data">
+                                                        <input type="file" id="fileInput" name="sampleFile" style="display:none;" />
+                                                        <!--input type="button" id="parcourirButton" value="Importer" onclick="getfile()" /></br-->
+                                                        <img id="uploadButton" src="/img/uploadMap.png" onclick="getfile()" /></br>
+                                                        <input type='submit' id="importInput" value='Appliquer' />
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td align="center"><progress id="upload-progress"></progress></td>
-                                </tr-->
-                                
+                                   <td align="center"><img id="undo-map" src="/img/undoMap.png"></td>
+                                </tr>
                             </table>
                         </td>                        
                     </tr>  
