@@ -881,6 +881,7 @@ input[readonly] {
 #table-validators tr:nth-child(even){background-color: #f2f2f2}
 
 #table-validators{
+    margin-top: 35px;
     position: relative;
     left: 20%;
     border : 3px solid black;
@@ -1124,7 +1125,6 @@ input[readonly] {
 #noplace-block, #conf-block, #overDesk-block{
     margin-bottom:20px;
 }
-
 #list-noplace td{
     padding-top:5px;
     padding-bottom:5px;
@@ -1371,28 +1371,22 @@ header #text-conf button a{
     z-index:2;
     position:relative;
 }
-#table-conf-list td{
+#table-conf-list td, #table-admin-list td{
     z-index:1;
 }
-#table-conf-list #left-photo{
+#table-conf-list #left-photo, #table-admin-list #left-photo{
     left:20px;
     width:110%;
 }
-#table-conf-list #right-photo{
+#table-conf-list #right-photo, #table-admin-list #right-photo{
     left:150%;
     width:110%;
 }
-
-#config-buttons{
+#config-buttons, #admin-buttons{
     display: block;
     position: relative;
     left: 375px;
     top:-70px;
-}
-#admin-buttons{
-    position: relative;
-    left: 65%;
-    top: 40%;
 }
 #config-buttons button, #admin-buttons button{
     margin: 10px;
