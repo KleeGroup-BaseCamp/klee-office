@@ -281,9 +281,9 @@ Since our program to update *KleeGroup.json* is written with python, you have to
 To set up autorun of python script, ``crontab -e`` will be very helpful. Maybe you need more documentation with this command: ``man crontab``
 
 My ``crontab`` command is as follows:
-``
+````
 @daily cd /home/dev/local-map/admin && /home/dev/anaconda2/bin/python /home/dev/local-map/admin/updateActiveDirectory.py
-``
+````
 This means that: every day, system will open folder ``/home/dev/local-map/admin``, then use ``/home/dev/anaconda2/bin/python`` as python interpreter to run following python file ``/home/dev/local-map/admin/updateActiveDirectory.py``.
 
 Three scripts python are currently launched every day by crontab:
@@ -301,9 +301,11 @@ After having talked about how to install the backend from zero, we need to chang
 1. modify **_staff's data_**: move to another table
 2. modify **_maps_** : add table, change table's position, etc.
 
+**modify _staff's data_**
 _For the first kind_, if we want to it manually, we can change his info in the database, and then the server will automatically update his position in the map.
 But a easier solution would be to change it in the application direclty thanks to the button "Mettre à jour ma position" or by creating a new confirguration (don't forget to validate it since by default configuration have draft status)
 
+**modify _maps_**
 _For the second kind_, there two solutions once again
 
 But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
@@ -318,13 +320,13 @@ Since all our maps are stored and showed as ``.svg``, you have to edit the *svg*
 
 Search **tables**, you will find all the infos about tables in one block
 
-``
+````
 <g id="tables"> 
     <g id="N0-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="532.3736" y="58.504215" /></g>
     <g id="N0-A-02"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="546.50299" y="58.611759" /></g>
     ...
 </g>
-``
+````
 All you need to do is find the table you want to change, and give it another number or position or color ! But how ?
 
 Well, open this *svg* file in a browser (chrome or firefox), move the mouse to the table you want to change, *right* click, choose *Inspecter* (or *Inspect* in English), and you will see the information for this element.
@@ -334,23 +336,23 @@ There are still other ways to add tables, such as using **inkscape** (but make s
 
 
 # For our postgresql database : 
-	1. Global content
+1. Global content
 See local-map_diagram.xml in the repository to find out about the structure of the database
 
 **Person and Profil**
-Each person has a profil containing three booleans (isValidatorLvlOne, isValidatorLvlTwo, isAdministrator).
-	* a validator level One is responsible for the members of his departement/business Unit
-	* a validator level Two is responsible for the members of his company (=several departements)
-	* a administrator is responsible for the choice of all validators. This can be donne on the admin page in the application
+Each person has a profil containing three booleans (isValidatorLvlOne, isValidatorLvlTwo, isAdministrator):
+* a validator level One is responsible for the members of his departement/business Unit
+* a validator level Two is responsible for the members of his company (=several departements)
+* a administrator is responsible for the choice of all validators. This can be donne on the admin page in the application
 Modifying validators can be donne on the admin page in the application
 Modifying administrator must be done in app/js/controlAccount.js
 
 **MoveSet, MoveLine and MoveStatus**
 Each configuration (MoveSet) is composed of many MoveLine. A MoveLine is the move of one specific person from a desk to another.
 MoveSet can have three different status :
-  -- 'Déplacement personnel' : the MoveSet of someone of update his own position
-  -- 'Brouillon' : default value when creating a new configuration. MoveLines are not applied while the configuration is not validate. These status can be useful when someone to do a simulation of a new configuration
-  -- 'Validée' : the MoveSet is applied on the current configuration. Once validate a MoveSet can not be undone
+  * 'Déplacement personnel' : the MoveSet of someone of update his own position
+  * 'Brouillon' : default value when creating a new configuration. MoveLines are not applied while the configuration is not validate. These status can be useful when someone to do a simulation of a new configuration
+  * 'Validée' : the MoveSet is applied on the current configuration. Once validate a MoveSet can not be undone
   
 **Desk, Site and Person**
  Each person must have a desk so that every person are connected to a Site.
@@ -358,7 +360,7 @@ MoveSet can have three different status :
  For those who are on different site from 'La Boursidière', we have no plans yet. So their desk are Desk.name="externe" and Site.name is the name of the site they are on.
  This was made so that is would be much easier to change the app once we have plans for the Issy-Les-Moulineaux and others
 
-	2. Creating or recreating the database
+2. Creating or recreating the database
 If you want to recreate a clean database. 
 
 Stop node server so as the database is not in use anymore.
