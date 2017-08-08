@@ -262,7 +262,6 @@ function plotResultClick(nbPeopleByArea, dataSearchedPeople){
   })
 }
 
-
 function plotEtage(etage){
     d3.select("#map-info").style("display","");
 		d3.select(".map-extern").style("display","none")

@@ -203,7 +203,17 @@ eraseMap: function(){}
 - `mapControl.mapPlot(myData,mapName,callback)`:  plot the map where the user is located on the index page.
 
 #### **mapAdmin.js**
-********** TO COMPLETE **********
+- **Tools to modify map's element**
+ - `$("#add-desk-vertical").click(function(){})`: add vertical desk.
+ - `$("#add-desk-horizontal").click(function(){})`: add horizontal desk.
+ - `$("#mode-admin").click(function(){})`: move desk.
+ - `$("#rm-desk").click(function(){})`: remove desk.
+ - `$("#quit-admin").click(function(){})`: validate last changes to the map.
+- **Tools to apply changes on a new map in the server**
+ - `$("#dl-button").click(function(){})`: download the map.
+ - `<div id="fileUpload"> ... </div>`: Contain form to handle the upload of a new map which using `/upload` route.
+				      Click on the submit button "Appliquer" apply the upload to the server. 
+ - `$("#undo-map").click(function(){})`: remove all changes.
 
 #### **_polyfill.js_** 
 polyfill for Internet Explorer compatibility.

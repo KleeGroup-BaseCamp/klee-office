@@ -1,7 +1,7 @@
 'use strict';
 // Libraries imports
 const express = require('express');
-const fileUpload = require('express-fileupload');
+//const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 var flash = require('connect-flash');
@@ -13,7 +13,7 @@ var ejs = require('ejs');
 var saml2 = require('saml2-js');
 var fs = require('fs');
 var util = require('util');
-var JSFtp = require("jsftp");
+//var JSFtp = require("jsftp");
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flag : 'w'});
 var log_stdout = process.stdout;
 
@@ -60,7 +60,7 @@ app.use(session({store: sessionStore,
 		saveUninitialized: true
 		/*cookie: { secure: true, maxAge: 60000 }*/}));
 app.use(flash());
-app.use(fileUpload());
+//app.use(fileUpload());
 
  //Partie Authentification SSO - need IDP from support
 
@@ -241,9 +241,9 @@ app.post('/myLocalization', localizationServices.saveMyLocalization);
 app.get('/currentOfficeName/:first/:last', localizationServices.getCurrentDeskName);
 app.get('/currentOfficeNamebyId/:id', localizationServices.getCurrentDeskNamebyId);
 app.get('/getOverOccupiedDesk/', localizationServices.getOverOccupiedDesk);
+app.get('/getPersonByDesk/:name', localizationServices.getPersonByDesk);
 
 app.get('/getAllCompanies', adminServices.getAllCompanies);
-app.get('/getPersonByDesk/:name', localizationServices.getPersonByDesk);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
 app.get('/getPeopleByCompany/:id', adminServices.getPeopleByCompany);
