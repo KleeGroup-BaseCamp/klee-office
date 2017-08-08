@@ -38,4 +38,5 @@
         d3.select(".list-validators") .style("display","none");
     });
 
+
 }(window));

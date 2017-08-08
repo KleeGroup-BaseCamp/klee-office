@@ -254,6 +254,7 @@ app.post('/saveAdministrator', adminServices.saveAdministrator);
 app.post('/deleteAdministrator', adminServices.deleteAdministrator);
 app.get('/getAllValidators', adminServices.getAllValidators);
 app.get('/getValidatorsByDep/:id', adminServices.getValidatorsByDep);
+app.get('/getDepartmentsByCompanyName/:name', adminServices.getDepartmentsByCompanyName);
 
 app.get('/getAllMovingsByConfIdCount/:id', confServices.countAllMoveLineByMoveSetId);
 app.get('/getPeopleMovingsByConId/:id', confServices.getPeopleMoveLineByMoveSetId);
