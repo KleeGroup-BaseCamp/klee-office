@@ -323,7 +323,14 @@ But bare one thing in your mind: make sure what you are going to change before y
 A first solution the easiest :
 Connect on the app. Click on the administrator page and on the button administration des plans
 
-****** TO COMPLETE ******
+1) Choose the map to modify
+2) Choose an action to modify the map :
+	- add a desk
+	- move or remove a desk
+	- save your modifications
+3) Download the modifed svg map (be carefull to the name, if there is an other file with the same name in your "Downlaod" folder, the right name will change, ex :  N3 (1).svg).  
+4) Upload the svg map you just create (check if the name is ok).
+5) Press "Appliquer" to put the new map on the server.
 
 Another solution (to do it manually) and more difficult
 Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
