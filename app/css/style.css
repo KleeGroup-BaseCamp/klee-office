@@ -613,53 +613,79 @@ table #personal-desk {
     /*border-left: 2px solid #297aa3;
     border-right: 2px solid #297aa3;
     border-bottom: 2px solid #297aa3;*/
-    height:450px;
+    height:430px;
     /*margin-left: 10%;*/
 
 }
 #map-info{
     margin-left: 5%;
     width:1300px;
+    min-height:600px;
 }
 #map-show .map {
     position: relative;
     width: 1100px;
-    height: 450px;
+    height: 430px;
 }
 #whole-map {
     text-align: center;
 }
-#legend {
+#legend, #legend-modifmap {
     text-align: center;
-    margin-left:30px;
-    margin-top: 30px;
+    margin-left:25px;
+    margin-top: 25px;
+    
 }
 #legend td{
     vertical-align :middle;
-}
-
-#legend-modifmap thead{
-    background-color: lightgrey;
-    border: solid;
-}
-#legend-modifmap td #add-desk-horizontal{
-    cursor: pointer;
-    width: 40px;
-    height: 20px;
-    /*padding-top: 10px;*/
-}
-#legend-modifmap td #add-desk-vertical{
-    cursor: pointer;
-    width: 20px;
-    height: 40px;
-}
-#legend-modifmap td, #legend td{
     padding: 5px;
 }
-#legend-modifmap td img {
+
+#legend-modifmap, #legend-modiffile {
+    padding-top:50px;
+    vertical-align :middle;
+    padding-left:50px;
+
+}
+#legend-modifmap table, #legend-modiffile table{
+    vertical-align :middle;
+    border: 2px solid;
+    width:150px;
+}
+#legend-modifmap table thead, #legend-modiffile table thead{
+    background-color: darkgrey;
+    border: 2px solid; 
+}
+
+#legend-modifmap table td,#legend-modifmap table th, #legend-modiffile table td,#legend-modiffile table th  {
+    padding-top:10px;
+    padding-bottom:10px;
+}
+#legend-modifmap table th{
+    padding-right:5px;
+    padding-left:5px;
+}
+#legend-modifmap tfoot{
+    padding-top:20px;
+    background-color: lightgrey
+}
+#legend-modiffile{
+    padding-top:20px;
+    text-align: center;
+}
+
+#legend-modifmap tfoot td{
+    width:45px;
+    border :2px solid;
+}
+#legend-modifmap .commande, #legend-modiffile .commande{
+    padding-bottom :5px;
+    font-size:13px;
+    font-style:italic;
+}
+
+#legend-modifmap table img, #legend-modiffile table img  {
     cursor: pointer;
-    width: 40px;
-    height: 40px;;
 }
 
 #legend-modifmap td #add-desk-horizontal:hover, #legend-modifmap td #add-desk-vertical:hover, #legend-modifmap td #rm-desk:hover, #legend-modifmap td #mode-admin:hover, #legend-modifmap td #quit-admin:hover, #legend-modifmap td #dl-button:hover, #legend-modifmap td #undo-map:hover, #legend-modifmap td #uploadButton:hover{
@@ -1037,6 +1063,16 @@ input[readonly] {
     position:relative;
     margin-right:20px;
     margin-left:20px;
+}
+
+#newDesk-add button{
+    width :75px;
+}
+#newDesk-add ::placeholder{
+    font-size:13px;
+    font-style:italic;
+    color:#999999
+
 }
 
 #popin-val h3{
