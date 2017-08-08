@@ -162,8 +162,8 @@ app.post("/saml2/slsResponse", function(req, res){ //app.post ??
 });
  
 // views
-var firstname="Marjorie"
-var lastname="JULIO"
+var firstname="Alexandre"
+var lastname="MORIN"
 //home
 app.get('/', function(req, res){
 	console.log(req.session);

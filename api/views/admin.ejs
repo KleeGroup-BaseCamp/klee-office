@@ -73,15 +73,11 @@
     </header>
 
     <div id="main" class="">
-        <div>
-            <% if (message) { %>
-            <p class="flash-err"><%- message %></p>
-            <% } %>
-        </div>
         <!--div id="admin-bar" class="container">
             <h2 id="action-title" class="center">Administration</h2>
         </div-->
-        <div id="error-admin"></div>
+    <div id="error-admin"></div>
+    <div id="div-to-hide">
         <div class="list-validators">
             <table id="table-validators">
                 <thead>
@@ -107,11 +103,6 @@
         </div>
 
         <!-- Affichage plans -->
-        <div>
-            <% if (message) { %>
-            <p class="flash-success"><%- message %></p>
-            <% } %>
-        </div>
         <div id="plans-block" class="container">
             <div id="navigation">
                 <div id="menu-withoutresult">
@@ -181,7 +172,6 @@
                                                     method='post' 
                                                     encType="multipart/form-data">
                                                         <input type="file" id="fileInput" name="sampleFile" style="display:none;" />
-                                                        <!--input type="button" id="parcourirButton" value="Importer" onclick="getfile()" /></br-->
                                                         <img id="uploadButton" src="/img/uploadMap.png" title="Importer un plan" onclick="getfile()" /></br>
                                                         <input type='submit' id="importInput" value='Appliquer' title="Appliquer le nouveau plan" />
                                             </form>
@@ -191,6 +181,9 @@
                                 <tr>
                                    <td align="center"><img id="undo-map" src="/img/undoMap.png" title="Annuler tous les changements"></td>
                                 </tr>
+                                <tr>
+                                   <td align="center"><button id="krilin">Krilin</button></td>
+                                </tr>
                             </table>
                         </td>                        
                     </tr>  
@@ -198,6 +191,7 @@
             </div>
         </div>
     </div>
+</div>
     <!-- Affichage des plans -->
 
 
@@ -207,7 +201,6 @@
 // js for plot map and search
 ////////////////////////////////////////////// -->
 <script src="js/classie.js"></script>
-<script src="js/toggle.js"></script>
 <script src="js/admin.js"></script>
 <script src="js/polyfill.js"></script>
 <!--script src="js/autocomplete.js"></script-->

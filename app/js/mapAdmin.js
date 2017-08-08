@@ -80,13 +80,48 @@ $("#mode-admin").click(function(){
     d3.select(".tooltip_map_desk").remove();
     d3.select(".tooltip_map_desk_empty").remove();
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("rect");
+    var img = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("image");
     desk.classed("draggable", true)
         .attr("cursor","move")
         .style("cursor","")
         .attr("stroke","#ff00ff")
         .attr("transform","matrix(1 0 0 1 0 0)")
         .attr("onmousedown","selectElement(evt)");
+    img.classed("draggable", true)
+        .attr("cursor","move")
+        .style("cursor","")
+        .attr("transform","matrix(1 0 0 1 0 0)")
+        .attr("onmousedown","selectElement(evt)")
+        .attr("onclick","sizePlus(evt)")
+        .attr("oncontextmenu","sizeLess(evt)");
 });
+
+function sizePlus(evt){
+    console.log("yamcha");
+    selectedElement = evt.target;
+    console.log(selectedElement);
+    var newWidth = Number(selectedElement.getAttribute("width")) + 5;
+    var newHeight = Number(selectedElement.getAttribute("height")) + 5;
+    console.log(newWidth + " -- " + newHeight);
+    d3.select(selectedElement).attr("width", newWidth)
+                   .attr("height", newHeight);
+}
+
+function sizeLess(evt){
+    console.log("chichi");
+    evt.preventDefault();
+    selectedElement = evt.target;
+    console.log(selectedElement);
+    var newWidth = Number(selectedElement.getAttribute("width")) - 5;
+    var newHeight = Number(selectedElement.getAttribute("height")) - 5;
+    console.log(newWidth + " -- " + newHeight);
+    d3.select(selectedElement).attr("width", newWidth)
+                   .attr("height", newHeight);
+    
+                   
+                   
+               
+}
 
 // ------ Leave Admin Mode :  Keep changes to SVG map ------ //
 
@@ -153,7 +188,10 @@ $("#dl-button").click(function(){
 
 $("#add-desk-vertical").click(function(){
     plot_nameConsole();
-
+    d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select(".tooltip_map_desk").remove();
+    d3.select(".tooltip_map_desk_empty").remove();
+    
     $("#add-office").click(function(){
             var floorName = $('#floor').val();
             var zoneName = $('#zone').val();
@@ -198,6 +236,9 @@ $("#add-desk-vertical").click(function(){
 
 $("#add-desk-horizontal").click(function(){
     plot_nameConsole();
+    d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select(".tooltip_map_desk").remove();
+    d3.select(".tooltip_map_desk_empty").remove();
 
     $("#add-office").click(function(){
             var floorName = $('#floor').val();
@@ -272,17 +313,22 @@ function plot_nameConsole(){
 // ------- Remove desk on map ------ //
 
 $("#rm-desk").click(function(){   
+    d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select(".tooltip_map_desk").remove();
+    d3.select(".tooltip_map_desk_empty").remove();
 
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll(".available").selectAll("rect");
     desk.attr("cursor","pointer")
-        .attr("stroke","red")
-        .attr("onmousedown","removeElement(evt)");  
+        .attr("onmousedown","removeElement(evt)")
+        .attr("stroke","red"); 
+    //d3.select("#whole-map").select("svg").select("#tables").selectAll(".available").selectAll("rect").attr("stroke","red")
+         
 });
 
 // ---- function to remove desk ----- //
 
 function removeElement(evt){
-    selectedElement = evt.target;
+    selectedElement = evt.target.parentElement;
     selectedElement.remove();
 }
 
@@ -299,4 +345,15 @@ function getfile(){
     /*document.getElementById('importInput').value=document.getElementById('fileInput').value;*/
     document.getElementById('fileInput').click();
 }
+
+$("#krilin").click(function(){   
+		var svgimg = document.createElementNS('http://www.w3.org/2000/svg','image');
+        svgimg.setAttributeNS(null,'height','50');
+        svgimg.setAttributeNS(null,'width','50');
+        svgimg.setAttributeNS('http://www.w3.org/1999/xlink','href', 'config.png');
+        svgimg.setAttributeNS(null,'x','930');
+        svgimg.setAttributeNS(null,'y','375');
+        svgimg.setAttributeNS(null, 'visibility', 'visible');
+        $('svg').append(svgimg);
+});
 
