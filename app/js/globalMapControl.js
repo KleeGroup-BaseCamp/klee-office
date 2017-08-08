@@ -399,12 +399,14 @@ var mapControl = {
 								table = d3.select("#"+fromDesk);
 								// if found in map, change table color, add hover actions
 								if(table[0][0] !== null){
-									// mark as occupied
-									table.attr("class", "available-temp");
-									table.select("rect")
-										.attr("id", fullName)
-										.attr("fill", '#3CB371')
-										.attr("cursor", "pointer");									
+									// mark as available only if not already marked in occupied temp
+									if (table.select('rect').attr("fill")!="#CD5C5C"){
+										table.attr("class", "available-temp");
+										table.select("rect")
+											.attr("id", fullName)
+											.attr("fill", '#3CB371')
+											.attr("cursor", "pointer");	
+									}								
 								}
 							}
 							if(toSite=="La Boursidière" && toDesk!="aucun"){
@@ -424,6 +426,23 @@ var mapControl = {
 					callback();
 					d3.select("#tables").selectAll(".available").selectAll("rect").attr("fill", "#99ff99");
 				});
+
+				//unsaved people in the conf
+				for (var i=0;i<listnewmoves.length;i++){
+					if (listnewmoves[i][4]=="new-row" && listnewmoves[i][3].split(/\s*:\s*/)[0]=="La Boursidière" && listnewmoves[i][3].split(/\s*:\s*/)[1].split(/-/)[0]==mapName){
+								var toDesk=listnewmoves[i][3].split(/\s*:\s*/)[1];
+								var table = d3.select("#"+toDesk);
+								// if found in map, change table color, add hover actions
+								if(table[0][0] !== null){
+									// mark as occupied
+									table.attr("class", "occupied-temp");
+									table.select("rect")
+										.attr("id", listnewmoves[i][0]+listnewmoves[i][1])
+										.attr("fill", "#CD5C5C")
+										.attr("cursor", "pointer");
+								}
+					}
+				}
 				
 				
 				});

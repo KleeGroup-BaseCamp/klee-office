@@ -308,6 +308,34 @@ const addMoveLine =(req,res) =>{
     res.redirect('/');
 }
 
+const deleteMoveLineIfFind = (req,res) =>{
+    models.sequelize.query('SELECT count(*) FROM \"MoveLine\" WHERE move_set_id= :confId '+
+        'AND person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname)'
+    , { replacements: { confId:req.body.confid,firstname: req.body.firstname, lastname : req.body.lastname },type: models.sequelize.QueryTypes.SELECT})
+    .then(function (resultat) {
+        console.log(resultat[0].count)
+        if (resultat[0].count>=1){
+            
+            models.sequelize.query(
+            'DELETE FROM \"Desk\" '+
+            'WHERE des_id IN (SELECT des_id FROM \"Desk\" '+
+            'JOIN \"MoveLine\" ON \"MoveLine\".\"toDesk\"=\"Desk\".des_id '+
+            'WHERE (\"Desk\".name= :auc OR \"Desk\".name= :ext) '+
+            'AND \"MoveLine\".move_set_id= :confId '+
+            'AND \"MoveLine\".person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname));'
+            ,{replacements:{confId:req.body.confid,firstname:req.body.firstname,lastname:req.body.lastname, auc:"aucun",ext:"externe"},type :models.sequelize.QueryTypes.DELETE})
+
+            models.sequelize.query(
+            'DELETE FROM \"MoveLine\" '+
+            'WHERE move_set_id= :confId '+
+            'AND person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname);'
+        ,{replacements:{confId:req.body.confid,firstname:req.body.firstname,lastname:req.body.lastname},type :models.sequelize.QueryTypes.DELETE})
+        }
+    }).then(function(){
+    res.redirect('/');})
+
+}
+
 const updateDateMoveSet =(req,res) =>{
     models.sequelize.query(
         'UPDATE \"MoveSet\" SET \"dateUpdate\"= :date '+
@@ -319,7 +347,7 @@ const updateDateMoveSet =(req,res) =>{
 const checkFromDeskMoveline = (req,res) =>{
     var confid=req.params.confId;
     models.sequelize.query(
-        'SELECT fromdesk.name as fromdesk, fromdesk.des_id as fromId, currentdesk.name as current, currentdesk.des_id as currentid, \"MoveLine\".mov_id as mov_id , \"Person\".firstname || \' \' || \"Person\".lastname as name FROM \"MoveLine\" '+
+        'SELECT fromdesk.name as fromdesk, fromdesk.des_id as fromId, currentdesk.name as current, currentdesk.des_id as currentid, \"MoveLine\".mov_id as mov_id,\"Person\".firstname || \' \' || \"Person\".lastname as name FROM \"MoveLine\" '+
         'JOIN \"Desk\" as fromdesk ON fromdesk.des_id=\"MoveLine\".\"fromDesk\" '+
         'JOIN \"Desk\" as currentdesk ON currentdesk.person_id=\"MoveLine\".person_id '+
         'JOIN \"Person\" ON \"Person\".per_id =\"MoveLine\".person_id '+
@@ -328,28 +356,20 @@ const checkFromDeskMoveline = (req,res) =>{
         {replacements:{setid: confid},type: models.sequelize.QueryTypes.SELECT})
     .then(function(results){
             res.json(results)
-            //console.log('ok!')
     })
 }
-
-/*const updateFromDeskMoveline =(req,res) =>{
-    var currentid=req.body.currentid;
-    var mov_id=req.body.mov_id;
-    MoveLine.update({fromDesk:currentid},{where:{mov_id:mov_id}})
-}*/
 
 const checkToDeskMoveline = (req,res) =>{
     var setid=req.params.confId
     models.sequelize.query(
-        'SELECT mov_id, todesk.des_id, todesk.name as todesk, \"Person\".firstname || \' \' || \"Person\".lastname as name FROM \"MoveLine\" '+
+        'SELECT mov_id, todesk.des_id, todesk.name as todesk, \"Person\".firstname || \' \' || \"Person\".lastname as name, todesk.person_id,(SELECT person_id FROM \"MoveLine\" WHERE \"MoveLine\".\"fromDesk\"= todesk.des_id AND move_set_id= :setid LIMIT 1) as former  FROM \"MoveLine\" '+
         'JOIN \"Desk\" as todesk ON todesk.des_id=\"MoveLine\".\"toDesk\" '+
         'JOIN \"Person\" ON \"Person\".per_id =\"MoveLine\".person_id '+
-        'WHERE todesk.person_id <>COALESCE((SELECT person_id FROM \"MoveLine\" WHERE \"MoveLine\".\"fromDesk\"= 829 AND move_set_id= :setid LIMIT 1),0)'+
+        'WHERE todesk.person_id <>COALESCE((SELECT person_id FROM \"MoveLine\" WHERE \"MoveLine\".\"fromDesk\"= todesk.des_id AND move_set_id= :setid LIMIT 1),0) '+
         'AND move_set_id= :setid ;',
         {replacements:{setid: setid},type: models.sequelize.QueryTypes.SELECT})
         .then(function(results){
             res.json(results)
-            console.log('ok!')
         })
 }
 const setInvalidMoveline = (req,res) =>{
@@ -438,5 +458,6 @@ module.exports = {
     checkToDeskMoveline,
     updateDateMoveSet,
     setInvalidMoveline,
-    isConfValid    
+    isConfValid,
+    deleteMoveLineIfFind  
 }

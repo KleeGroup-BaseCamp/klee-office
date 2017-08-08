@@ -57,25 +57,24 @@
     }
 
     /** function plotTable() : remove everything in the current table and do a request on the database to know all movelines for this config
-     *  Only configurations which can be modified have a the button delete-moveline
+     *  Only configurations which can be modified have a the button delete-row
      */
     function plotTable(){
-
         $('#table-to-fill > tbody').empty();
         newConfig=[];
         d3.json(server + "getRecapOfMovings/"+configId, function(movelines){
             for (var i=0;i<movelines.length;i++){
                 var text='';
-                console.log(movelines[i].status)
+                console.log(movelines[i])
                 newConfig.push([movelines[i].firstname,movelines[i].lastname,movelines[i].depart,movelines[i].arrivee,"former-row"])
                 if (view_access==true){
                     if (movelines[i].status=="Brouillon invalide"){
-                        text="<tr class=\"invalid-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>"
+                        text="<tr class=\"invalid-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td title='Modifier'>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-row></td></tr>"
                     }else{
-                    text="<tr class=\"former-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>"
+                    text="<tr class=\"former-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td title='Modifier'>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-row></td></tr>"
                     }
                 }else{
-                    text="<tr class=\"former-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td></tr>"
+                    text="<tr class=\"former-row\" id='"+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"'><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td title='Modifier'>"+newConfig[newConfig.length-1][3]+"</td></tr>"
                 }
                 $(text).appendTo("#table-to-fill")
             }
@@ -89,13 +88,13 @@
                 d3.select("#recap-conf h3 img").style('visibility','visible')
             }
             for (var i=0;i<res.length;i++){
+                console.log(res)
                 //change status moveline to invalid
                 $.ajax({
                     url: "setInvalidMoveline/"+res[i].mov_id,
                     type: 'POST',
                     success : function(res){}
                 });
-                console.log(res[i])
                 movelinesInvalid[0].push({name:res[i].name,desk:res[i].fromdesk})
             }           
         
@@ -110,11 +109,12 @@
                         type: 'POST',
                         success : function(res){console.log('update')}
                     });
-                    movelinesInvalid[1].push({name:res[i].person,name:res[i].todesk})
-                }  
+                    movelinesInvalid[1].push({name:res[i].name,todesk:res[i].todesk})
+                }
+                callback();  
             })
         })
-        callback();
+        
     }
 
 /** function preparePlot() : plot table ans buttons according to view_access and the map  */
@@ -129,6 +129,15 @@
                 checkMovelines(function(){
                     plotTable();
                 })
+                //To be able to change 'bureau cible'
+                $(document).on('click', '#table-to-fill td:nth-child(4)', function(event){
+                    console.log(event.target.parentNode.className)
+                    if (event.target.parentNode.className!="invalid-row"){
+                        var name=event.target.parentNode.childNodes[1].innerHTML+' '+event.target.parentNode.childNodes[0].innerHTML
+                        var fromDesk=event.target.parentNode.childNodes[2].innerHTML
+                        changeLocalization(name,fromDesk,false)
+                    }
+                });
             }else{
                 view_acces=false;
                 d3.select("#recap-conf").selectAll('button').style('visibility','hidden')
@@ -211,17 +220,16 @@
                                 if (desk!="aucun" && desk!="externe"){
                                 table = d3.select("#tables")
                                         .select("#" + desk);
-                                
+                                    if (table[0][0]!=null){
                                     table.append("image")
                                         .attr("xlink:href", "./img/pin_final.png")
                                         .attr("width", "30")
                                         .attr("height", "50")
                                         .attr("x", table.select("rect").attr("x") - 10)
                                         .attr("y", table.select("rect").attr("y") - 40);
+                                    }
                                 }
-                                if (view_access==true && isAlreadyUsed==false){
-                                    validateDesk(suggestion.value)
-                                }
+                                changeLocalization(suggestion.value,location,isAlreadyUsed)//name, localisation
                             });
                             mapControl.existMap = true;
                         }
@@ -232,66 +240,26 @@
                             mapControl.mapName = mapName;
                             mapControl.confmapPlot(myData,mapName,configId, true, newConfig, function() {
                                 if (desk!="aucun" && desk!="externe"){
-                                table = d3.select("#tables")
+                                    table = d3.select("#tables")
                                         .select("#" + desk);
-                                    table.append("image")
+                                    if (table[0][0] !=null){
+                                        table.append("image")
                                         .attr("xlink:href", "./img/pin_final.png")
                                         .attr("width", "30")
                                         .attr("height", "50")
                                         .attr("x", table.select("rect").attr("x") - 10)
                                         .attr("y", table.select("rect").attr("y") - 40);
+                                    }
                                 } 
-                                if (view_access==true && isAlreadyUsed==false){
-                                    validateDesk(suggestion.value)
-                                }
+                                changeLocalization(suggestion.value,location,isAlreadyUsed)//name, localisation
                             });
                             mapControl.existMap = true;
                         }
                     }
 
-                    //activate the possibility to change localisation if view_access == true
-                    if (view_access==true && isAlreadyUsed==false){
-                        d3.select("#text-conf").html(suggestion.value+' est localisé '+location+'</br>Sélectionnez son nouvel emplacement')
-                        //event when clicking on a site
-                        d3.selectAll(".site-conf").on("click",function() {
-                            var name=suggestion.value;
-                            var mysite=d3.event.target.id.split(/_/)[0];
-                            if (mysite=="boursidiere"){return;} //nothing happened
-                            else{
-                                for (var i=0;i<sitesExterne.length;i++){
-                                    if (sitesExterne[i].search(mysite)!=-1){
-                                        newsite=sitesExterne[i];
-                                    }
-                                }
-                                //change must be confirmed
-                                validateSite(name,newsite);
-                            }
-                        });
-                        //event when clicking on a stair
-                        d3.selectAll("#etages_conf").on("click",function() {
-                            var name=suggestion.value;
-                            var etage = document.querySelector(d3.event.target.id);
-                            var myMap=d3.event.target.id.split(/_/)[0];
+                    //activate the possibility to change localisation according to rights
+                    
 
-		                    if (!mapControl.existMap) {
-			                    mapControl.mapName = myMap;
-			                    mapControl.confmapPlot(myData,mapControl.mapName,configId, true, newConfig,function() {validateDesk(name)});
-			                    mapControl.existMap = true;
-		                    }
-		                    // if other map, delete and show myMap
-		                    else if (mapControl.mapName !== myMap) {
-			                    d3.select(".map").select("svg").remove();
-			                    mapControl.mapName = myMap;
-			                    mapControl.confmapPlot(myData,mapControl.mapName,configId,true,newConfig,  function() {validateDesk(name)});
-		                    }
-                        }); 
-                    }else if(view_access==false){
-                        //no right to change localization
-                        d3.select("#text-conf").html(suggestion.value+' est localisé '+location)
-                    }else if(view_access==true && isAlreadyUsed==true){
-                        //already used in another moveline
-                        d3.select("#text-conf").html(suggestion.value+' est déjà dans la liste des déplacements')
-                    }
                 }
  
             }
@@ -309,13 +277,22 @@
             for (var i=0;i<newConfig.length;i++){
                 if (newConfig[i][4]=="new-row"){
                     newConfig[i][4]="former-row"
+                    console.log('o save')
+                    console.log(newConfig[i])
                     var data={confid:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],fromdesk:newConfig[i][2],todesk:newConfig[i][3],status:"Brouillon"};
+                    //check if a moveline already exists for that person
                     $.ajax({
-                        url: "addMoveLine",
-                        type: 'POST',
-                        data: data,
-                        success : function(res){}
-                    });
+                            url: "deleteMoveLineIfFind",
+                            type: 'POST',
+                            data: data,
+                            success : function(res){console.log('del former')}
+                    });    
+                    $.ajax({
+                            url: "addMoveLine",
+                            type: 'POST',
+                            data: data,
+                            success : function(res){console.log('add new')}
+                    });                        
                 }
             }
             d3.select("#recap-conf").selectAll(".new-row").attr("class","former-row");
@@ -329,79 +306,183 @@
             callback();
         }
         updateDataBase(function(){
+            console.log(newConfig)
             reloadMap('');
+            $("#nb-people-new-conf").html(newConfig.length)
         })
     })
 
-    //event when click on the cross to delete a moveline
-    $(document).on('click', '.delete-moveline', function(event){
+    //event when click on the cross to  a moveline
+    $(document).on('click', '.delete-row', function(event){
+        console.log(newConfig)
         var firstname=event.target.parentNode.childNodes[1].innerText,
             lastname=event.target.parentNode.childNodes[0].innerText,
             fromDesk=event.target.parentNode.childNodes[2].innerText,
             toDesk=event.target.parentNode.childNodes[3].innerText;
-        function detectToDelete(fromDesk,toDesk){
+        // if people are linked : one has the desk of the other. delete one will delete the other
+        function findPeopleToDelete(fromDesk,toDesk,callback){
             var res=[];
-            for (var i=0;i<newConfig.length;i++){  
-                console.log(newConfig[i])              
+            for (var i=0;i<newConfig.length;i++){   
+                //find my self           
                 if (newConfig[i][0]==firstname && newConfig[i][1]==lastname){
-                    console.log('same')
-                    res.push({confId:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],state:newConfig[i][4]});
-                    newConfig.splice(i,1);
-                    i-=1;
+                    console.log('me')
+                    res.push({confId:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],state:newConfig[i][4],ind :i,fromDesk:newConfig[i][2],toDesk:newConfig[i][3]});
                 }
-                //I f I have been ejected by someone else, deleting my move must delete his too
-                else if ((toDesk=="La Boursidière : aucun" && newConfig[i][3]==fromDesk)||(newConfig[i][3]=="La Boursidière : aucun" && newConfig[i][2]==toDesk)){
-                    console.log('binome')
-                    res.push({confId:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],state:newConfig[i][4]});
-                    newConfig.splice(i,1);
-                    i-=1;
+                //If I have been ejected by someone else, his move must be delete too so I can get my place back
+                if ((fromDesk.split(/\s*:\s*/)[1]!="aucun" && fromDesk.split(/\s*:\s*/)[1]!="externe") && !(newConfig[i][0]==firstname && newConfig[i][1]==lastname)
+                     && fromDesk==newConfig[i][3] ){
+                         console.log('from' +newConfig[i][0])
+                    findLinkedPerson(res,newConfig[i][2],newConfig[i][3])
+                    res.push({confId:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],state:newConfig[i][4], ind:i,fromDesk:newConfig[i][2],toDesk:newConfig[i][3]});
+                }
+                 //If I have ejected someone, his move must be delete if he has no place
+                if ((toDesk.split(/\s*:\s*/)[1]!="aucun" && toDesk.split(/\s*:\s*/)[1]!="externe") && !(newConfig[i][0]==firstname && newConfig[i][1]==lastname)
+                    && newConfig[i][3]=="La Boursidière : aucun" && toDesk==newConfig[i][2]){
+                        console.log('to')
+                        res.push({confId:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],state:newConfig[i][4],ind :i,fromDesk:newConfig[i][2],toDesk:newConfig[i][3]});
+                }
+            } 
+            function findLinkedPerson(res,fromDesk,toDesk){
+                for (var i=0;i<newConfig.length;i++){   
+                    //If I have been ejected by someone else, his move must be delete too so I can get my place back
+                    if ((fromDesk.split(/\s*:\s*/)[1]!="aucun"  && fromDesk.split(/\s*:\s*/)[1]!="externe") && !(newConfig[i][0]==firstname && newConfig[i][1]==lastname)
+                     && fromDesk==newConfig[i][3] ){
+                         console.log(newConfig[i][0])
+                        findLinkedPerson(res,newConfig[i][2],newConfig[i][3])
+                        res.push({confId:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],state:newConfig[i][4],ind :i,fromDesk:newConfig[i][2],toDesk:newConfig[i][3]});
+                    }
                 }
             }
-            return res
+            callback(res);
         }
 
-        var list_to_delete=detectToDelete(fromDesk,toDesk);
-        for (var i=0;i<list_to_delete.length;i++){
-            console.log(list_to_delete[i])
-            if (list_to_delete[i].state=="former-row"){
-                d3.json(server +"deleteMoveline", function(){reloadMap('');})
-                .header("Content-Type","application/json")
-                .send("POST", JSON.stringify(list_to_delete[i])); 
+        findPeopleToDelete(fromDesk,toDesk,function(list_to_delete){
+            //display message to validate 
+            $('<div id="popin-error"></div>').insertAfter('#table-conf')
+            d3.select('#popin-error').style('display','');
+            $("#popin-error").append('<div id="conf-deletion">'+
+                                    '<h3> </h3>'+
+                                    '<table><thead><tr><th>Nom</th><th>Prénom</th><th>Bureau actuel</th><th>Bureau cible</th></tr></thead></table></div>'+
+                                    '<div>'+
+                                        '<button id="val-del">Valider</button>'+
+                                        '<button id="close-conf" >Fermer</button>'+
+                                    '</div></div>')
+            if (list_to_delete.length>1){
+                $('#popin-error #conf-deletion h3').html('Confirmez vous la suppression des déplacements suivants ?')
+                $('<p>NOTE: La suppression du déplacement de '+firstname+' '+lastname+' entrainera la suppression de tous les déplacements qui en dépendent car les bureaux sont ici attribués en cascade.</p>').appendTo($('#conf-deletion'))
             }
-        }
-
-        $('#table-to-fill > tbody').empty();
-
-        for (var j=0;j<newConfig.length;j++){
-            var text='';
-            if (view_access==true){
-                    text="<tr class='"+newConfig[j][4]+"' id='"+newConfig[j][1]+newConfig[j][0]+"'><td>"+newConfig[j][1]+"</td><td>"+newConfig[j][0]+"</td><td>"+newConfig[j][2]+"</td><td>"+newConfig[j][3]+"</td><td class=delete-moveline></td></tr>"
-            }else{
-                    text="<tr class='"+newConfig[j][4]+"'  id='"+newConfig[j][1]+newConfig[j][0]+"><td>"+newConfig[j][1]+"</td><td>"+newConfig[j][0]+"</td><td>"+newConfig[j][2]+"</td><td>"+newConfig[j][3]+"</td></tr>"
+            else {
+                $('#popin-error #conf-deletion h3').html('Confirmez vous la suppression du déplacement suivant ?')
             }
-            $(text).appendTo("#table-to-fill")
-            $("#nb-people-new-conf").html(newConfig.length) 
-        }
+            for (var i=0;i<list_to_delete.length;i++){
+                $('<tr><td>'+list_to_delete[i].lastname+'<td>'+list_to_delete[i].firstname+'</td><td>'+list_to_delete[i].fromDesk+'</td><td>'+list_to_delete[i].toDesk+'</tr>').appendTo('#popin-error #conf-deletion table')
+            }
+            
+            $('#val-del').click(function(event){
+                //remove people in the global var newConfig
+                console.log(list_to_delete)
+                for (var j=0;j<list_to_delete.length;j++){
+                    for (var i=0;i<newConfig.length;i++){
+                        if (newConfig[i][0]==list_to_delete[j].firstname && newConfig[i][1]==list_to_delete[j].lastname){
+                            console.log('remove'+newConfig[i][0])
+                            newConfig.splice(i,1)
+                        }
+                    }   
+                }
+                $("#nb-people-new-conf").html(newConfig.length)
+                //reload the current map (without d people)          
+                
 
+                //check if there are still errors, if not remove error message
+                var existErrors=false;
+                for (var j=0;j<newConfig.length;j++){
+                    if (newConfig[j][4]=="invalid-row"){
+                        existErrors=true;
+                    }
+                }
+                if (existErrors==false){
+                    d3.select('#display-error').style('visibility','hidden')
+                }
+        
+                // remove the movelines and the row of the plotted table
+                for (var i=0;i<list_to_delete.length;i++){
+                    $('#'+list_to_delete[i].lastname+list_to_delete[i].firstname).remove();
+                    if (list_to_delete[i].state=="former-row" || list_to_delete[i].state=="invalid-row"){
+                        d3.json(server +"deleteMoveline", function(){})
+                            .header("Content-Type","application/json")
+                            .send("POST", JSON.stringify(list_to_delete[i])); 
+                    }
+                }
+                d3.select('#popin-error').remove()
+                reloadMap('');
+            })
+            $('#close-conf').click(function(){
+                d3.select('#popin-error').remove()
+            })
+        })
     })
 
-    /** function validateDesk : what to display when clicking on a desk on the current map */
-    function validateDesk(name){
-	    var allTables = d3.select("#tables").selectAll("g")
-        allTables.style("cursor", "pointer")
+    function changeLocalization(name,currentDesk,isAlreadyUsed){
+        if (view_access==true && isAlreadyUsed==false){
+            validateDesk(name);
+            d3.select("#text-conf").html(name+' est localisé '+currentDesk+'</br>Sélectionnez son nouvel emplacement')
+            //event when clicking on a site
+            d3.selectAll(".site-conf").on("click",function() {
+                var mysite=d3.event.target.id.split(/_/)[0];
+                if (mysite=="boursidiere"){return;} //nothing happened
+                else{
+                    for (var i=0;i<sitesExterne.length;i++){
+                        if (sitesExterne[i].search(mysite)!=-1){
+                            newsite=sitesExterne[i];
+                        }
+                    }
+                    //change must be confirmed
+                    validateSite(name,newsite);
+                }
+            });
+            //event when clicking on a stair
+            d3.selectAll("#etages_conf").on("click",function() {
+                var etage = document.querySelector(d3.event.target.id);
+                var myMap=d3.event.target.id.split(/_/)[0];
 
-        allTables.on("click", function(){
-			var newDesk = d3.event.target.parentNode.id;
-            var newsite="La Boursidière";
-            // get the current person on the desk that I have clicked on
-            d3.json(server + "getPersonByDesk/"+newDesk, function(isDeskAvailable){
+		        if (!mapControl.existMap) {
+			        mapControl.mapName = myMap;
+			        mapControl.confmapPlot(myData,mapControl.mapName,configId, true, newConfig,function() {validateDesk(name)});
+			        mapControl.existMap = true;
+		        }
+		        // if other map,  and show myMap
+		        else if (mapControl.mapName !== myMap) {
+			        d3.select(".map").select("svg").remove();
+			        mapControl.mapName = myMap;
+			        mapControl.confmapPlot(myData,mapControl.mapName,configId,true,newConfig,  function() {validateDesk(name)});
+		            }
+            }); 
+
+        }else if(view_access==false){
+            //no right to change localization
+            d3.select("#text-conf").html(name+' est localisé '+currentDesk)
+        }else if(view_access==true && isAlreadyUsed==true){
+            //already used in another moveline
+            d3.select("#text-conf").html(name+' est déjà dans la liste des déplacements')
+        }
+
+        /** function validateDesk : what to display when clicking on a desk on the current map */
+        function validateDesk(name){
+	        var allTables = d3.select("#tables").selectAll("g")
+            allTables.style("cursor", "pointer")
+            allTables.on("click", function(){
+			    var newDesk = d3.event.target.parentNode.id;
+                var newsite="La Boursidière";
+                // get the current person on the desk that I have clicked on
+                d3.json(server + "getPersonByDesk/"+newDesk, function(isDeskAvailable){
                     //the desk on which I have clicked is empty
                     if (isDeskAvailable.length===0){
                         d3.select("#text-conf").html("Vous souhaitez déplacer "+name+" au bureau "+newDesk
                             +"<br/>Voules-vous ajouter ce déplacement à la configuration ?"+
                             "<button id=\"val-conf-move\" >Valider</button>"+
-                            "<button id=\"can-conf-move\"><a href='"+server+"modify"+configId+"'>Annuler</a></button>");
+                            "<button id=\"can-conf-move\">Annuler</button>");
                         document.getElementById("val-conf-move").onclick = function() {validateMove(name,newsite,newDesk)};
+                        document.getElementById("can-conf-move").onclick = function() {cancelMove()};
                     }
                     //the desk on which I have clicked is occupied
                     else{
@@ -409,47 +490,72 @@
                             +" qui déjà occupé par "+isDeskAvailable[0].firstname+" "+isDeskAvailable[0].lastname
                             +"<br/>Voulez-vous déplacer "+name+" à ce bureau ?"+
                             "<button id=\"val-conf-move\" >Valider</button>"+
-                            "<button id=\"can-conf-move\"><a href='"+server+"modify"+configId+"'>Annuler</a></button>");
+                            "<button id=\"can-conf-move\">Annuler</button>");
                         document.getElementById("val-conf-move").onclick = function() {validateMove(name,newsite,newDesk)};
+                        document.getElementById("can-conf-move").onclick = function() {cancelMove()};
                     }
-            });
-		});
-        //document.getElementById("can-conf-move").addEventListener("click", function() {event.stopPropagation()})
-        return
-    }
+                });
+		    });
+            //document.getElementById("can-conf-move").addEventListener("click", function() {event.stopPropagation()})
+            return
+        }
 
-    /** function validateSite : what to display when clicking on a site on the menu */
-    function validateSite(name,newsite){ 
-        d3.select("#text-conf").html("Vous souhaitez déplacer "+name+" sur le site "+newsite
+        /** function validateSite : what to display when clicking on a site on the menu */
+        function validateSite(name,newsite){ 
+            d3.select("#text-conf").html("Vous souhaitez déplacer "+name+" sur le site "+newsite
                             +"<br/>Voules-vous ajouter ce déplacement à la configuration ?</br>"+
                             "<button id=\"val-conf-move\" >Valider</button>"+
-                            "<button id=\"can-conf-move\"><a href='"+server+"modify"+configId+"'>Annuler</a></button>");
-        document.getElementById("val-conf-move").onclick = function() {validateMove(name,newsite,"externe")};
+                            "<button id=\"can-conf-move\">Annuler</button>");
+            document.getElementById("val-conf-move").onclick = function() {validateMove(name,newsite,"externe")};
+            document.getElementById("can-conf-move").onclick = function() {cancelMove()};
+        }
+
+        /**function validateMove : add my move to the table and create a moveline */
+        function validateMove(name,site,desk){
+            var firstname=getnames(name)[0];
+            var lastname=getnames(name)[1];
+            console.log(name+'/'+site+'/'+desk)
+            d3.json(server + "currentOfficeName/"+firstname+'/'+lastname, function(formerDesk){
+                var formerLocation=formerDesk[0].site+' : '+formerDesk[0].name;
+                var ind=null;
+                for (var i=0;i<newConfig.length;i++){
+                    if (newConfig[i][0]==firstname && newConfig[i][1]==lastname){
+                        ind=i;
+                    }
+                }
+                if (ind==null){
+                    newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row"])
+                    $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td title='Modifier'>"+newConfig[newConfig.length-1][3]+"</td><td class='delete-row'></td></tr>").appendTo("#table-to-fill")
+                    $("#nb-people-new-conf").html(newConfig.length)
+                }else{
+                    console.log('remove !!!'+newConfig[ind])
+                    newConfig.splice(ind,1)
+                    newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row"])
+                    console.log(newConfig[ind][3])
+                    $("#"+lastname+firstname+" td:nth-child(4)").html(newConfig[ind][3])
+                    d3.select("#"+lastname+firstname).attr('class','new-row')
+                }
+
+            });
+            if (desk!=="externe" && desk!=="aucun"){
+                d3.json(server + "getPersonByDesk/"+desk, function(isDeskAvailable){
+                    if (isDeskAvailable.length!==0){
+                        newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière : "+desk,"La Boursidière : aucun","new-row"])
+                        $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-row></td></tr>").appendTo("#table-to-fill")   
+                        $("#nb-people-new-conf").html(newConfig.length)
+                    }
+                });
+            }
+            $("#text-conf").html("Veuillez rechercher la personne à déplacer")
+            reloadMap('')
+        }
+        function cancelMove(){
+            d3.select('#text-conf').html('Veuillez rechercher la personne à déplacer')
+            reloadMap('');
+            d3.select('#search-one-term')[0][0].value=''
+        }
     }
 
-    /**function validateMove : add my move to the table and create a moveline */
-    function validateMove(name,site,desk){
-        var firstname=getnames(name)[0];
-        var lastname=getnames(name)[1];
-        console.log(name+'/'+site+'/'+desk)
-        d3.json(server + "currentOfficeName/"+firstname+'/'+lastname, function(formerDesk){
-            var formerLocation=formerDesk[0].site+' : '+formerDesk[0].name;
-            newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row"])
-            $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>").appendTo("#table-to-fill")
-            $("#nb-people-new-conf").html(newConfig.length)
-        });
-        if (desk!=="externe" && desk!=="aucun"){
-            d3.json(server + "getPersonByDesk/"+desk, function(isDeskAvailable){
-                if (isDeskAvailable.length!==0){
-                    
-                    newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière : "+desk,"La Boursidière : aucun","new-row"])
-                    $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-moveline></td></tr>").appendTo("#table-to-fill")   
-                    $("#nb-people-new-conf").html(newConfig.length)
-                }
-            });
-        }
-        $("#text-conf").html("Veuillez rechercher la personne à déplacer")
-    }
     $('#display-error').click(function(){
         $('<div id="popin-error"></div>').insertAfter('#table-conf')
         d3.select('#popin-error').style('display','');
@@ -458,7 +564,9 @@
                                     '<div>'+
                                         '<button id="close-error" >Fermer</button>'+
                                     '</div>')
+                                    console.log(movelinesInvalid)
         if (movelinesInvalid[0].length>0){
+            
             $('<h3> Erreur sur les bureaux actuels</h3> Les personnes suivantes ont changé de bureau. Veuillez les supprimer et les saisir à nouveau</p><table><thead><tr><td>Nom Prénom</td><td>Bureau actuel</td></tr></thead></table>').appendTo('#popin-error #error-fromdesk')
             for (var i=0;i<movelinesInvalid[0].length;i++){
                 $('<tr><td>'+movelinesInvalid[0][i].name+'<td>'+movelinesInvalid[0][i].desk+'</td></tr>').appendTo('#popin-error #error-fromdesk table')
@@ -490,18 +598,12 @@
                     d3.select(".map").select("svg").remove();
                     mapControl.existMap = false;
                     mapControl.mapName = mapName;
-                    mapControl.confmapPlot(myData,mapName,configId, true,newConfig, function() {});
+                    mapControl.confmapPlot(myData,mapName,configId, false,newConfig, function() {});
                     mapControl.existMap = true;
                 }
             }  
-            //add none saved people too
-            for (var i=0;i<newConfig.length;i++){
-                var location=newConfig[i];
-                if (location.split(/\s*:\s*/)[0]=="La Boursidière" && location.split(/\s*:\s*/)[1]!="aucun"){
-                    var desk=location.split(/\s*:\s*/)[1]
-
-                }
-            } 
     }
+
+
 
 }(window));

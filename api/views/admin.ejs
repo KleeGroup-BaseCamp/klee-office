@@ -47,9 +47,8 @@
                 <th id="personal-desk"></th>
                 <th class="desk-maj" id="maj-button-background">METTRE À JOUR</th>
             </tr>
-            </table>
-        </div>
-
+            </thead>
+        </table>
     </div>
         <!-- /#info-bar -->
     <header>
@@ -97,7 +96,7 @@
         </div>
 
         <!-- Affichage plans -->
-        <div id="plans-block">
+        <div id="plans-block"></div>
         <div>
             <% if (message) { %>
             <p class="flash-success"><%- message %></p>
@@ -140,6 +139,7 @@
                                 <div class ="tooltip_map_desk_empty"></div>
                                 <div class ="tooltip_map_desk"></div>
                                 <svg class="map"></svg>
+                            </div>
                         </td>
                         <td id="td-legend">
                             <table id="legend">
@@ -177,11 +177,11 @@
                     </tr>  
                 </table>
             </div>
-    </div>
+        </div>
     </div>
     <!-- Affichage des plans -->
 
-</div>
+
 
 
 <!-- //////////////////////////////////////////////

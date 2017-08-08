@@ -1005,7 +1005,7 @@ input[readonly] {
 #popin-add #popin-button, #newDesk-add #newDesk-button, #popin-val button{
     text-align:center;
 }
-#popin-add #add-conf,#popin-add #conf-cancel, #popin-val button, #newDesk-add #add-office, #newDesk-add #office-cancel, #close-error{
+#popin-add #add-conf,#popin-add #conf-cancel, #popin-val button, #newDesk-add #add-office, #newDesk-add #office-cancel, #popin-error #close-error, #popin-error  #val-del, #popin-error #close-conf{
     height: auto;
     font-size: 75%;
     border-radius: 20px;
@@ -1165,7 +1165,11 @@ input[readonly] {
 }
 #recap-conf table th:nth-child(4){
     background-color: 	#CD5C5C;
-  
+}
+#recap-conf table td:nth-child(4):hover{
+    cursor:pointer;
+    transform:scale(1.05);
+    text-decoration:underline;    
 }
 #recap-conf table .new-row{
     font-weight:bold;
@@ -1176,7 +1180,7 @@ input[readonly] {
     font-style:italic;
 }
 
-#recap-conf .delete-moveline{
+#recap-conf .delete-row{
     background: url("/img/crossDelete.png");
     background-repeat: no-repeat;
     background-size :35px 35px;
@@ -1269,6 +1273,16 @@ header #text-conf button{
 }
 header #text-conf button a{
     color:white;
+}
+#popin-error #conf-deletion{
+    margin-bottom:10px;
+}
+#popin-error #conf-deletion p{
+    font-size:13px;
+    text-align:justify;
+}
+#table-to-fill .invalid-row td:nth-child(4):hover{
+    cursor:not-allowed;
 }
 
 .left-side #left .rects{
