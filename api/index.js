@@ -1,6 +1,7 @@
 'use strict';
 // Libraries imports
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 var flash = require('connect-flash');
@@ -12,6 +13,7 @@ var ejs = require('ejs');
 var saml2 = require('saml2-js');
 var fs = require('fs');
 var util = require('util');
+var JSFtp = require("jsftp");
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flag : 'w'});
 var log_stdout = process.stdout;
 
@@ -58,6 +60,7 @@ app.use(session({store: sessionStore,
 		saveUninitialized: true
 		/*cookie: { secure: true, maxAge: 60000 }*/}));
 app.use(flash());
+app.use(fileUpload());
 
  //Partie Authentification SSO - need IDP from support
 
@@ -192,6 +195,22 @@ app.get('/modify:id', function(req, res){
 				myFirstName: firstname,
 				myLastName: lastname });
 });
+
+app.post('/upload', function(req, res) {
+	//console.log(Tchaoz);
+  if (!req.files)
+    return res.status(400).send('No files were uploaded.');
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file 
+  let sampleFile = req.files.sampleFile;
+  // Use the mv() method to place the file somewhere on your server 
+  console.log(sampleFile.name);
+  sampleFile.mv('data/maps/'+sampleFile.name, function(err) {
+	if (err)
+      return res.send(err);
+ 	res.redirect("/admin");
+  });
+});
+
 // check consistency
 /*app.get('/consistency:id', function(req, res){
 	res.render('consistency-list', { message: req.flash('success'),

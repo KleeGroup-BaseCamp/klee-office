@@ -53,11 +53,22 @@
         <!-- /#info-bar -->
     <header>
         <div id="navigation-bar" class="container">
-
-            <div id="admin-buttons">   
-                <button id="plot-valid">Administration des validateurs</button>
-                 <button id="plot-plans">Administration des plans</button>
-            </div>
+            <table id="table-admin-list">
+               <tr>
+                   <td>
+                        <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
+                    </td>
+                    <td >   
+                        <div id="admin-buttons">   
+                            <button id="plot-valid">Administration des validateurs</button>
+                            <button id="plot-plans">Administration des plans</button>
+                        </div>
+                    </td>
+                    <td>
+                        <img id="right-photo" src="../img/calque-7.png">
+                    </td>   
+                </tr>
+            </table> 
         </div>
     </header>
 
@@ -150,11 +161,11 @@
                                 <tr>
                                     <td align="center"><img id="add-desk-vertical" src="/img/bureau_vertical.png"></td>
                                 </tr>
-                                <tr>
-                                    <td align="center"><img id="rm-desk" src="/img/minusDesk.png"></td>
-                                </tr>
                                <tr>
                                    <td align="center"><img id="mode-admin" src="/img/directionCross.png"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><img id="rm-desk" src="/img/delete.png"></td>
                                 </tr>
                                 <tr>
                                     <td align="center"><img id="quit-admin" src="/img/ckeck.png"></td>
@@ -163,15 +174,24 @@
                                    <td align="center"><img id="dl-button" src="/img/downloadMap.png"></td>
                                 </tr>
                                 <tr>
-                                   <td align="center"><img id="undo-map" src="/img/undoMap.png"></td>
-                                </tr>
-                                <!--tr>
-                                   <td align="center"><input id="upload-file" type="file" /></td>
+                                    <td> 
+                                        <div id="fileUpload">
+                                            <form ref='uploadForm' 
+                                                    id='uploadForm' 
+                                                    action='http://localhost:3000/upload' 
+                                                    method='post' 
+                                                    encType="multipart/form-data">
+                                                        <input type="file" id="fileInput" name="sampleFile" style="display:none;" />
+                                                        <!--input type="button" id="parcourirButton" value="Importer" onclick="getfile()" /></br-->
+                                                        <img id="uploadButton" src="/img/uploadMap.png" onclick="getfile()" /></br>
+                                                        <input type='submit' id="importInput" value='Appliquer' />
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td align="center"><progress id="upload-progress"></progress></td>
-                                </tr-->
-                                
+                                   <td align="center"><img id="undo-map" src="/img/undoMap.png"></td>
+                                </tr>
                             </table>
                         </td>                        
                     </tr>  

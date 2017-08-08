@@ -26,14 +26,14 @@
         adminControl.plotValidatorsList();
     });
 
+    d3.select("#plans-block").style("display","none");
+
     $("#plot-valid").click(function () {
-        console.log("plot-valid");
         d3.select("#plans-block").style("display","none");
         d3.select(".list-validators") .style("display","");
     });
 
     $("#plot-plans").click(function () {
-        console.log("plot-plans");
         d3.select("#plans-block").style("display","");
         d3.select(".list-validators") .style("display","none");
     });

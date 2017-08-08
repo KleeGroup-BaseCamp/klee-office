@@ -76,6 +76,9 @@ $("#mode-admin").click(function(){
     /*d3.select("#whole-map").select("svg").on("zoom",null)
         .scale(1)
         .translate([0,0]);*/
+    d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select(".tooltip_map_desk").remove();
+    d3.select(".tooltip_map_desk_empty").remove();
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("rect");
     desk.classed("draggable", true)
         .attr("cursor","move")
@@ -83,9 +86,6 @@ $("#mode-admin").click(function(){
         .attr("stroke","#ff00ff")
         .attr("transform","matrix(1 0 0 1 0 0)")
         .attr("onmousedown","selectElement(evt)");
-
-    
-    
 });
 
 // ------ Leave Admin Mode :  Keep changes to SVG map ------ //
@@ -136,44 +136,18 @@ $("#dl-button").click(function(){
     d3.select("#whole-map").select("svg").selectAll("g").select("image").remove();
     var svg1 = document.getElementsByTagName('svg')[1];
     var svgData = svg1.outerHTML;
+    var mapName = d3.select("#map-name h1")[0][0].className;
     console.log(svgData);
     var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
     var svgUrl = URL.createObjectURL(svgBlob);
     console.log(svgUrl);
     var downloadLink = document.createElement("a");
     downloadLink.href = svgUrl;
-    downloadLink.download = "testmap.svg";
+    downloadLink.download = mapName+".svg";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
 });
-
-// -------- Upload SVG file ------- //
-
-/*var fileInput = document.querySelector('#upload-file'),
-    progress = document.querySelector('#upload-progress');
-
-fileInput.addEventListener('change', function() {
-
-    var xhr = new XMLHttpRequest();
-
-    xhr.open('POST', 'http://localhost:3000/admin'); //erreur !!
-
-    xhr.upload.addEventListener('progress', function(e) {
-        progress.value = e.loaded;
-        progress.max = e.total;
-    }, false);
-
-    xhr.addEventListener('load', function() {
-        alert('Upload terminé !');
-    }, false);
-
-    var form = new FormData();
-    form.append('file', fileInput.files[0]);
-
-    xhr.send(form);
-
-}, false);*/
 
 // ------ Add new desk on map ------- //
 
@@ -318,4 +292,11 @@ $("#undo-map").click(function(){
 		mapControl.mapName = mapName;
 		mapControl.mapPlot(myData,mapControl.mapName,false, function() {});
 });
+
+// -------- plot Upload file -------- //
+
+function getfile(){
+    /*document.getElementById('importInput').value=document.getElementById('fileInput').value;*/
+    document.getElementById('fileInput').click();
+}
 
