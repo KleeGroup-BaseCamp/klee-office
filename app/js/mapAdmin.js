@@ -254,8 +254,8 @@ function plot_nameConsole(){
                     '</div>'+ 
                     '<div class="inline">'+
                         '<input class="field" type="text" id="floor" name="etage" value="'+d3.select("#map-name h1")[0][0].className+'" readonly/><br />'+
-                        '<input class="field" type="text" id="zone" name="zone" placeholder="A-Z" required/><br />'+
-                        '<input class="field" type="text" id="numero" name="numero" placeholder="00-99" required/><br />'+
+                        '<input class="field" type="text" id="zone" name="zone" placeholder="Choisir une lettre A-Z" required/><br />'+
+                        '<input class="field" type="text" id="numero" name="numero" placeholder="Choisir un nombre 00-99" required/><br />'+
                     '</div>'+
                     '<div id="newDesk-button">'+
                         '<button id="add-office">Valider</button>'+

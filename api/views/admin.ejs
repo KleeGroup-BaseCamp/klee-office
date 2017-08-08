@@ -54,11 +54,11 @@
     <header>
         <div id="navigation-bar" class="container">
             <table id="table-admin-list">
-               <tr>
-                   <td>
+                <tr>
+                    <td>
                         <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
                     </td>
-                    <td >   
+                    <td>   
                         <div id="admin-buttons">   
                             <button id="plot-valid">Administration des validateurs</button>
                             <button id="plot-plans">Administration des plans</button>
@@ -78,9 +78,6 @@
             <p class="flash-err"><%- message %></p>
             <% } %>
         </div>
-        <!--div id="admin-bar" class="container">
-            <h2 id="action-title" class="center">Administration</h2>
-        </div-->
         <div id="error-admin"></div>
         <div class="list-validators">
             <table id="table-validators">
@@ -108,11 +105,6 @@
 
         <!-- Affichage plans -->
         <div id="plans-block"></div>
-        <div>
-            <% if (message) { %>
-            <p class="flash-success"><%- message %></p>
-            <% } %>
-        </div>
         <div class="container">
             <div id="navigation">
                 <div id="menu-withoutresult">
@@ -153,26 +145,44 @@
                             </div>
                         </td>
                         <td id="legend-modifmap">
-                            <table id="legend-modifmap">
-                                <thead><tr><td><b>Outils</b></td></tr></thead>
+                            <table id="legend-modifmap-table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2"><b>Modifier les bureaux</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="2" class="commande">Ajouter</td></tr>
+                                    <tr>
+                                        <td align="center"><img id="add-desk-horizontal" src="/img/bureau_horizontal.png" title="Ajouter un bureau horizontal" width="35px" height="20px"/></td>
+                                        <td align="center"><img id="add-desk-vertical" src="/img/bureau_vertical.png" title="Ajouter un bureau vertical" width="20px" height="35px"/></td>
+                                    </tr>
+                                    <tr><td colspan="2" class="commande">Déplacer</td></tr>
+                                    <tr>
+                                        <td colspan="2" align="center"><img id="mode-admin" src="/img/directionCross.png" title="Déplacer un bureau" width="35px" height="35px"/></td>
+                                    </tr>
+                                    <tr><td colspan="2" class="commande" >Supprimer</td></tr>
+                                    <tr>
+                                        <td colspan="2" align="center"><img id="rm-desk" src="/img/delete.png" title="Supprimer un bureau" width="35px" height="35px"/></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td align="center"><img id="quit-admin" src="/img/ckeck.png" title="Valider les modifications" width="35px"/></td>
+                                        <td align="center"><img id="undo-map" src="/img/undoMap.png" title="Annuler tous les changements" width="35px" /></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </td>                              
+                        <td id="legend-modiffile">
+                            <table>
+                                <thead><tr><th>Modifier le fichier</th></tr></thead>
+                                <tr><td class="commande">Télécharger le fichier actuel</td></tr>
                                 <tr>
-                                    <td align="center"><img id="add-desk-horizontal" src="/img/bureau_horizontal.png" title="Ajouter un bureau horizontal"></td>
+                                    <td align="center"><img id="dl-button" src="/img/downloadMap.png" title="Télécharger le plan" width="35px" height="35px"></td>
                                 </tr>
-                                <tr>
-                                    <td align="center"><img id="add-desk-vertical" src="/img/bureau_vertical.png" title="Ajouter un bureau vertical"></td>
-                                </tr>
-                               <tr>
-                                   <td align="center"><img id="mode-admin" src="/img/directionCross.png" title="Déplacer un bureau"></td>
-                                </tr>
-                                <tr>
-                                    <td align="center"><img id="rm-desk" src="/img/delete.png" title="Supprimer un bureau"></td>
-                                </tr>
-                                <tr>
-                                    <td align="center"><img id="quit-admin" src="/img/ckeck.png" title="Valider les modifications"></td>
-                                </tr>
-                                <tr>
-                                   <td align="center"><img id="dl-button" src="/img/downloadMap.png" title="Télécharger le plan"></td>
-                                </tr>
+                                <tr><td class="commande"> Importer un nouveau fichier (.svg uniquement) </td></tr>
                                 <tr>
                                     <td> 
                                         <div id="fileUpload">
@@ -181,34 +191,29 @@
                                                     action='http://localhost:3000/upload' 
                                                     method='post' 
                                                     encType="multipart/form-data">
-                                                        <input type="file" id="fileInput" name="sampleFile" style="display:none;" />
+                                                        <input type="file" id="fileInput" name="sampleFile" style="display:none" />
                                                         <!--input type="button" id="parcourirButton" value="Importer" onclick="getfile()" /></br-->
-                                                        <img id="uploadButton" src="/img/uploadMap.png" title="Importer un plan" onclick="getfile()" /></br>
+                                                        <img id="uploadButton" src="/img/uploadMap.png" title="Importer un plan" onclick="getfile()" width="35px" height="35px" /></br>
                                                         <input type='submit' id="importInput" value='Appliquer' title="Appliquer le nouveau plan" />
                                             </form>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                   <td align="center"><img id="undo-map" src="/img/undoMap.png" title="Annuler tous les changements"></td>
-                                </tr>
                             </table>
-                        </td>                        
-                    </tr>  
+                        </td>
+                    </tr>
+                    <tr><td colspan="3">Note: pour mettre à jour la carte, veuillez effectuer les changements, valider, puis télécharger le fichier. Vous pouvez ensuite le réimporter</td></tr>                     
                 </table>
             </div>
         </div>
+        <!-- Affichage plans -->
     </div>
-    <!-- Affichage des plans -->
-
-
 
 
 <!-- //////////////////////////////////////////////
 // js for plot map and search
 ////////////////////////////////////////////// -->
 <script src="js/classie.js"></script>
-<script src="js/toggle.js"></script>
 <script src="js/admin.js"></script>
 <script src="js/polyfill.js"></script>
 <!--script src="js/autocomplete.js"></script-->
