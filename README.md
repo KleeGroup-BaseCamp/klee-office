@@ -66,7 +66,6 @@ __Service__
 
 Admin : 
 * *getAllCompanies(req, res)* - *req*: , *res*: **companies(json)** 
-* *getPersonByDesk(req, res)* - *req*:**name** , *res*: **people(json)** 
 * *getDepartmentsByCompany (req, res)* - *req*:**companyId** , *res*: **departments(json)**
 * *getPeopleByDepartment(req, res)* - *req*:**departmentId** , *res*: **people(json)**
 * *getPeopleByCompany (req, res)* - *req*:**companyId** , *res*: **people(json)**
@@ -87,9 +86,15 @@ Configurations
 * *validateConfiguration  (req, res)* - *req*:**configurationId**, *res*:
 * *getMovingsListByConfId (req, res)* - *req*:**configurationId**, *res*:**return txt file**
 * *addNewConfiguration (req, res)* - *req*:**creator**, *res*:
-* *saveMovings (req, res)* - *req*:**array of movings**, *res*:
-* *reportConsistency (req, res)* - *req*:**configurationId**, *res*:**info(json)**
-* *formerPeopleByOffId (req, res)* - *req*:**configurationId**,**officeId**, *res*:**formerPeople(json)**
+* *addMoveLine (req, res)* - *req*:**moveline info**, *res*:
+* *updateDateMoveSet (req, res)* - *req*:**moveline info**, *res*:
+* *checkFromDeskMoveLine (req, res)* - *req*:**configurationId**, *res*: **moveline list**
+* *checkToDeskMoveLine (req, res)* - *req*:**configurationId**, *res*:**moveline list**
+* *setInvalidMoveline (req, res)* - *req*:**moveline id**, *res*:
+* *isConfValid (req, res)* - *req*:**configurationId**, *res*: **json**
+* *deleteMoveLine (req, res)* - *req*:**lastname**,**firstname**, *res*:
+* *deleteMoveLineIfFind (req, res)* - *req*:**lastname**,**firstname**, *res*:
+* *getLastMoveSet (req, res)* - *req*:, *res*:**moveset(json)**
 * *getRecapOfMovings (req, res)* - *req*:**configurationId**, *res*:**movingsList(json)**
 * *getNoPlacePersonByBusUnit (req, res)* - *req*:**businessUnitId**,**companyId**, *res*:**people(json)**
 * *getNoPlacePersonByCompany (req, res)* - *req*:**companyId**, *res*:**people(json)**
@@ -106,6 +111,8 @@ Localization
 * *currentOfficeName (req, res)* - *req*:**firsname**, **lastname**, *res*:**office(json)**
 * *currentOfficeNamebyId (req, res)* - *req*:**PeopleId**, *res*:**office(json)**
 * *myLocalization  (req, res)* - *req*:**officeName**,**firstname**,**lastname**, *res*
+* *getOverOccupiedDesk  (req, res)* - *req*:, *res* :**desk List(json)**
+* *getPersonByDesk  (req, res)* - *req*:**desk name**, *res* :**person(json)**
 
 Map
 * *getMap(req, res)* - *req*: **mapName**, *res*: **sendFile**
@@ -116,25 +123,14 @@ People
 * *getLevelValidator  (req, res)* - *req*:**firstname**,**lastname**, *res* : **people(json)**
 * *getAdministrator  (req, res)* - *req*:**firstname**,**lastname**, *res* : **people(json)**
 * *getBusUnitCompanyByPerson  (req, res)* - *req*:**firstname**,**lastname**, *res* : **businessUnit(json)**
-* *getProfilByPerson  (req, res)* - *req*:**firstname**,**lastname**, *res* : **profil(json)**
+* *getInfoPerson  (req, res)* - *req*:**firstname**,**lastname**, *res* : **person(json)**
+* *getLastMoveline (req, res)* - *req*:**firstname**,**lastname**, *res* : **moveline(json)**
+
 
 -----------------------------------------------------------------
 
 ### __APP__
-#### **_globalMapControl.js_** 
 
-- **global var**: server, existMap, mapName   .
-- **global function**: 
-```javascript
-// plot single large map (table color, zoom, tooltip)
-mapPlot: function(myData,mapName, callback){},
-// plot all small maps (table color)
-smallMapPlot: function(name, callback){},
-// add tooltips for all small maps, where departments on each floor are listed
-buildTooltips: function(names){},
-// Erase all small maps
-eraseMap: function(){}
-```
 
 #### **_admin.js_** 
 alreadyOneSelected :boolean
@@ -142,6 +138,8 @@ erase : remove a list
 eraseAll : remove all lists
 plotValidatorsList : plot list of validators
 
+#### **_autocomplete.js_** 
+- `$('#search-one-term').autocomplete({lookup: people, onSelect: function (suggestion){} })`: input name in search bar will show corresponding suggestions.
 
 
 #### **_buildAdminScreen.js_** 
@@ -154,72 +152,72 @@ plot everything for admin screen. Control access include
 plot everything for configurations screen. Control access include 
 
 
-#### **_buildConsistencyScreen.js_** 
-
-plot everything for consistency screen. 
-
-
 #### **_buildModifyScreen.js_** 
-
 plot everything for configuration managment screen. 
+- `$('#search-one-term').autocomplete({lookup: people, onSelect: function (suggestion){} })`: input name in search bar will show corresponding suggestions.
+- `plotTable()` : display the table with each moveline (name of person, desks)
+- `checkMovelines()` : check if movelines saved are still possible with the current configurations (some people may have change of place since the movelines were saved)
+- `preparePlot()` : display buttons are not if the configuratoin cannot be changed (already validate)
+- `changeLocalisation(name, currentDesk, isAlreadyUsed){}` : to change localisation of someone and add to the configuration
+- `reloadMap(mapName)` : plot the map mapName with the movelines
 
+#### **_changeLocalization.js_** 
+ - Call when the user wants to update his own position
+ - Display messages to guide the user
+ - Update the database once the change is done
 
 #### **_chooseFloor.js_** 
+call of mapControl.confmapPlot
+- 'mapControl.confmapPlot: function(myData, mapName, confId, isSavingLocalization,listnewmoves, callback){},
+plot single map when clicking in the menu
+same as clickandplot.js but choosefloor.js is used in the view modify.ejs and  clickandplot.js in index.ejs
 
-plot list of floors with pictures. 
+#### **_classie.js_** 
 
+#### **_clickAndPlot.js_**
+call of mapControl.mapPlot
+- 'mapControl.mapPlot(myData,mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
+- prepend mapName to legend.
 
 #### **_configurations.js_** 
+plotConfList : plot list of configurations with four action buttons on each configuration (modify ,print, validate, delete). 
 
-plotConfList : plot list of configurations with four action buttons. 
+ #### **_controlAccount.js_** 
+ - Get the data on the user and display it (firstname, lastname, desk, location)
 
-
-#### **_consistency.js_** 
-
-plot conflicts list and movings list for a configuration. 
-
-#### **_modifyFloor.js_**  
-
-same as chooseFloor but without pictures and adapted to modify configuration screen.
-
-
-#### **_polyfill.js_** 
-
-polyfill for Internet Explorer compatibility.
+#### **_globalMapControl.js_** 
+- **global var**: server, existMap, mapName   .
+- **global function**: 
+```javascript
+// plot single large map (table color, zoom, tooltip)
+mapPlot: function(myData, mapName, isSavingLocalization, callback){},
+// plot all small maps (table color)
+smallMapPlot: function(name, callback){},
+//plot single large map for configurations with colors and tooltips of listnewmoves
+confmapPlot: function(myData, mapName, confId, isSavingLocalization,listnewmoves, callback){},
+// Erase all small maps
+eraseMap: function(){}
+```
 
 #### **_justPlotMap.js_**
 - `mapControl.mapPlot(myData,mapName,callback)`:  plot the map where the user is located on the index page.
 
-#### **_clickAndPlot.js_**
+#### **mapAdmin.js**
+********** TO COMPLETE **********
 
-- 'mapControl.mapPlot(myData,mapControl.mapName, function(){})': plot corresponding single large map when click a small map.
-- prepend mapName to legend.
-
-#### **_toggle.js + classie.js_** to delete
-
-- Manage **message-bar** (``<div id="message">``) toggle effect. Message-bar is just below search-bar, where details of a person are shown. Any valid search will toggle message bar, and when click **Home**, message bar will hide.
-
-#### **_autocomplete.js_** 
-
-- `$('#search-terms').autocomplete({lookup: people, onSelect: function (suggestion){} })`: input name in search bar will show corresponding suggestions.
-- show suggestion's message in **message-bar**.
-- `mapControl.eraseMap()`: erase small maps if there are.
-- `mapControl.mapPlot(mapName, function(){})`: add-pin is in callback function (wait for map fully loaded).
+#### **_polyfill.js_** 
+polyfill for Internet Explorer compatibility.
 
 #### **_searchMany.js_**
 - **global var**: server, people, dataSearchedPeople, list_area, nbPeopleByArea   .
  - `$('#search-terms').on("keydown", function(event){}).autocomplete({minLength:0, source:function(request, response){}, focus:function(){}, select:function( event, ui){} })`: input names in search bar will show corresponding suggestions.
  - `plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople)` : plot number of people searched for each floor.
- - `plotFirstMap(nbPeopleByArea, dataSearchedPeople,first_area_not_empty)` : plot the first map with a result.
- - `plotResult(nbPeopleByArea, dataSearchedPeople)` : show maps with pins for each people searched.
+ - `plotResultClick(nbPeopleByArea, dataSearchedPeople)` : click events to show maps with pins for each people searched.
+ - `plotEtage(etage)` : plot map and result of 'etage'
+ - `plotSite(site)` :plot message and result for 'site'
  
- #### **_controlAccount.js_** 
- - Get the data on the user and display it (firstname, lastname, desk, location)
+
  
-  #### **_changeLocalization.js_** 
- - Call when the user wants to update his position
- - Display messages to guide the user
- - Update the database once the change is done
 
 -------------------------------------------------------------------
 -------------------------------------------------------------------
@@ -278,24 +276,20 @@ We have listed all necessary packages in ``package.json``. If not,
 
 ##Set up autorun for python script
 
-Since our program to update *KleeGroup.json* is written with python, you have to make sure ``python-ldap`` is installed on your server. 
+Since our program to update *KleeGroup.json* is written with python, you have to make sure ``ldap3`` is installed on your server. 
 
 To set up autorun of python script, ``crontab -e`` will be very helpful. Maybe you need more documentation with this command: ``man crontab``
 
 My ``crontab`` command is as follows:
-````
-*/30 * * * * cd /home/dev/local-map/admin && /home/dev/anaconda2/bin/python /home/dev/local-map/admin/activedirectory.py
-````
-This means that: every 30 minutes, system will open folder ``/home/dev/local-map/admin``, then use ``/home/dev/anaconda2/bin/python`` as python interpreter to run following python file ``/home/dev/local-map/admin/activedirectory.py``.
+``
+@daily cd /home/dev/local-map/admin && /home/dev/anaconda2/bin/python /home/dev/local-map/admin/updateActiveDirectory.py
+``
+This means that: every day, system will open folder ``/home/dev/local-map/admin``, then use ``/home/dev/anaconda2/bin/python`` as python interpreter to run following python file ``/home/dev/local-map/admin/updateActiveDirectory.py``.
 
------ TO UPDATE ----: 
-Current situation
-Kleegroup.json is used to create our database postgresql
-The database does need to be recreated often (every day), to add new memebers of Klee group for example
-
-What we want
-Kleegroup.json is used to create our database postgresql only once
-Then if a member is add to Klee group, we want the database to be updated directly
+Three scripts python are currently launched every day by crontab:
+- updateActiveDirectory.py : connect to the active directory of klee and update the 'physicalDeliveryOfficeName' attribut with our postgre database
+- getActiveDirectory.py : copy all users and deactive users into two different files (KleeGroup.json and KleeGroup_Desactives.json), called by updateDataBase.py
+- updateDataBase.py : call getActiveDirectory, add new users in our database and remove deactive users from our database
 
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
@@ -307,40 +301,62 @@ After having talked about how to install the backend from zero, we need to chang
 1. modify **_staff's data_**: move to another table
 2. modify **_maps_** : add table, change table's position, etc.
 
-_For the first kind_, if we want to it manually, we only need to change his infos in the database, and then the server will automatically update his position in the map.
-But a easier solution would be to change it in the application direclty thanks to the button "Mettre à jour ma position"
+_For the first kind_, if we want to it manually, we can change his info in the database, and then the server will automatically update his position in the map.
+But a easier solution would be to change it in the application direclty thanks to the button "Mettre à jour ma position" or by creating a new confirguration (don't forget to validate it since by default configuration have draft status)
 
-_For the second kind_, things could become a little more difficult. Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
+_For the second kind_, there two solutions once again
 
-----TO UPDATE : a solution to modify easily our svg must be develop (to move, add or delete desks)---
+But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
+
+A first solution the easiest :
+Connect on the app. Click on the administrator page and on the button administration des plans
+
+****** TO COMPLETE ******
+
+Another solution (to do it manually) and more difficult
+Since all our maps are stored and showed as ``.svg``, you have to edit the *svg* file directly, with a text editor (*sublime text* or *atom*).
 
 Search **tables**, you will find all the infos about tables in one block
 
-````
+``
 <g id="tables"> 
     <g id="N0-A-01"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="532.3736" y="58.504215" /></g>
     <g id="N0-A-02"><rect fill="#f7f73b" fill-opacity="0.66" width="13.738516" height="27.789993" x="546.50299" y="58.611759" /></g>
     ...
 </g>
-````
+``
 All you need to do is find the table you want to change, and give it another number or position or color ! But how ?
 
 Well, open this *svg* file in a browser (chrome or firefox), move the mouse to the table you want to change, *right* click, choose *Inspecter* (or *Inspect* in English), and you will see the information for this element.
 
 There are still other ways to add tables, such as using **inkscape** (but make sure you are working on the right layer !), or using raw **Autocad** file to make complete change of the map (remember you need to transform *.dwg* to *.svg*, and clean unnecessary parts or layers, **AutoDWG Converter** is recommended). 
 
-But bare one thing in your mind: make sure what you are going to change before you really change something, and always backup your map files !
+
 
 # For our postgresql database : 
 	1. Global content
 See local-map_diagram.xml in the repository to find out about the structure of the database
 
-- Each person has a profil containing three booleans (isValidatorLvlOne, isValidatorLvlTwo, isAdministrator).
+**Person and Profil**
+Each person has a profil containing three booleans (isValidatorLvlOne, isValidatorLvlTwo, isAdministrator).
 	* a validator level One is responsible for the members of his departement/business Unit
 	* a validator level Two is responsible for the members of his company (=several departements)
 	* a administrator is responsible for the choice of all validators. This can be donne on the admin page in the application
 Modifying validators can be donne on the admin page in the application
 Modifying administrator must be done in app/js/controlAccount.js
+
+**MoveSet, MoveLine and MoveStatus**
+Each configuration (MoveSet) is composed of many MoveLine. A MoveLine is the move of one specific person from a desk to another.
+MoveSet can have three different status :
+  -- 'Déplacement personnel' : the MoveSet of someone of update his own position
+  -- 'Brouillon' : default value when creating a new configuration. MoveLines are not applied while the configuration is not validate. These status can be useful when someone to do a simulation of a new configuration
+  -- 'Validée' : the MoveSet is applied on the current configuration. Once validate a MoveSet can not be undone
+  
+**Desk, Site and Person**
+ Each person must have a desk so that every person are connected to a Site.
+ The default value is Desk.name="Aucun" and Site.name="La Boursidière"
+ For those who are on different site from 'La Boursidière', we have no plans yet. So their desk are Desk.name="externe" and Site.name is the name of the site they are on.
+ This was made so that is would be much easier to change the app once we have plans for the Issy-Les-Moulineaux and others
 
 	2. Creating or recreating the database
 If you want to recreate a clean database. 
