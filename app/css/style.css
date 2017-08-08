@@ -631,35 +631,38 @@ table #personal-desk {
 }
 #legend {
     text-align: center;
-    margin-left:50px;
-    margin-top: 50px;
-    border: solid;
+    margin-left:30px;
+    margin-top: 30px;
 }
-#legend thead{
+#legend td{
+    vertical-align :middle;
+}
+
+#legend-modifmap thead{
     background-color: lightgrey;
     border: solid;
 }
-#legend td #add-desk-horizontal{
+#legend-modifmap td #add-desk-horizontal{
     cursor: pointer;
     width: 40px;
     height: 20px;
     /*padding-top: 10px;*/
 }
-#legend td #add-desk-vertical{
+#legend-modifmap td #add-desk-vertical{
     cursor: pointer;
     width: 20px;
     height: 40px;
 }
-#legend td{
+#legend-modifmap td, #legend td{
     padding: 5px;
 }
-#legend td img {
+#legend-modifmap td img {
     cursor: pointer;
     width: 40px;
     height: 40px;;
 }
 
-#legend td #add-desk-horizontal:hover, #legend td #add-desk-vertical:hover, #legend td #rm-desk:hover, #legend td #mode-admin:hover, #legend td #quit-admin:hover, #legend td #dl-button:hover, #legend td #undo-map:hover, #legend td #uploadButton:hover{
+#legend-modifmap td #add-desk-horizontal:hover, #legend-modifmap td #add-desk-vertical:hover, #legend-modifmap td #rm-desk:hover, #legend-modifmap td #mode-admin:hover, #legend-modifmap td #quit-admin:hover, #legend-modifmap td #dl-button:hover, #legend-modifmap td #undo-map:hover, #legend-modifmap td #uploadButton:hover{
     cursor: pointer;
     transform: scale(1.1);
 }

@@ -163,6 +163,7 @@ var mapControl = {
 								}
 							}
 					});
+
 				if (isSavingLocalization==false){
 					var allTablees = d3.select("#tables")
 						.selectAll(".available")
@@ -196,7 +197,10 @@ var mapControl = {
 
 				}
 				allAvailables = d3.select("#tables").selectAll(".available");
-				allAvailables.selectAll("rect").attr("fill", "#99ff99");			
+				allAvailables.selectAll("rect").attr("fill", "#99ff99");	
+				$('#nb-available').html($('#tables .available').length+" bureau(x) libres(s)")
+				$('#nb-occupied').html($('#tables .occupied').length+" bureau(x) occupé(s)")
+
 				});
 				
 			  
