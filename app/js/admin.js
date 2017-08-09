@@ -338,7 +338,7 @@ var adminControl = {
                 var company=dataCompany.name;
                 d3.json(server+"getDepartmentsByCompany/"+dataCompany.com_id,function(error,datasetDep){
                     datasetDep.forEach(function(dataDep){
-                        console.log(dataDep)
+                        //console.log(dataDep)
                         add_pole(company,dataDep.company_id,dataDep.name, dataDep.bus_id)
                     });
                 });

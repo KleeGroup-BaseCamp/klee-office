@@ -161,6 +161,11 @@
                                     <tr>
                                         <td align="center"><img id="add-desk-horizontal" src="/img/bureau_horizontal.png" title="Ajouter un bureau horizontal" width="35px" height="20px"/></td>
                                         <td align="center"><img id="add-desk-vertical" src="/img/bureau_vertical.png" title="Ajouter un bureau vertical" width="20px" height="35px"/></td>
+                                        <!--td align="center"><img id="add-img" src="/img/img-icon.png" title="Ajouter une image" width="35px" height="35px"/></td-->
+                                    </tr>
+                                    <tr><td colspan="2" class="commande">Image</td></tr>
+                                    <tr>
+                                        <td colspan="2" align="center"><p id="myIcons" style="display:none"><%- myIcons %></p><img id="gallery-icons" src="/img/gallery-img.png" width="35px" height="35px"><div id="icons" style="display:none" ></div></td>
                                     </tr>
                                     <tr><td colspan="2" class="commande">Déplacer</td></tr>
                                     <tr>
@@ -183,6 +188,22 @@
                         <td id="legend-modiffile">
                             <table>
                                 <thead><tr><th>Modifier le fichier</th></tr></thead>
+                                <tr><td class="commande">Importer une image</td></tr>
+                                <tr>
+                                    <td>
+                                        <div id="imgUpload">
+                                            <form ref='uploadForm' 
+                                                    id='uploadForm' 
+                                                    action='http://localhost:3000/upload' 
+                                                    method='post' 
+                                                    encType="multipart/form-data">
+                                                        <input type="file" id="imgInput" name="sampleFile" style="display:none" />
+                                                        <img id="uploadButton" src="/img/img-icon.png" title="Importer une image" onclick="getImg()" width="35px" height="35px" /></br>
+                                                        <input type='submit' id="importImg" value='Go' title="Appliquer la nouvelle image" />
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
                                 <tr><td class="commande">Télécharger le fichier actuel</td></tr>
                                 <tr>
                                     <td align="center"><img id="dl-button" src="/img/downloadMap.png" title="Télécharger le plan" width="35px" height="35px"></td>
