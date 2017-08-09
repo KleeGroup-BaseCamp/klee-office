@@ -46,12 +46,45 @@ var adminControl = {
         }
         d3.json(server+ "getAllCompanies",function(error,datasetComp){
             datasetComp.forEach(function(dataCompany){
-                var company=dataCompany.name;
-                d3.json(server+"getDepartmentsByCompany/"+dataCompany.com_id,function(error,datasetDep){
+                console.log(dataCompany.name.replace(/ /g,'_'))
+                $('<option value='+dataCompany.name.replace(/ /g,'_')+'>'+dataCompany.name+'</option>').appendTo($('#validateur-company'))
+            })
+        })
+
+        $("#validateur-company").on("change", function() {
+            updateTable()
+        });
+
+        function updateTable(){
+            console.log($('#validateur-company').val())
+            var company = $('#validateur-company').val().replace(/_/g,' ');
+            $('#table-validators >tr').remove();
+            if (company=="all"){
+                d3.json(server+ "getAllCompanies",function(error,datasetComp){
+                    datasetComp.forEach(function(dataCompany){
+                        var company=dataCompany.name;
+                        d3.json(server+"getDepartmentsByCompany/"+dataCompany.com_id,function(error,datasetDep){
+                            datasetDep.forEach(function(dataDep){
+                                add_pole(company,dataDep.company_id,dataDep.name, dataDep.bus_id)
+                            });
+                        });
+
+                    });
+                })
+            }else{
+                d3.json(server+"getDepartmentsByCompanyName/"+company,function(error,datasetDep){
                     datasetDep.forEach(function(dataDep){
-                        var dep=dataDep.name;
-                        var title=company+"_"+dep;
-                        d3.json(server+"getValidatorsByDep/"+dataDep.bus_id,function(error,validators){
+                        console.log(dataDep)
+                        add_pole(company,dataDep.company_id,dataDep.name,dataDep.bus_id)
+                    })
+                })
+            }
+        }
+
+        function add_pole(company,companyId,depName,depId){
+            var dep=depName;
+            var title=company+"_"+dep;
+            d3.json(server+"getValidatorsByDep/"+depId,function(error,validators){
                             //to display either the validator if exists or a message "renseigner un validateur"
                                 var nameOne="Renseigner un validateur";
                                 var nameTwo="Renseigner un validateur";
@@ -61,7 +94,7 @@ var adminControl = {
                                 var classNameTwo="add-two-empty";
                                 if (validators.length!==0){                                   
                                     validators.forEach(function(validator){
-                                        if (validator.lvlone==true){                                           
+                                        if (validator.lvlone==true && validator.lvltwo==false){                                           
                                             nameOne=validator.firstname+' '+validator.lastname;
                                             idOne=validator.id;
                                             classNameOne="add-one";
@@ -155,7 +188,7 @@ var adminControl = {
                                                 '</div>'+
                                             '</form></div>'));
                                         var content;
-                                        d3.json(server + "getPeopleByDepartment/"+ dataDep.bus_id, function (error, data) {
+                                        d3.json(server + "getPeopleByDepartment/"+ depId, function (error, data) {
                                             data.forEach(getName);
                                             $('#validator-search').autocomplete({
                                                 lookup: people,
@@ -179,7 +212,7 @@ var adminControl = {
 
                                                     }
                                                     else{
-                                                         d3.json(server +"updateValidator", function(){})
+                                                         d3.json(server +"updateValidator", function(){updateTable()})
                                                         .header("Content-Type","application/json")
                                                         .send("POST", JSON.stringify(data));
                                                     }
@@ -242,7 +275,7 @@ var adminControl = {
                                                 '</div>'+
                                             '</form></div>'));
                                         var content;
-                                        d3.json(server + "getPeopleByCompany/" + dataCompany.com_id, function (error, data) {
+                                        d3.json(server + "getPeopleByCompany/" + companyId, function (error, data) {
                                             data.forEach(getName);
                                             $('#validator-search').autocomplete({
                                                 lookup: people,
@@ -259,7 +292,7 @@ var adminControl = {
                                                     console.log("Nouveau validateur: "+content.data.firstname+" "+content.data.lastname);
                                                     var data={"level":"2","firstname":content.data.firstname,"lastname":content.data.lastname};
                                                     if (d3.select('#two-'+ two).select("p")[0][0].id==="no_id"){ //no validator yet
-                                                        d3.json(server +"saveValidator", function(){})
+                                                        d3.json(server +"saveValidator", function(){updateTable()})
                                                         .header("Content-Type","application/json")
                                                         .send("POST", JSON.stringify(data));
 
@@ -298,8 +331,18 @@ var adminControl = {
                                     }
                         });
 
+        }
+
+        d3.json(server+ "getAllCompanies",function(error,datasetComp){
+            datasetComp.forEach(function(dataCompany){
+                var company=dataCompany.name;
+                d3.json(server+"getDepartmentsByCompany/"+dataCompany.com_id,function(error,datasetDep){
+                    datasetDep.forEach(function(dataDep){
+                        console.log(dataDep)
+                        add_pole(company,dataDep.company_id,dataDep.name, dataDep.bus_id)
                     });
                 });
+
             });
         })
     }

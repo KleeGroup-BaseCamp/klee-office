@@ -14,7 +14,7 @@ var Profil = models.Profil;
  * get all companies of Klee
  */
 const getAllCompanies = (req, res) => {
-    Company.findAll().then(function(company){
+    Company.findAll({where:{name:{ne:"-Test"}} }).then(function(company){
         res.json(company);
     });
 };
@@ -29,7 +29,19 @@ const getDepartmentsByCompany = (req, res) => {
         res.json(businessunit);
     });
 };
-
+/**
+ * get business unit (poles) corresponding with a company name
+ */
+const getDepartmentsByCompanyName = (req, res) => {
+    Company.findOne({where:{name:req.params.name}})
+    .then(function(comp){
+        console.log(comp)
+        BusinessUnit.findAll({where: {company_id: comp.dataValues.com_id}
+        }).then(function(businessunit){
+            res.json(businessunit);
+        });
+    })
+};
 /**
  * get people working in a business unit (pole)
  */
@@ -206,7 +218,7 @@ const getValidatorsByDep = (req, res) => {
         'LEFT JOIN \"Person\" ON \"BusinessUnit\".bus_id = \"Person\".\"businessUnit_id\" ' +
         'LEFT JOIN \"Company\" ON \"Company\".com_id = \"BusinessUnit\".company_id ' +
         'LEFT JOIN \"Profil\" ON \"Profil\".pro_id = \"Person\".profil_id ' +
-        'WHERE (\"Profil\".\"isValidatorLvlOne\"=true OR \"Profil\".\"isValidatorLvlTwo\"=true) AND \"BusinessUnit\".bus_id=:id;'
+        'WHERE (\"Profil\".\"isValidatorLvlOne\"=true AND \"BusinessUnit\".bus_id=:id) OR (\"Profil\".\"isValidatorLvlTwo\"=true AND \"BusinessUnit\".company_id=(SELECT company_id FROM \"BusinessUnit\" WHERE bus_id= :id));'
         , { replacements: {id :req.params.id},
             type: models.sequelize.QueryTypes.SELECT
         })
@@ -291,5 +303,7 @@ const deleteAdministrator =(req,res) =>{
         saveAdministrator,
         getValidatorsByDep,
         deleteValidator,
-        deleteAdministrator
+        deleteAdministrator,
+        getDepartmentsByCompanyName
+        
     }

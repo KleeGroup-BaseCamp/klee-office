@@ -61,6 +61,7 @@
                     <td>   
                         <div id="admin-buttons">   
                             <button id="plot-valid">Administration des validateurs</button>
+                            <button id="plot-admin">Administration des administrateurs</button>
                             <button id="plot-plans">Administration des plans</button>
                         </div>
                     </td>
@@ -80,9 +81,13 @@
     <div id="div-to-hide">
 
         <div class="list-validators">
+            <div id='filter-val'>Afficher :
+                    <select id="validateur-company" type='text' value='Choisir une société' name="company"><option value="all">Toutes les sociétés</option></select>
+                    <!--select id="validateur-pole" type='text' value='Choisir un pôle' name="unit"><option value="all">Tous les pôles</option></select-->
+            </div>
             <table id="table-validators">
-                <thead>
-                <tr class="table-content">
+                <thead class="table-content">
+                <tr >
                     <th>
                         Société
                     </th>
@@ -100,6 +105,7 @@
                     </th>
                 </tr>
                 </thead>
+                <tbody></tbody>
             </table>
         </div>
 
