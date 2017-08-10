@@ -47,41 +47,39 @@
                 <th id="personal-firstname"><%- myFirstName %></th>
                 <th id="personal-lastname"><%- myLastName %></th>
                 <th id="personal-desk"></th>
-                <th class="desk-maj" id="maj-button-background">METTRE À JOUR</th>
+                <th><button class="desk-maj button-stylax" id="maj-button-background">METTRE À JOUR</button></th>
             </tr>
             </thead>
         </table>
     </div>
     <!-- /#info-bar -->
     <header>
-        <div id="navigation-bar" class="container">
-           <table>
-               <tr>
-                   <td>
-                        <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
-                    </td>
-                    <td id="search-bar">
-                        <form id="search" onsubmit="return false">
-                            <div id="input">
-                                <input class="bandeau-recherche" type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue" onkeypress= "if (event.keyCode == 13) plotNumberOfPeople(nbPeopleByArea,dataSearchedPeople);">
-                            </div> 
-                        </form>
-                        <img class="bandeau-recherche" id="search-button" src="../img/forma-1.png">
-                   </td>
-                    <!-- <td>
-                        
-                    </td> -->
+        <div id="navigation-bar">
+            <table class="table-header">
+                <tr>
                     <td>
-                        <img id="right-photo" src="../img/calque-7.png">
+                        <img class="header-left-photo" id="index-left-photo" src="../img/objet-dynamique-vectoriel-1.png">                       
+                    </td>
+                    <td> 
+                        <div id="search-bar">
+                            <form id="search" onsubmit="return false">
+                                <div id="input">
+                                    <input class="bandeau-recherche" type="search" name="search-terms" id="search-terms" placeholder="Rechercher un collègue" onkeypress= "if (event.keyCode == 13) plotNumberOfPeople(nbPeopleByArea,dataSearchedPeople);">
+                                    <img class="bandeau-recherche" id="search-button" src="../img/forma-1.png" display="inline">   
+                                </div> 
+                            </form>
+                            
+                            <div class="info-recherche">
+                                <p id="text-default"></p>
+                                <button class="desk-maj button-stylax" id="maj-button-background2">METTRE À JOUR</button>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <img class="header-right-photo" id="index-right-photo" src="../img/calque-7.png">
                     </td>   
                 </tr>
             </table> 
-            <div class="info-recherche">
-                <!-- <div id="title-default"></div>
-                <br/> -->
-                <p id="text-default"></p>
-                <p class="desk-maj" id="maj-button-background2">METTRE À JOUR</p>
-            </div>
         </div>
     </header>
     <!-- /header -->

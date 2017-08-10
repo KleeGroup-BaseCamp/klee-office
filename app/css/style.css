@@ -91,22 +91,7 @@ table #personal-desk {
     text-align:center;
     display:inline;
 }
-#maj-button-background2{
-    background: url("/img/rectangle-arrondi-1-copie.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size :110px 25px;
-    z-index: -1;
-    padding-top :5px;
-    padding-bottom :7px;
-    padding-right:15px;
-    padding-left:15px;
-    color: white ;
-    font-size: 80%;
-    text-align:center;
-    width: 18%;
-    margin-left : 42%;
-}
+
 
 #button-localization{
     position: relative;
@@ -220,11 +205,12 @@ table #personal-desk {
     margin-bottom:15px;
 }
 #search ,#search-conf{
+   /* width: 570px;
     position: relative;
     float: left;
     width: 60px;
     height: 60px;
-    margin-left: -60px;
+    margin-left: -60px;*/
 }
 #label {
     width: 60px;
@@ -246,13 +232,14 @@ table #personal-desk {
     display: inline-block;
     bottom: 75px;
 }
+
+#index-left-photo{
+    z-index:2;
+}
 #input input, #input-conf input {
     opacity: 1;
-    display: block;
-    position: relative;
-    left: 275px;
+    display: inline;
     width: 550px;
-    height: 100%;
     /*margin: 0;
     padding: 0 10px;*/
     border: none;
@@ -274,6 +261,14 @@ table #personal-desk {
     -ms-transition: left 0;
     -o-transition: left 0;
     transition: left 0;
+}
+#search-bar form, #search-bar-conf form{
+    margin-bottom:20px;
+    text-align:center;
+}
+.desk-maj{
+    width:100px;
+    font-weight:bold
 }
 
 /*begin navigation chart*/
@@ -550,19 +545,14 @@ table #personal-desk {
     font-size: 12px;
 }
 .info-recherche{
-    padding : 10px;
+    left:0px;
     position :relative;
-    height:90px;
-    margin-left :220px;
-    z-index: 0;
-    width:100%;
-    text-align: center;
-    bottom: 80%;
-    /*background-color: white;*/
     line-height: 150%;
+    text-align:center;
 }
 .info-recherche p{
-    text-align: center;
+    padding-top:20px;
+    padding-bottom:20px;
     font-size:18px;
 }
 
@@ -572,10 +562,8 @@ table #personal-desk {
 }
 #text-default{
     font-size:22px;
-    text-align: center;
-    margin-bottom: 20px;
-     text-align:center;
 }
+
 #title-default{
     font-size : 20px;
     font-weight: bold;
@@ -912,7 +900,8 @@ input[readonly] {
 }
 .button-stylax{
     height: auto;
-    width: 8%;
+    width: auto;
+    min-width:100px;
     font-size: 75%;
     border-radius: 20px;
     background-color: black;
@@ -1501,10 +1490,8 @@ header #text-conf button a{
 }
 /* style du bouton de recherche */
 #search-button,#search-button-conf {
-   position: relative;
-   left: 800px;
-   width: auto;
-   height: 100%;
+   width: 40px;
+   display:inline;
    z-index: 20;
 }
 #search-button:hover, #search-button-conf:hover {
@@ -1534,23 +1521,63 @@ header #text-conf button a{
     z-index:2;
     position:relative;
 }
-#table-conf-list td, #table-admin-list td{
+.table-header{
+    width:100%;
+    height:100%;
+}
+
+.table-header tbody tr td:nth-child(1),.table-header tbody tr td:nth-child(3){
+    width:23%;
+    max-height:220px;
+}
+
+.table-header tbody tr td:nth-child(2){
+    width:54%;
+    padding-right:30px;
+    padding-left:30px;
+    padding-top:30px;
+    padding-bottom:20px;
+    vertical-align:top
+}
+
+.table-header td{
     z-index:1;
 }
+
+.header-left-photo,.header-right-photo{
+    height:280px;
+}
+.table-header .header-left-photo{
+    position :relative;
+    left:40px;
+    top:-30px;
+}
+.table-header .header-right-photo{
+    position :relative;
+    right:40px;
+    top:-20px;
+    width:420px;
+}
+.table-header .header-middle{
+    text-align:center;
+    position:relative;
+    left:30%;
+}
+
+/*
 #table-conf-list #left-photo, #table-admin-list #left-photo{
     left:20px;
-    width:110%;
+    width:300px;
 }
 #table-conf-list #right-photo, #table-admin-list #right-photo{
-    left:150%;
-    width:110%;
+    width:300px;
 }
 #config-buttons, #admin-buttons{
-    display: block;
     position: relative;
     left: 375px;
     top:-70px;
-}
+}*/
+
 #config-buttons button, #admin-buttons button{
     margin: 10px;
     height: auto;
@@ -1570,12 +1597,22 @@ header #text-conf button a{
     .bandeau-recherche {
         top: 50px;
     }
+
 } 
 @supports (-ms-ime-align:auto) {
   .bandeau-recherche {
         top: -75px;
     }
+
 } 
+@media screen and (min-width:0\0) {}
+        #admin-buttons{
+         /*   position:relative;
+
+        top:50px;*/
+        
+    }
+
 
 /* Buttons style */
 #removeSearch{
@@ -1604,7 +1641,8 @@ header #text-conf button a{
 }
 #cancelMove, #validateMove{
     height: auto;
-    width: 6%;
+    min-width:75px;
+    width: 8%;
     font-size: 60%;
     border-radius: 20px;
     background-color:black; 
@@ -1678,7 +1716,16 @@ header #text-conf button a{
     cursor :pointer;
     padding-left :25px
 }
-
+#map-show #note-admin{
+    -webkit-column-count: 2; /* Chrome, Safari, Opera */
+    -moz-column-count: 2; /* Firefox */
+    column-count: 2;
+    max-width:1100px;
+    height:60px;
+    -webkit-column-fill: auto; /* Chrome, Safari, Opera */
+    -moz-column-fill: auto; /* Firefox */
+    column-fill: auto;
+}
 
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }
 .autocomplete-suggestion { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }

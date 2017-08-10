@@ -45,28 +45,27 @@
                 <th id="personal-lastname"><%- myLastName %></th>
             <!-- <p id="personal-site"></p> -->
                 <th id="personal-desk"></th>
-                <th class="desk-maj" id="maj-button-background">METTRE À JOUR</th>
             </tr>
             </thead>
         </table>
     </div>
         <!-- /#info-bar -->
     <header>
-        <div id="navigation-bar" class="container">
-            <table id="table-admin-list">
+        <div id="navigation-bar">
+            <table class="table-header" id="bar-admin">
                 <tr>
                     <td>
-                        <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
+                        <img class="header-left-photo" id="admin-left-photo" src="../img/objet-dynamique-vectoriel-1.png">                       
                     </td>
-                    <td>   
-                        <div id="admin-buttons">   
+                    <td> 
+                        <div class="header-middle" id="admin-buttons">   
                             <button id="plot-valid">Administration des validateurs</button>
                             <button id="plot-admin">Administration des administrateurs</button>
                             <button id="plot-plans">Administration des plans</button>
                         </div>
                     </td>
                     <td>
-                        <img id="right-photo" src="../img/calque-7.png">
+                        <img class="header-right-photo" id="admin-right-photo" src="../img/calque-7.png">
                     </td>   
                 </tr>
             </table> 
@@ -230,7 +229,9 @@
                             </table>
                         </td>
                     </tr>
-                    <tr><td colspan="3">Note: pour mettre à jour la carte, veuillez effectuer les changements, valider, puis télécharger le fichier. Vous pouvez ensuite le réimporter</td></tr>                     
+                    <tr><td colspan="3"><h3>Aide: mettre à jour la carte</h3>
+                        <div id="note-admin">1) Effectuer les modifications à l'aide du menu "Modifier les bureaux" <br>2) Valider la carte avec le bouton <img src="/img/ckeck.png" title="Valider les modifications" display="inline" height="15px"/><br>3) Télécharger le fichier à l'aide du menu "Modifier le fichier"<br>4) Importer le fichier que vous venez de créer<br> ATTENTION le nom du fichier importer doit être celui de la carte<br> Exemple : carte N3 - nom du fichier : N3.svg </div>
+                    </td></tr>                     
                 </table>
             </div>
         </div>
