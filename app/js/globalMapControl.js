@@ -48,7 +48,8 @@ var mapControl = {
 					var myTable = d3.selectAll("#tables").select("#"+myDesk);
         			var myX = myTable.select("rect").attr("x")-5;
 					var myY = myTable.select("rect").attr("y")-17;					        		
-        			myTable.append("image")
+					myTable.append("image")
+						.attr("id","pin_home")
           		  		.attr("xlink:href", "./img/pin_home.png")
            		 		.attr("width", "23")
            		 		.attr("height", "45")
@@ -326,7 +327,8 @@ var mapControl = {
 					var myTable = d3.selectAll("#tables").select("#"+myDesk);
         			var myX = myTable.select("rect").attr("x")-5;
 					var myY = myTable.select("rect").attr("y")-17;					        		
-        			myTable.append("image")
+					myTable.append("image")
+						.attr("id","pin_home")
           		  		.attr("xlink:href", "./img/pin_home.png")
            		 		.attr("width", "23")
            		 		.attr("height", "45")

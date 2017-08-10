@@ -49,7 +49,7 @@ d3.json(server + "currentOfficeName/" + myData[0] + "/" + myData[1], function(er
         else {
             desk="none";
             mapName="N0"; //default value
-            d3.select("#text-default").html("<img src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site "+myData[3]);
+            d3.select("#text-default").html("<img id=\"pin_home\" src=\"img/pin_home.png\" alt=\"My Position\" style=\"height:40px\" float:\"left\">Vous êtes sur le site "+myData[3]);
         }
 		mapControl.eraseMap();
 		// if no map, show myMap
