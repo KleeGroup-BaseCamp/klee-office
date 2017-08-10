@@ -15,7 +15,7 @@ var configurationsControl = {
             var dateCrea,link='configurations';
             dataset.forEach(function(data){
                 if(data.date!== null && data.date !== undefined && data.date !== ""){
-                    dateCrea = data.date.split(" ")[0];
+                    dateCrea = data.date.replace('T',' ').replace('Z',' ').substring(0,data.date.length-5);
                 } else {
                     dateCrea = data.date;
                 }
@@ -54,8 +54,6 @@ var configurationsControl = {
 
                 // validate button
                 $("#validate-"+data.set_id).click(function(event) {
-                    console.log(configurationsControl.isPopin)
-                    console.log(event.pageY)
                     if(configurationsControl.isPopin !== true){
                         if (data.state=="Brouillon"){
                             d3.json(server + "isConfValid/"+data.set_id, function(countInvalid){

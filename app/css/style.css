@@ -910,13 +910,14 @@ input[readonly] {
     height: 30px;
     vertical-align: middle;
 }
-.list-validators td {
+.table-pageadmin td {
     padding :4px;
     text-align: center;
-    width: 290px;
     height: 30px;
     vertical-align: middle;
 }
+
+
 .empty {
     font-style: italic;
 }
@@ -936,9 +937,8 @@ input[readonly] {
 }
 #filter-val{
     font-size:16px;
-
-
 }
+
 .list-validators #filter-val{
     margin-top:30px;
     z-index:3;
@@ -949,18 +949,61 @@ input[readonly] {
     margin-right:10px;
     margin-left:10px;
 }
-.list-validators .table-content{
+.table-pageadmin thead{
     font-size : 20px;
     border: 3px solid black;
 }
 
-#table-validators tr:nth-child(even){background-color: #f2f2f2}
+.table-pageadmin tr:nth-child(even){background-color: #f2f2f2}
 
-#table-validators{
+.table-pageadmin{
     margin-top: 35px;
     position: relative;
     left: 20%;
     border : 3px solid black;
+    width:1100px;
+}
+#table-admin img{
+    cursor:pointer;
+}
+#popin-add-admin{
+    background-color: grey;
+    z-index: 50;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 600px;
+    height: auto;
+    border-radius: 80px;
+    text-align: center;
+    padding-top: 40px;
+    color: white;
+    padding-bottom:40px;
+    padding-right:15px;
+    padding-left:15px;
+}
+#popin-add-admin h3{
+    margin-bottom:10px;
+}
+#popin-add-admin button{
+    margin-right:10px;
+    margin-left:10px;
+    margin-top:10px;
+}
+
+.list-admin #add-admin{
+    position:relative;
+    z-index:2;
+    margin-top:20px;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    color:#246b8f;
+    cursor:pointer;
+}
+.list-admin #add-admin p{
+    margin-left:7px;
 }
 
 .list-validators label, .list-validators label  {
@@ -998,6 +1041,7 @@ input[readonly] {
     margin-left: 0px;
     width: 175px;
 }
+
 .admin #input {
     height: 32px;
     width: 175px;
@@ -1076,6 +1120,7 @@ input[readonly] {
     padding-top: 50px;
     color: white;
 }
+
 #popin-val{
     background-color: grey;
     z-index: 50;
@@ -1203,7 +1248,16 @@ input[readonly] {
     overflow: scroll;
     padding : 5px;
     background-color: white;
-    width :100%;    
+    width :100%; 
+    margin-top:40px;
+    text-align: center;   
+}
+.all-conf-block table{
+    border:2px solid black
+}
+.all-conf-block table thead{
+    border:2px solid black;
+    font-size:17px;
 }
 #plot-noplace,#plot-config, #plot-overDesk{
     margin-bottom:10px;
@@ -1251,6 +1305,26 @@ input[readonly] {
     border-bottom: 2px solid #297aa3;*/
 
 }
+#filter-noplace div{ 
+    max-height:150px;
+    min-height:100px;
+    overflow:auto;
+    background-color:lightgray;
+    width:1100px;
+    padding:10px;
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+}
+#filter-noplace{
+    margin-top:40px;
+    
+}
+#filter-noplace h3{
+    margin:5px;
+    text-align: center;
+}
+
 #map-conf #whole-map .map{
     width: 90%;
     height:75%;
@@ -1496,7 +1570,7 @@ header #text-conf button a{
     border-radius: 20px;
     background-color:black; 
     color: white;
-    border: none;
+    /*border: none;*/
     display:block;
 }
 #config-buttons button:hover, #admin-buttons button:hover{
@@ -1597,10 +1671,20 @@ header #text-conf button a{
     width:180px;
     height:30px;
 }
-#val-input ::placeholder{ 
-    font-size:13px;
+#val-input ::placeholder, .list-admin #research ::placeholder { 
+    font-size:15px;
     font-style:italic;
 }
+.list-admin #research{
+    color:black;
+    margin-bottom:40px;
+    margin-top:30px;
+}
+.list-admin #research input{
+    width:250px;
+    height:40px;
+}
+
 #val-delete-one, #val-delete-two{
     cursor :pointer;
     padding-left :25px

@@ -23,7 +23,6 @@ const getCurrentDeskName = (req,res) =>{
         'WHERE \"Person\".firstname = :first AND \"Person\".lastname = :last;',
         { replacements: {first: req.params.first, last: req.params.last}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(desk){
-            console.log(desk)
            res.json(desk);
         });
 }
@@ -35,23 +34,23 @@ const getCurrentDeskNamebyId = (req,res) => {
         'WHERE \"Person\".per_id = :id',
         { replacements: {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(desk){
-            console.log(desk)
             res.json(desk);
         });
 }
 const getOverOccupiedDesk =(req,res) => {
-    models.sequelize.query('SELECT \"Desk\".name, \"Person\".firstname, \"Person\".lastname '+
+    models.sequelize.query('SELECT \"Desk\".name as desk, \"Person\".firstname, \"Person\".lastname, \"BusinessUnit\".name as pole, \"Company\".name as company '+
     'FROM \"Desk\" '+
     'JOIN \"Person\" ON \"Desk\".person_id=\"Person\".per_id '+
-    'WHERE name IN ('+
+    'LEFT JOIN \"BusinessUnit\" ON \"BusinessUnit\".bus_id=\"Person\".\"businessUnit_id\" '+
+    'LEFT JOIN \"Company\" ON \"Company\".com_id=\"BusinessUnit\".company_id '+
+    'WHERE \"Desk\".name IN ('+
         'SELECT \"Desk\".name '+
         'FROM \"Desk\" ' +
         'WHERE \"Desk\".name<> :ext AND \"Desk\".name <> :none '+
         'GROUP BY \"Desk\".name HAVING COUNT(*)>1) '+
-    'ORDER BY name',
+    'ORDER BY \"Desk\".name',
         { replacements: {ext:'externe',none:'aucun'}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(desk){
-            console.log(desk)
             res.json(desk);
     });
 }
@@ -96,7 +95,6 @@ const saveMyLocalization = (req, res) => {
                 Desk.findOrCreate({where: {name: newDesk}})
                 .then(function(to_desk){ 
                     var former_person=to_desk[0].dataValues.person_id; //if not null, someone was at this place. A new new desk in la boursidère must be created and moveline ejection must be created at the end
-                    console.log('!!!!!!!!!!!!'+former_person)
                     toDeskId=to_desk[0].dataValues.des_id;
                     models.sequelize.query('UPDATE "Desk" '+
                             'SET floor= :fl , building= :build ,site_id= (SELECT sit_id FROM "Site" WHERE name= :site) , person_id= :perid '+
@@ -116,10 +114,8 @@ const saveMyLocalization = (req, res) => {
                                 if (former_person !==null && former_person !==undefined && former_person !=="" ){
                                     Site.findOne({where:{name:"La Boursidière"}})
                                     .then(function(site){
-                                        console.log(site)
                                         Desk.create({name:"aucun",dateUpdate:new Date(),site_id:site.dataValues.sit_id,person_id:former_person})
                                         .then(function(des){
-                                            console.log(des);
                                             MoveLine.create({dateCreation : new Date(), status :"ejection", move_set_id:set.dataValues.set_id, person_id:former_person, fromDesk:toDeskId, toDesk:des.des_id})
                                         })
                                     })
@@ -213,19 +209,18 @@ const getLastDeskUpdate = (req,res) =>{
         'LIMIT 1 ',
         { replacements: {id: req.params.id}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(updesk){
-            console.log(updesk);
            res.json(updesk);
         });
 }
 const getPersonByDesk = (req,res) =>{
-    console.log(req.params.name)
-        models.sequelize.query('SELECT \"Person\".firstname,\"Person\".lastname '+
+        models.sequelize.query('SELECT \"Person\".firstname,\"Person\".lastname, \"BusinessUnit\".name as pole, \"Company\".name as company '+
         'FROM \"Person\" '+
         'JOIN \"Desk\" ON \"Desk\".person_id = \"Person\".per_id '+
+        'LEFT JOIN \"BusinessUnit\" ON \"BusinessUnit\".bus_id=\"Person\".\"businessUnit_id\" '+
+        'LEFT JOIN \"Company\" ON \"Company\".com_id=\"BusinessUnit\".company_id '+
         'WHERE \"Desk\".name = :name ',
         { replacements: {name: req.params.name}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(person){
-            console.log(person);
            res.json(person);
         });
 }

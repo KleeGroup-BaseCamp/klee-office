@@ -12,8 +12,7 @@
 
     d3.json(server + "getAdministrator/"+myData[0]+"/"+myData[1], function(res){
         if (res[0].isAdministrator){
-            d3.select("#error-admin").style("display","none");
-            d3.select(".list-validators").style("display","");
+            preparePlot()
         }
         else{
             d3.select("#div-to-hide").style("display","none");
@@ -21,21 +20,42 @@
         }
     })
 
+    function preparePlot(){
+        d3.select("#error-admin").style("display","none")
+        d3.select("#div-to-hide").style("display","");
 
-    window.addEventListener("load", function(){
         adminControl.plotValidatorsList();
-    });
-
-    d3.select("#plans-block").style("display","none");
+        adminControl.plotAdminList();
+        d3.selectAll("#admin-buttons button").style('background-color','black').style('color','white')
+        d3.select("#plot-valid").style('background-color','white').style('color','black')
+        d3.select("#plans-block").style("display","none");
+        d3.select(".list-admin").style("display","none");
+        d3.select(".list-validators").style("display","");
+    };
 
     $("#plot-valid").click(function () {
+        d3.selectAll("#admin-buttons button").style('background-color','black').style('color','white')
+        d3.select("#plot-valid").style('background-color','white').style('color','black')
+
         d3.select("#plans-block").style("display","none");
         d3.select(".list-validators") .style("display","");
+        d3.select(".list-admin").style('display','none');
     });
 
     $("#plot-plans").click(function () {
+        d3.selectAll("#admin-buttons button").style('background-color','black').style('color','white')
+        d3.select("#plot-plans").style('background-color','white').style('color','black')
         d3.select("#plans-block").style("display","");
         d3.select(".list-validators") .style("display","none");
+        d3.select(".list-admin").style('display','none');
+    });
+
+    $('#plot-admin').click(function () {
+        d3.selectAll("#admin-buttons button").style('background-color','black').style('color','white')
+        d3.select("#plot-admin").style('background-color','white').style('color','black')
+        d3.select("#plans-block").style("display","none");
+        d3.select(".list-validators") .style("display","none");
+        d3.select(".list-admin").style('display','');
     });
 
 

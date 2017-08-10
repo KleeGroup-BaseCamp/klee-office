@@ -366,8 +366,8 @@ var mapControl = {
 
 						wholeMap.on("dblclick.zoom", null);
 				})
-			/*var svg = d3.select("#whole-map")
-					.select("svg").call(zoom);*/
+			var svg = d3.select("#whole-map")
+					.select("svg").call(zoom);
 			
 							  
 			// for each people, search his table

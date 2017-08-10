@@ -44,7 +44,7 @@ $(function(){
                     desk="aucun";
                     mapName="None";
                 }
-                d3.select("#text-conf").html(suggestion.data.cn+' est localisé '+location+'</br>Sélectionnez son nouvel emplacement')
+                //d3.select("#text-conf").html(suggestion.data.cn+' est localisé '+location+'</br>Sélectionnez son nouvel emplacement')
                 
                 if (mapName!="None"){
                     // if no map showing on, plot the map with name "mapName", add pin to searched person's table

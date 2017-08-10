@@ -9,31 +9,6 @@ var	server= "http://localhost:3000/";
 
 var adminControl = {
     alreadyOneSelected: false,
-    /**
-     * erase rects list
-     * @param list
-     */
-    erase: function(list){
-        // remove lists
-        if(list !== null && list !== undefined && list.length > 0) {
-            Array.from(list).forEach(function (element) {
-                element.remove();
-            });
-        }
-    },
-    /**
-     * erase all rects lists
-     */
-    eraseAll: function(){
-        var dpt = document.getElementsByClassName("dpt-rect");
-        var comp = document.getElementsByClassName("company-rect");
-        var people = document.getElementsByClassName("people-rect");
-        var remove = document.getElementsByClassName("remove");
-        this.erase(dpt);
-        this.erase(comp);
-        this.erase(people);
-        this.erase(remove);
-    },
     plotValidatorsList: function(){
         function guid() {
                     function s4() {
@@ -44,10 +19,17 @@ var adminControl = {
                     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                         s4() + '-' + s4() + s4() + s4();
         }
+        
+        $('<option value="all" selected="selected">Toutes les sociétés</option>').appendTo($('#validateur-company'))
         d3.json(server+ "getAllCompanies",function(error,datasetComp){
             datasetComp.forEach(function(dataCompany){
-                console.log(dataCompany.name.replace(/ /g,'_'))
-                $('<option value='+dataCompany.name.replace(/ /g,'_')+'>'+dataCompany.name+'</option>').appendTo($('#validateur-company'))
+                var company=dataCompany.name;
+                $('<option value='+company.replace(/ /g,'_')+'>'+dataCompany.name+'</option>').appendTo($('#validateur-company'))
+                d3.json(server+"getDepartmentsByCompany/"+dataCompany.com_id,function(error,datasetDep){
+                    datasetDep.forEach(function(dataDep){
+                        add_pole(company,dataDep.company_id,dataDep.name, dataDep.bus_id)
+                    });
+                });
             })
         })
 
@@ -56,9 +38,8 @@ var adminControl = {
         });
 
         function updateTable(){
-            console.log($('#validateur-company').val())
             var company = $('#validateur-company').val().replace(/_/g,' ');
-            $('#table-validators >tr').remove();
+            $('#table-validators > tr').remove();
             if (company=="all"){
                 d3.json(server+ "getAllCompanies",function(error,datasetComp){
                     datasetComp.forEach(function(dataCompany){
@@ -74,7 +55,6 @@ var adminControl = {
             }else{
                 d3.json(server+"getDepartmentsByCompanyName/"+company,function(error,datasetDep){
                     datasetDep.forEach(function(dataDep){
-                        console.log(dataDep)
                         add_pole(company,dataDep.company_id,dataDep.name,dataDep.bus_id)
                     })
                 })
@@ -239,7 +219,7 @@ var adminControl = {
                                 //event to add a new validator level two when clicking on the plus or update if exists
                                 var selecttwo = d3.select('.two-'+two)
                                     .on("click", function(){
-                                        d3.selectAll(".none").remove();
+                                        
                                         d3.selectAll(".row").remove();
                                         // display all hidden fields on the page
                                         d3.selectAll(".add-one").selectAll("p").style("display", "");
@@ -333,17 +313,100 @@ var adminControl = {
 
         }
 
-        d3.json(server+ "getAllCompanies",function(error,datasetComp){
-            datasetComp.forEach(function(dataCompany){
-                var company=dataCompany.name;
-                d3.json(server+"getDepartmentsByCompany/"+dataCompany.com_id,function(error,datasetDep){
-                    datasetDep.forEach(function(dataDep){
-                        //console.log(dataDep)
-                        add_pole(company,dataDep.company_id,dataDep.name, dataDep.bus_id)
-                    });
-                });
 
+    },
+    plotAdminList: function(){
+        loadTable();
+
+        /** prepare autocomplete data*/
+        var people = [];
+        function getName(element, index, array){
+            people.push({value: element.firstname + " " + element.lastname,data: element});
+        }
+
+        $('#add-admin').on('click',function(){
+            console.log('add')
+            $('<div id="popin-add-admin">'+
+            '<h3> Ajouter un nouvel administrateur</h3>'+
+            '<div id="research">'+
+                '<img src="/img/search01.png" width="40px" display="inline"><input type="text" name="search-admin" id="administrator-search" placeholder="Rechercher une personne...">'+
+            '</div>'+
+            '<div>'+
+                '<button class="button-stylax" id="addNewAdmin">Ajouter</button>'+
+                '<button class="button-stylax" id="admin-cancel">Annuler</button>'+
+            '</div>'+
+            '</div>').prependTo($('.list-admin'))
+
+            $.getJSON(server+'getInfoPerson', function(data) {//data is the JSON file
+                data.forEach(getName);
+
+                // setup autocomplete function pulling from people[] array
+                $('#administrator-search')
+                .autocomplete({
+                    lookup: people,
+                    onSelect: function (suggestion) {
+                        // suggestion.data example: { "mail": ["Laurence.EYRAUDJOLY@kleegroup.com"], "physicalDeliveryOfficeName": ["La Boursidière : N4-D-01"], "cn": ["Laurence EYRAUD-JOLY"] }
+                    var firstname=suggestion.data.firstname,
+                        lastname=suggestion.data.lastname;
+                        $("#addNewAdmin").click(function(){
+                            var data={firstname:firstname,lastname:lastname};
+                            $.ajax({
+                                url: 'saveAdministrator',
+                                type: 'POST',
+                                data:data,
+                                success: function(res,success) { //not always launched after the end of the post
+                                    $('#table-admin > tbody').remove();
+                                    loadTable();                         
+                                },error: function(){console.log('error')}
+                            });
+                            $('#popin-add-admin').remove();
+                        })
+                    }
+                })
+            })
+
+            $("#popin-add-admin").click(function (event) {
+                event.stopPropagation();
             });
+            $("#admin-cancel").click(function () {
+                $('#popin-add-admin').remove();
+            });
+
         })
+
+        function loadTable(){
+            d3.json(server+ "getAllAdministrators",function(error,dataset){
+                dataset.forEach(function(admin){
+                    add_admin(admin.firstname,admin.lastname,admin.pole,admin.company)
+                })
+            })    
+        }
+
+
+        function add_admin(firstname,lastname,pole,company){
+            $('<tr><td>'+firstname+'</td><td>'+lastname+'</td><td>'+pole+'</td><td>'+company+'</td><td><img class="delete-admin" src="/img/delete.png" width="30px"/></td></tr>').appendTo($('#table-admin'))
+        }
+
+        $(document).on('click', '.delete-admin', function(event){
+            var firstname=event.target.parentNode.parentNode.childNodes[0].innerText,
+                lastname= event.target.parentNode.parentNode.childNodes[1].innerText;
+            var data={firstname:firstname,lastname:lastname};
+            $.ajax({
+                url: 'deleteAdministrator',
+                type: 'POST',
+                data:data,
+                success: function(res, success) {
+                    console.log('success')
+                    $('#table-admin > tbody').remove();
+                    loadTable();                         
+                }
+            });
+        });
+        
+    },
+    eraseAll :function(){
+        $('#table-admin > tbody').remove();
+        $('#table-validators > tr').remove();
+        $('#validateur-company >option').remove();
     }
 }
