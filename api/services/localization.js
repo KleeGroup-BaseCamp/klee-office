@@ -40,15 +40,17 @@ const getCurrentDeskNamebyId = (req,res) => {
         });
 }
 const getOverOccupiedDesk =(req,res) => {
-    models.sequelize.query('SELECT \"Desk\".name, \"Person\".firstname, \"Person\".lastname '+
+    models.sequelize.query('SELECT \"Desk\".name as desk, \"Person\".firstname, \"Person\".lastname, \"BusinessUnit\".name as pole, \"Company\".name as company '+
     'FROM \"Desk\" '+
     'JOIN \"Person\" ON \"Desk\".person_id=\"Person\".per_id '+
-    'WHERE name IN ('+
+    'LEFT JOIN \"BusinessUnit\" ON \"BusinessUnit\".bus_id=\"Person\".\"businessUnit_id\" '+
+    'LEFT JOIN \"Company\" ON \"Company\".com_id=\"BusinessUnit\".company_id '+
+    'WHERE \"Desk\".name IN ('+
         'SELECT \"Desk\".name '+
         'FROM \"Desk\" ' +
         'WHERE \"Desk\".name<> :ext AND \"Desk\".name <> :none '+
         'GROUP BY \"Desk\".name HAVING COUNT(*)>1) '+
-    'ORDER BY name',
+    'ORDER BY \"Desk\".name',
         { replacements: {ext:'externe',none:'aucun'}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(desk){
             console.log(desk)
@@ -219,9 +221,11 @@ const getLastDeskUpdate = (req,res) =>{
 }
 const getPersonByDesk = (req,res) =>{
     console.log(req.params.name)
-        models.sequelize.query('SELECT \"Person\".firstname,\"Person\".lastname '+
+        models.sequelize.query('SELECT \"Person\".firstname,\"Person\".lastname, \"BusinessUnit\".name as pole, \"Company\".name as company '+
         'FROM \"Person\" '+
         'JOIN \"Desk\" ON \"Desk\".person_id = \"Person\".per_id '+
+        'LEFT JOIN \"BusinessUnit\" ON \"BusinessUnit\".bus_id=\"Person\".\"businessUnit_id\" '+
+        'LEFT JOIN \"Company\" ON \"Company\".com_id=\"BusinessUnit\".company_id '+
         'WHERE \"Desk\".name = :name ',
         { replacements: {name: req.params.name}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(person){

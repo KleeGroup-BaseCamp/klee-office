@@ -247,6 +247,7 @@ app.get('/getAllCompanies', adminServices.getAllCompanies);
 app.get('/getDepartmentsByCompany/:id', adminServices.getDepartmentsByCompany);
 app.get('/getPeopleByDepartment/:id', adminServices.getPeopleByDepartment);
 app.get('/getPeopleByCompany/:id', adminServices.getPeopleByCompany);
+app.get('/getAllAdministrators', adminServices.getAllAdministrators);
 app.post('/saveValidator', adminServices.saveValidateur);
 app.post('/updateValidator', adminServices.updateValidateur);
 app.post('/deleteValidator', adminServices.deleteValidator);

@@ -65,7 +65,6 @@
         d3.json(server + "getRecapOfMovings/"+configId, function(movelines){
             for (var i=0;i<movelines.length;i++){
                 var text='';
-                console.log(movelines[i])
                 newConfig.push([movelines[i].firstname,movelines[i].lastname,movelines[i].depart,movelines[i].arrivee,"former-row"])
                 if (view_access==true){
                     if (movelines[i].status=="Brouillon invalide"){
@@ -88,7 +87,6 @@
                 d3.select("#recap-conf h3 img").style('visibility','visible')
             }
             for (var i=0;i<res.length;i++){
-                console.log(res)
                 //change status moveline to invalid
                 $.ajax({
                     url: "setInvalidMoveline/"+res[i].mov_id,

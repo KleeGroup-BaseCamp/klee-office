@@ -82,10 +82,9 @@
 
         <div class="list-validators">
             <div id='filter-val'>Afficher :
-                    <select id="validateur-company" type='text' value='Choisir une société' name="company"><option value="all">Toutes les sociétés</option></select>
-                    <!--select id="validateur-pole" type='text' value='Choisir un pôle' name="unit"><option value="all">Tous les pôles</option></select-->
+                    <select id="validateur-company" type='text' value='Choisir une société' name="company"></select>
             </div>
-            <table id="table-validators">
+            <table id="table-validators" class="table-pageadmin">
                 <thead class="table-content">
                 <tr >
                     <th>
@@ -105,7 +104,6 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody></tbody>
             </table>
         </div>
 
@@ -216,6 +214,21 @@
             </div>
         </div>
         <!-- Affichage plans -->
+
+        <div class="list-admin">
+            <div id="add-admin"><img src="/img/plus.png" width="30px"/><p class="inline">Ajouter un administrateur</p></div>
+            <table id='table-admin' class="table-pageadmin">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Pôle</th>
+                        <th>Société</th>
+                        <th>Supprimer</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
 
 

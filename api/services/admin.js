@@ -252,19 +252,36 @@ const deleteValidator = (req,res) =>{
     res.redirect('/admin');
 }
 
+const getAllAdministrators = (req,res) =>{
+        models.sequelize.query(
+        'SELECT \"Person\".per_id as id, \"Person\".firstname, \"Person\".lastname, \"Company\".name as company, \"BusinessUnit\".name as pole ' +
+        'FROM \"BusinessUnit\" '+
+        'LEFT JOIN \"Person\" ON \"BusinessUnit\".bus_id = \"Person\".\"businessUnit_id\" ' +
+        'LEFT JOIN \"Company\" ON \"Company\".com_id = \"BusinessUnit\".company_id ' +
+        'LEFT JOIN \"Profil\" ON \"Profil\".pro_id = \"Person\".profil_id ' +
+        'WHERE \"Profil\".\"isAdministrator\"= true '+
+        'ORDER BY \"Company\".name desc, \"BusinessUnit\".name desc;'
+        , { replacements: { },
+            type: models.sequelize.QueryTypes.SELECT
+        })
+        .then(function (admins) {
+            res.json(admins);
+        });
+}
+
 const saveAdministrator = (req, res) => {
     if (req.body['firstname'] !== null && req.body['firstname'] !== undefined && req.body['firstname'] !== ""
         && req.body['lastname'] !== null && req.body['lastname'] !== undefined && req.body['lastname'] !== ""){ 
             Person.findOne({           //find the person
                    where: {lastname:req.body.lastname,firstname: req.body.firstname}
             }).then(function(new_admin){      //find his profil
+                console.log(new_admin)
                     new_admin.update({dateUpdate : new Date()})
-                    Profil.findOne({where: {
-                        pro_id: new_admin.dataValues.profil_id}})
-            .then(function(profil){           //update his profil
-                    profil.update({isAdministrator : true})                               
+                    //update his profil   
+                    Profil.update({isAdministrator : true},{where: {pro_id: new_admin.dataValues.profil_id}})                                     
                     // Flash message + redirect
-                    req.flash('success', 'Vous avez choisi un administrateur ')});})
+                    req.flash('success', 'Vous avez choisi un administrateur ')
+                })
     }
     else {
             req.flash('success', 'Veuillez choisir une personne dans la liste au pr&eacutealable.');
@@ -278,15 +295,13 @@ const deleteAdministrator =(req,res) =>{
             Person.findOne({           //find the person
                    where: {lastname:req.body.lastname,firstname: req.body.firstname}
             }).then(function(new_admin){      //find his profil
+                console.log(new_admin)
                     new_admin.update({dateUpdate : new Date()})
-                    Profil.findOne({where: {
-                        pro_id: new_admin.dataValues.profil_id}})
-            .then(function(profil){           //update his profil
-                    profil.update({isAdministrator : false})                               
+                    Profil.update({isAdministrator : false},{where: {pro_id: new_admin.dataValues.profil_id}})                              
                     // Flash message + redirect
-                    req.flash('success', 'Vous avez choisi un administrateur ')});})
-    }
-    else {
+                    req.flash('success', 'Vous avez supprimé un administrateur ');
+            })
+    }else {
             req.flash('success', 'Veuillez choisir une personne dans la liste au pr&eacutealable.');
         }
     res.redirect('/admin');
@@ -300,6 +315,7 @@ const deleteAdministrator =(req,res) =>{
         saveValidateur,
         getAllValidators,
         updateValidateur,
+        getAllAdministrators,
         saveAdministrator,
         getValidatorsByDep,
         deleteValidator,

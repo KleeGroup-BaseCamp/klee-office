@@ -13,12 +13,13 @@
     var comp="";
 
     d3.json(server + "getLevelValidator/"+myData[0]+"/"+myData[1], function(isValidator){
-        console.log(isValidator);
         //give access to members of his business unit
         if (isValidator[0].isValidatorLvlOne==true && isValidator[0].isValidatorLvlTwo ==false){
             level="1";
             dep=isValidator[0].businessUnit_id;
             comp=isValidator[0].company;
+            d3.selectAll("#config-buttons button").style('background-color','black').style('color','white')
+            d3.select("#plot-config").style('background-color','white').style('color','black')
             d3.select("#error-conf").style("display","none"); 
             d3.select("#noplace-block").style("display","none"); 
             d3.select("#overDesk-block").style("display","none");         
@@ -26,6 +27,8 @@
         //give access to memebers of his company 
         else if (isValidator[0].isValidatorLvlTwo==true){
             level="2"; 
+            d3.selectAll("#config-buttons button").style('background-color','black').style('color','white')
+            d3.select("#plot-config").style('background-color','white').style('color','black')
             d3.select("#error-conf").style("display","none");
             d3.select("#noplace-block").style("display","none");
             d3.select("#overDesk-block").style("display","none");
@@ -42,35 +45,58 @@
     });
 
     function plotNoPlaceList(level,dep,comp){
-        var list_id=[]
-        if(level=== "1"){
-            d3.json(server + "getNoPlacePersonByBusUnit/"+dep+"/"+info[0].comid, function(person){
-                for (var i=0;i<person.length;i++){
-                    if (list_id.indexOf(person[i].per_id)==-1){
-                        $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td><td>'+person[i].date+'</td><td>'+person[i].status+'</td></tr>').insertAfter($('.table-noplace'));
-                        list_id.push(person[i].per_id);
-                    }                
-                }  
-            });
-        }
-        else if(level === "2"){
-            d3.json(server + "getNoPlacePersonByCompany/"+comp+"/", function(person){
-                for (var i=0;i<person.length;i++){
-                    if (list_id.indexOf(person[i].person_id)==-1){
-                        $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td><td>'+person[i].date+'</td><td>'+person[i].status+'</td></tr>').insertAfter($('.table-noplace'));
-                        list_id.push(person[i].person_id);
+        $('<input type="checkbox" id="all" class="input1" value="all" checked>Tous les départements<br>').appendTo($('#filter-noplace div'))
+        d3.json(server+"getDepartmentsByCompany/"+comp,function(error,deps){
+            deps.forEach(function(pole){
+                $('<input id='+pole.bus_id+' class="input2" type="checkbox" value='+pole.bus_id+'>'+pole.name+'<br>').appendTo($('#filter-noplace div'))
+            })
+        })    
+
+        loadTable([])
+
+        $("#button-plot-noplace").on("click", function() {
+            $('#list-noplace > tr').remove();
+            var listDepId=[]
+            $('#filter-noplace div input').each(function(){
+                if ($(this).is(":checked")){
+                    listDepId.push($(this)[0].id)
+                }
+            })
+            loadTable(listDepId);
+        });
+        $("filter-noplace").on('click','.input2',function(){
+            console.log('click')
+        })
+
+        function loadTable(listDepId){
+            if(listDepId.length==0 || listDepId.indexOf("all")!=-1){
+                d3.json(server + "getNoPlacePersonByCompany/"+comp+"/", function(person){
+                    for (var i=0;i<person.length;i++){
+                        var datemaj=person[i].date.replace('T',' ').replace('Z',' ').substring(0,person[i].date.length-5);
+                        $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td><td>'+datemaj+'</td><td>'+person[i].status+'</td></tr>').insertAfter($('.table-noplace'));
+                        
                     }
-                }  
-            })     
+                })                     
+            }else{
+                for (var i=0;i<listDepId.length;i++){
+                    var pole=listDepId[i];
+                    d3.json(server + "getNoPlacePersonByBusUnit/"+pole+"/"+comp, function(person){
+                        for (var i=0;i<person.length;i++){
+                            var datemaj=person[i].date.replace('T',' ').replace('Z',' ').substring(0,person[i].date.length-5);
+                            $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td><td>'+datemaj+'</td><td>'+person[i].status+'</td></tr>').insertAfter($('.table-noplace'));                
+                        }  
+                    });
+                }
+            }
         }
     }
 
     function plotOverPeopleDesk(){
-            d3.json(server + "getOverOccupiedDesk/", function(person){
-                for (var i=0;i<person.length;i++){
-                         $("<tr><td>"+person[i].name + "</td><td>" + person[i].firstname + '</td><td>'+person[i].lastname+'</td></tr>').insertAfter($('.table-overDesk'));       
-                }  
-            });
+        d3.json(server + "getOverOccupiedDesk/", function(person){
+            for (var i=0;i<person.length;i++){
+                    $("<tr><td>"+person[i].desk + "</td><td>" + person[i].firstname + "</td><td>"+ person[i].lastname + "</td><td>"+person[i].pole+ "</td><td>" + person[i].company + "</td></tr>").insertAfter($('.table-overDesk'));       
+            }  
+        });
     }
 
     
@@ -139,6 +165,8 @@
 
 
     $("#plot-noplace").click(function () {
+        d3.selectAll("#config-buttons button").style('background-color','black').style('color','white')
+        d3.select("#plot-noplace").style('background-color','white').style('color','black')
         d3.select("#conf-block").style("display","none");
         d3.select("#overDesk-block").style("display","none");
         d3.select("#noplace-block") .style("display","");
@@ -146,12 +174,16 @@
 
 
     $("#plot-config").click(function () {
+        d3.selectAll("#config-buttons button").style('background-color','black').style('color','white')
+        d3.select("#plot-config").style('background-color','white').style('color','black')
         d3.select("#conf-block").style("display","");
         d3.select("#overDesk-block").style("display","none");
         d3.select("#noplace-block").style("display","none");
     });
 
     $("#plot-overDesk").click(function () {
+        d3.selectAll("#config-buttons button").style('background-color','black').style('color','white')
+        d3.select("#plot-overDesk").style('background-color','white').style('color','black')
         d3.select("#conf-block").style("display","none");
         d3.select("#overDesk-block").style("display","");
         d3.select("#noplace-block").style("display","none");
