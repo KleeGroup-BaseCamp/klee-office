@@ -168,22 +168,41 @@ var mapControl = {
 				if (isSavingLocalization==false){
 					var allTablees = d3.select("#tables")
 						.selectAll(".available")
+						//.select("rect")
 						.style("cursor", "pointer")
 						.on("click", function(){
 							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
-							console.log("Bureau : " + d3.event.target.parentNode.id);
+							//console.log(d3.event.target.parentNode.id);
 							var xPosition = event.clientX,
 								yPosition = event.clientY;
 							// get scroll pixels to correct tooltip's yPostion
 							yPosition += $(window).scrollTop();
-							tooltip_desk_empty.html("Bureau " + d3.event.target.parentNode.id)
+							tooltip_desk_empty.html(d3.event.target.parentNode.id)
 													.style("position","absolute")
 													.style("left", xPosition-250+ "px")
 													.style("top",  yPosition-300+ "px")
 													.style("height", "20px");
 							tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
 							event.stopPropagation();	
-						});								// click the tooltip won't let it disappear
+						});	
+						
+						d3.selectAll("image").style("cursor", "pointer").on("click", function(){
+							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
+							//console.log(d3.event.target.parentNode.id);
+							var xPosition = event.clientX,
+								yPosition = event.clientY;
+							// get scroll pixels to correct tooltip's yPostion
+							yPosition += $(window).scrollTop();
+							tooltip_desk_empty.html(d3.event.target.parentNode.id.replace(/_/g," "))
+													.style("position","absolute")
+													.style("left", xPosition-250+ "px")
+													.style("top",  yPosition-300+ "px")
+													.style("height", "20px");
+							tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
+							event.stopPropagation();	
+						});	
+						
+						// click the tooltip won't let it disappear
 						$(".tooltip_map_desk_empty").click(function(event) {
 							event.stopPropagation();
 						})
@@ -460,6 +479,7 @@ var mapControl = {
 					//tooltip for empty desks
 					var allTables_empty = d3.select("#tables")
 						.selectAll(".available, .available-temp")
+						.select("rect")
 						.style("cursor", "pointer")
 						.on("click", function(){
 							tooltip_desk_empty.transition().duration(1).style("opacity", 0).style("z-index", -1);
@@ -467,7 +487,7 @@ var mapControl = {
 								yPosition = event.clientY;
 							// get scroll pixels to correct tooltip's yPostion
 							yPosition += $(window).scrollTop();
-							tooltip_desk_empty.html("Bureau " + d3.event.target.parentNode.id)
+							tooltip_desk_empty.html(d3.event.target.parentNode.id)
 													.style("position","absolute")
 													.style("left", xPosition-250+ "px")
 													.style("top",  yPosition-300+ "px")
@@ -486,11 +506,27 @@ var mapControl = {
 												.style("z-index", -1);
 						})
 						});
+					d3.selectAll("image").style("cursor", "pointer").on("click", function(){
+							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
+							//console.log(d3.event.target.parentNode.id);
+							var xPosition = event.clientX,
+								yPosition = event.clientY;
+							// get scroll pixels to correct tooltip's yPostion
+							yPosition += $(window).scrollTop();
+							tooltip_desk_empty.html(d3.event.target.parentNode.id.replace(/_/g," "))
+													.style("position","absolute")
+													.style("left", xPosition-250+ "px")
+													.style("top",  yPosition-300+ "px")
+													.style("height", "20px");
+							tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
+							event.stopPropagation();	
+						});
 					;
 
 
 					var allTables_occupied = d3.select("#tables")
 						.selectAll(".occupied, .occupied-temp")
+						.select("rect")
 						.style("cursor", "pointer")
 						.on("click", function(){
 							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
@@ -512,7 +548,7 @@ var mapControl = {
 						})
 						// click elsewhere will make tooltip disappear
 						$("html, .available, .available-temp").click(function () {
-							console.log('yoyou')
+							//console.log('yoyou')
 											tooltip_desk.transition()
 												.duration(500)
 												.style("opacity", 0)
