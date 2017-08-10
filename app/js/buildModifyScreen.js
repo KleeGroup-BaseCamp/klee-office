@@ -275,9 +275,7 @@
             for (var i=0;i<newConfig.length;i++){
                 if (newConfig[i][4]=="new-row"){
                     newConfig[i][4]="former-row"
-                    console.log('o save')
-                    console.log(newConfig[i])
-                    var data={confid:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],fromdesk:newConfig[i][2],todesk:newConfig[i][3],status:"Brouillon"};
+                    var data={confid:configId,firstname:newConfig[i][0],lastname:newConfig[i][1],fromdesk:newConfig[i][2],todesk:newConfig[i][3],status:newConfig[i][5]};
                     //check if a moveline already exists for that person
                     $.ajax({
                             url: "deleteMoveLineIfFind",
@@ -304,7 +302,6 @@
             callback();
         }
         updateDataBase(function(){
-            console.log(newConfig)
             reloadMap('');
             $("#nb-people-new-conf").html(newConfig.length)
         })
@@ -512,7 +509,6 @@
         function validateMove(name,site,desk){
             var firstname=getnames(name)[0];
             var lastname=getnames(name)[1];
-            console.log(name+'/'+site+'/'+desk)
             d3.json(server + "currentOfficeName/"+firstname+'/'+lastname, function(formerDesk){
                 var formerLocation=formerDesk[0].site+' : '+formerDesk[0].name;
                 var ind=null;
@@ -522,14 +518,12 @@
                     }
                 }
                 if (ind==null){
-                    newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row"])
+                    newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row","déplacement brouillon"])
                     $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td title='Modifier'>"+newConfig[newConfig.length-1][3]+"</td><td class='delete-row'></td></tr>").appendTo("#table-to-fill")
                     $("#nb-people-new-conf").html(newConfig.length)
                 }else{
-                    console.log('remove !!!'+newConfig[ind])
                     newConfig.splice(ind,1)
-                    newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row"])
-                    console.log(newConfig[ind][3])
+                    newConfig.push([firstname,lastname,formerLocation,site+' : '+desk,"new-row","déplacement brouillon"])
                     $("#"+lastname+firstname+" td:nth-child(4)").html(newConfig[ind][3])
                     d3.select("#"+lastname+firstname).attr('class','new-row')
                 }
@@ -538,7 +532,7 @@
             if (desk!=="externe" && desk!=="aucun"){
                 d3.json(server + "getPersonByDesk/"+desk, function(isDeskAvailable){
                     if (isDeskAvailable.length!==0){
-                        newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière : "+desk,"La Boursidière : aucun","new-row"])
+                        newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière : "+desk,"La Boursidière : aucun","new-row","éjection brouillon"])
                         $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-row></td></tr>").appendTo("#table-to-fill")   
                         $("#nb-people-new-conf").html(newConfig.length)
                     }

@@ -688,7 +688,7 @@ table #personal-desk {
     cursor: pointer;
 }
 
-#legend-modifmap td #add-desk-horizontal:hover, #legend-modifmap td #add-desk-vertical:hover, #legend-modifmap td #rm-desk:hover, #legend-modifmap td #mode-admin:hover, #legend-modifmap td #quit-admin:hover, #legend-modifmap td #dl-button:hover, #legend-modifmap td #undo-map:hover, #legend-modifmap td #uploadButton:hover{
+#legend-modifmap td #add-desk-horizontal:hover, #legend-modifmap td #add-desk-vertical:hover, #legend-modifmap td #rm-desk:hover, #legend-modifmap td #mode-admin:hover, #legend-modifmap td #quit-admin:hover, #legend-modifmap td #dl-button:hover, #legend-modifmap td #undo-map:hover, #legend-modifmap td #uploadButton:hover, #legend-modifmap td #add-img:hover{
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -717,6 +717,17 @@ table #personal-desk {
     color: black;
     background-color: lightgrey;
 
+}
+#icons{
+    z-index: 20;
+    background-color: lightgrey;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 20px;
+}
+#icons img{
+    border-style: solid;
+    border-width: 2px;
 }
 
 .map svg{width:100%;}

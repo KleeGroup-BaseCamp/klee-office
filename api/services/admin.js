@@ -35,7 +35,6 @@ const getDepartmentsByCompany = (req, res) => {
 const getDepartmentsByCompanyName = (req, res) => {
     Company.findOne({where:{name:req.params.name}})
     .then(function(comp){
-        console.log(comp)
         BusinessUnit.findAll({where: {company_id: comp.dataValues.com_id}
         }).then(function(businessunit){
             res.json(businessunit);
@@ -89,8 +88,7 @@ const saveValidateur = (req, res) => { //req contains {level :"1",firstname,last
             Person.findOne({           //find the person
                    where: {lastname:req.body.lastname,firstname: req.body.firstname}
             }).then(function(new_manager){ 
-                console.log(new_manager)
-                console.log("new_manager")     //find his profil
+                     //find his profil
                     new_manager.update({dateUpdate : new Date()})
                     Profil.findOne({where: {
                         pro_id: new_manager.dataValues.profil_id}})
@@ -155,7 +153,6 @@ const updateValidateur = (req, res) => //req contains {level ,firstname,lastname
                     }).then(function(profil){                           //update his profil
                         profil.update({isValidatorLvlOne :one})
                     .then(function(profil){
-                        console.log("i'm here")
                         // step 2 : save the new validator
                         saveValidateur(req, res);
                     });
@@ -275,7 +272,6 @@ const saveAdministrator = (req, res) => {
             Person.findOne({           //find the person
                    where: {lastname:req.body.lastname,firstname: req.body.firstname}
             }).then(function(new_admin){      //find his profil
-                console.log(new_admin)
                     new_admin.update({dateUpdate : new Date()})
                     //update his profil   
                     Profil.update({isAdministrator : true},{where: {pro_id: new_admin.dataValues.profil_id}})                                     
@@ -295,7 +291,6 @@ const deleteAdministrator =(req,res) =>{
             Person.findOne({           //find the person
                    where: {lastname:req.body.lastname,firstname: req.body.firstname}
             }).then(function(new_admin){      //find his profil
-                console.log(new_admin)
                     new_admin.update({dateUpdate : new Date()})
                     Profil.update({isAdministrator : false},{where: {pro_id: new_admin.dataValues.profil_id}})                              
                     // Flash message + redirect

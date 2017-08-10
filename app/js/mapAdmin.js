@@ -3,6 +3,7 @@ var currentX = 0;
 var currentY = 0;
 var currentMatrix = 0;
 
+
 // --- function to select Desk Element ---- //
 
 function selectElement(evt) {
@@ -51,7 +52,7 @@ function deselectElement(evt){
     var newX = parsevalX + (parseX);
     var newY = parsevalY + (parseY);
     
-    console.log("deselectElement");
+    /*console.log("deselectElement");
     console.log(selectedElement);
     console.log("ParseX : " + parseX);
     console.log("ParseX : " + parseY);
@@ -60,7 +61,7 @@ function deselectElement(evt){
     console.log("matrix dX = " + dX);
     console.log("matrix dY = " + dY);
     console.log("newX = " + newX);
-    console.log("newY = " + newY);
+    console.log("newY = " + newY);*/
     
   if(selectedElement != 0){ 
     selectedElement.removeAttributeNS(null, "onmousemove");
@@ -97,30 +98,26 @@ $("#mode-admin").click(function(){
 });
 
 function sizePlus(evt){
-    console.log("yamcha");
+    //console.log("yamcha");
     selectedElement = evt.target;
-    console.log(selectedElement);
+    //console.log(selectedElement);
     var newWidth = Number(selectedElement.getAttribute("width")) + 5;
     var newHeight = Number(selectedElement.getAttribute("height")) + 5;
-    console.log(newWidth + " -- " + newHeight);
+    //console.log(newWidth + " -- " + newHeight);
     d3.select(selectedElement).attr("width", newWidth)
                    .attr("height", newHeight);
 }
 
 function sizeLess(evt){
-    console.log("chichi");
+    //console.log("chichi");
     evt.preventDefault();
     selectedElement = evt.target;
-    console.log(selectedElement);
+    //console.log(selectedElement);
     var newWidth = Number(selectedElement.getAttribute("width")) - 5;
     var newHeight = Number(selectedElement.getAttribute("height")) - 5;
-    console.log(newWidth + " -- " + newHeight);
+    //console.log(newWidth + " -- " + newHeight);
     d3.select(selectedElement).attr("width", newWidth)
-                   .attr("height", newHeight);
-    
-                   
-                   
-               
+                   .attr("height", newHeight);             
 }
 
 // ------ Leave Admin Mode :  Keep changes to SVG map ------ //
@@ -129,10 +126,13 @@ $("#quit-admin").click(function(){
     console.log("gohan");
     var i=0;
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("rect");
-    var desk2, valX, valY, dX, dY, parseX, parsevalY, newX, newY;
+    var img = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("image");
+    var desk2, img2, valX, valY, dX, dY, parseX, parsevalY, newX, newY;
+
+    // valider les bureaux
     for(i=0;i<desk.length;i++){
         desk2 = desk[i][0];
-        console.log(desk2);
+        //console.log(desk2);
         if (desk2 !== undefined){
             if (desk2.getAttribute("transform")){
                 if (desk2.getAttribute("transform") !== ""){
@@ -160,8 +160,39 @@ $("#quit-admin").click(function(){
 
         // à tester avec removeAttribute()
         //desk2.removeAttribute("transform");
-        
-        
+    }
+
+    //console.log(img);
+    //console.log(img.length);
+    // valider les images  
+    for(i=0;i<img.length;i++){
+         img2 = img[i][0];
+        //console.log(img2);
+        if (img2 !== undefined){
+            if (img2.getAttribute("transform")){
+                if (img2.getAttribute("transform") !== ""){
+                    valX = img2.getAttribute("x");
+                    valY = img2.getAttribute("y");
+                    dX = img2.getAttribute("transform").split(/\(/)[1].split(/\s/)[4];
+                    dY = img2.getAttribute("transform").split(/\(/)[1].split(/\s/)[5].split(/\)/)[0];
+                    parseX = new Number(dX);
+                    parseY = new Number(dY);
+                    parsevalX = new Number(valX);
+                    parsevalY = new Number(valY);
+                    newX = parsevalX + (parseX);
+                    newY = parsevalY + (parseY);
+                    img2.setAttribute("x",newX);
+                    img2.setAttribute("y",newY);  
+                }
+            }
+            img2.setAttribute("transform", "");
+            img2.setAttribute("class", "");
+            img2.setAttribute("cursor","pointer");
+            img2.setAttribute("onmousedown", "");
+            img2.setAttribute("stroke", "black");
+            img2.setAttribute("onclick","")
+            img2.setAttribute("oncontextmenu","");
+        }
     }
 });
 
@@ -172,10 +203,10 @@ $("#dl-button").click(function(){
     var svg1 = document.getElementsByTagName('svg')[1];
     var svgData = svg1.outerHTML;
     var mapName = d3.select("#map-name h1")[0][0].className;
-    console.log(svgData);
+    //console.log(svgData);
     var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
     var svgUrl = URL.createObjectURL(svgBlob);
-    console.log(svgUrl);
+    //console.log(svgUrl);
     var downloadLink = document.createElement("a");
     downloadLink.href = svgUrl;
     downloadLink.download = mapName+".svg";
@@ -295,8 +326,8 @@ function plot_nameConsole(){
                     '</div>'+ 
                     '<div class="inline">'+
                         '<input class="field" type="text" id="floor" name="etage" value="'+d3.select("#map-name h1")[0][0].className+'" readonly/><br />'+
-                        '<input class="field" type="text" id="zone" name="zone" placeholder="Choisir une lettre A-Z" required/><br />'+
-                        '<input class="field" type="text" id="numero" name="numero" placeholder="Choisir un nombre 00-99" required/><br />'+
+                        '<input class="field" type="text" id="zone" name="zone" placeholder="A-Z" required/><br />'+
+                        '<input class="field" type="text" id="numero" name="numero" placeholder="00-99" required/><br />'+
                     '</div>'+
                     '<div id="newDesk-button">'+
                         '<button id="add-office">Valider</button>'+
@@ -346,7 +377,48 @@ function getfile(){
     document.getElementById('fileInput').click();
 }
 
-$("#krilin").click(function(){   
+function getImg(){
+    document.getElementById('imgInput').click();
+}
+
+$("#gallery-icons").click(function(){
+    d3.select("#icons").style("display","");
+    d3.select("#gallery-icons").style("display","none");
+    plotIcons();
+});
+
+$(document).on("click","#icons img", function(evt){
+    //alert("coucou");
+    d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select(".tooltip_map_desk").remove();
+    d3.select(".tooltip_map_desk_empty").remove();
+    var time = Date.now();
+    var imgName = evt.target.id+time;
+    console.log(imgName);
+    console.log(time);
+    console.log(evt.target.id);
+
+    var img1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
+    var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+    newElement1.setAttribute("id",imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
+    newElement1.setAttribute("class","available");
+    newElement1.setAttribute("cursor","pointer");
+    img1.appendChild(newElement1);
+                        
+    var img2 = document.getElementsByTagName('svg')[1].getElementById(imgName);
+    var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'image'); //Create a path in SVG's namespace
+    newElement2.setAttribute("cursor","pointer");
+    newElement2.setAttribute("visibility","visible");
+    newElement2.setAttributeNS("http://www.w3.org/2000/svg",'href', "img/icons/"+evt.target.id);
+    newElement2.setAttribute("width","50");
+    newElement2.setAttribute("height","50");
+    newElement2.setAttribute("x","930");
+    newElement2.setAttribute("y","375");
+    //newElement2.setAttribute("strokeWidth","5px");
+    img2.appendChild(newElement2);
+});
+
+/*$("#krilin").click(function(){   
 		var svgimg = document.createElementNS('http://www.w3.org/2000/svg','image');
         svgimg.setAttributeNS(null,'height','50');
         svgimg.setAttributeNS(null,'width','50');
@@ -355,5 +427,16 @@ $("#krilin").click(function(){
         svgimg.setAttributeNS(null,'y','375');
         svgimg.setAttributeNS(null, 'visibility', 'visible');
         $('svg').append(svgimg);
-});
+});*/
+
+function plotIcons(){
+    var icons = document.getElementById("myIcons").innerText;
+    var tabIcons = icons.split(",");
+    console.log(tabIcons);
+    for (var i=0;i<tabIcons.length;i++){
+        $('<img class="addIcons" id="'+tabIcons[i]+'" src=img/icons/'+tabIcons[i]+' width="35px" height="35px">').prependTo($('#icons'));
+    }
+}
+
+
 

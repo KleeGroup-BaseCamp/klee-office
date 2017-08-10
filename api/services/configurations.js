@@ -83,11 +83,9 @@ const getPeopleMoveLineByMoveSetId = (req, res) => {
 const deleteMoveSet = (req, res) => { ///req : setid
     MoveLine.findAll({where:{move_set_id: req.params.setid}})
     .then(function(movelines){
-        console.log(movelines);
         movelines.forEach(function(data,index){
             Desk.findOne({where:{des_id:data.toDesk}})
             .then(function(todesk){
-                console.log(todesk)
                 if (todesk.name=="aucun" || todesk.name=="externe"){
                     todesk.destroy()
                 }
@@ -139,7 +137,14 @@ const validateMoveSet = (req, res) => {
                     .then(function(todesk){
                         todesk.update({person_id :data.person_id})
                     })
-                    MoveLine.update({status:"moveline validé"},{where:{mov_id: data.mov_id}})
+                    MoveLine.findOne({where:{mov_id: data.mov_id}})
+                    .then(function(moveline){
+                        if (moveline.status=="éjection brouillon"){
+                            MoveLine.update({status:"éjection configuration"},{where:{mov_id: data.mov_id}})
+                        }else{
+                            MoveLine.update({status:"déplacement configuration"},{where:{mov_id: data.mov_id}})
+                        }
+                    })
                 });
             });
     }).then(function () {
@@ -175,7 +180,6 @@ const getMoveLineListByMoveSetId = (req, res) => {
                 );
                 // write data lines
                 person.forEach(function (elem) {
-                     console.log(elem);
                     var text = elem.firstname + " " + elem.lastname + " : \t\t" +
                         elem.from_desk + " -> " + elem.to_desk + "\r\n";
                     fs.appendFileSync('configuration-' + req.params.id + '.txt',
@@ -313,9 +317,7 @@ const deleteMoveLineIfFind = (req,res) =>{
         'AND person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname)'
     , { replacements: { confId:req.body.confid,firstname: req.body.firstname, lastname : req.body.lastname },type: models.sequelize.QueryTypes.SELECT})
     .then(function (resultat) {
-        console.log(resultat[0].count)
-        if (resultat[0].count>=1){
-            
+        if (resultat[0].count>=1){            
             models.sequelize.query(
             'DELETE FROM \"Desk\" '+
             'WHERE des_id IN (SELECT des_id FROM \"Desk\" '+

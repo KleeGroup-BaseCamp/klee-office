@@ -1,19 +1,18 @@
 'use strict';
 // Libraries imports
 const express = require('express');
-//const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 var flash = require('connect-flash');
 var session = require('express-session');
-//var RedisStore = require('connect-redis')(session);
 var sessionStore = new session.MemoryStore();
 var cookieParser = require('cookie-parser');
 var ejs = require('ejs');
 var saml2 = require('saml2-js');
 var fs = require('fs');
+var files = fs.readdirSync('../app/img/icons/');
 var util = require('util');
-//var JSFtp = require("jsftp");
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flag : 'w'});
 var log_stdout = process.stdout;
 
@@ -60,7 +59,7 @@ app.use(session({store: sessionStore,
 		saveUninitialized: true
 		/*cookie: { secure: true, maxAge: 60000 }*/}));
 app.use(flash());
-//app.use(fileUpload());
+app.use(fileUpload());
 
  //Partie Authentification SSO - need IDP from support
 
@@ -179,9 +178,11 @@ app.get('/', function(req, res){
 });*/
 // admin screen
 app.get('/admin', function(req, res){
+	var icons = fs.readdirSync('../app/img/icons/');
 	res.render('admin', { message: req.flash('success'),
 					myFirstName: firstname,
-					myLastName: lastname });
+					myLastName: lastname,
+					myIcons: icons});
 });
 // configurations screen
 app.get('/configurations', function(req, res){
@@ -197,17 +198,31 @@ app.get('/modify:id', function(req, res){
 });
 
 app.post('/upload', function(req, res) {
-  if (!req.files)
-    return res.status(400).send('No files were uploaded.');
+	if (!req.files){
+    	return res.status(400).send('No files were uploaded.');}
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file 
   let sampleFile = req.files.sampleFile;
+  var format = sampleFile.name.split(".")[1];
   // Use the mv() method to place the file somewhere on your server 
   console.log(sampleFile.name);
-  sampleFile.mv('data/maps/'+sampleFile.name, function(err) {
-	if (err)
-      return res.send(err);
- 	res.redirect("/admin");
-  });
+  console.log(format);
+  if ((format === "png") || (format === "jpg") || (format === "jpeg") || (format === "gif")){
+	//alert("t une image");
+	sampleFile.mv('../app/img/icons/'+sampleFile.name, function(err) {
+		if (err)
+			return res.send(err);
+		res.redirect("/admin");
+	});
+  }else if (format === "svg"){
+	//alert("t un plan");
+	sampleFile.mv('data/maps/'+sampleFile.name, function(err) {
+		if (err)
+			return res.send(err);
+		res.redirect("/admin");
+	});
+  }else{
+	res.status(400).send('Wrong format.');
+  }
 });
 
 // check consistency

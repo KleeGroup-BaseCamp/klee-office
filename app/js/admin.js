@@ -38,7 +38,6 @@ var adminControl = {
         });
 
         function updateTable(){
-            console.log($('#validateur-company').val())
             var company = $('#validateur-company').val().replace(/_/g,' ');
             $('#table-validators > tr').remove();
             if (company=="all"){
@@ -376,9 +375,7 @@ var adminControl = {
         })
 
         function loadTable(){
-            console.log('load')
             d3.json(server+ "getAllAdministrators",function(error,dataset){
-                console.log(dataset)
                 dataset.forEach(function(admin){
                     add_admin(admin.firstname,admin.lastname,admin.pole,admin.company)
                 })
