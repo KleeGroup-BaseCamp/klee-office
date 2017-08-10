@@ -43,15 +43,37 @@
                 <th id="personal-firstname"><%- myFirstName %></th>
                 <th id="personal-lastname"><%- myLastName %></th>
                 <th id="personal-desk"></th>
-                <th class="desk-maj" id="maj-button-background">METTRE À JOUR</th>
             </tr>
             </thead>
         </table>
     </div>
     <!-- /#info-bar -->
     <header>
-        <div id="navigation-bar" class="container">
-            <table>
+        <div id="navigation-bar">
+            <table class="table-header">
+                <tr>
+                    <td>
+                        <img class="header-left-photo" id="index-left-photo" src="../img/objet-dynamique-vectoriel-1.png">                       
+                    </td>
+                    <td> 
+                        <div id="search-bar-conf">
+                            <form id="search-conf" onsubmit="return false">
+                                <div id="input-conf">
+                                    <input class="bandeau-recherche" type="search" name="search-one-term" id="search-one-term" placeholder="Rechercher un collègue">
+                                    <img class="bandeau-recherche" id="search-button-conf" src="../img/forma-1.png" display="inline">   
+                                </div> 
+                            </form>
+                            <div class="info-recherche">
+                                <p id="text-conf"></p>
+                        </div>
+                        </div>
+                    </td>
+                    <td>
+                        <img class="header-right-photo" id="index-right-photo" src="../img/calque-7.png">
+                    </td>   
+                </tr>
+            </table> 
+            <!--table>
                 <tr>
                     <td>
                         <img id="left-photo" src="../img/objet-dynamique-vectoriel-1.png">
@@ -68,10 +90,8 @@
                         <img id="right-photo" src="../img/calque-7.png">
                     </td>   
                 </tr>
-            </table> 
-            <div class="info-recherche">
-                <p id="text-conf"></p>
-            </div>
+            </table--> 
+
         </div>
     </header>
     <!-- /header -->

@@ -414,6 +414,7 @@ var mapControl = {
 				  d3.json(server + "getRecapOfMovings/"+confId, function(dataset){
 					var table;
 					$.each(dataset, function(i, data){
+						console.log(data)
 						var fullName = data.firstname + " " + data.lastname;
     					var fromSite=data.depart.split(/\s*:\s*/)[0],
 							fromDesk=data.depart.split(/\s*:\s*/)[1];

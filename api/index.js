@@ -161,8 +161,8 @@ app.post("/saml2/slsResponse", function(req, res){ //app.post ??
 });
  
 // views
-var firstname="Alexandre"
-var lastname="MORIN"
+var firstname="Marjorie"
+var lastname="JULIO"
 //home
 app.get('/', function(req, res){
 	console.log(req.session);
@@ -172,10 +172,7 @@ app.get('/', function(req, res){
 				myLastName: lastname}) 
 	//res.redirect('/login')
  });
-// employee localization
-/*app.get('/localization', function(req, res){
-	res.render('tell-localization', { message: req.flash('error') });
-});*/
+
 // admin screen
 app.get('/admin', function(req, res){
 	var icons = fs.readdirSync('../app/img/icons/');
@@ -224,13 +221,6 @@ app.post('/upload', function(req, res) {
 	res.status(400).send('Wrong format.');
   }
 });
-
-// check consistency
-/*app.get('/consistency:id', function(req, res){
-	res.render('consistency-list', { message: req.flash('success'),
-				myFirstName: "Alain",
-				myLastName: "GOURLAY" });
-});*/
 
 // people
 // map
