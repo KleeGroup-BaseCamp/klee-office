@@ -3,7 +3,6 @@ var currentX = 0;
 var currentY = 0;
 var currentMatrix = 0;
 
-
 // --- function to select Desk Element ---- //
 
 function selectElement(evt) {
@@ -81,7 +80,7 @@ $("#mode-admin").click(function () {
     d3.select(".tooltip_map_desk").remove();
     d3.select(".tooltip_map_desk_empty").remove();
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("rect");
-    var img = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("image");
+    var img = d3.select("#whole-map").select("svg").selectAll("g").selectAll("image");
     desk.classed("draggable", true)
         .attr("cursor", "move")
         .style("cursor", "")
@@ -126,7 +125,7 @@ $("#quit-admin").click(function () {
     console.log("gohan");
     var i = 0;
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("rect");
-    var img = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("image");
+    var img = d3.select("#whole-map").select("svg").selectAll("g").selectAll("image");
     var desk2, img2, valX, valY, dX, dY, parseX, parsevalY, newX, newY;
 
     // valider les bureaux
@@ -345,11 +344,12 @@ function plot_nameConsole() {
 
 $("#rm-desk").click(function () {
     d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select("#whole-map").select("svg").selectAll("g").select("#pin_home").remove();
     d3.select(".tooltip_map_desk").remove();
     d3.select(".tooltip_map_desk_empty").remove();
 
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll(".available").selectAll("rect");
-    var img = d3.select("#whole-map").select("svg").select("#tables").selectAll(".available").selectAll("image");
+    var img = d3.select("#whole-map").select("svg").selectAll("image");
     desk.attr("cursor", "pointer")
         .attr("onmousedown", "removeElement(evt)")
         .attr("stroke", "red");
@@ -376,19 +376,28 @@ $("#undo-map").click(function () {
 // -------- plot Upload file -------- //
 
 function getfile() {
-    /*document.getElementById('importInput').value=document.getElementById('fileInput').value;*/
     document.getElementById('fileInput').click();
 }
+
+function getFileName(){
+    document.getElementById('import-map').innerHTML=document.getElementById('fileInput').value.split(/\\/)[2];
+}
+
 
 function getImg() {
     document.getElementById('imgInput').click();
 }
 
+function getImgName(){
+    document.getElementById('import-image').innerHTML=document.getElementById('imgInput').value.split(/\\/)[2];
+}
+
+plotIcons();
+
 $("#gallery-icons").click(function () {
     d3.select("#icons").style("display", "");
     d3.select("#close-image").style("display", "");
     d3.select("#gallery-icons").style("display", "none");
-    plotIcons();
 });
 
 $("#close-image").click(function () {
@@ -404,44 +413,63 @@ $(document).on("click", "#icons img", function (evt) {
     d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
     d3.select(".tooltip_map_desk").remove();
     d3.select(".tooltip_map_desk_empty").remove();
-    var time = Date.now();
-    var imgName = evt.target.id + time;
-    console.log(imgName);
-    console.log(time);
-    console.log(evt.target.id);
+    /*var time = Date.now();
+                var imgName = evt.target.id + time;
+                console.log(imgName);
+                console.log(time);
+                console.log(evt.target.id);*/
 
-    var img1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
-    var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-    newElement1.setAttribute("id", imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
-    newElement1.setAttribute("class", "available");
-    newElement1.setAttribute("cursor", "pointer");
-    newElement1.setAttribute("stroke", "black");
-    newElement1.setAttributeNS(null, 'visibility', 'visible');
-    img1.appendChild(newElement1);
+        plot_imgName();
+        $("#add-img").click(function () {
+            var imgName = $('#imgName').val().replace(/ /g,"_");
+            if (d3.select("#tables").select("#" + imgName)[0][0] === null) {
+                $("#newImg-add").remove();
+                var img1 = document.getElementsByTagName('svg')[1]; //Get svg element
+                var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+                newElement1.setAttribute("id", imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
+                newElement1.setAttribute("cursor", "pointer");
+                newElement1.setAttribute("stroke", "black");
+                newElement1.setAttributeNS(null, 'visibility', 'visible');
+                img1.appendChild(newElement1);
 
-    var img2 = document.getElementsByTagName('svg')[1].getElementById(imgName);
-    var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'image'); //Create a path in SVG's namespace
-    newElement2.setAttributeNS("http://www.w3.org/2000/svg", 'href', "img/icons/" + evt.target.id);
-    newElement2.setAttributeNS(null, 'x', '930');
-    newElement2.setAttributeNS(null, 'y', '375');
-    newElement2.setAttributeNS(null, 'width', '50');
-    newElement2.setAttributeNS(null, 'height', '50');
-    newElement2.setAttribute("cursor", "pointer");
-    newElement2.setAttributeNS(null, 'visibility', 'visible');
-    //newElement2.setAttribute("strokeWidth","5px");
-    img2.appendChild(newElement2);
+                var img2 = document.getElementsByTagName('svg')[1].getElementById(imgName);
+                var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'image'); //Create a path in SVG's namespace
+                newElement2.setAttributeNS('http://www.w3.org/1999/xlink', 'href', "img/icons/" + evt.target.id);
+                newElement2.setAttributeNS(null, 'x', '930');
+                newElement2.setAttributeNS(null, 'y', '375');
+                newElement2.setAttributeNS(null, 'width', '30');
+                newElement2.setAttributeNS(null, 'height', '30');
+                newElement2.setAttribute("cursor", "pointer");
+                newElement2.setAttributeNS(null, 'visibility', 'visible');
+                //newElement2.setAttribute("strokeWidth","5px");
+                img2.appendChild(newElement2);
+            }else {
+                    d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
+            }
+        });
 });
 
-/*$("#krilin").click(function(){   
-		var svgimg = document.createElementNS('http://www.w3.org/2000/svg','image');
-        svgimg.setAttributeNS(null,'height','50');
-        svgimg.setAttributeNS(null,'width','50');
-        svgimg.setAttributeNS('http://www.w3.org/1999/xlink','href', 'config.png');
-        svgimg.setAttributeNS(null,'x','930');
-        svgimg.setAttributeNS(null,'y','375');
-        svgimg.setAttributeNS(null, 'visibility', 'visible');
-        $('svg').append(svgimg);
-});*/
+function plot_imgName() {
+    $('<div id="newImg-add">' +
+        '<h3>Ajouter une nouvelle image</h3>' +
+        '<br><br><br>' +
+        '<div class="inline left-labels">' +
+        '<label for="newImg-name">Nom (*) : </label><br /><br />' +
+        '</div>' +
+        '<div class="inline">' +
+        '<input class="field" type="text" id="imgName" name="imgName" required/><br />' +
+        '</div>' +
+        '<div id="newImg-button">' +
+        '<button id="add-img">Valider</button>' +
+        '<button id="img-cancel">Annuler</button><br/>' +
+        '<p id="wrong-exp">Nom invalide</p>' +
+        '</div>' +
+        '</div>').insertAfter($('#navigation-bar'));
+
+    $("#img-cancel").click(function () {
+        $("#newImg-add").remove();
+    });
+}
 
 function plotIcons() {
     var icons = document.getElementById("myIcons").innerText;

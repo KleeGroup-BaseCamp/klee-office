@@ -676,7 +676,7 @@ table #personal-desk {
     cursor: pointer;
 }
 
-#legend-modifmap td #add-desk-horizontal:hover, #legend-modifmap td #add-desk-vertical:hover, #legend-modifmap td #rm-desk:hover, #legend-modifmap td #mode-admin:hover, #legend-modifmap td #quit-admin:hover, #legend-modifmap td #dl-button:hover, #legend-modifmap td #undo-map:hover, #legend-modifmap td #uploadButton:hover, #legend-modifmap td #add-img:hover{
+#legend-modifmap td #add-desk-horizontal:hover, #legend-modifmap td #add-desk-vertical:hover, #legend-modifmap td #rm-desk:hover, #legend-modifmap td #mode-admin:hover, #legend-modifmap td #quit-admin:hover, #legend-modiffile td #dl-button:hover, #legend-modifmap td #undo-map:hover, #legend-modiffile td #uploadButton:hover, #legend-modifmap td #add-img:hover, #legend-modifmap td #gallery-icons:hover, #legend-modiffile td #uploadImg:hover{
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -692,16 +692,19 @@ table #personal-desk {
 #legend #zoom{
     padding-top:5px;
 }
+#dl-button, #imgUpload input#importImg{
+    margin-bottom: 10px;
+}
 
-#fileUpload input#importInput{
-    /*overflow: hidden;*/
-    margin-top: 20px;
+#fileUpload input#importInput, #imgUpload input#importImg{
+    margin-top: 2px;
     color: white;
     border-radius: 5px;
     border: none;
     background-color: black;
 }
-#fileUpload input#importInput:hover{
+
+#fileUpload input#importInput:hover, #imgUpload input#importImg:hover{
     color: black;
     background-color: lightgrey;
 
@@ -1095,7 +1098,7 @@ input[readonly] {
   font-size: smaller;
 }
 
-#popin-add,   #newDesk-add{
+#popin-add{
     background-color: grey;
     z-index: 50;
     position: absolute;
@@ -1104,6 +1107,36 @@ input[readonly] {
     transform: translate(-50%, -50%);
     width: 36%;
     height: 40%;
+    border-radius: 80px;
+    text-align: center;
+    padding-top: 50px;
+    color: white;
+}
+
+#newDesk-add{
+    background-color: grey;
+    z-index: 50;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 26%;
+    height: 34%;
+    border-radius: 80px;
+    text-align: center;
+    padding-top: 50px;
+    color: white;
+}
+
+#newImg-add{
+    background-color: grey;
+    z-index: 50;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 25%;
     border-radius: 80px;
     text-align: center;
     padding-top: 50px;
@@ -1125,15 +1158,15 @@ input[readonly] {
     padding-bottom:40px;
     color: white;
 }
-#popin-add input, #newDesk-add input {
+#popin-add input, #newDesk-add input, #newImg-add input {
     margin: 8px;
     z-index: 60;
 }
 
-#popin-add #popin-button, #newDesk-add #newDesk-button, #popin-val button{
+#popin-add #popin-button, #newDesk-add #newDesk-button, #popin-val button, #newImg-add #newImg-button{
     text-align:center;
 }
-#popin-add #add-conf,#popin-add #conf-cancel, #popin-val button, #newDesk-add #add-office, #newDesk-add #office-cancel, #popin-error #close-error, #popin-error  #val-del, #popin-error #close-conf{
+#popin-add #add-conf,#popin-add #conf-cancel, #popin-val button, #newDesk-add #add-office, #newDesk-add #office-cancel, #newImg-add #add-img, #newImg-add #img-cancel, #popin-error #close-error, #popin-error  #val-del, #popin-error #close-conf{
     height: auto;
     font-size: 75%;
     border-radius: 20px;
@@ -1146,7 +1179,7 @@ input[readonly] {
     margin-left:20px;
 }
 
-#newDesk-add button{
+#newDesk-add button, #newImg-add button{
     width :75px;
 }
 #newDesk-add ::placeholder{

@@ -158,9 +158,8 @@
                                     <tr>
                                         <td align="center"><img id="add-desk-horizontal" src="/img/bureau_horizontal.png" title="Ajouter un bureau horizontal" width="35px" height="20px"/></td>
                                         <td align="center"><img id="add-desk-vertical" src="/img/bureau_vertical.png" title="Ajouter un bureau vertical" width="20px" height="35px"/></td>
-                                        <!--td align="center"><img id="add-img" src="/img/img-icon.png" title="Ajouter une image" width="35px" height="35px"/></td-->
                                     </tr>
-                                    <tr><td colspan="2" class="commande">Image  <b id="close-image" style="display:none">X</b></td></tr>
+                                    <tr><td colspan="2" class="commande">Galerie d'images  <b id="close-image" style="display:none">X</b></td></tr>
                                     <tr>
                                         <td colspan="2" align="center"><p id="myIcons" style="display:none"><%- myIcons %></p><img id="gallery-icons" src="/img/gallery-img.png" width="35px" height="35px"><div id="icons" style="display:none" ></div></td>
                                     </tr>
@@ -185,7 +184,7 @@
                         <td id="legend-modiffile">
                             <table>
                                 <thead><tr><th>Modifier le fichier</th></tr></thead>
-                                <tr><td class="commande">Importer une image</td></tr>
+                                <tr><td class="commande">Importer une image (.png, .jpg, .jpeg, .gif)</td></tr>
                                 <tr>
                                     <td>
                                         <div id="imgUpload">
@@ -194,9 +193,10 @@
                                                     action='http://local-map/upload' 
                                                     method='post' 
                                                     encType="multipart/form-data">
-                                                        <input type="file" id="imgInput" name="sampleFile" style="display:none" />
-                                                        <img id="uploadButton" src="/img/img-icon.png" title="Importer une image" onclick="getImg()" width="35px" height="35px" /></br>
-                                                        <input type='submit' id="importImg" value='Go' title="Appliquer la nouvelle image" />
+                                                        <input type="file" id="imgInput" name="sampleFile" style="display: none;" onchange="getImgName()"/>
+                                                        <img id="uploadImg" src="/img/img-icon.png" title="Importer une image (.png, .jpg, .jpeg, .gif)" onclick="getImg()" width="35px" height="35px" />
+                                                        <p id="import-image">img.png</p>
+                                                        <input type='submit' id="importImg" value='Importer' title="Appliquer la nouvelle image" />
                                             </form>
                                         </div>
                                     </td>
@@ -214,9 +214,10 @@
                                                     action='http://local-map/upload' 
                                                     method='post' 
                                                     encType="multipart/form-data">
-                                                        <input type="file" id="fileInput" name="sampleFile" style="display:none" />
+                                                        <input type="file" id="fileInput" name="sampleFile" style="display:none" onchange="getFileName()"/>
                                                         <!--input type="button" id="parcourirButton" value="Importer" onclick="getfile()" /></br-->
-                                                        <img id="uploadButton" src="/img/uploadMap.png" title="Importer un plan" onclick="getfile()" width="35px" height="35px" /></br>
+                                                        <img id="uploadButton" src="/img/uploadMap.png" title="Importer un plan" onclick="getfile()" width="35px" height="35px" />
+                                                        <p id="import-map">map.svg</p>
                                                         <input type='submit' id="importInput" value='Appliquer' title="Appliquer le nouveau plan" />
                                             </form>
                                         </div>
@@ -230,7 +231,7 @@
                         </td>
                     </tr>
                     <tr><td colspan="3"><h3>Aide: mettre à jour la carte</h3>
-                        <div id="note-admin">1) Effectuer les modifications à l'aide du menu "Modifier les bureaux" <br>2) Valider la carte avec le bouton <img src="/img/ckeck.png" title="Valider les modifications" display="inline" height="15px"/><br>3) Télécharger le fichier à l'aide du menu "Modifier le fichier"<br>4) Importer le fichier que vous venez de créer<br> ATTENTION le nom du fichier importer doit être celui de la carte<br> Exemple : carte N3 - nom du fichier : N3.svg </div>
+                        <div id="note-admin">1) Effectuer les modifications à l'aide du menu "Modifier les bureaux" <br>2) Valider les modifications avec le bouton <img src="/img/ckeck.png" title="Valider les modifications" display="inline" height="15px"/><br>3) Télécharger le fichier à l'aide du menu "Modifier le fichier"<br>4) Importer le fichier que vous venez de créer<br> ATTENTION le nom du fichier importer doit être celui de la carte<br> Exemple : carte N3 - nom du fichier : N3.svg </div>
                     </td></tr>                     
                 </table>
             </div>
