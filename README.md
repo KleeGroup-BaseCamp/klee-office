@@ -45,6 +45,7 @@ local-map uses the following additional node modules:
 * ejs 2.5.1 - templating engine to generate html with javascript
 * express 4.13.4 - provide local-server service
 * express-session 1.0.2 - dependency for connect-flash
+* express-fileupload 0.1.4 - upload file with express server
 * fs - write to server's log
 * lodash 4.5.1 - some js functions for array treatment
 * sequelize 3.23.6 - ORM and database support
