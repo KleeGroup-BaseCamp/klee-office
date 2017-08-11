@@ -83,7 +83,7 @@ var idp = new saml2.IdentityProvider(idp_options);
 //var name_id;
 // Starting point for login 
 app.get("/login", function(req, res) {
-var options = {relay_state: "/"};
+var options = {relay_state: "/accueil"};
   sp.create_login_request_url(idp, options, function(err, login_url, request_id) {
     if (err != null){
 	console.log("Echec login");
