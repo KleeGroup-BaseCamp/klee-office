@@ -1463,7 +1463,7 @@ input[readonly] {
 
 header #text-conf button{
     height: auto;
-    width: 6%;
+    width: auto;
     font-size: 75%;
     border-radius: 20px;
     background-color: black;

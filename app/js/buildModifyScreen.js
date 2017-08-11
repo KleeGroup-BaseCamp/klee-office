@@ -83,21 +83,8 @@
 
     function checkMovelines(callback){
         d3.json(server+'checkFromDeskMoveLine/'+configId,function(res){
-            if (res.length>0){;
-                d3.select("#recap-conf h3 img").style('visibility','visible')
-            }
-            for (var i=0;i<res.length;i++){
-                //change status moveline to invalid
-                $.ajax({
-                    url: "setInvalidMoveline/"+res[i].mov_id,
-                    type: 'POST',
-                    success : function(res){}
-                });
-                movelinesInvalid[0].push({name:res[i].name,desk:res[i].fromdesk})
-            }           
-        
-            d3.json(server+'checkToDeskMoveLine/'+configId,function(res){
-                if (res.length>0){;
+            if (res!=null && res!=undefined && res!=[]){
+                if (res.length>0){
                     d3.select("#recap-conf h3 img").style('visibility','visible')
                 }
                 for (var i=0;i<res.length;i++){
@@ -105,9 +92,26 @@
                     $.ajax({
                         url: "setInvalidMoveline/"+res[i].mov_id,
                         type: 'POST',
-                        success : function(res){console.log('update')}
+                        success : function(res){}
                     });
-                    movelinesInvalid[1].push({name:res[i].name,todesk:res[i].todesk})
+                    movelinesInvalid[0].push({name:res[i].name,desk:res[i].fromdesk})
+                }  
+            }         
+        
+            d3.json(server+'checkToDeskMoveLine/'+configId,function(res){
+                if (res!=null && res!=undefined && res!=[]){;
+                    if (res.length>0){
+                        d3.select("#recap-conf h3 img").style('visibility','visible')
+                    }
+                    for (var i=0;i<res.length;i++){
+                        //change status moveline to invalid
+                        $.ajax({
+                            url: "setInvalidMoveline/"+res[i].mov_id,
+                            type: 'POST',
+                            success : function(res){console.log('update')}
+                        });
+                        movelinesInvalid[1].push({name:res[i].name,todesk:res[i].todesk})
+                    }
                 }
                 callback();  
             })
@@ -532,9 +536,18 @@
             if (desk!=="externe" && desk!=="aucun"){
                 d3.json(server + "getPersonByDesk/"+desk, function(isDeskAvailable){
                     if (isDeskAvailable.length!==0){
-                        newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière : "+desk,"La Boursidière : aucun","new-row","éjection brouillon"])
-                        $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-row></td></tr>").appendTo("#table-to-fill")   
-                        $("#nb-people-new-conf").html(newConfig.length)
+                        var ind=null;
+                        for (var i=0;i<newConfig.lenght;i++){
+                            if (newConfig[i][0]==isDeskAvailable[0].firstname && newConfig[i][1]==isDeskAvailable[0].lastname){
+                                ind=i;
+                            }
+                        }
+                        //if already on the list
+                        if (i==null){
+                            newConfig.push([isDeskAvailable[0].firstname,isDeskAvailable[0].lastname,"La Boursidière : "+desk,"La Boursidière : aucun","new-row","éjection brouillon"])
+                            $("<tr class=\"new-row\" id=\""+newConfig[newConfig.length-1][1]+newConfig[newConfig.length-1][0]+"\"><td>"+newConfig[newConfig.length-1][1]+"</td><td>"+newConfig[newConfig.length-1][0]+"</td><td>"+newConfig[newConfig.length-1][2]+"</td><td>"+newConfig[newConfig.length-1][3]+"</td><td class=delete-row></td></tr>").appendTo("#table-to-fill")   
+                            $("#nb-people-new-conf").html(newConfig.length)
+                        }
                     }
                 });
             }

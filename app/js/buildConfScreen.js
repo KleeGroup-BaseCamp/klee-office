@@ -70,11 +70,12 @@
 
         function loadTable(listDepId){
             if(listDepId.length==0 || listDepId.indexOf("all")!=-1){
+                
                 d3.json(server + "getNoPlacePersonByCompany/"+comp+"/", function(person){
+                    console.log(person)
                     for (var i=0;i<person.length;i++){
                         var datemaj=person[i].date.replace('T',' ').replace('Z',' ').substring(0,person[i].date.length-5);
                         $("<tr><td>"+person[i].firstname + "</td><td>" + person[i].lastname + '</td><td>'+person[i].mail+'</td><td>'+person[i].businessunit+'</td><td>'+datemaj+'</td><td>'+person[i].status+'</td></tr>').insertAfter($('.table-noplace'));
-                        
                     }
                 })                     
             }else{

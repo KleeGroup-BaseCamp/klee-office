@@ -48,22 +48,3 @@ function displayMyData(){
         }
 };
 
-
-/** FUNCTION
- *  to add a new administrator, please add the firstname and the lastname in the object "data" below
- *//*
-var data={"firstname":"Fanny","lastname":"MERCADAL"};
-d3.json(server +"saveAdministrator", function(){
-    }).header("Content-Type","application/json")
-    .send("POST", JSON.stringify(data));
-console.log(data.firstname+" "+data.lastname+" est un administrateur");*/
-
-/** FUNCTION
- * to delete a new administrator, please add the firstname and the lastname in the object "data" below
- */
-/*var data={"firstname":"Alain","lastname":"GOURLAY"};
-d3.json(server +"deleteAdministrator", function(){
-    }).header("Content-Type","application/json")
-    .send("POST", JSON.stringify(data));
-console.log(data.firstname+" "+data.lastname+" n'est plus un administrateur");*/
-

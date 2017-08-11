@@ -2,8 +2,8 @@
 
 'use strict';
 // global variables
-//var	server= "http://localhost:3000/";
-var	server= "http://local-map/";
+var	server= "http://localhost:3000/";
+//var	server= "http://local-map/";
 var people = [];            //contains data about every person
 var list_area=["N0","N1","N2","N3","N4","O1","O2","O3","O4","externe","aucun"];
 var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","Sur site client"];
@@ -219,7 +219,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
         }
     } 
       d3.selectAll(".desk-maj").style("display","none");
-      $("#text-default").html("<button id=\"removeSearch\"><a href=\"http://localhost:3000/\">Réinitialiser la recherche</a></button>");
+      $("#text-default").html("<button id=\"removeSearch\"><a href="+server+">Réinitialiser la recherche</a></button>");
 
       if (listPeopleWithoutOffice.length>0){
         $('<div class=noResultPeople><br/>Pas de bureau ('+listPeopleWithoutOffice.length+')<span class="noPlaceText">'+listPeopleWithoutOffice+'</div>').appendTo($('#text-default'));
