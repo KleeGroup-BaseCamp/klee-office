@@ -53,8 +53,8 @@ const getAdministrator =(req,res) =>{
 const getInfoPerson =(req,res) =>{
 	models.sequelize.query('SELECT \"Person\".firstname AS firstname, \"Person\".lastname AS lastname, \"Person\".mail AS mail, \"Desk\".name AS deskname, \"Site\".name AS site '+
         'FROM \"Person\" '+
-		'JOIN \"Desk\" ON \"Desk\".person_id = \"Person\".per_id '+
-        'JOIN \"Site\" ON \"Site\".sit_id = \"Desk\".site_id',
+		'LEFT JOIN \"Desk\" ON \"Desk\".person_id = \"Person\".per_id '+
+        'LEFT JOIN \"Site\" ON \"Site\".sit_id = \"Desk\".site_id',
         { replacements: {}, type: models.sequelize.QueryTypes.SELECT}
     ).then(function(valid){
             //console.log(valid)

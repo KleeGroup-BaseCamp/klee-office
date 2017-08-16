@@ -102,8 +102,6 @@ const deleteMoveSet = (req, res) => { ///req : setid
             }
         });
     }).then(function () {
-        console.log("OK !");
-        req.flash('success', 'La configuration a &eacutet&eacute supprim&eacutee.');
         res.json("success");
     });
 }
@@ -133,8 +131,11 @@ const validateMoveSet = (req, res) => {
                             fromdesk.update({person_id :null})
                         }
                     })
+                    console.log(data.toDesk)
                     Desk.findOne({where:{des_id:data.toDesk}})
                     .then(function(todesk){
+                        console.log(todesk)
+                        console.log(data.person_id)
                         todesk.update({person_id :data.person_id})
                     })
                     MoveLine.findOne({where:{mov_id: data.mov_id}})
@@ -239,7 +240,7 @@ const addNewMoveSet = (req, res) =>{
         .then(function(creat){
             MoveSet.create({name:req.body.name, creator:req.body.creator, dateUpdate :new Date(), status_id :status.dataValues.sta_id,creator_id:creat.dataValues.per_id})
             .then(function(newset){
-                res.redirect('/modify'+newset.dataValues.set_id);
+                res.json("success");
             })
         })
     })
@@ -266,7 +267,7 @@ const deleteMoveLine =(req,res) =>{
         'WHERE move_set_id= :confId '+
         'AND person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname);'
     ,{replacements:{confId:req.body.confId,firstname:req.body.firstname,lastname:req.body.lastname},type :models.sequelize.QueryTypes.DELETE})
-    res.redirect('/');
+    res.end();
 }
 
 const addMoveLine =(req,res) =>{
@@ -296,6 +297,8 @@ const addMoveLine =(req,res) =>{
                             toDeskId=to[0].dataValues.des_id;
                             MoveLine.create({dateCreation:new Date(),status:req.body.status, move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
                         }   
+                    }).then(function(){
+                        res.end();
                     })
                 }else{
                     Desk.create({name:toDesk, site_id:tosite.dataValues.sit_id})
@@ -304,12 +307,13 @@ const addMoveLine =(req,res) =>{
                             toDeskId=to.dataValues.des_id; 
                             MoveLine.create({dateCreation:new Date(),status:req.body.status, move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
                         }
+                    }).then(function(){
+                        res.end();
                     })            
                 }
             })
         })   
-    })
-    res.redirect('/');
+    }) 
 }
 
 const deleteMoveLineIfFind = (req,res) =>{

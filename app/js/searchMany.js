@@ -219,7 +219,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
         }
     } 
       d3.selectAll(".desk-maj").style("display","none");
-      $("#text-default").html("<button id=\"removeSearch\"><a href="+server+">Réinitialiser la recherche</a></button>");
+      $("#text-default").html("<button id=\"removeSearch\"><a href=\""+server+"\">Réinitialiser la recherche</a></button>");
 
       if (listPeopleWithoutOffice.length>0){
         $('<div class=noResultPeople><br/>Pas de bureau ('+listPeopleWithoutOffice.length+')<span class="noPlaceText">'+listPeopleWithoutOffice+'</div>').appendTo($('#text-default'));
