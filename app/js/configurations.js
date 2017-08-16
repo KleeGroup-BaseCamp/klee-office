@@ -4,8 +4,8 @@
 
 "use strict";
 // global variables
-//var	server= "http://localhost:3000/";
-var	server= "http://local-map/";
+var	server= "http://localhost:3000/";
+//var	server= "http://local-map/";
 
 var configurationsControl = {
     isPopin: false,
