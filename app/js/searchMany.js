@@ -187,8 +187,7 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
 
     var first_element_searched="";
     for (var i=0;i<list_area.length;i++){
-        var area =list_area[i];  
-        console.log("list area : " + list_area);      
+        var area =list_area[i];       
         nbPeopleByArea[area]=getPeopleByArea(area,dataSearchedPeople).length;
         // if we have a searched person on this map
         if (nbPeopleByArea[area]>0){
@@ -196,8 +195,9 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
             for (var j=0;j<sitesExterne.length;j++){
               var site=sitesExterne[j];
               if (getPeopleBySite(site,dataSearchedPeople).length>0){
-                if (first_element_searched===""){first_element_searched=site}
-                console.log(getPeopleBySite(site,dataSearchedPeople));
+                if (first_element_searched===""){
+                  first_element_searched=site
+                }
                 if(site === "Le Mans" ){
                   d3.select("#le_mans_result").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");
                 }
@@ -206,32 +206,22 @@ function plotNumberOfPeople(nbPeopleByArea, dataSearchedPeople){
                 }
                 else{
                   d3.select("#"+site+"_result").text(site+"("+getPeopleBySite(site,dataSearchedPeople).length+")").style("color","red");}
-               }
+              }
             }
           }
           else{
-              console.log("Là ya un result : " + area);
               d3.select("#"+area+"_withResult").text("Etage "+area+" ("+nbPeopleByArea[area]+")").style("color","red");
               if (first_element_searched===""){
                 first_element_searched=area;
-              console.log(first_element_searched)}
+              }
           }
         }
     } 
       d3.selectAll(".desk-maj").style("display","none");
-      $("#text-default").html("<button id=\"removeSearch\"><a href=\""+server+"\">Réinitialiser la recherche</a></button>");
+      $("#text-default").html("<a id=\"removeSearch\" class=\"mybutton\" href=\""+server+"\">Réinitialiser la recherche</a>");
 
       if (listPeopleWithoutOffice.length>0){
         $('<div class=noResultPeople><br/>Pas de bureau ('+listPeopleWithoutOffice.length+')<span class="noPlaceText">'+listPeopleWithoutOffice+'</div>').appendTo($('#text-default'));
-        /*$('#noResultPeople').on({
-          "click": function(){
-            $(this).tooltip({ items: "#tt", content: "Displaying on click"});
-            $(this).tooltip("open");
-          },
-          "mouseout": function() {      
-            $(this).tooltip("disable");   
-          }
-        })*/
       }
 
       if (sitesExterne.indexOf(first_element_searched)!==-1){

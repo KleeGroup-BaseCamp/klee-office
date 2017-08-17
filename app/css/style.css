@@ -77,13 +77,6 @@ table #personal-desk {
     font-size: 75%;
 }
 #maj-button-background{
-    background: url("/img/rectangle-arrondi-1-copie.png");
-    background-repeat: no-repeat;
-    background-size :110px 25px;
-    z-index: -1;
-    vertical-align: middle;
-    font-size: 75%;
-    color:white;
     padding-top :5px;
     padding-bottom :7px;
     padding-right:15px;
@@ -91,7 +84,9 @@ table #personal-desk {
     text-align:center;
     display:inline;
 }
-
+#legend-modifmap  #icons img{
+    margin:1px;
+}
 
 #button-localization{
     position: relative;
@@ -550,10 +545,13 @@ table #personal-desk {
     line-height: 150%;
     text-align:center;
 }
-.info-recherche p{
+.info-recherche > p{
     padding-top:20px;
     padding-bottom:20px;
     font-size:18px;
+}
+.info-recherche #text-default p{
+    margin-bottom:15px;
 }
 
 .info-bar{
@@ -676,10 +674,15 @@ table #personal-desk {
     cursor: pointer;
 }
 
-#legend-modifmap td #add-desk-horizontal:hover, #legend-modifmap td #add-desk-vertical:hover, #legend-modifmap td #rm-desk:hover, #legend-modifmap td #mode-admin:hover, #legend-modifmap td #quit-admin:hover, #legend-modiffile td #dl-button:hover, #legend-modifmap td #undo-map:hover, #legend-modiffile td #uploadButton:hover, #legend-modifmap td #add-img:hover, #legend-modifmap td #gallery-icons:hover, #legend-modiffile td #uploadImg:hover{
+
+#legend-modifmap-table td img:hover{
     cursor: pointer;
     transform: scale(1.1);
 }
+#legend-modifmap-table td #plus-size{
+    margin-right:4px;
+}
+
 /*#add-desk {
     width: 20px;
     height: 20px;;
@@ -912,7 +915,7 @@ input[readonly] {
 .empty {
     font-style: italic;
 }
-.button-stylax{
+.mybutton{
     height: auto;
     width: auto;
     min-width:100px;
@@ -922,6 +925,12 @@ input[readonly] {
     color: white;
     border: none;
     min-width:75px;
+    padding-right:7px;
+    padding-left:7px;
+    padding-top:1px;
+    padding-bottom:1px;
+    margin-right:2px;
+    margin-left:2px;
 }
 .list-validators{
     margin-left:25px;
@@ -1106,11 +1115,15 @@ input[readonly] {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 36%;
-    height: 40%;
+    height: auto;
     border-radius: 80px;
     text-align: center;
-    padding-top: 50px;
+    padding-top: 40px;
+    padding-bottom:40px;
     color: white;
+}
+#error-admin p, #error-conf p{
+    padding-bottom:15px;
 }
 
 #newDesk-add{
@@ -1136,10 +1149,11 @@ input[readonly] {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 20%;
-    height: 25%;
+    height: auto;
     border-radius: 80px;
     text-align: center;
-    padding-top: 50px;
+    padding-top: 40px;
+    padding-bottom:40px;
     color: white;
 }
 
@@ -1516,6 +1530,7 @@ header #text-conf button a{
 }
 #error-admin, #error-conf{
     padding : 50px;
+    font-size:18px;
 }
 
 
@@ -1671,34 +1686,19 @@ header #text-conf button a{
 #removeSearch a{
     color: white;
 }
-#backHome{
-    height: auto;
-    width: 12%;
-    font-size: 60%;
-    border-radius: 20px;
-    background-color:black; 
-    color: white;
-    border: none;
-}
+
 #backHome a{
     color: white;
 }
-#cancelMove, #validateMove{
-    height: auto;
-    min-width:75px;
-    width: 8%;
-    font-size: 60%;
-    border-radius: 20px;
-    background-color:black; 
-    color: white;
-    border: none;
-}
+
 #cancelMove a{
     color: white;
 }
 
 /* table admin page*/
-
+#whole-map svg{
+    cursor:move;
+}
 #val-row{
     position:relative;
     width:300px;

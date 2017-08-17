@@ -37,7 +37,7 @@
         }
         else{
             d3.select(".two-columns").style("display","none");
-            d3.select("#error-conf").style("height","auto").style("width","auto").html(" Vous n'avez les droits d'accès à cette page <br/><a href=\""+server+"\"><button class=\"back-index\">Revenir à la page d'accueil</button></a>");
+            d3.select("#error-conf").style("height","auto").style("width","auto").html("<p>Vous n'avez les droits d'accès à cette page </p><a href=\""+server+"\" class=\"back-index mybutton\">Revenir à la page d'accueil</a>");
         }
         configurationsControl.plotConfList(level,dep);
         plotNoPlaceList(level,dep,comp);

@@ -332,8 +332,8 @@ var adminControl = {
                 '<img src="/img/search01.png" width="40px" display="inline"><input type="text" name="search-admin" id="administrator-search" placeholder="Rechercher une personne...">'+
             '</div>'+
             '<div>'+
-                '<button class="button-stylax" id="addNewAdmin">Ajouter</button>'+
-                '<button class="button-stylax" id="admin-cancel">Annuler</button>'+
+                '<button class="mybutton" id="addNewAdmin">Ajouter</button>'+
+                '<button class="mybutton" id="admin-cancel">Annuler</button>'+
             '</div>'+
             '</div>').prependTo($('.list-admin'))
 

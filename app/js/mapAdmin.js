@@ -3,6 +3,7 @@ var currentX = 0;
 var currentY = 0;
 var currentMatrix = 0;
 
+
 // --- function to select Desk Element ---- //
 
 function selectElement(evt) {
@@ -92,8 +93,8 @@ $("#mode-admin").click(function () {
         .style("cursor", "")
         .attr("transform", "matrix(1 0 0 1 0 0)")
         .attr("onmousedown", "selectElement(evt)")
-        .attr("onclick", "sizePlus(evt)")
-        .attr("oncontextmenu", "sizeLess(evt)");
+        //.attr("onclick", "sizePlus(evt)")
+        //.attr("oncontextmenu", "sizeLess(evt)");
 });
 
 function sizePlus(evt) {
@@ -118,7 +119,22 @@ function sizeLess(evt) {
     d3.select(selectedElement).attr("width", newWidth)
         .attr("height", newHeight);
 }
-
+$('#plus-size').click(function(){
+    $('.map image').one('click',function(event){
+        sizePlus(event);
+        d3.select(".map image").style('cursor','pointer')
+        event.stopPropagation();
+    })
+    
+})
+$('#minus-size').click(function(){
+    $('.map image').one('click',function(event){
+        sizeLess(event);
+        d3.select(".map image").style('cursor','pointer')
+        event.stopPropagation();
+    })
+    
+})
 // ------ Leave Admin Mode :  Keep changes to SVG map ------ //
 
 $("#quit-admin").click(function () {
@@ -198,7 +214,7 @@ $("#quit-admin").click(function () {
 // ------ Download SVG map --------- //
 
 $("#dl-button").click(function () {
-    d3.select("#whole-map").select("svg").selectAll("g").select("#pin_home").remove();
+    
     var svg1 = document.getElementsByTagName('svg')[1];
     var svgData = svg1.outerHTML;
     var mapName = d3.select("#map-name h1")[0][0].className;
