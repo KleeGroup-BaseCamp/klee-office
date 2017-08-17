@@ -173,11 +173,11 @@ for elem in aAjouter:
     cur.execute('SELECT bus_id FROM "BusinessUnit" JOIN \"Company\" ON com_id=company_id WHERE "BusinessUnit".name=\'%s\' AND \"Company\".name=\'%s\';'%(elem['dpt'],elem['company']))
     res=cur.fetchone()
     if res=="" or res==None:
-    	#case if the business_unit does not exist yet
-        cur.execute("INSERT INTO \"BusinessUnit\"(name,company_id) SELECT \'%s\',com_id FROM \"Company\" WHERE name=\'%s\' RETURNING bus_id;"%(elem['dpt'],elem['company']))
-        bus_id=cur.fetchone()[0]
+    #case if the business_unit does not exist yet
+	cur.execute("INSERT INTO \"BusinessUnit\"(name,company_id) SELECT \'%s\',com_id FROM \"Company\" WHERE name=\'%s\' RETURNING bus_id;"%(elem['dpt'],elem['company']))
+	bus_id=cur.fetchone()[0]
     else:
-        bus_id=res[0]
+	bus_id=res[0]
     print(bus_id)
     
     #insert new employees

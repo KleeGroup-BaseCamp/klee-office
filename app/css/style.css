@@ -673,9 +673,13 @@ table #personal-desk {
 #legend-modifmap table img, #legend-modiffile table img  {
     cursor: pointer;
 }
+#add-desk-horizontal {
+    padding-top:10px;
+    margin-left:10px;
+}
 
 
-#legend-modifmap-table td img:hover{
+#legend-modifmap-table td img:hover,#legend-modifmap-table td rect:hover,#legend-modifmap table img:hover{
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -1610,6 +1614,7 @@ header #text-conf button a{
     position :relative;
     left:40px;
     top:-30px;
+    z-index:2;
 }
 .table-header .header-right-photo{
     position :relative;
