@@ -413,13 +413,18 @@ table #personal-desk {
     text-align: center;   
     width: auto;
     height: auto;
-    padding: 2px;               
+    padding: 3px;               
     font: 15px sans-serif;      
     background: lightsteelblue; 
-    border: 0px;        
+    border: 1px;        
     border-radius: 8px;         
     cursor: text;
     z-index: 20;    
+    vertical-align: middle;
+}
+.tooltip_map_desk_empty{
+    padding-right: 7px;
+    padding-left:7px;
 }
 
 .map-extern{

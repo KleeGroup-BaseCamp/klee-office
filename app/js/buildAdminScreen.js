@@ -48,7 +48,6 @@
         d3.select("#plans-block").style("display","");
         d3.select(".list-validators") .style("display","none");
         d3.select(".list-admin").style('display','none');
-        d3.select("#whole-map").select("svg").selectAll("g").select("#pin_home").remove();
     });
 
     $('#plot-admin').click(function () {

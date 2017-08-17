@@ -1,8 +1,8 @@
 "use strict";
 // global variables
 
-var	server= "http://localhost:3000/";
-//var	server = "http://local-map/";
+//var	server= "http://localhost:3000/";
+var	server = "http://local-map/";
 var mapControl = {
 	existMap: false,
 	mapName: null,
@@ -87,7 +87,7 @@ var mapControl = {
 							.attr("transform", "translate(" +
 							d3.event.translate + ")scale(" +
 							d3.event.scale + ")");
-						wholeMap.selectAll("image")
+						wholeMap.selectAll(".icon")
 							.attr("transform", "translate(" +
 							d3.event.translate + ")scale(" +
 							d3.event.scale + ")");
@@ -360,7 +360,7 @@ var mapControl = {
 							.attr("transform", "translate(" +
 							d3.event.translate + ")scale(" +
 							d3.event.scale + ")");
-						wholeMap.selectAll("image")
+						wholeMap.selectAll(".icon")
 							.attr("transform", "translate(" +
 							d3.event.translate + ")scale(" +
 							d3.event.scale + ")");
@@ -397,8 +397,11 @@ var mapControl = {
 					var table;
 					$.each(dataset, function(i, data){
 						var fullName = data.firstname + " " + data.lastname;
-    					var fromSite=data.depart.split(/\s*:\s*/)[0],
+						var fromSite='',fromDesk='';
+						if (data.depart!=null){
+    						fromSite=data.depart.split(/\s*:\s*/)[0],
 							fromDesk=data.depart.split(/\s*:\s*/)[1];
+						}
     					var toSite=data.arrivee.split(/\s*:\s*/)[0],
         					toDesk=data.arrivee.split(/\s*:\s*/)[1];
 							if(fromSite=="La Boursidière" && fromDesk!="aucun"){

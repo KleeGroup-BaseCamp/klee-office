@@ -310,7 +310,7 @@
                             type: 'POST',
                             data: dataToSend,
                             success : function(res){console.log('add new')
-                            reload('')
+                            reloadMap('')
                         }
                     });                     
                 }

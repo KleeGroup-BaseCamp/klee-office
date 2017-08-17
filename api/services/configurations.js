@@ -128,7 +128,10 @@ const validateMoveSet = (req, res) => {
                         if (fromdesk.name=="aucun" || fromdesk.name=="externe"){
                             fromdesk.destroy()
                         }else{
-                            fromdesk.update({person_id :null})
+                            //if the former desk is still mine, I must make it available
+                            if (fromdesk.person_id==data.person_id){
+                                fromdesk.update({person_id :null})
+                            }
                         }
                     })
                     console.log(data.toDesk)

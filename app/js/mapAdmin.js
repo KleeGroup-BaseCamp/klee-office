@@ -440,25 +440,25 @@ $(document).on("click", "#icons img", function (evt) {
             var imgName = $('#imgName').val().replace(/ /g,"_");
             if (d3.select("#tables").select("#" + imgName)[0][0] === null) {
                 $("#newImg-add").remove();
-                var img1 = document.getElementsByTagName('svg')[1]; //Get svg element
-                var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-                newElement1.setAttribute("id", imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
-                newElement1.setAttribute("cursor", "pointer");
-                newElement1.setAttribute("stroke", "black");
-                newElement1.setAttributeNS(null, 'visibility', 'visible');
-                img1.appendChild(newElement1);
+                var map = document.getElementsByTagName('svg')[1]; //Get svg element
 
-                var img2 = document.getElementsByTagName('svg')[1].getElementById(imgName);
-                var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'image'); //Create a path in SVG's namespace
-                newElement2.setAttributeNS('http://www.w3.org/1999/xlink', 'href', "img/icons/" + evt.target.id);
-                newElement2.setAttributeNS(null, 'x', '930');
-                newElement2.setAttributeNS(null, 'y', '375');
-                newElement2.setAttributeNS(null, 'width', '30');
-                newElement2.setAttributeNS(null, 'height', '30');
-                newElement2.setAttribute("cursor", "pointer");
-                newElement2.setAttributeNS(null, 'visibility', 'visible');
-                //newElement2.setAttribute("strokeWidth","5px");
-                img2.appendChild(newElement2);
+                var newIcon = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+                newIcon.setAttribute("id", imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
+                newIcon.setAttribute("cursor", "pointer");
+                newIcon.setAttribute("stroke", "black");
+                newIcon.setAttribute('class','icon');
+                newIcon.setAttributeNS(null, 'visibility', 'visible');
+                var image = document.createElementNS("http://www.w3.org/2000/svg", 'image'); //Create a path in SVG's namespace
+                image.setAttributeNS('http://www.w3.org/1999/xlink', 'href', "img/icons/" + evt.target.id);
+                image.setAttributeNS(null, 'x', '930');
+                image.setAttributeNS(null, 'y', '375');
+                image.setAttributeNS(null, 'width', '30');
+                image.setAttributeNS(null, 'height', '30');
+                image.setAttribute("cursor", "pointer");
+                image.setAttributeNS(null, 'visibility', 'visible');
+                newIcon.appendChild(image);
+
+                map.appendChild(newIcon);
             }else {
                     d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
             }
