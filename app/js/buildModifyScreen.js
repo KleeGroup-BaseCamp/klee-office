@@ -3,8 +3,8 @@
  * Created by msalvi on 08/09/2016.
  */
 (function(window) {
-    var server="http://localhost:3000/";
-    //var server= "http://local-map/"
+    //var server="http://localhost:3000/";
+    var server= "http://local-map/"
     var people = [];            //contains data about every person
     var sitesExterne=["Issy-les-Moulineaux","Le Mans","Lyon","Bourgoin-Jailleux","Montpellier","Sur site client"];
     var myData=[d3.select("#personal-firstname")[0][0].textContent, d3.select("#personal-lastname")[0][0].textContent,"",""];

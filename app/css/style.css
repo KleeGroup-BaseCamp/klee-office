@@ -1771,7 +1771,7 @@ header #text-conf button a{
 }
 #val-delete-one, #val-delete-two{
     cursor :pointer;
-    padding-left :25px
+    margin-left :25px
 }
 #map-show #note-admin{
     -webkit-column-count: 2; /* Chrome, Safari, Opera */
