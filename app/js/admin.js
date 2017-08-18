@@ -325,7 +325,6 @@ var adminControl = {
         }
 
         $('#add-admin').on('click',function(){
-            console.log('add')
             $('<div id="popin-add-admin">'+
             '<h3> Ajouter un nouvel administrateur</h3>'+
             '<div id="research">'+

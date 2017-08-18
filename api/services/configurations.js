@@ -115,31 +115,25 @@ const validateMoveSet = (req, res) => {
         'UPDATE \"MoveSet\" ' +
         'SET status_id = (SELECT sta_id FROM \"MoveStatus\" WHERE name = :sta ), ' +
         '\"dateUpdate\" = :date '+
-        'WHERE set_id = :setid;'
-        , { replacements: { date:new Date(),setid :req.body.setid, sta: "Validee"},
-            type: models.sequelize.QueryTypes.UPDATE
-    })
+        'WHERE set_id = :setid;', 
+        { replacements: { date:new Date(),setid :req.body.setid, sta: "Validee"},type: models.sequelize.QueryTypes.UPDATE})
     .then(function (configuration) {
+        //first I must update the fromdesk and the status of each movelines
             MoveLine.findAll({where:{move_set_id: req.body.setid}})
             .then(function(movelines){
                 movelines.forEach(function(data,index){
                     Desk.findOne({where:{des_id:data.fromDesk}})
                     .then(function(fromdesk){
-                        if (fromdesk.name=="aucun" || fromdesk.name=="externe"){
-                            fromdesk.destroy()
-                        }else{
-                            //if the former desk is still mine, I must make it available
-                            if (fromdesk.person_id==data.person_id){
+                        if (fromdesk!=undefined && fromdesk!=null && fromdesk!=[]){
+                            console.log('i have a from desk '+data.mov_id)
+                            if (fromdesk.name=="aucun" || fromdesk.name=="externe"){
+                                fromdesk.destroy()
+                            }else if (data.person_id==fromdesk.person_id){
+                                console.log("i am "+data.person_id +'  ||||||  from desk '+fromdesk.name+' belongs to '+fromdesk.person_id)
+                                //if the former desk is still mine, I must make it available                               
                                 fromdesk.update({person_id :null})
                             }
                         }
-                    })
-                    console.log(data.toDesk)
-                    Desk.findOne({where:{des_id:data.toDesk}})
-                    .then(function(todesk){
-                        console.log(todesk)
-                        console.log(data.person_id)
-                        todesk.update({person_id :data.person_id})
                     })
                     MoveLine.findOne({where:{mov_id: data.mov_id}})
                     .then(function(moveline){
@@ -150,7 +144,19 @@ const validateMoveSet = (req, res) => {
                         }
                     })
                 });
-            });
+            }).then(function(){
+                //then I update the todesk of each movelines (to avoid conflicts with ejection todesk/fromdesk)
+                MoveLine.findAll({where:{move_set_id: req.body.setid}})
+                .then(function(movelines){
+                    movelines.forEach(function(data,index){
+                        Desk.findOne({where:{des_id:data.toDesk}})
+                        .then(function(todesk){
+                            console.log('i am '+data.person_id+'i wanna go to '+todesk.name +'but currently it owned by '+todesk.person_id)
+                            todesk.update({person_id :data.person_id})
+                        })
+                    })
+                })
+            })
     }).then(function () {
         console.log("OK !");
         req.flash('success', 'La configuration a ete validee.');
@@ -288,7 +294,9 @@ const addMoveLine =(req,res) =>{
     .then(function(person){
         Desk.findOne({where:{person_id:person.dataValues.per_id,name:fromDesk}})
             .then(function(from){
+                if (from!=undefined && from!=null && from!=[]){
                     fromDeskId=from.dataValues.des_id;
+                }
             })
         .then(function(){
             Site.findOne({where:{name:toSite}})

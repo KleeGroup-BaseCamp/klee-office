@@ -59,7 +59,7 @@ var configurationsControl = {
                             d3.json(server + "isConfValid/"+data.set_id, function(countInvalid){
                                 if (countInvalid[0].count==0){
                                   $('<div id="popin-val">'+
-                                    '<h3>Voulez-vous confirmer la configuration numéro '+data.set_id+'?</h3>'+
+                                    '<h3>Voulez-vous valider la configuration numéro '+data.set_id+' ?</h3>'+
                                     '<p id="description-conf" >'+
                                         'Nom : '+data.name+'</br>'+
                                         'Créateur : '+data.creator+'</br>'+

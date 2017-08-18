@@ -1,8 +1,8 @@
 "use strict";
 // global variables
 
-//var	server= "http://localhost:3000/";
-var	server = "http://local-map/";
+var	server= "http://localhost:3000/";
+//var	server = "http://local-map/";
 var mapControl = {
 	existMap: false,
 	mapName: null,
@@ -159,49 +159,47 @@ var mapControl = {
 							}
 					});
 
-				if (isSavingLocalization==false){
-					d3.selectAll("#tables .available, .map image")
-						//.select("rect")
-						.style("cursor", "pointer")
-						.on("click", function(){
-							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
-							//console.log(d3.event.target.parentNode.id);
-							var xPosition = event.clientX,
-								yPosition = event.clientY;
-							// get scroll pixels to correct tooltip's yPostion
-							yPosition += $(window).scrollTop();
-							tooltip_desk_empty.html(d3.event.target.parentNode.id.replace(/_/g," "))
-													.style("position","absolute")
-													.style("left", xPosition-250+ "px")
-													.style("top",  yPosition-300+ "px")
-													.style("height", "20px");
-							tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
-							event.stopPropagation();	
-						});	
-						
-						
-						// click the tooltip won't let it disappear
-						$(".tooltip_map_desk_empty").click(function(event) {
-							event.stopPropagation();
-						})
-						// click elsewhere will make tooltip disappear
-						$("html").click(function () {
-							tooltip_desk_empty.transition()
-												.duration(500)
-												.style("opacity", 0)
-												.style("z-index", -1);
-						})
-						// show all available tables
+					if (isSavingLocalization==false){
+						d3.selectAll("#tables .available, .icon")
+							//.select("rect")
+							.style("cursor", "pointer")
+							.on("click", function(){
+								tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
+								//console.log(d3.event.target.parentNode.id);
+								var xPosition = event.clientX,
+									yPosition = event.clientY;
+								// get scroll pixels to correct tooltip's yPostion
+								yPosition += $(window).scrollTop();
+								tooltip_desk_empty.html(d3.event.target.parentNode.id.replace(/_/g," "))
+														.style("position","absolute")
+														.style("left", xPosition-250+ "px")
+														.style("top",  yPosition-300+ "px")
+														.style("height", "20px");
+								tooltip_desk_empty.transition().duration(200).style("opacity", .9).style("z-index", 20);
+								event.stopPropagation();	
+							});	
+							
+							
+							// click the tooltip won't let it disappear
+							$(".tooltip_map_desk_empty").click(function(event) {
+								event.stopPropagation();
+							})
+							// click elsewhere will make tooltip disappear
+							$("html").click(function () {
+								tooltip_desk_empty.transition()
+													.duration(500)
+													.style("opacity", 0)
+													.style("z-index", -1);
+							})
+							// show all available tables
 
-				}
-				allAvailables = d3.select("#tables").selectAll(".available");
-				allAvailables.selectAll("rect").attr("fill", "#99ff99");	
-				$('#nb-available').html($('#tables .available').length+" bureau(x) libres(s)")
-				$('#nb-occupied').html($('#tables .occupied').length+" bureau(x) occupé(s)")
+					}
+					allAvailables = d3.select("#tables").selectAll(".available");
+					allAvailables.selectAll("rect").attr("fill", "#99ff99");	
+					$('#nb-available').html($('#tables .available').length+" bureau(x) libres(s)")
+					$('#nb-occupied').html($('#tables .occupied').length+" bureau(x) occupé(s)")
 
 				});
-				
-			  
 				
 				if (callback){callback();}
 		});
@@ -398,12 +396,15 @@ var mapControl = {
 					$.each(dataset, function(i, data){
 						var fullName = data.firstname + " " + data.lastname;
 						var fromSite='',fromDesk='';
+						var toSite='',toDesk='';
 						if (data.depart!=null){
     						fromSite=data.depart.split(/\s*:\s*/)[0],
 							fromDesk=data.depart.split(/\s*:\s*/)[1];
 						}
-    					var toSite=data.arrivee.split(/\s*:\s*/)[0],
+						if (data.arrivee!=null){
+    						toSite=data.arrivee.split(/\s*:\s*/)[0],
         					toDesk=data.arrivee.split(/\s*:\s*/)[1];
+						}
 							if(fromSite=="La Boursidière" && fromDesk!="aucun"){
 								table = d3.select("#"+fromDesk);
 								// if found in map, change table color, add hover actions
@@ -429,8 +430,7 @@ var mapControl = {
 										.attr("fill", "#CD5C5C")
 										.attr("cursor", "pointer");
 								}
-							}
-								
+							}			
 					});
 					callback();
 					d3.select("#tables").selectAll(".available").selectAll("rect").attr("fill", "#99ff99");
@@ -491,7 +491,7 @@ var mapControl = {
 												.style("z-index", -1);
 						})
 						});
-					d3.selectAll("image").style("cursor", "pointer").on("click", function(){
+					d3.selectAll(".icon").style("cursor", "pointer").on("click", function(){
 							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
 							//console.log(d3.event.target.parentNode.id);
 							var xPosition = event.clientX,

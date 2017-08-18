@@ -139,7 +139,7 @@
                         if (d3.select('#map-name h1').attr('class')){
                             mapName=d3.select('#map-name h1').attr('class');
                         }
-                        d3.select(".map").select("svg").remove();
+                        d3.select(".map").selectAll("svg").remove();
                         mapControl.existMap = false;
                         mapControl.mapName = mapName;
                         mapControl.confmapPlot(myData,mapName,configId, true, newConfig, function() {
@@ -197,7 +197,6 @@
                 var isAlreadyUsed=false;
                 var firstname=suggestion.data.firstname,
                     lastname=suggestion.data.lastname;
-
                 for (var k=0;k<newConfig.length;k++){
                     if (newConfig[k][0]==firstname && newConfig[k][1]==lastname){
                         isAlreadyUsed=true;
@@ -224,53 +223,40 @@
                         d3.selectAll("#etages_conf").style("font-weight","normal");
                         d3.select("#"+mapName+"_conf").style("font-weight","bold");
                         // if no map showing on, plot the map with name "mapName", add pin to searched person's table
-                        if(!mapControl.existMap) {
-                            d3.select(".map").select("svg").remove();
-                            mapControl.mapName = mapName;
-                            mapControl.confmapPlot(myData,mapName, configId, true,newConfig, function() {
-                                if (desk!="aucun" && desk!="externe"){
+    
+                        d3.select(".map").selectAll("svg").remove();
+                        mapControl.existMap = false;
+                        mapControl.mapName = mapName;
+                        mapControl.confmapPlot(myData,mapName,configId, true, newConfig, function() {
+                            if (desk!="aucun" && desk!="externe"){
                                 table = d3.select("#tables")
-                                        .select("#" + desk);
-                                    if (table[0][0]!=null){
+                                    .select("#" + desk);
+                                if (table[0][0] !=null){
                                     table.append("image")
-                                        .attr("xlink:href", "./img/pin_final.png")
-                                        .attr("width", "30")
-                                        .attr("height", "50")
-                                        .attr("x", table.select("rect").attr("x") - 10)
-                                        .attr("y", table.select("rect").attr("y") - 40);
-                                    }
+                                    .attr("xlink:href", "./img/pin_final.png")
+                                    .attr("width", "30")
+                                    .attr("height", "50")
+                                    .attr("x", table.select("rect").attr("x") - 10)
+                                    .attr("y", table.select("rect").attr("y") - 40);
                                 }
-                                changeLocalization(suggestion.value,location,isAlreadyUsed)//name, localisation
-                            });
-                            mapControl.existMap = true;
-                        }
-                        // if a map exists, erase it and replot one 
-                        else {
-                            d3.select(".map").select("svg").remove();
-                            mapControl.existMap = false;
-                            mapControl.mapName = mapName;
-                            mapControl.confmapPlot(myData,mapName,configId, true, newConfig, function() {
-                                if (desk!="aucun" && desk!="externe"){
-                                    table = d3.select("#tables")
-                                        .select("#" + desk);
-                                    if (table[0][0] !=null){
-                                        table.append("image")
-                                        .attr("xlink:href", "./img/pin_final.png")
-                                        .attr("width", "30")
-                                        .attr("height", "50")
-                                        .attr("x", table.select("rect").attr("x") - 10)
-                                        .attr("y", table.select("rect").attr("y") - 40);
-                                    }
-                                } 
-                                changeLocalization(suggestion.value,location,isAlreadyUsed)//name, localisation
-                            });
-                            mapControl.existMap = true;
-                        }
+                            } 
+                            changeLocalization(suggestion.value,location,isAlreadyUsed)//name, localisation
+                        });
+                        mapControl.existMap = true;
+                        
                     }
 
                     //activate the possibility to change localisation according to rights
                     
 
+                }else{
+                    var mapName=d3.select('#map-name h1').attr('class');
+                    d3.select(".map").selectAll("svg").remove();
+                    mapControl.existMap = true;
+                    mapControl.mapName = mapName;
+                    mapControl.confmapPlot(myData,mapName,configId, true, newConfig, function() {
+                        changeLocalization(suggestion.value,'aucun bureau',isAlreadyUsed)
+                    })
                 }
  
             }
@@ -310,7 +296,6 @@
                             type: 'POST',
                             data: dataToSend,
                             success : function(res){console.log('add new')
-                            reloadMap('')
                         }
                     });                     
                 }
@@ -462,18 +447,11 @@
                 var etage = document.querySelector(d3.event.target.id);
                 var myMap=d3.event.target.id.split(/_/)[0];
 
-		        if (!mapControl.existMap) {
-			        mapControl.mapName = myMap;
-			        mapControl.confmapPlot(myData,mapControl.mapName,configId, true, newConfig,function() {validateDesk(name)});
-			        mapControl.existMap = true;
-		        }
-		        // if other map,  and show myMap
-		        else {
-			        d3.select(".map").select("svg").remove();
-			        mapControl.mapName = myMap;
-			        mapControl.confmapPlot(myData,mapControl.mapName,configId,true,newConfig,  function() {validateDesk(name)});
-                    mapControl.existMap = true;
-		        }
+                d3.select(".map").selectAll("svg").remove();
+			    mapControl.mapName = myMap;
+			    mapControl.confmapPlot(myData,mapControl.mapName,configId, true, newConfig,function() {validateDesk(name)});
+			    mapControl.existMap = true;
+
             }); 
 
         }else if(view_access==false){
@@ -533,12 +511,15 @@
             var firstname=getnames(name)[0];
             var lastname=getnames(name)[1];
             d3.json(server + "currentOfficeName/"+firstname+'/'+lastname, function(formerDesk){
-                var formerLocation=formerDesk[0].site+' : '+formerDesk[0].name;
+                if (formerDesk==null || formerDesk==[] ||formerDesk[0]==undefined){
+                    var formerLocation=""
+                }else{
+                    var formerLocation=formerDesk[0].site+' : '+formerDesk[0].name;                  
+                }
                 var ind=null;
                 for (var i=0;i<newConfig.length;i++){
                     if (newConfig[i][0]==firstname && newConfig[i][1]==lastname){
-                        ind=i;
-                        
+                        ind=i;                       
                     }
                 }
                 if (ind==null){
@@ -616,21 +597,14 @@
         if (mapName==''){
             var mapName=d3.select('#map-name h1').attr('class');
         }
-            if (mapName){
-                if(!mapControl.existMap) {
-                    mapControl.mapName = mapName;
-                    mapControl.confmapPlot(myData,mapName, configId, false, newConfig, function() {});
-                    mapControl.existMap = true;
-                }
-                // if a map exists, erase it and replot one 
-                else {
-                    d3.select(".map").select("svg").remove();
-                    mapControl.existMap = false;
-                    mapControl.mapName = mapName;
-                    mapControl.confmapPlot(myData,mapName,configId, false,newConfig, function() {});
-                    mapControl.existMap = true;
-                }
-            }  
+        if (mapName){
+            d3.select(".map").selectAll("svg").remove();
+            mapControl.existMap = false;
+            mapControl.mapName = mapName;
+            mapControl.confmapPlot(myData,mapName,configId, false,newConfig, function() {});
+            mapControl.existMap = true;
+            
+        }  
     }
 
 

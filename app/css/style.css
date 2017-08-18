@@ -1752,9 +1752,13 @@ header #text-conf button a{
     width:180px;
     height:30px;
 }
-#val-input ::placeholder, .list-admin #research ::placeholder { 
+#val-input ::placeholder, .list-admin #research ::placeholder, .list-admin #research ::-ms-input-placeholder{ 
     font-size:15px;
     font-style:italic;
+}
+.list-admin #research:-ms-input-placeholder{ 
+    font-size:15px !important;
+    font-style:italic !important;
 }
 .list-admin #research{
     color:black;
@@ -1765,7 +1769,6 @@ header #text-conf button a{
     width:250px;
     height:40px;
 }
-
 #val-delete-one, #val-delete-two{
     cursor :pointer;
     padding-left :25px
@@ -1787,7 +1790,7 @@ header #text-conf button a{
 .autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
 /* style for autocomplete results */
 .ui-autocomplete { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; max-height: 100px; overflow-y: auto; overflow-x: hidden; }
-.ui-autocomplete-input { padding: 10px 5px; font-size: 1.2em; white-space: nowrap; overflow: hidden; }
+.ui-autocomplete-input { padding: 10px 5px; font-size: 1.0em; white-space: nowrap; overflow: hidden; }
 
 /* for IE 6 which doesn't support max height*/
 /* * html .ui-autocomplete {
