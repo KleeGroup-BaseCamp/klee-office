@@ -185,7 +185,7 @@ $("#quit-admin").click(function () {
                 }
             }
             img2.setAttribute("transform", "");
-            img2.setAttribute("class", "");
+            img2.setAttribute("class", "mapIcons");
             img2.setAttribute("cursor", "pointer");
             img2.setAttribute("onmousedown", "");
             img2.setAttribute("stroke", "black");
@@ -424,7 +424,8 @@ $(document).on("click", "#icons img", function (evt) {
             var imgName = $('#imgName').val().replace(/ /g,"_");
             if (d3.select("#tables").select("#" + imgName)[0][0] === null) {
                 $("#newImg-add").remove();
-                var img1 = document.getElementsByTagName('svg')[1]; //Get svg element
+                var img1 = document.getElementsByTagName('svg')[1].getElementById("AutoLayers"); //Get svg element
+                console.log(img1);
                 var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
                 newElement1.setAttribute("id", imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
                 newElement1.setAttribute("cursor", "pointer");

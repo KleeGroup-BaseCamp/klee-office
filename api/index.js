@@ -208,14 +208,16 @@ app.post('/upload', function(req, res) {
 	sampleFile.mv('../app/img/icons/'+sampleFile.name, function(err) {
 		if (err)
 			return res.send(err);
-		res.redirect("/admin");
+		//res.redirect("/admin");
+		res.end();
 	});
   }else if (format === "svg"){
 	//alert("t un plan");
 	sampleFile.mv('data/maps/'+sampleFile.name, function(err) {
 		if (err)
 			return res.send(err);
-		res.redirect("/admin");
+		//res.redirect("/admin");
+		res.end();
 	});
   }else{
 	res.status(400).send('Wrong format.');

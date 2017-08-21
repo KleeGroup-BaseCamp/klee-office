@@ -190,13 +190,13 @@
                                         <div id="imgUpload">
                                             <form ref='uploadForm' 
                                                     id='uploadForm' 
-                                                    action='http://local-map/upload' 
+                                                    action='http://localhost:3000/upload' 
                                                     method='post' 
                                                     encType="multipart/form-data">
                                                         <input type="file" id="imgInput" name="sampleFile" style="display: none;" onchange="getImgName()"/>
                                                         <img id="uploadImg" src="/img/img-icon.png" title="Importer une image (.png, .jpg, .jpeg, .gif)" onclick="getImg()" width="35px" height="35px" />
                                                         <p id="import-image">img.png</p>
-                                                        <input type='submit' id="importImg" value='Importer' title="Appliquer la nouvelle image" />
+                                                        <input type='submit' id="importImg" value='Importer' onclick="location.reload;" title="Appliquer la nouvelle image" />
                                             </form>
                                         </div>
                                     </td>
@@ -211,14 +211,13 @@
                                         <div id="fileUpload">
                                             <form ref='uploadForm' 
                                                     id='uploadForm' 
-                                                    action='http://local-map/upload' 
+                                                    action='http://localhost:3000/upload' 
                                                     method='post' 
                                                     encType="multipart/form-data">
                                                         <input type="file" id="fileInput" name="sampleFile" style="display:none" onchange="getFileName()"/>
-                                                        <!--input type="button" id="parcourirButton" value="Importer" onclick="getfile()" /></br-->
                                                         <img id="uploadButton" src="/img/uploadMap.png" title="Importer un plan" onclick="getfile()" width="35px" height="35px" />
                                                         <p id="import-map">map.svg</p>
-                                                        <input type='submit' id="importInput" value='Appliquer' title="Appliquer le nouveau plan" />
+                                                        <input type='submit' id="importInput" value='Appliquer' onclick="location.reload;" title="Appliquer le nouveau plan" />
                                             </form>
                                         </div>
                                     </td>

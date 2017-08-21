@@ -87,6 +87,10 @@ var mapControl = {
 							.attr("transform", "translate(" +
 							d3.event.translate + ")scale(" +
 							d3.event.scale + ")");
+						wholeMap.select("#listicons")
+							.attr("transform", "translate(" +
+							d3.event.translate + ")scale(" +
+							d3.event.scale + ")");
 
 						wholeMap.on("dblclick.zoom", null);
 					});
@@ -186,7 +190,7 @@ var mapControl = {
 							event.stopPropagation();	
 						});	
 						
-						d3.selectAll("image").style("cursor", "pointer").on("click", function(){
+						d3.selectAll("#listicons").selectAll("image").style("cursor", "pointer").on("click", function(){
 							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
 							//console.log(d3.event.target.parentNode.id);
 							var xPosition = event.clientX,
@@ -507,9 +511,9 @@ var mapControl = {
 												.style("z-index", -1);
 						})
 						});
-					d3.selectAll("image").style("cursor", "pointer").on("click", function(){
+					d3.selectAll("#listicons").selectAll("image").style("cursor", "pointer").on("click", function(){
 							tooltip_desk.transition().duration(1).style("opacity", 0).style("z-index", -1);
-							//console.log(d3.event.target.parentNode.id);
+							console.log("ADEDIGADOOOOOO");
 							var xPosition = event.clientX,
 								yPosition = event.clientY;
 							// get scroll pixels to correct tooltip's yPostion
