@@ -3,15 +3,13 @@ var currentX = 0;
 var currentY = 0;
 var currentMatrix = 0;
 
+
 // --- function to select Desk Element ---- //
 
 function selectElement(evt) {
-    console.log("selectElementEvt");
     selectedElement = evt.target;
     currentX = evt.clientX;
     currentY = evt.clientY;
-    console.log("currentX = " + currentX + " || currentY = " + currentY);
-    console.log(selectedElement.getAttributeNS(null, "transform"));
     currentMatrix = selectedElement.getAttributeNS(null, "transform").slice(7, -1).split(' ');
 
     for (var i = 0; i < currentMatrix.length; i++) {
@@ -25,11 +23,14 @@ function selectElement(evt) {
 // --- function to move Desk Element ---- //
 
 function moveElement(evt) {
-    console.log("moveElement");
+    var coef=1;
+    if (d3.select('#map-name h1').attr('class')=='N0'){
+        coef=2;
+    }
     dx = evt.clientX - currentX;
     dy = evt.clientY - currentY;
-    currentMatrix[4] += dx;
-    currentMatrix[5] += dy;
+    currentMatrix[4] += dx*coef;
+    currentMatrix[5] += dy*coef;
     newMatrix = "matrix(" + currentMatrix.join(' ') + ")";
 
     selectedElement.setAttributeNS(null, "transform", newMatrix);
@@ -92,8 +93,8 @@ $("#mode-admin").click(function () {
         .style("cursor", "")
         .attr("transform", "matrix(1 0 0 1 0 0)")
         .attr("onmousedown", "selectElement(evt)")
-        .attr("onclick", "sizePlus(evt)")
-        .attr("oncontextmenu", "sizeLess(evt)");
+        //.attr("onclick", "sizePlus(evt)")
+        //.attr("oncontextmenu", "sizeLess(evt)");
 });
 
 function sizePlus(evt) {
@@ -118,11 +119,25 @@ function sizeLess(evt) {
     d3.select(selectedElement).attr("width", newWidth)
         .attr("height", newHeight);
 }
-
+$('#plus-size').click(function(){
+    $('.map image').one('click',function(event){
+        sizePlus(event);
+        d3.select(".map image").style('cursor','pointer')
+        event.stopPropagation();
+    })
+    
+})
+$('#minus-size').click(function(){
+    $('.map image').one('click',function(event){
+        sizeLess(event);
+        d3.select(".map image").style('cursor','pointer')
+        event.stopPropagation();
+    })
+    
+})
 // ------ Leave Admin Mode :  Keep changes to SVG map ------ //
 
 $("#quit-admin").click(function () {
-    console.log("gohan");
     var i = 0;
     var desk = d3.select("#whole-map").select("svg").select("#tables").selectAll("g").selectAll("rect");
     var img = d3.select("#whole-map").select("svg").selectAll("g").selectAll("image");
@@ -198,7 +213,7 @@ $("#quit-admin").click(function () {
 // ------ Download SVG map --------- //
 
 $("#dl-button").click(function () {
-    d3.select("#whole-map").select("svg").selectAll("g").select("#pin_home").remove();
+    
     var svg1 = document.getElementsByTagName('svg')[1];
     var svgData = svg1.outerHTML;
     var mapName = d3.select("#map-name h1")[0][0].className;
@@ -233,27 +248,30 @@ $("#add-desk-vertical").click(function () {
         if ((zoneName.match(expZone)) || (numeroName.match(expNumero))) {
             if ((zoneName === zoneName.match(expZone)[0]) && (numeroName === numeroName.match(expNumero)[0])) {
                 if (d3.select("#tables").select("#" + deskName)[0][0] === null) {
-
+                    
                     $("#newDesk-add").remove();
-                    var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
-                    var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-                    newElement1.setAttribute("id", deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
-                    newElement1.setAttribute("class", "available");
-                    newElement1.setAttribute("cursor", "pointer");
-                    svg1.appendChild(newElement1);
+                    //Get svg element with all desks
+                    var mapTables=$('.map svg #tables')[0]
+                    console.log(mapTables)
 
-                    var svg2 = document.getElementsByTagName('svg')[1].getElementById(deskName);
-                    var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
-                    newElement2.setAttribute("fill", "#99ff99"); //Set path's data
-                    newElement2.setAttribute("fill-opacity", "0.66");
-                    newElement2.setAttribute("cursor", "pointer");
-                    newElement2.setAttribute("width", "12.776915");
-                    newElement2.setAttribute("height", "25.906563");
-                    newElement2.setAttribute("x", "930");
-                    newElement2.setAttribute("y", "375");
-                    newElement2.setAttribute("stroke", "black");
-                    //newElement2.setAttribute("strokeWidth","5px");
-                    svg2.appendChild(newElement2);
+                    var newDesk = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+                    newDesk.setAttribute("id", deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
+                    newDesk.setAttribute("class", "available");
+                    newDesk.setAttribute("cursor", "pointer");
+                    var rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+                    rect.setAttribute("fill", "#99ff99"); //Set path's data
+                    rect.setAttribute("fill-opacity", "0.66");
+                    rect.setAttribute("cursor", "pointer");
+                    rect.setAttribute("width", "12.776915");
+                    rect.setAttribute("height", "25.906563");
+                    rect.setAttribute("x", "930");
+                    rect.setAttribute("y", "375");
+                    rect.setAttribute("stroke", "black");                    
+                    newDesk.appendChild(rect);
+                    console.log(newDesk)
+
+                    mapTables.appendChild(newDesk)
+
                 } else {
                     d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
                 }
@@ -283,25 +301,23 @@ $("#add-desk-horizontal").click(function () {
                 if (d3.select("#tables").select("#" + deskName)[0][0] === null) {
 
                     $("#newDesk-add").remove();
-                    var svg1 = document.getElementsByTagName('svg')[1].getElementById("tables"); //Get svg element
-                    var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-                    newElement1.setAttribute("id", deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
-                    newElement1.setAttribute("class", "available");
-                    newElement1.setAttribute("cursor", "pointer");
-                    svg1.appendChild(newElement1);
+                    //Get svg element with all desks
+                    var mapTables=$('.map svg #tables')[0]
+                    var newDesk = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+                    newDesk.setAttribute("id", deskName); //modifier l'id pour pas que ce soit le même à chaque ajout
+                    newDesk.setAttribute("class", "available");
+                    newDesk.setAttribute("style", "cursor:pointer");
+                    var rect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
+                    rect.setAttribute("fill", "#99ff99"); //Set path's data
+                    rect.setAttribute("fill-opacity", "0.66");
+                    rect.setAttribute("width", "25.906563");
+                    rect.setAttribute("height", "12.776915");
+                    rect.setAttribute("x", "930");
+                    rect.setAttribute("y", "375");
+                    rect.setAttribute("stroke", "black");                    
+                    newDesk.appendChild(rect);
+                    mapTables.appendChild(newDesk)
 
-                    var svg2 = document.getElementsByTagName('svg')[1].getElementById(deskName);
-                    var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a path in SVG's namespace
-                    newElement2.setAttribute("fill", "#99ff99"); //Set path's data
-                    newElement2.setAttribute("fill-opacity", "0.66");
-                    newElement2.setAttribute("cursor", "pointer");
-                    newElement2.setAttribute("width", "25.695963");
-                    newElement2.setAttribute("height", "12.644253");
-                    newElement2.setAttribute("x", "930");
-                    newElement2.setAttribute("y", "375");
-                    newElement2.setAttribute("stroke", "black");
-                    //newElement2.setAttribute("strokeWidth","5px");
-                    svg2.appendChild(newElement2);
                 } else {
                     d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
                 }
@@ -326,7 +342,7 @@ function plot_nameConsole() {
         '<div class="inline">' +
         '<input class="field" type="text" id="floor" name="etage" value="' + d3.select("#map-name h1")[0][0].className + '" readonly/><br />' +
         '<input class="field" type="text" id="zone" name="zone" placeholder="A-Z" required/><br />' +
-        '<input class="field" type="text" id="numero" name="numero" placeholder="00-99" required/><br />' +
+        '<input class="field" type="text" id="numero" name="numero" placeholder="01-99" required/><br />' +
         '</div>' +
         '<div id="newDesk-button">' +
         '<button id="add-office">Valider</button>' +
@@ -424,26 +440,25 @@ $(document).on("click", "#icons img", function (evt) {
             var imgName = $('#imgName').val().replace(/ /g,"_");
             if (d3.select("#tables").select("#" + imgName)[0][0] === null) {
                 $("#newImg-add").remove();
-                var img1 = document.getElementsByTagName('svg')[1].getElementById("AutoLayers"); //Get svg element
-                console.log(img1);
-                var newElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-                newElement1.setAttribute("id", imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
-                newElement1.setAttribute("cursor", "pointer");
-                newElement1.setAttribute("stroke", "black");
-                newElement1.setAttributeNS(null, 'visibility', 'visible');
-                img1.appendChild(newElement1);
+                var map = document.getElementsByTagName('svg')[1]; //Get svg element
 
-                var img2 = document.getElementsByTagName('svg')[1].getElementById(imgName);
-                var newElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'image'); //Create a path in SVG's namespace
-                newElement2.setAttributeNS('http://www.w3.org/1999/xlink', 'href', "img/icons/" + evt.target.id);
-                newElement2.setAttributeNS(null, 'x', '930');
-                newElement2.setAttributeNS(null, 'y', '375');
-                newElement2.setAttributeNS(null, 'width', '30');
-                newElement2.setAttributeNS(null, 'height', '30');
-                newElement2.setAttribute("cursor", "pointer");
-                newElement2.setAttributeNS(null, 'visibility', 'visible');
-                //newElement2.setAttribute("strokeWidth","5px");
-                img2.appendChild(newElement2);
+                var newIcon = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+                newIcon.setAttribute("id", imgName); //modifier l'id pour pas que ce soit le même à chaque ajout
+                newIcon.setAttribute("cursor", "pointer");
+                newIcon.setAttribute("stroke", "black");
+                newIcon.setAttribute('class','icon');
+                newIcon.setAttributeNS(null, 'visibility', 'visible');
+                var image = document.createElementNS("http://www.w3.org/2000/svg", 'image'); //Create a path in SVG's namespace
+                image.setAttributeNS('http://www.w3.org/1999/xlink', 'href', "img/icons/" + evt.target.id);
+                image.setAttributeNS(null, 'x', '930');
+                image.setAttributeNS(null, 'y', '375');
+                image.setAttributeNS(null, 'width', '30');
+                image.setAttributeNS(null, 'height', '30');
+                image.setAttribute("cursor", "pointer");
+                image.setAttributeNS(null, 'visibility', 'visible');
+                newIcon.appendChild(image);
+
+                map.appendChild(newIcon);
             }else {
                     d3.select("#wrong-exp").style("visibility", "visible").html("Nom déjà utilisé");
             }

@@ -59,7 +59,7 @@ var configurationsControl = {
                             d3.json(server + "isConfValid/"+data.set_id, function(countInvalid){
                                 if (countInvalid[0].count==0){
                                   $('<div id="popin-val">'+
-                                    '<h3>Voulez-vous confirmer la configuration numéro '+data.set_id+'?</h3>'+
+                                    '<h3>Voulez-vous valider la configuration numéro '+data.set_id+' ?</h3>'+
                                     '<p id="description-conf" >'+
                                         'Nom : '+data.name+'</br>'+
                                         'Créateur : '+data.creator+'</br>'+
@@ -89,7 +89,7 @@ var configurationsControl = {
                                             type: 'POST',
                                             data:{setid:data.set_id},
                                             success: function(result) {
-                                                window.location.href = server+"configurations";
+                                                location.reload();
                                             }
                                         });
                                     });
@@ -163,7 +163,6 @@ var configurationsControl = {
                             $('#popin-val').remove();
                             configurationsControl.isPopin = false;
                         }); 
-                        console.log(configurationsControl.isPopin)
                     }
                 });
                 
@@ -176,13 +175,12 @@ var configurationsControl = {
                 // delete button
                 $("#delete-"+data.set_id).click(function(event){
                     event.stopPropagation();
-                    $.ajax({
-                        url: 'deleteConfiguration/'+data.set_id,
-                        type: 'DELETE',
-                        success: function(result) {
-                          window.location.href = server+"configurations";
-                        }
-                    });
+                    d3.json(server +"deleteConfiguration/"+data.set_id, function(){
+                        console.log("delete my config !")
+                        event.target.parentNode.parentNode.parentNode.remove()
+                    })
+                    .header("Content-Type","application/json")
+                    .send("DELETE", JSON.stringify({}));  
                 });
             });
         });

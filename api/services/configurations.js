@@ -102,8 +102,6 @@ const deleteMoveSet = (req, res) => { ///req : setid
             }
         });
     }).then(function () {
-        console.log("OK !");
-        req.flash('success', 'La configuration a &eacutet&eacute supprim&eacutee.');
         res.json("success");
     });
 }
@@ -117,25 +115,25 @@ const validateMoveSet = (req, res) => {
         'UPDATE \"MoveSet\" ' +
         'SET status_id = (SELECT sta_id FROM \"MoveStatus\" WHERE name = :sta ), ' +
         '\"dateUpdate\" = :date '+
-        'WHERE set_id = :setid;'
-        , { replacements: { date:new Date(),setid :req.body.setid, sta: "Validee"},
-            type: models.sequelize.QueryTypes.UPDATE
-    })
+        'WHERE set_id = :setid;', 
+        { replacements: { date:new Date(),setid :req.body.setid, sta: "Validee"},type: models.sequelize.QueryTypes.UPDATE})
     .then(function (configuration) {
+        //first I must update the fromdesk and the status of each movelines
             MoveLine.findAll({where:{move_set_id: req.body.setid}})
             .then(function(movelines){
                 movelines.forEach(function(data,index){
                     Desk.findOne({where:{des_id:data.fromDesk}})
                     .then(function(fromdesk){
-                        if (fromdesk.name=="aucun" || fromdesk.name=="externe"){
-                            fromdesk.destroy()
-                        }else{
-                            fromdesk.update({person_id :null})
+                        if (fromdesk!=undefined && fromdesk!=null && fromdesk!=[]){
+                            console.log('i have a from desk '+data.mov_id)
+                            if (fromdesk.name=="aucun" || fromdesk.name=="externe"){
+                                fromdesk.destroy()
+                            }else if (data.person_id==fromdesk.person_id){
+                                console.log("i am "+data.person_id +'  ||||||  from desk '+fromdesk.name+' belongs to '+fromdesk.person_id)
+                                //if the former desk is still mine, I must make it available                               
+                                fromdesk.update({person_id :null})
+                            }
                         }
-                    })
-                    Desk.findOne({where:{des_id:data.toDesk}})
-                    .then(function(todesk){
-                        todesk.update({person_id :data.person_id})
                     })
                     MoveLine.findOne({where:{mov_id: data.mov_id}})
                     .then(function(moveline){
@@ -146,7 +144,19 @@ const validateMoveSet = (req, res) => {
                         }
                     })
                 });
-            });
+            }).then(function(){
+                //then I update the todesk of each movelines (to avoid conflicts with ejection todesk/fromdesk)
+                MoveLine.findAll({where:{move_set_id: req.body.setid}})
+                .then(function(movelines){
+                    movelines.forEach(function(data,index){
+                        Desk.findOne({where:{des_id:data.toDesk}})
+                        .then(function(todesk){
+                            console.log('i am '+data.person_id+'i wanna go to '+todesk.name +'but currently it owned by '+todesk.person_id)
+                            todesk.update({person_id :data.person_id})
+                        })
+                    })
+                })
+            })
     }).then(function () {
         console.log("OK !");
         req.flash('success', 'La configuration a ete validee.');
@@ -239,7 +249,7 @@ const addNewMoveSet = (req, res) =>{
         .then(function(creat){
             MoveSet.create({name:req.body.name, creator:req.body.creator, dateUpdate :new Date(), status_id :status.dataValues.sta_id,creator_id:creat.dataValues.per_id})
             .then(function(newset){
-                res.redirect('/modify'+newset.dataValues.set_id);
+                res.json("success");
             })
         })
     })
@@ -266,7 +276,7 @@ const deleteMoveLine =(req,res) =>{
         'WHERE move_set_id= :confId '+
         'AND person_id= (SELECT per_id FROM \"Person\" WHERE firstname= :firstname AND lastname= :lastname);'
     ,{replacements:{confId:req.body.confId,firstname:req.body.firstname,lastname:req.body.lastname},type :models.sequelize.QueryTypes.DELETE})
-    res.redirect('/');
+    res.end();
 }
 
 const addMoveLine =(req,res) =>{
@@ -284,7 +294,9 @@ const addMoveLine =(req,res) =>{
     .then(function(person){
         Desk.findOne({where:{person_id:person.dataValues.per_id,name:fromDesk}})
             .then(function(from){
+                if (from!=undefined && from!=null && from!=[]){
                     fromDeskId=from.dataValues.des_id;
+                }
             })
         .then(function(){
             Site.findOne({where:{name:toSite}})
@@ -296,6 +308,8 @@ const addMoveLine =(req,res) =>{
                             toDeskId=to[0].dataValues.des_id;
                             MoveLine.create({dateCreation:new Date(),status:req.body.status, move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
                         }   
+                    }).then(function(){
+                        res.end();
                     })
                 }else{
                     Desk.create({name:toDesk, site_id:tosite.dataValues.sit_id})
@@ -304,12 +318,13 @@ const addMoveLine =(req,res) =>{
                             toDeskId=to.dataValues.des_id; 
                             MoveLine.create({dateCreation:new Date(),status:req.body.status, move_set_id: confId, person_id :person.dataValues.per_id, fromDesk:fromDeskId, toDesk:toDeskId})
                         }
+                    }).then(function(){
+                        res.end();
                     })            
                 }
             })
         })   
-    })
-    res.redirect('/');
+    }) 
 }
 
 const deleteMoveLineIfFind = (req,res) =>{

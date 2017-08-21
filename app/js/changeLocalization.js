@@ -18,7 +18,7 @@ function changeLocalization() {
     var newSite;
     d3.selectAll(".desk-maj").style("visibility","hidden");
     d3.select("#title-default").html("MODE Changement de bureau");
-    d3.select("#text-default").html('<p>Veuillez choisir le site ou l\'étage dans le menu</p><br/><button id=\"cancelMove\"><a href="'+server+'">Annuler</a></button>');
+    d3.select("#text-default").html('<p>Veuillez choisir le site ou l\'étage dans le menu</p><br/><a id=\"cancelMove\" class="mybutton" href="'+server+'">Annuler</a>');
     d3.selectAll(".siteLocation").on("click",function() {chooseSite()});
     d3.selectAll(".list_etage").on("click",function() {chooseDesk()});
     validateDesk();
@@ -58,7 +58,7 @@ function changeLocalization() {
 }
 function validateDesk(){
     //need to choose a new desk
-    d3.select("#text-default").html("<br/>Veuillez cliquer sur un nouveau bureau<br/><button id=\"cancelMove\"><a href=\""+server+"\">Annuler</a></button>");
+    d3.select("#text-default").html("<p>Veuillez cliquer sur un nouveau bureau</p><a id=\"cancelMove\" class=\"mybutton\" href=\""+server+"\">Annuler</a>");
     
 	var allTables = d3.select("#tables").selectAll("g")
     allTables.style("cursor", "pointer")
@@ -67,18 +67,18 @@ function validateDesk(){
             var newSite="La Boursidière";
             d3.json(server + "getPersonByDesk/"+newDesk, function(isDeskAvailable){
                     if (isDeskAvailable.length===0){
-                        d3.select("#text-default").html("Vous avez choisi le bureau "+newDesk
-                            +"<br/>Confirmez-vous ce changement ?"+
-                            "<button id=\"validateMove\" >Valider</button>"+
-                            "<button id=\"cancelMove\"><a href=\""+server+"\">Annuler</a></button>");
+                        d3.select("#text-default").html("<p>Vous avez choisi le bureau "+newDesk
+                            +"<br/>Confirmez-vous ce changement ?<p>"+
+                            "<button id=\"validateMove\" class=\"mybutton\" >Valider</button>"+
+                            "<a id=\"cancelMove\" class=\"mybutton\" href=\""+server+"\">Annuler</a>");
                         document.getElementById("validateMove").onclick = function() {validateMove(newSite,newDesk)};
                     }
                     else{
                          d3.select("#text-default").html("ATTENTION vous avez choisi le bureau "+newDesk
                             +" qui déjà occupé par "+isDeskAvailable[0].firstname+" "+isDeskAvailable[0].lastname
                             +"<br/>Confirmez-vous ce changement ?"+
-                            "<button id=\"validateMove\" >Valider</button>"+
-                            "<button id=\"cancelMove\"><a href=\""+server+"\">Annuler</a></button>");
+                            "<button id=\"validateMove\" class=\"mybutton\">Valider</button>"+
+                            "<a id=\"cancelMove\"class=\"mybutton\" href=\""+server+"\">Annuler</a>");
                         document.getElementById("validateMove").onclick = function() {validateMove(newSite,newDesk)};
                     }
                 });
@@ -92,25 +92,29 @@ function validateDesk(){
 function validateSite(newSite){ 
     d3.select("#text-default").html('Vous avez choisi le site '+newSite
                             +'<br/>Confirmez-vous ce changement ?'+
-                            '<button id="validateMove" >Valider</button>'+
-                            '<button id="cancelMove"><a href="'+server+'">Annuler</a></button>');
-        document.getElementById("validateMove").onclick = function() {validateMove(newSite,"externe")};
+                            '<button id="validateMove" class=\"mybutton\">Valider</button>'+
+                            '<a id="cancelMove" class=\"mybutton\" href="'+server+'">Annuler</a>');
+    document.getElementById("validateMove").onclick = function() {validateMove(newSite,"externe")};
 }
 
 // finally, site and desk have been choosen, database must be updated
 function validateMove(newSite,newDesk){
     if (newSite=="La Boursidière"){
-        d3.select("#text-default").html("Vous avez validé un nouveau bureau sur le site La Boursidière"+
-            "<br/>Votre nouveau bureau est "+newDesk+"<br/><button id=\"backHome\"><a href=\""+server+"\">Rafraîchir la page</a></button>")
+        d3.select("#text-default").html("<p>Vous avez validé un nouveau bureau sur le site La Boursidière"+
+            "<br/>Votre nouveau bureau est "+newDesk+"</p><button id=\"backHome\" class=\"mybutton\" href=\""+server+"\">Rafraîchir la page</button>")
     }
     else{
-        d3.select("#text-default").html("Vous avez validé un nouvel emplacement"+
-            "<br/>Votre nouveau site est "+newSite+"<br/><button id=\"cancelMove\"><a href=\""+server+"\">Retour au menu principal</a></button>")}
+        d3.select("#text-default").html("<p>Vous avez validé un nouvel emplacement"+
+            "<br/>Votre nouveau site est "+newSite+"<p><button id=\"backHome\" class=\"mybutton\" href=\""+server+"\">Rafraîchir la page</button>")}
     var data={"firstname":myData[0],"lastname":myData[1],"desk-name":newDesk,"site-name":newSite};
-    console.log(data)
+
     d3.json(server +"myLocalization", function(){
-            console.log("save my new desk !")})
+            })
             .header("Content-Type","application/json")
             .send("POST", JSON.stringify(data));   
+    $('#backHome').on('click',function(){
+        console.log(d3.select('#tables'))
+        location.reload();
+    })
 }
 

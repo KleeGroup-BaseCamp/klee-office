@@ -1,6 +1,5 @@
 #!/home/dev/anaconda2/bin/python
 # -*- coding: utf-8 -*-
-
 import psycopg2
 import json # jsonfy search result
 import sys 	# sys.exit()
@@ -11,8 +10,6 @@ import re
 
 #os.system('python getActiveDirectory.py')
 path="/home/dev/local-map/api/data/"
-#"/Users/mjulio/local-map/api/data/"
-
 area_accepted=['N0','N1','N2','N3','N4','O1','O2','O3','O4']
 
 #
@@ -144,15 +141,15 @@ for x in jsonData:
 
 	company=x[0].split(',')[1].split('=')[1].encode('utf-8')
 	dpt=x[1]['department'][0].encode('utf-8')
-	if dpt=="":
+	if dpt=='':
 	    dpt='Non renseigne-'+company
 	if firstname!='' and lastname!='' and company!='' and firstname.find('Standard')==-1:
+
 	    cur.execute('SELECT count(*) '+ 
 	            'FROM "Person" '+
 	            'WHERE firstname=\'%s\' AND lastname=\'%s\';'%(firstname,lastname))
-	    res=cur.fetchone()    
+	    res=cur.fetchone()
 	    if res[0]==0:
-		print(res)
 		aAjouter.append( {'firstname':firstname,'lastname':lastname,'mail':x[1]['mail'][0].encode('utf-8'),'dpt':dpt,'company':company,'desk':desk,'site':site,'loc':location})
 print(aAjouter)
 
@@ -172,14 +169,16 @@ for elem in aAjouter:
     pro_id=cur.fetchone()[0]
     
     #find businessunit
-    print(elem['dpt'],elem['company'])
+    #print(elem['dpt'],elem['company'])
     cur.execute('SELECT bus_id FROM "BusinessUnit" JOIN \"Company\" ON com_id=company_id WHERE "BusinessUnit".name=\'%s\' AND \"Company\".name=\'%s\';'%(elem['dpt'],elem['company']))
-    bus_id=cur.fetchone()[0]
+    res=cur.fetchone()
+    if res=="" or res==None:
+    #case if the business_unit does not exist yet
+	cur.execute("INSERT INTO \"BusinessUnit\"(name,company_id) SELECT \'%s\',com_id FROM \"Company\" WHERE name=\'%s\' RETURNING bus_id;"%(elem['dpt'],elem['company']))
+	bus_id=cur.fetchone()[0]
+    else:
+	bus_id=res[0]
     print(bus_id)
-    #case to complete if the business_unit does not exist yet
-    #if bus_id==None:
-	#cur.execute("INSERT INTO \"BusinessUnit\"(name) VALUES (elem['dpt']) RETURNING bus_id;")
-	#bus_id=cur.fetchone()
     
     #insert new employees
     sql="INSERT INTO \"Person\"(firstname, lastname, mail,\"updatedAt\" ,profil_id ,\"businessUnit_id\") VALUES ('%s','%s','%s','%s','%i',%i) RETURNING per_id;"%(elem['firstname'], elem['lastname'], elem['mail'], date ,pro_id , bus_id)
@@ -187,12 +186,14 @@ for elem in aAjouter:
     per_id=cur.fetchone()[0]
     
     #insert new desk
+    #print(elem['site'])
     cur.execute("SELECT sit_id FROM \"Site\" WHERE name='%s';"%(elem['site']))
     sit_id=cur.fetchone()[0]    
     if elem['desk']!="aucun" and elem['desk']!="externe":
 	cur.execute("SELECT des_id FROM \"Desk\" WHERE name='%s';"%(elem['desk']))
 	res=cur.fetchone()
-	if res!=None:
+	print(res)
+	if res!= None:
 	    des_id=res[0]
 	    cur.execute("UPDATE \"Desk\" SET person_id='%i' WHERE des_id='%i';"%(per_id,des_id))
 	else:

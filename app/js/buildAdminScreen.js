@@ -16,7 +16,7 @@
         }
         else{
             d3.select("#div-to-hide").style("display","none");
-            d3.select("#error-admin").style("display","").html(" Vous n'avez les droits d'accès à cette page <br/><a href=\""+server+"\"><button class=\"back-index\">Revenir à la page d'accueil</button></a>")
+            d3.select("#error-admin").style("display","").html("<p> Vous n'avez les droits d'accès à cette page </p><a href=\""+server+"\"  class=\"back-index mybutton\">Revenir à la page d'accueil</a>")
         }
     })
 

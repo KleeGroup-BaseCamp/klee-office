@@ -136,6 +136,8 @@ const saveMyLocalization = (req, res) => {
                     });
                 })
             })
+        }).then(function(){
+            res.end();
         })
     }
     else{
@@ -192,12 +194,12 @@ const saveMyLocalization = (req, res) => {
                     });
                 })
             })
+        }).then(function(){
+            res.end();
         })
     }
 
    // Flash message + redirect
-    req.flash('success', 'Votre changement de localisation a bien &eacutet&eacute transmis. Il doit maintenant etre valid&eacute par un manager');
-    res.redirect('/');
 };
 
 const getLastDeskUpdate = (req,res) =>{
