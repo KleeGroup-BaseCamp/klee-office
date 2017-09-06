@@ -120,6 +120,9 @@ function sizeLess(evt) {
         .attr("height", newHeight);
 }
 $('#plus-size').click(function(){
+    d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select(".tooltip_map_desk").remove();
+    d3.select(".tooltip_map_desk_empty").remove();
     $('.map image').one('click',function(event){
         sizePlus(event);
         d3.select(".map image").style('cursor','pointer')
@@ -128,6 +131,9 @@ $('#plus-size').click(function(){
     
 })
 $('#minus-size').click(function(){
+    d3.select("#whole-map").select("svg").call(d3.behavior.zoom().on("zoom", null));
+    d3.select(".tooltip_map_desk").remove();
+    d3.select(".tooltip_map_desk_empty").remove();
     $('.map image').one('click',function(event){
         sizeLess(event);
         d3.select(".map image").style('cursor','pointer')
@@ -217,16 +223,20 @@ $("#dl-button").click(function () {
     var svg1 = document.getElementsByTagName('svg')[1];
     var svgData = svg1.outerHTML;
     var mapName = d3.select("#map-name h1")[0][0].className;
-    //console.log(svgData);
-    var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-    var svgUrl = URL.createObjectURL(svgBlob);
-    //console.log(svgUrl);
-    var downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-    downloadLink.download = mapName + ".svg";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    /*if (navigator.appVersion.toString().indexOf('.NET') > 0){ //ne marche pas encore -- blob n'est pas défini (ie ne kiffe pas quand la création de notre blob)
+        window.navigator.msSaveBlob(blob, filename);
+    }else{*/
+        //console.log(svgData);
+        var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+        var svgUrl = URL.createObjectURL(svgBlob);
+        //console.log(svgUrl);
+        var downloadLink = document.createElement("a");
+        downloadLink.href = svgUrl;
+        downloadLink.download = mapName + ".svg";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    //}
 });
 
 // ------ Add new desk on map ------- //

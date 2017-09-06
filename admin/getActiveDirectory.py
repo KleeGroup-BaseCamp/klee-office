@@ -1,10 +1,11 @@
 #!/home/dev/anaconda2/bin/python
 # -*- coding: utf-8 -*-
 
+
 import json # jsonfy search result
 import sys 	# sys.exit()
 import ldap3 as ldap # ldap connection request
-from ldap3 import Server, Connection, NTLM, ALL, MODIFY_ADD, MODIFY_REPLACE
+from ldap3 import Server, Connection, NTLM, ALL, MODIFY_ADD, MODIFY_REPLACE 
 
 ######################################################
 with open('../config/config-ldap.json') as data_file:
@@ -23,17 +24,18 @@ base_dn = BaseDN
 base_dn_desactives=BaseDNDesactives
 
 server = Server(Serv, get_info=ALL)
-con=Connection(server, user=BaseDN+'\\'+User, password=Password,authentication = NTLM,return_empty_attributes=True)
+con=Connection(server, user=BaseDN+'\\'+User, password=Password, authentication = NTLM , return_empty_attributes=True)
 attributes_des=['cn','mail']
-attributes=['cn','mail','department','physicalDeliveryOfficeName']
+attributes=['cn','mail','department','company','physicalDeliveryOfficeName']
+
 
 if not con.bind():
-  print("error in bind",con.result)
+  print('error in bind',con.result)	
 else:
   try:
     results=con.search(search_base=base_dn, search_filter='(&(objectClass=person))' ,attributes=attributes)
     if results:
-      print(base_dn.encode('utf-8'))
+      print(base_dn)
       with open('../api/data/KleeGroup.json', 'w') as json_file:
 	text=[]
 	for x in con.entries:
@@ -45,11 +47,18 @@ else:
 	    dep=x.department.value.encode('utf-8')
 	  else:
 	    dep=""
+	  if x.company.value:
+	    comp=x.company.value.encode('utf-8')
+	  else:
+	    comp=""
 	  if x.physicalDeliveryOfficeName.value:
-	    office=x.physicalDeliveryOfficeName.value.encode('utf-8')
+	    if x.physicalDeliveryOfficeName.value.encode('utf-8')=='La Boursidière':
+	      office='La Boursidière : aucun'
+	    else:
+	      office=x.physicalDeliveryOfficeName.value.encode('utf-8')
 	  else:
 	    office=""
-	  text.append([x.entry_dn.encode('utf-8'),{'cn':[x.cn.value.encode('utf-8')],'mail':[mail],'department':[dep],'physicalDeliveryOfficeName':[office]}])
+	  text.append([x.entry_dn.encode('utf-8'),{'cn':[x.cn.value.encode('utf-8')],'mail':[mail],'department':[dep],'company':[comp],'physicalDeliveryOfficeName':[office]}])
 
 	json.dump(text, json_file, ensure_ascii=False)
 	json_file.close()
@@ -59,7 +68,7 @@ else:
   try:  
     results=con.search(search_base=base_dn_desactives, search_filter='(objectClass=person)' ,attributes=attributes_des)
     if results:
-      print(base_dn_desactives)
+      print(base_dn_desactives.encode('utf-8'))
       with open('../api/data/KleeGroup_Desactives.json', 'w') as json_file:
 	text=[]
 	for x in con.entries:
@@ -75,3 +84,5 @@ else:
 	
 con.unbind()
 sys.exit()
+
+

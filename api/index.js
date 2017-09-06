@@ -161,8 +161,8 @@ app.post("/saml2/slsResponse", function(req, res){ //app.post ??
 });
  
 // views
-var firstname="Marjorie"
-var lastname="JULIO"
+var firstname="Alexandre"
+var lastname="MORIN"
 //home
 app.get('/', function(req, res){
 	console.log(req.session);
@@ -193,7 +193,11 @@ app.get('/modify:id', function(req, res){
 				myFirstName: firstname,
 				myLastName: lastname });
 });
-
+// deconnection page
+app.get('/deco', function(req, res){
+	res.render('deconnection');
+});
+// upload file route
 app.post('/upload', function(req, res) {
 	if (!req.files){
     	return res.status(400).send('No files were uploaded.');}

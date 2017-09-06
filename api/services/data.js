@@ -78,11 +78,16 @@ const populate = (req, res) => {
 
         peopleFile.forEach(function(data, index){
                 var d = data[1];
-                var company;
-                var ou=data[0].split(',')[1].split('=')[1];
+                var comp;
+                /*var ou=data[0].split(',')[1].split('=')[1];
                 if(ou !== undefined && ou !== null && ou !== ""){
                     company = ou.toString();
+                }*/
+                // --------  Nouvelle définition de Company ----------- //
+                if(d.company !== null && d.company !== undefined && d.company !== ""){
+                    comp = d.company.toString();
                 }
+                // ---------------------------------------------------- //
                 var dpt;
                 if(d.department !== null && d.department !== undefined && d.department !== ""){
                     dpt = d.department.toString();
@@ -172,17 +177,17 @@ const populate = (req, res) => {
                 }
                     
                 if  (dpt == null || dpt == undefined || dpt == ""){
-                        dpt="Non renseigne-"+company
+                        dpt="Non renseigne-"+comp
                 } 
-                if(companies.indexOf(company) < 0 && company !== null && company !== undefined && company !== ""){
+                if(companies.indexOf(comp) < 0 && comp !== null && comp !== undefined && comp !== ""){
                     companies.push(company)
                 }
-                if (company_dep.indexOf(company) < 0){
-                    company_dep.push(company);
+                if (company_dep.indexOf(comp) < 0){
+                    company_dep.push(comp);
                     company_dep.push([dpt])
                 }
                 else{
-                    var ind=company_dep.indexOf(company)
+                    var ind=company_dep.indexOf(comp)
                     if (company_dep[ind+1].indexOf(dpt) < 0){
                         company_dep[ind+1].push(dpt)
                     }

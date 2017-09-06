@@ -187,7 +187,17 @@ table #personal-desk {
 
 }
 
-
+.info-deco{
+    padding-left: 240px;
+    padding-top: 50px;
+    font-size: 17px;
+}
+#reco-button:hover{
+    text-decoration: underline;
+}
+#reco-button{
+    font-weight: bold;
+}
 
 #navigation-bar {
     position: relative;

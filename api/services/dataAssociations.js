@@ -28,21 +28,26 @@ const associate = (req, res) => {
 // UPDATES have to be done after all the INSERTS
     peopleFile.forEach(function (data) {
         var d = data[1];
-        var company;
-        var ou=data[0].split(',')[1].split('=')[1];
+        var comp;
+        /*var ou=data[0].split(',')[1].split('=')[1];
         if(ou !== undefined && ou !== null && ou !== ""){
                     company = ou.toString();
+        }*/
+        // --------  Nouvelle définition de Company ----------- //
+        if(d.company !== null && d.company !== undefined && d.company !== ""){
+            comp = d.company.toString();
         }
+        // ---------------------------------------------------- //
         console.log(d.department)
         var dpt;
         if(d.department){
             if (d.department[0] !== null && d.department[0] !== undefined && d.department[0] !== ''){
                 dpt = d.department.toString();
             }else {
-            dpt="Non renseigne-"+company
+            dpt="Non renseigne-"+comp
             }
         }else {
-            dpt="Non renseigne-"+company
+            dpt="Non renseigne-"+comp
         }
         var peopleName = d.cn.toString();
         var nameParts = peopleName.split(" ");
@@ -67,6 +72,7 @@ const associate = (req, res) => {
                 var site="aucun";
                 if (d.physicalDeliveryOfficeName) {
                     var location=d.physicalDeliveryOfficeName[0];
+                    console.log(location);
                     if (location.split(/\s+:\s+/)[0]=="La Boursidière"){ 
                         site="La Boursidière";
                          //check desk is the correct form
@@ -95,14 +101,14 @@ const associate = (req, res) => {
                 }
         //  Table BsusinessUnit : <fk> Company
         if(dpt !== null && dpt !== undefined && dpt !== ""
-        && company !== undefined && company !== null && company !== "") {
+        && comp !== undefined && comp !== null && comp !== "") {
             //Table Person : <fk> BusinessUnit
             if (firstname !== undefined && firstname !== null && firstname !== ""
                 && lastname !== undefined && lastname !== null && lastname !== ""){
                         models.sequelize.query('UPDATE \"Person\" SET '  +
                                 '\"businessUnit_id\" = (SELECT bus_id FROM \"BusinessUnit\" JOIN \"Company\" ON \"Company\".com_id=\"BusinessUnit\".company_id WHERE \"BusinessUnit\".name = :polename AND \"Company\".name= :compname) ' +
                                 ' WHERE firstname = :firstname and lastname = :lastname',
-                                {replacements: {polename: dpt, compname: company, firstname: firstname, lastname: lastname},
+                                {replacements: {polename: dpt, compname: comp, firstname: firstname, lastname: lastname},
                                 type: models.sequelize.QueryTypes.UPDATE})
                     
             }

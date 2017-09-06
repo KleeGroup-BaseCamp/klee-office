@@ -35,8 +35,8 @@ utilisateursDesactives.close()
 
 # list firstname lastname of former Klee employees to delete in the database 
 aSupprimer = list()
-
-for x in jsonData[0:10]:
+print(jsonData[0])
+for x in jsonData:
     names=x[1]['cn'][0]
     firstname=""
     lastname=""
@@ -51,31 +51,31 @@ for x in jsonData[0:10]:
             	'FROM "Person" '+
             	'WHERE firstname=\'%s\' AND lastname=\'%s\';'%(firstname,lastname))
     res=cur.fetchone()
-	
+    print("res : ",res)
     if res[0]==1:
 	aSupprimer.append( [firstname,lastname])
-print aSupprimer
+print("Youpi",aSupprimer)
 
 
 for elem in aSupprimer:
     print(elem)
     # delete profil of the former employee
-    sql="DELETE FROM \"Profil\" USING \"Person\" WHERE \"Profil\".pro_id=\"Person\".profil_id AND \"Person\".firstname='%s' AND \"Person\".lastname='%s';"%(elem[0],elem[1])
-    cur.execute(sql)
+    cur.execute('DELETE FROM "Profil" USING "Person" WHERE "Profil".pro_id="Person".profil_id AND "Person".firstname=\'%s\' AND "Person".lastname=\'%s\';'%(elem[0],elem[1]))
+    #cur.execute(sql)
     rows_del=cur.rowcount
     if rows_del<=1:
 	con_db.commit()
 
     # delete desk related to former Klee employees
-    sql="DELETE FROM \"Desk\" USING \"Person\" WHERE \"Person\".per_id=\"Desk\".person_id AND \"Person\".firstname='%s' AND \"Person\".lastname='%s';"%(elem[0],elem[1])
-    cur.execute(sql)
+    cur.execute('DELETE FROM "Desk" USING "Person" WHERE "Person".per_id="Desk".person_id AND "Person".firstname=\'%s\' AND "Person".lastname=\'%s\';'%(elem[0],elem[1]))
+    #cur.execute(sql)
     rows_del=cur.rowcount
     if rows_del<=1:
 	con_db.commit()
 
     # delete people who are former Klee employees 
-    sql="DELETE FROM \"Person\" WHERE \"Person\".firstname='%s' AND \"Person\".lastname='%s';"%(elem[0],elem[1])
-    cur.execute(sql)
+    cur.execute('DELETE FROM "Person" WHERE "Person".firstname=\'%s\' AND "Person".lastname=\'%s\';'%(elem[0],elem[1]))
+    #cur.execute(sql)
     rows_del=cur.rowcount
     if rows_del<=1:
 	con_db.commit()
@@ -115,21 +115,27 @@ for x in jsonData:
 	if location.find("issy")!=-1 or location.find("Issy")!=-1:
 	    site="Issy-les-Moulineaux"
 	    desk="externe"
+	    print(site," : ",desk)
 	elif location.find("mans")!=-1 or location.find("Mans")!=-1:
 	    site="Le Mans"
 	    desk="externe"
+	    print(site," : ",desk)
 	elif location.find("lyon")!=-1 or location.find("Lyon")!=-1:
 	    site="Lyon";
 	    desk="externe";
+	    print(site," : ",desk)
 	elif location.find("bourgoin")!=-1 or location.find("Bourgoin")!=-1:
 	    site="Bourgoin-Jailleux";
 	    desk="externe";
+	    print(site," : ",desk)
 	elif location.find("montpellier")!=-1 or location.find("Montpellier")!=-1:
 	    site="Montpellier";
 	    desk="externe";
+	    print(site," : ",desk)
 	elif location.find("client")!=-1 or location.find("Client")!=-1:
 	    site="sur site client";
 	    desk="externe";
+	    print(site," : ",desk)
 	else :
 	    site="La Boursidière";
 	    #check desk is the correct form
@@ -137,21 +143,23 @@ for x in jsonData:
 		if re.match(regex,location.split(' : ')[1])!=None: 
 		    desk=location.split(' : ')[1]
 	    else :
-		desk="aucun"	    
-
+	  	desk="aucun"	    
+	    print(desk)
 	company=x[0].split(',')[1].split('=')[1].encode('utf-8')
 	dpt=x[1]['department'][0].encode('utf-8')
 	if dpt=='':
 	    dpt='Non renseigne-'+company
+	    print("Rate")
 	if firstname!='' and lastname!='' and company!='' and firstname.find('Standard')==-1:
-
 	    cur.execute('SELECT count(*) '+ 
 	            'FROM "Person" '+
 	            'WHERE firstname=\'%s\' AND lastname=\'%s\';'%(firstname,lastname))
 	    res=cur.fetchone()
+	    print("A ajouter : ",res)
 	    if res[0]==0:
+		print("Hey")
 		aAjouter.append( {'firstname':firstname,'lastname':lastname,'mail':x[1]['mail'][0].encode('utf-8'),'dpt':dpt,'company':company,'desk':desk,'site':site,'loc':location})
-print(aAjouter)
+print("coucou : ",aAjouter)
 
 #insert a new config
 date=datetime.date.fromtimestamp(time.time())

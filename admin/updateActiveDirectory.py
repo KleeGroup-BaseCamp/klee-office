@@ -14,12 +14,13 @@ except:
 cur=con_db.cursor()
 cur.execute('SELECT firstname, lastname, "Desk".name, "Site".name,"Company".name '+ 
             'FROM "Person" '+
-            'LEFT JOIN "Desk" ON "Desk".person_id="Person".per_id '+
-            'LEFT JOIN "Site" ON "Site".sit_id="Desk".site_id '+
-            'LEFT JOIN "BusinessUnit" ON "BusinessUnit".bus_id="Person"."businessUnit_id" '+
-            'LEFT JOIN "Company" ON "Company".com_id="BusinessUnit".company_id;')
+            'JOIN "Desk" ON "Desk".person_id="Person".per_id '+
+            'JOIN "Site" ON "Site".sit_id="Desk".site_id '+
+            'JOIN "BusinessUnit" ON "BusinessUnit".bus_id="Person"."businessUnit_id" '+
+            'JOIN "Company" ON "Company".com_id="BusinessUnit".company_id;')
 res=cur.fetchall()
-print(len(res))
+#print(res)
+
 
 ######################################################
 with open('../config/config-ldap.json') as data_file:
@@ -43,10 +44,13 @@ if con.bind():
     #for each person we have to check if the office name in the active directory is up-to-date with the database
     for i in range(0,len(res)):
         name=(res[i][0]+" "+res[i][1]).decode("utf-8")
-        if name.find("DEGENNE")!=-1:
-            print(name)
-        if res[i][3]=="La Boursidière" and res[i][2]!="aucun":
-            officeName=("La Boursidière : "+res[i][2]).decode("utf-8")
+        #if res[i][3]=="La Boursidière" and res[i][2]!="aucun":
+	#  	officeName=("La Boursidière : "+res[i][2]).decode("utf-8")
+	if res[i][3]=="La Boursidière":
+	    if res[i][2]!="aucun":
+	        officeName=("La Boursidière : "+res[i][2]).decode("utf-8")
+	    else:
+		officeName="nochange"
         else:
             officeName=res[i][3].decode("utf-8")
         company=res[i][4].decode("utf-8")
@@ -56,14 +60,14 @@ if con.bind():
         con.search(base,'(cn='+name+')',attributes=['physicalDeliveryOfficeName'])
         if con.entries:
             if (not con.entries[0].physicalDeliveryOfficeName):
-                print("add new office")
-                # con.modify(base,{'physicalDeliveryOfficeName':[(MODIFY_ADD,[officeName])]})
+                print(name.encode('utf-8'),"add new office", officeName.encode('utf-8'))
+                con.modify(base,{'physicalDeliveryOfficeName':[(MODIFY_ADD,[officeName])]})
             else:
-                if (officeName=="Issy-les-Moulineaux" and con.entries[0].physicalDeliveryOfficeName.value.find(officeName)==-1) or (officeName!="Issy-les-Moulineaux" and not con.entries[0].physicalDeliveryOfficeName==officeName):
-                    print("change my office")
-                    print(con.entries[0].physicalDeliveryOfficeName)
-                    print(officeName)
-                    #  con.modify(base,{'physicalDeliveryOfficeName':[(MODIFY_REPLACE,[officeName])]})
+		if officeName=="nochange":
+		    print("pas de changement")
+		elif (officeName=="Issy-les-Moulineaux" and con.entries[0].physicalDeliveryOfficeName.value.find("Issy-les-Moulineaux")==-1) or (officeName!="Issy-les-Moulineaux" and not con.entries[0].physicalDeliveryOfficeName==officeName):
+		    print(name.encode('utf-8'),"change my office",con.entries[0].physicalDeliveryOfficeName,officeName.encode('utf-8'))
+                    con.modify(base,{'physicalDeliveryOfficeName':[(MODIFY_REPLACE,[officeName])]})
         
 
 con.unbind()
