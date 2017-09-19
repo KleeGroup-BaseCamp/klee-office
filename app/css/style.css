@@ -275,6 +275,10 @@ table #personal-desk {
     width:100px;
     font-weight:bold
 }
+#contactSupport{
+    margin-top:15px;
+    font-size:12px;
+}
 
 /*begin navigation chart*/
 .navigation-chart {
@@ -547,11 +551,11 @@ table #personal-desk {
     font-style :italic;
 }
 #navigation a{
-    text-align: center;
+    /*text-align: center;
     padding-left:5px;
     position: relative;
-    bottom: -10px;
-    color:  #99ceff;
+    bottom: -10px;*/
+    color:  #3385ff;
     font-size: 12px;
 }
 .info-recherche{

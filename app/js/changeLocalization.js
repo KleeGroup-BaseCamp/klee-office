@@ -11,6 +11,7 @@ document.getElementsByClassName('desk-maj')[i].addEventListener("click",changeLo
 
 //First user need to choose the site
 function changeLocalization() {
+    //document.getElementsByTagName("header").attr("background-color", "rgb(255, 163, 26)");
     d3.select("#menu-withoutresult").style("display", "none");
     d3.select("#menu-newlocation").style("display", "");
     d3.select("#menu-withresult").style("display", "none");
