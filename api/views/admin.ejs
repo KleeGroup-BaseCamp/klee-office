@@ -20,6 +20,7 @@
     <script type="text/javascript" src="js/libraries/d3.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="js/libraries/jquery.autocomplete.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/blob-polyfill/1.0.20150320/Blob.js"></script>
 </head>
 
 <body>
@@ -196,7 +197,7 @@
                                             <div id="imgUpload">
                                                 <form ref='uploadForm' 
                                                         id='uploadForm' 
-                                                        action='http://local-map/upload' 
+                                                        action='http://localhost:3000/upload' 
                                                         method='post' 
                                                         encType="multipart/form-data">
                                                             <input type="file" id="imgInput" name="sampleFile" style="display: none;" onchange="getImgName()"/>
@@ -217,7 +218,7 @@
                                             <div id="fileUpload">
                                                 <form ref='uploadForm' 
                                                         id='uploadForm' 
-                                                        action='http://local-map/upload' 
+                                                        action='http://localhost:3000/upload' 
                                                         method='post' 
                                                         encType="multipart/form-data">
                                                             <input type="file" id="fileInput" name="sampleFile" style="display:none" onchange="getFileName()"/>

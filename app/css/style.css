@@ -698,7 +698,7 @@ table #personal-desk {
 }
 
 
-#legend-modifmap-table td img:hover,#legend-modifmap-table td rect:hover,#legend-modifmap table img:hover{
+#legend-modifmap-table td img:hover,#legend-modifmap-table td rect:hover,#legend-modifmap table img:hover, #legend-modiffile td img:hover{
     cursor: pointer;
     transform: scale(1.1);
 }

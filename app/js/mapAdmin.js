@@ -223,20 +223,27 @@ $("#dl-button").click(function () {
     var svg1 = document.getElementsByTagName('svg')[1];
     var svgData = svg1.outerHTML;
     var mapName = d3.select("#map-name h1")[0][0].className;
-    /*if (navigator.appVersion.toString().indexOf('.NET') > 0){ //ne marche pas encore -- blob n'est pas défini (ie ne kiffe pas quand la création de notre blob)
-        window.navigator.msSaveBlob(blob, filename);
-    }else{*/
+    if (navigator.appVersion.toString().indexOf('.NET') > 0){ //pour télécharger sous internet explorer
+        var bb = new MSBlobBuilder();
+        var svgDat = new XMLSerializer().serializeToString(svg1);
+        bb.append(svgDat);
+        var svgBlob = bb.getBlob('image/svg+xml;charset=utf-8');
+
+        filename =mapName+".svg";
+        window.navigator.msSaveBlob(svgBlob, filename);
+    }else{
         //console.log(svgData);
         var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
         var svgUrl = URL.createObjectURL(svgBlob);
-        //console.log(svgUrl);
+        console.log(svgUrl);
+        console.log(svgBlob);
         var downloadLink = document.createElement("a");
         downloadLink.href = svgUrl;
         downloadLink.download = mapName + ".svg";
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
-    //}
+    }
 });
 
 // ------ Add new desk on map ------- //
